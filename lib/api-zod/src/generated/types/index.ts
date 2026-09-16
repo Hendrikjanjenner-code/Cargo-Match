@@ -9,6 +9,7 @@
  * OpenAPI spec version: 0.1.0
  */
 
+export * from './aisFreshness';
 export * from './anonymousCapacityListing';
 export * from './anonymousCapacityListingListingStatus';
 export * from './anonymousCapacityListingListingType';
@@ -79,6 +80,7 @@ export * from './message';
 export * from './messageListResponse';
 export * from './mobileTokenExchangeRequest';
 export * from './mobileTokenExchangeSuccess';
+export * from './normalizedVesselTelemetry';
 export * from './notFoundResponse';
 export * from './notification';
 export * from './notificationListResponse';
@@ -90,6 +92,9 @@ export * from './readMessagesResponse';
 export * from './sendMessageRequest';
 export * from './unauthorizedResponse';
 export * from './vessel';
+export * from './vesselAisResponse';
+export * from './vesselAisResponseAttemptsItem';
+export * from './vesselAisResponseStatus';
 export * from './vesselCreateRequest';
 export * from './vesselListResponse';
 export * from './vesselType';

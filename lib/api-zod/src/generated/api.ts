@@ -474,6 +474,73 @@ export const DeactivateMyVesselResponse = zod.object({
 
 
 /**
+ * Read-only, company-scoped AIS enhancement. Development simulation is
+ * explicitly labelled and unavailable in production. Never changes
+ * commercial availability or grants telemetry access to counterparties.
+ * @summary Read AIS context for an owned vessel
+ */
+export const GetMyVesselAisParams = zod.object({
+  "vesselId": zod.coerce.string().uuid()
+})
+
+export const getMyVesselAisResponseTelemetryOneLatitudeMin = -90;
+export const getMyVesselAisResponseTelemetryOneLatitudeMax = 90;
+
+export const getMyVesselAisResponseTelemetryOneLongitudeMin = -180;
+export const getMyVesselAisResponseTelemetryOneLongitudeMax = 180;
+
+export const getMyVesselAisResponseTelemetryOneSpeedKnotsMin = 0;
+
+export const getMyVesselAisResponseTelemetryOneCourseDegreesMin = 0;
+export const getMyVesselAisResponseTelemetryOneCourseDegreesExclusiveMax = 360;
+
+export const getMyVesselAisResponseTelemetryOneHeadingDegreesMin = 0;
+export const getMyVesselAisResponseTelemetryOneHeadingDegreesExclusiveMax = 360;
+
+export const getMyVesselAisResponseTelemetryOneReportedDraughtMetersMin = 0;
+
+
+
+
+
+export const GetMyVesselAisResponse = zod.object({
+  "vesselId": zod.string().uuid(),
+  "status": zod.enum(['NOT_CONFIGURED', 'AVAILABLE', 'UNAVAILABLE']),
+  "simulation": zod.boolean(),
+  "telemetry": zod.union([zod.object({
+  "provider": zod.string(),
+  "providerVesselId": zod.string().nullable(),
+  "mmsi": zod.string().nullable(),
+  "imo": zod.string().nullable(),
+  "eni": zod.string().nullable(),
+  "vesselName": zod.string().nullable(),
+  "latitude": zod.number().min(getMyVesselAisResponseTelemetryOneLatitudeMin).max(getMyVesselAisResponseTelemetryOneLatitudeMax).nullable(),
+  "longitude": zod.number().min(getMyVesselAisResponseTelemetryOneLongitudeMin).max(getMyVesselAisResponseTelemetryOneLongitudeMax).nullable(),
+  "speedKnots": zod.number().min(getMyVesselAisResponseTelemetryOneSpeedKnotsMin).nullable(),
+  "courseDegrees": zod.number().min(getMyVesselAisResponseTelemetryOneCourseDegreesMin).lt(getMyVesselAisResponseTelemetryOneCourseDegreesExclusiveMax).nullable(),
+  "headingDegrees": zod.number().min(getMyVesselAisResponseTelemetryOneHeadingDegreesMin).lt(getMyVesselAisResponseTelemetryOneHeadingDegreesExclusiveMax).nullable(),
+  "navigationStatus": zod.string().nullable(),
+  "reportedDestination": zod.string().nullable(),
+  "reportedEta": zod.coerce.date().nullable(),
+  "reportedDraughtMeters": zod.number().min(getMyVesselAisResponseTelemetryOneReportedDraughtMetersMin).nullable(),
+  "observedAt": zod.coerce.date().nullable(),
+  "receivedAt": zod.coerce.date(),
+  "sourceType": zod.string().nullable(),
+  "dataFreshness": zod.enum(['FRESH', 'AGING', 'STALE', 'UNKNOWN']),
+  "rawDataReference": zod.string().nullable()
+}),zod.null()]),
+  "attempts": zod.array(zod.object({
+  "provider": zod.string(),
+  "outcome": zod.string()
+})),
+  "checkedAt": zod.coerce.date(),
+  "cacheHit": zod.boolean(),
+  "freshForSeconds": zod.number().int().min(1),
+  "staleAfterSeconds": zod.number().int().min(1)
+})
+
+
+/**
  * Returns curated inland-shipping locations; arbitrary free-form addresses are not part of the pilot.
  * @summary List active catalogue locations
  */

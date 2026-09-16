@@ -379,6 +379,36 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
 
+  /vessels/{vesselId}/ais:
+    get:
+      tags: [Vessels]
+      operationId: getMyVesselAis
+      summary: Read AIS context for an owned vessel
+      description: |
+        Read-only, company-scoped AIS enhancement. Development simulation is
+        explicitly labelled and unavailable in production. Never changes
+        commercial availability or grants telemetry access to counterparties.
+      security:
+        - sessionCookie: []
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/VesselId'
+      responses:
+        '200':
+          description: AIS context, including not-configured and unavailable states.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VesselAisResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
   /locations:
     get:
       tags: [Locations]
@@ -1145,6 +1175,126 @@ components:
           schema:
             $ref: '#/components/schemas/ErrorEnvelope'
   schemas:
+    AisFreshness:
+      type: string
+      enum: [FRESH, AGING, STALE, UNKNOWN]
+    NormalizedVesselTelemetry:
+      type: object
+      additionalProperties: false
+      required:
+        - provider
+        - providerVesselId
+        - mmsi
+        - imo
+        - eni
+        - vesselName
+        - latitude
+        - longitude
+        - speedKnots
+        - courseDegrees
+        - headingDegrees
+        - navigationStatus
+        - reportedDestination
+        - reportedEta
+        - reportedDraughtMeters
+        - observedAt
+        - receivedAt
+        - sourceType
+        - dataFreshness
+        - rawDataReference
+      properties:
+        provider:
+          type: string
+        providerVesselId:
+          type: [string, 'null']
+        mmsi:
+          type: [string, 'null']
+        imo:
+          type: [string, 'null']
+        eni:
+          type: [string, 'null']
+        vesselName:
+          type: [string, 'null']
+        latitude:
+          type: [number, 'null']
+          minimum: -90
+          maximum: 90
+        longitude:
+          type: [number, 'null']
+          minimum: -180
+          maximum: 180
+        speedKnots:
+          type: [number, 'null']
+          minimum: 0
+        courseDegrees:
+          type: [number, 'null']
+          minimum: 0
+          exclusiveMaximum: 360
+        headingDegrees:
+          type: [number, 'null']
+          minimum: 0
+          exclusiveMaximum: 360
+        navigationStatus:
+          type: [string, 'null']
+        reportedDestination:
+          type: [string, 'null']
+        reportedEta:
+          type: [string, 'null']
+          format: date-time
+        reportedDraughtMeters:
+          type: [number, 'null']
+          minimum: 0
+        observedAt:
+          type: [string, 'null']
+          format: date-time
+        receivedAt:
+          type: string
+          format: date-time
+        sourceType:
+          type: [string, 'null']
+        dataFreshness:
+          $ref: '#/components/schemas/AisFreshness'
+        rawDataReference:
+          type: [string, 'null']
+    VesselAisResponse:
+      type: object
+      additionalProperties: false
+      required: [vesselId, status, simulation, telemetry, attempts, checkedAt, cacheHit, freshForSeconds, staleAfterSeconds]
+      properties:
+        vesselId:
+          type: string
+          format: uuid
+        status:
+          type: string
+          enum: [NOT_CONFIGURED, AVAILABLE, UNAVAILABLE]
+        simulation:
+          type: boolean
+        telemetry:
+          anyOf:
+            - $ref: '#/components/schemas/NormalizedVesselTelemetry'
+            - type: 'null'
+        attempts:
+          type: array
+          items:
+            type: object
+            additionalProperties: false
+            required: [provider, outcome]
+            properties:
+              provider:
+                type: string
+              outcome:
+                type: string
+        checkedAt:
+          type: string
+          format: date-time
+        cacheHit:
+          type: boolean
+        freshForSeconds:
+          type: integer
+          minimum: 1
+        staleAfterSeconds:
+          type: integer
+          minimum: 1
     HealthStatus:
       type: object
       properties:

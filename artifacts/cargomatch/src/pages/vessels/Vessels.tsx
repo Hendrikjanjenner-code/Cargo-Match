@@ -1,13 +1,14 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { useListMyVessels, useCreateMyVessel, useUpdateMyVessel, useDeactivateMyVessel, getListMyVesselsQueryKey, VesselType, Vessel } from "@workspace/api-client-react";
 import { useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button, Input, Select, Label, Card, CardHeader, CardTitle, CardContent, Table, TableHeader, TableBody, TableRow, TableHead, TableCell, Badge, Textarea } from "@/components/ui/primitives";
-import { Plus, Trash2, Edit2 } from "lucide-react";
+import { Plus, Trash2, Edit2, Radio } from "lucide-react";
 import { formatDate } from "@/lib/utils";
 import { t } from "@/lib/i18n";
+import { VesselAisPanel } from "@/components/ais/VesselAisPanel";
 
 const schema = z.object({
   vesselName: z.string().min(1, t("vessels.error_name_required")),
@@ -23,6 +24,7 @@ type FormValues = z.infer<typeof schema>;
 export default function Vessels() {
   const [showForm, setShowForm] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
+  const [expandedAisId, setExpandedAisId] = useState<string | null>(null);
   
   const queryClient = useQueryClient();
   const { data: vesselsData, isLoading } = useListMyVessels();
@@ -178,30 +180,49 @@ export default function Vessels() {
               <TableRow><TableCell colSpan={6} className="text-center py-8 text-muted-foreground">{t("common.no_data")}</TableCell></TableRow>
             ) : (
               vesselsData?.items.map(v => (
-                <TableRow key={v.id}>
-                  <TableCell>
-                    <div className="font-medium">{v.vesselName}</div>
-                    <div className="text-xs text-muted-foreground">{v.eniNumber || t("vessels.no_eni")}</div>
-                  </TableCell>
-                  <TableCell><Badge variant="secondary">{v.vesselType}</Badge></TableCell>
-                  <TableCell>{v.totalCapacityTonnes} t</TableCell>
-                  <TableCell>
-                    {v.active ? <Badge variant="default" className="bg-emerald-600">{t("status.active")}</Badge> : <Badge variant="outline">{t("status.inactive")}</Badge>}
-                  </TableCell>
-                  <TableCell>{formatDate(v.createdAt)}</TableCell>
-                  <TableCell className="text-right space-x-2">
-                    {v.active && (
-                      <>
-                        <Button variant="outline" size="sm" onClick={() => handleEdit(v)} title={t("action.edit")}>
-                          <Edit2 className="h-4 w-4" />
-                        </Button>
-                        <Button variant="ghost" size="sm" onClick={() => handleDeactivate(v.id)} className="text-destructive hover:bg-destructive/10" title={t("action.delete")}>
-                          <Trash2 className="h-4 w-4" />
-                        </Button>
-                      </>
-                    )}
-                  </TableCell>
-                </TableRow>
+                <React.Fragment key={v.id}>
+                  <TableRow className={expandedAisId === v.id ? "bg-muted/30 border-b-0" : ""}>
+                    <TableCell>
+                      <div className="font-medium">{v.vesselName}</div>
+                      <div className="text-xs text-muted-foreground">{v.eniNumber || t("vessels.no_eni")}</div>
+                    </TableCell>
+                    <TableCell><Badge variant="secondary">{v.vesselType}</Badge></TableCell>
+                    <TableCell>{v.totalCapacityTonnes} t</TableCell>
+                    <TableCell>
+                      {v.active ? <Badge variant="default" className="bg-emerald-600">{t("status.active")}</Badge> : <Badge variant="outline">{t("status.inactive")}</Badge>}
+                    </TableCell>
+                    <TableCell>{formatDate(v.createdAt)}</TableCell>
+                    <TableCell className="text-right space-x-2">
+                      {v.active && (
+                        <>
+                          <Button
+                            variant={expandedAisId === v.id ? "default" : "outline"}
+                            size="sm"
+                            onClick={() => setExpandedAisId(prev => prev === v.id ? null : v.id)}
+                            title={expandedAisId === v.id ? t("vessels.ais.hide") : t("vessels.ais.show")}
+                          >
+                            <Radio className="h-4 w-4" />
+                          </Button>
+                          <Button variant="outline" size="sm" onClick={() => handleEdit(v)} title={t("action.edit")}>
+                            <Edit2 className="h-4 w-4" />
+                          </Button>
+                          <Button variant="ghost" size="sm" onClick={() => handleDeactivate(v.id)} className="text-destructive hover:bg-destructive/10" title={t("action.delete")}>
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
+                        </>
+                      )}
+                    </TableCell>
+                  </TableRow>
+                  {expandedAisId === v.id && (
+                    <TableRow className="bg-muted/10">
+                      <TableCell colSpan={6} className="p-0 border-b">
+                        <div className="border-l-4 border-l-primary">
+                          <VesselAisPanel vesselId={v.id} />
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  )}
+                </React.Fragment>
               ))
             )}
           </TableBody>

@@ -53,4 +53,5 @@ Compact, desktop-first European logistics interface; navy, marine blue and teal.
 
 ## Pointers
 
+- AIS foundation and development-only simulated provider setup: `docs/ais-foundation.md`. Production remains not configured; explicit internal-vessel mappings are required before simulated positions can be shown. AIS never changes commercial availability.
 - See the `pnpm-workspace` skill for workspace structure, TypeScript setup, and package details

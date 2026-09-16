@@ -8,6 +8,106 @@
  *
  * OpenAPI spec version: 0.1.0
  */
+export type AisFreshness = typeof AisFreshness[keyof typeof AisFreshness];
+
+
+export const AisFreshness = {
+  FRESH: 'FRESH',
+  AGING: 'AGING',
+  STALE: 'STALE',
+  UNKNOWN: 'UNKNOWN',
+} as const;
+
+export interface NormalizedVesselTelemetry {
+  provider: string;
+  /** @nullable */
+  providerVesselId: string | null;
+  /** @nullable */
+  mmsi: string | null;
+  /** @nullable */
+  imo: string | null;
+  /** @nullable */
+  eni: string | null;
+  /** @nullable */
+  vesselName: string | null;
+  /**
+     * @minimum -90
+     * @maximum 90
+     * @nullable
+     */
+  latitude: number | null;
+  /**
+     * @minimum -180
+     * @maximum 180
+     * @nullable
+     */
+  longitude: number | null;
+  /**
+     * @minimum 0
+     * @nullable
+     */
+  speedKnots: number | null;
+  /**
+     * @minimum 0
+     * @exclusiveMaximum 360
+     * @nullable
+     */
+  courseDegrees: number | null;
+  /**
+     * @minimum 0
+     * @exclusiveMaximum 360
+     * @nullable
+     */
+  headingDegrees: number | null;
+  /** @nullable */
+  navigationStatus: string | null;
+  /** @nullable */
+  reportedDestination: string | null;
+  /** @nullable */
+  reportedEta: string | null;
+  /**
+     * @minimum 0
+     * @nullable
+     */
+  reportedDraughtMeters: number | null;
+  /** @nullable */
+  observedAt: string | null;
+  receivedAt: string;
+  /** @nullable */
+  sourceType: string | null;
+  dataFreshness: AisFreshness;
+  /** @nullable */
+  rawDataReference: string | null;
+}
+
+export type VesselAisResponseStatus = typeof VesselAisResponseStatus[keyof typeof VesselAisResponseStatus];
+
+
+export const VesselAisResponseStatus = {
+  NOT_CONFIGURED: 'NOT_CONFIGURED',
+  AVAILABLE: 'AVAILABLE',
+  UNAVAILABLE: 'UNAVAILABLE',
+} as const;
+
+export type VesselAisResponseAttemptsItem = {
+  provider: string;
+  outcome: string;
+};
+
+export interface VesselAisResponse {
+  vesselId: string;
+  status: VesselAisResponseStatus;
+  simulation: boolean;
+  telemetry: NormalizedVesselTelemetry | null;
+  attempts: VesselAisResponseAttemptsItem[];
+  checkedAt: string;
+  cacheHit: boolean;
+  /** @minimum 1 */
+  freshForSeconds: number;
+  /** @minimum 1 */
+  staleAfterSeconds: number;
+}
+
 export interface HealthStatus {
   status: string;
 }

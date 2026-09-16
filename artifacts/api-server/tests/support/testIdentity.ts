@@ -62,7 +62,7 @@ async function createCompany(
   const [company] = await db
     .insert(companiesTable)
     .values({
-      name: options.companyName ?? `Test Company ${userId.slice(0, 8)}`,
+      name: options.companyName ?? `Test Company ${userId}`,
       country: "NL",
       activities: ["SHIPPER", "CARRIER"],
       primaryContactName: "Test Identity",

@@ -70,6 +70,7 @@ import type {
   SendMessageRequest,
   UnauthorizedResponse,
   Vessel,
+  VesselAisResponse,
   VesselCreateRequest,
   VesselListResponse,
   VesselUpdateRequest
@@ -1338,6 +1339,86 @@ export const useDeactivateMyVessel = <TError = ErrorType<UnauthorizedResponse | 
       > => {
       return useMutation(getDeactivateMyVesselMutationOptions(options));
     }
+
+export const getGetMyVesselAisUrl = (vesselId: string,) => {
+
+
+
+
+  return `/api/vessels/${vesselId}/ais`
+}
+
+/**
+ * Read-only, company-scoped AIS enhancement. Development simulation is
+ * explicitly labelled and unavailable in production. Never changes
+ * commercial availability or grants telemetry access to counterparties.
+ * @summary Read AIS context for an owned vessel
+ */
+export const getMyVesselAis = async (vesselId: string, options?: Parameters<typeof customFetch>[1]): Promise<VesselAisResponse> => {
+
+  return customFetch<VesselAisResponse>(getGetMyVesselAisUrl(vesselId),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetMyVesselAisQueryKey = (vesselId: string,) => {
+    return [
+    `/api/vessels/${vesselId}/ais`
+    ] as const;
+    }
+
+
+export const getGetMyVesselAisQueryOptions = <TData = Awaited<ReturnType<typeof getMyVesselAis>>, TError = ErrorType<BadRequestResponse | UnauthorizedResponse | ForbiddenResponse | NotFoundResponse>>(vesselId: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getMyVesselAis>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetMyVesselAisQueryKey(vesselId);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getMyVesselAis>>> = ({ signal }) => getMyVesselAis(vesselId, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: vesselId !== null && vesselId !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getMyVesselAis>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetMyVesselAisQueryResult = NonNullable<Awaited<ReturnType<typeof getMyVesselAis>>>
+export type GetMyVesselAisQueryError = ErrorType<BadRequestResponse | UnauthorizedResponse | ForbiddenResponse | NotFoundResponse>
+
+
+/**
+ * @summary Read AIS context for an owned vessel
+ */
+
+export function useGetMyVesselAis<TData = Awaited<ReturnType<typeof getMyVesselAis>>, TError = ErrorType<BadRequestResponse | UnauthorizedResponse | ForbiddenResponse | NotFoundResponse>>(
+ vesselId: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getMyVesselAis>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetMyVesselAisQueryOptions(vesselId,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
 
 export const getListLocationsUrl = (params?: ListLocationsParams,) => {
   const normalizedParams = new URLSearchParams();

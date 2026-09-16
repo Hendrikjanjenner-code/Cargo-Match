@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "CargoMatch"
+description = "Privacy-protected inland shipping capacity and cargo introductions for European logistics companies."
+version = "1.0.0"
+id = "artifacts/cargomatch"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 24204
+
+[services.development]
+run = "pnpm --filter @workspace/cargomatch run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/cargomatch", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/cargomatch/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "24204"
+BASE_PATH = "/"

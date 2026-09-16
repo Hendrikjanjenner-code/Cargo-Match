@@ -1,0 +1,1 @@
+- [Pilot concurrency tradeoff](concurrency-scope.md) — coarse serialization favors reliable consent over throughput; scaling must preserve atomic eligibility checks.

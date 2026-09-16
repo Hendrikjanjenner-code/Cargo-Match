@@ -1,5 +1,6 @@
 import app from "./app";
 import { logger } from "./lib/logger";
+import { expireListings } from "./services/matching";
 
 const rawPort = process.env["PORT"];
 
@@ -14,6 +15,11 @@ const port = Number(rawPort);
 if (Number.isNaN(port) || port <= 0) {
   throw new Error(`Invalid PORT value: "${rawPort}"`);
 }
+
+const expiryTimer = setInterval(() => {
+  expireListings().catch((err) => logger.error({ err }, "Listing expiry failed"));
+}, 60_000);
+expiryTimer.unref();
 
 app.listen(port, (err) => {
   if (err) {

@@ -5,9 +5,11 @@
   "type": "module",
   "scripts": {
     "hello": "tsx ./src/hello.ts",
+    "seed-locations": "tsx ./src/seed-locations.ts",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "devDependencies": {
+    "@workspace/db": "workspace:*",
     "@types/node": "catalog:",
     "tsx": "catalog:"
   }

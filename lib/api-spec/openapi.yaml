@@ -1,15 +1,36 @@
 openapi: 3.1.0
 info:
-  # Do not change the title, if the title changes, the import paths will be broken
+  # Do not change the title, if the title changes, the import paths will be broken.
   title: Api
   version: 0.1.0
-  description: API specification
+  description: |
+    CargoMatch pilot API. This contract covers the privacy-safe discovery,
+    consent, and communication flow for European inland shipping. CargoMatch
+    is not a booking, reservation, or freight-contract API.
 servers:
   - url: /api
     description: Base API path
 tags:
   - name: health
     description: Health operations
+  - name: Auth
+    description: Browser and mobile authentication endpoints.
+  - name: Company
+    description: The current user's company.
+  - name: Vessels
+    description: Vessels owned by the current user's company.
+  - name: Locations
+    description: Curated inland-shipping location catalogue.
+  - name: Listings
+    description: Owned cargo and capacity listings.
+  - name: Marketplace
+    description: Privacy-safe open-network discovery.
+  - name: Matches
+    description: Eligibility-filtered match opportunities and consent actions.
+  - name: Conversations
+    description: Conversations available after a match is connected.
+  - name: Notifications
+    description: In-app notifications for the current user.
 paths:
   /healthz:
     get:
@@ -17,6 +38,7 @@ paths:
       tags: [health]
       summary: Health check
       description: Returns server health status
+      security: []
       responses:
         "200":
           description: Healthy
@@ -24,7 +46,1104 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+
+  /auth/user:
+    get:
+      tags: [Auth]
+      operationId: getCurrentAuthUser
+      summary: Get the currently authenticated user
+      parameters:
+        - $ref: '#/components/parameters/AuthorizationSessionHeader'
+        - $ref: '#/components/parameters/SessionCookie'
+      responses:
+        '200':
+          description: Auth status resolved successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthUserEnvelope'
+  /login:
+    get:
+      tags: [Auth]
+      operationId: beginBrowserLogin
+      summary: Start the browser OIDC login flow
+      security: []
+      parameters:
+        - name: returnTo
+          in: query
+          required: false
+          description: Relative path to redirect to after login (must start with `/`). Defaults to `/`.
+          schema:
+            type: string
+      responses:
+        '302':
+          description: Redirect to the OIDC authorization endpoint.
+  /callback:
+    get:
+      tags: [Auth]
+      operationId: handleBrowserLoginCallback
+      summary: Complete the browser OIDC login flow
+      security: []
+      parameters:
+        - name: code
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: state
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: iss
+          in: query
+          required: false
+          schema:
+            type: string
+            format: uri
+      responses:
+        '302':
+          description: Redirect to the `returnTo` path on success (defaults to `/`) or `/api/login` on failure.
+  /logout:
+    get:
+      tags: [Auth]
+      operationId: logoutBrowserSession
+      summary: Clear the session and begin OIDC logout
+      parameters:
+        - $ref: '#/components/parameters/AuthorizationSessionHeader'
+        - $ref: '#/components/parameters/SessionCookie'
+        - name: returnTo
+          in: query
+          required: false
+          schema:
+            type: string
+            default: /
+      responses:
+        '302':
+          description: Redirect to the OIDC provider logout URL with a post-logout redirect back to the validated `returnTo` path.
+  /mobile-auth/token-exchange:
+    post:
+      tags: [Auth]
+      operationId: exchangeMobileAuthorizationCode
+      summary: Exchange a mobile OIDC code for a session token
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MobileTokenExchangeRequest'
+      responses:
+        '200':
+          description: Session created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MobileTokenExchangeSuccess'
+        '400':
+          description: Missing or invalid required fields.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEnvelope'
+        '401':
+          description: Token did not contain usable claims.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEnvelope'
+        '500':
+          description: Token exchange failed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEnvelope'
+  /mobile-auth/logout:
+    post:
+      tags: [Auth]
+      operationId: logoutMobileSession
+      summary: Delete a mobile session token
+      parameters:
+        - $ref: '#/components/parameters/AuthorizationSessionHeader'
+      responses:
+        '200':
+          description: Logout processed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LogoutSuccess'
+
+  /company:
+    get:
+      tags: [Company]
+      operationId: getMyCompany
+      summary: Get the current user's company
+      description: Returns only the company associated with the current user's active membership.
+      security:
+        - sessionCookie: []
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Current company.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Company'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    post:
+      tags: [Company]
+      operationId: createMyCompany
+      summary: Create a company for the current user
+      description: Creates the first company and OWNER membership for an authenticated user.
+      security:
+        - sessionCookie: []
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CompanyCreateRequest'
+      responses:
+        '201':
+          description: Company created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Company'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '409':
+          description: The user already belongs to a company.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEnvelope'
+    patch:
+      tags: [Company]
+      operationId: updateMyCompany
+      summary: Update the current user's company
+      security:
+        - sessionCookie: []
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CompanyUpdateRequest'
+      responses:
+        '200':
+          description: Company updated.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Company'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /vessels:
+    get:
+      tags: [Vessels]
+      operationId: listMyVessels
+      summary: List the current company's vessels
+      security:
+        - sessionCookie: []
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/PageSize'
+        - name: activeOnly
+          in: query
+          required: false
+          schema:
+            type: boolean
+            default: false
+      responses:
+        '200':
+          description: Owned vessels.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VesselListResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    post:
+      tags: [Vessels]
+      operationId: createMyVessel
+      summary: Create a vessel for the current company
+      security:
+        - sessionCookie: []
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VesselCreateRequest'
+      responses:
+        '201':
+          description: Vessel created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Vessel'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+  /vessels/{vesselId}:
+    parameters:
+      - $ref: '#/components/parameters/VesselId'
+    get:
+      tags: [Vessels]
+      operationId: getMyVessel
+      summary: Get one of the current company's vessels
+      security:
+        - sessionCookie: []
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Owned vessel.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Vessel'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    patch:
+      tags: [Vessels]
+      operationId: updateMyVessel
+      summary: Update one of the current company's vessels
+      security:
+        - sessionCookie: []
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VesselUpdateRequest'
+      responses:
+        '200':
+          description: Vessel updated.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Vessel'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /vessels/{vesselId}/deactivate:
+    post:
+      tags: [Vessels]
+      operationId: deactivateMyVessel
+      summary: Deactivate a vessel
+      description: Vessels are deactivated rather than deleted so historical listings remain auditable.
+      security:
+        - sessionCookie: []
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/VesselId'
+      responses:
+        '200':
+          description: Vessel deactivated.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Vessel'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /locations:
+    get:
+      tags: [Locations]
+      operationId: listLocations
+      summary: List active catalogue locations
+      description: Returns curated inland-shipping locations; arbitrary free-form addresses are not part of the pilot.
+      security: []
+      parameters:
+        - name: search
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: country
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: locationType
+          in: query
+          required: false
+          schema:
+            $ref: '#/components/schemas/LocationType'
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/PageSize'
+      responses:
+        '200':
+          description: Active catalogue locations.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LocationListResponse'
+
+  /cargo:
+    get:
+      tags: [Listings]
+      operationId: listMyCargo
+      summary: List the current company's cargo listings
+      security:
+        - sessionCookie: []
+        - bearerAuth: []
+      parameters:
+        - name: listingStatus
+          in: query
+          required: false
+          schema:
+            $ref: '#/components/schemas/ListingStatus'
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/PageSize'
+      responses:
+        '200':
+          description: Owned cargo listings.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CargoListResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    post:
+      tags: [Listings]
+      operationId: createMyCargo
+      summary: Create a cargo listing for the current company
+      security:
+        - sessionCookie: []
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CargoListingCreateRequest'
+      responses:
+        '201':
+          description: Cargo listing created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CargoListing'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+  /cargo/{cargoId}:
+    parameters:
+      - $ref: '#/components/parameters/CargoId'
+    get:
+      tags: [Listings]
+      operationId: getMyCargo
+      summary: Get one of the current company's cargo listings
+      security:
+        - sessionCookie: []
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Owned cargo listing.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CargoListing'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    patch:
+      tags: [Listings]
+      operationId: updateMyCargo
+      summary: Update one of the current company's cargo listings
+      security:
+        - sessionCookie: []
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CargoListingUpdateRequest'
+      responses:
+        '200':
+          description: Cargo listing updated.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CargoListing'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /cargo/{cargoId}/withdraw:
+    post:
+      tags: [Listings]
+      operationId: withdrawMyCargo
+      summary: Withdraw a cargo listing
+      security:
+        - sessionCookie: []
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/CargoId'
+      responses:
+        '200':
+          description: Cargo listing withdrawn.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CargoListing'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /cargo/{cargoId}/close:
+    post:
+      tags: [Listings]
+      operationId: closeMyCargo
+      summary: Close a cargo listing
+      security:
+        - sessionCookie: []
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/CargoId'
+      responses:
+        '200':
+          description: Cargo listing closed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CargoListing'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /capacity:
+    get:
+      tags: [Listings]
+      operationId: listMyCapacity
+      summary: List the current company's capacity offers
+      security:
+        - sessionCookie: []
+        - bearerAuth: []
+      parameters:
+        - name: listingStatus
+          in: query
+          required: false
+          schema:
+            $ref: '#/components/schemas/ListingStatus'
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/PageSize'
+      responses:
+        '200':
+          description: Owned capacity offers.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CapacityListResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    post:
+      tags: [Listings]
+      operationId: createMyCapacity
+      summary: Create a capacity offer for the current company
+      security:
+        - sessionCookie: []
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CapacityOfferCreateRequest'
+      responses:
+        '201':
+          description: Capacity offer created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CapacityOffer'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+  /capacity/{capacityId}:
+    parameters:
+      - $ref: '#/components/parameters/CapacityId'
+    get:
+      tags: [Listings]
+      operationId: getMyCapacity
+      summary: Get one of the current company's capacity offers
+      security:
+        - sessionCookie: []
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Owned capacity offer.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CapacityOffer'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    patch:
+      tags: [Listings]
+      operationId: updateMyCapacity
+      summary: Update one of the current company's capacity offers
+      security:
+        - sessionCookie: []
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CapacityOfferUpdateRequest'
+      responses:
+        '200':
+          description: Capacity offer updated.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CapacityOffer'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /capacity/{capacityId}/withdraw:
+    post:
+      tags: [Listings]
+      operationId: withdrawMyCapacity
+      summary: Withdraw a capacity offer
+      security:
+        - sessionCookie: []
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/CapacityId'
+      responses:
+        '200':
+          description: Capacity offer withdrawn.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CapacityOffer'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /capacity/{capacityId}/close:
+    post:
+      tags: [Listings]
+      operationId: closeMyCapacity
+      summary: Close a capacity offer
+      security:
+        - sessionCookie: []
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/CapacityId'
+      responses:
+        '200':
+          description: Capacity offer closed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CapacityOffer'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /marketplace:
+    get:
+      tags: [Marketplace]
+      operationId: listMarketplace
+      summary: List privacy-safe open-network opportunities
+      description: |
+        Returns only ACTIVE OPEN_NETWORK opportunities for an authenticated
+        active company using anonymous listing representations. Exact tonnage,
+        timestamps, coordinates, company, vessel, notes, and contact fields
+        are never returned by this endpoint.
+      security:
+        - sessionCookie: []
+        - bearerAuth: []
+      parameters:
+        - name: listingType
+          in: query
+          required: false
+          schema:
+            $ref: '#/components/schemas/MarketplaceListingType'
+        - name: vesselType
+          in: query
+          required: false
+          schema:
+            $ref: '#/components/schemas/VesselType'
+        - name: cargoType
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: availableFrom
+          in: query
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+        - name: pageSize
+          in: query
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 25
+      responses:
+        '200':
+          description: Anonymous open-network listings.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MarketplaceListResponse'
+
+  /matches:
+    get:
+      tags: [Matches]
+      operationId: listMyMatches
+      summary: List matches available to the current user's company
+      description: Results are redacted according to ownership and connection state.
+      security:
+        - sessionCookie: []
+        - bearerAuth: []
+      parameters:
+        - name: status
+          in: query
+          required: false
+          schema:
+            $ref: '#/components/schemas/MatchStatus'
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/PageSize'
+      responses:
+        '200':
+          description: Privacy-safe matches for the current company.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MatchListResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /matches/{matchId}:
+    parameters:
+      - $ref: '#/components/parameters/MatchId'
+    get:
+      tags: [Matches]
+      operationId: getMyMatch
+      summary: Get one match with the permitted privacy view
+      description: Exact owned or connected objects are included only when the current company is authorized to see them.
+      security:
+        - sessionCookie: []
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Match detail.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MatchDetail'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /matches/{matchId}/actions:
+    post:
+      tags: [Matches]
+      operationId: actOnMatch
+      summary: Show interest, accept, or decline a match
+      description: |
+        INTEREST records the current company's consent to a possible disclosure.
+        The counterparty may then ACCEPT or DECLINE. ACCEPT is transactional:
+        it sets CONNECTED, records mutual consent, creates exactly one
+        conversation, and emits notifications. CONNECTED is not a booking.
+      security:
+        - sessionCookie: []
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/MatchId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MatchActionRequest'
+      responses:
+        '200':
+          description: Match action applied.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MatchDetail'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          description: Invalid transition, duplicate interest, or stale match.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEnvelope'
+
+  /conversations:
+    get:
+      tags: [Conversations]
+      operationId: listMyConversations
+      summary: List conversations for connected matches
+      security:
+        - sessionCookie: []
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/PageSize'
+      responses:
+        '200':
+          description: Conversations accessible to the current user's company.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConversationListResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /conversations/{conversationId}:
+    parameters:
+      - $ref: '#/components/parameters/ConversationId'
+    get:
+      tags: [Conversations]
+      operationId: getMyConversation
+      summary: Get a conversation detail
+      description: A conversation is accessible only to members of its connected match.
+      security:
+        - sessionCookie: []
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Conversation detail.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Conversation'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /conversations/{conversationId}/messages:
+    get:
+      tags: [Conversations]
+      operationId: listConversationMessages
+      summary: List messages in a conversation
+      security:
+        - sessionCookie: []
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/ConversationId'
+      responses:
+        '200':
+          description: Messages in the authorized conversation.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MessageListResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    post:
+      tags: [Conversations]
+      operationId: sendConversationMessage
+      summary: Send a message in a conversation
+      security:
+        - sessionCookie: []
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/ConversationId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SendMessageRequest'
+      responses:
+        '201':
+          description: Message sent.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Message'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /conversations/{conversationId}/read:
+    post:
+      tags: [Conversations]
+      operationId: markConversationMessagesRead
+      summary: Mark conversation messages read for the current user
+      description: Read state is per user, not a single shared company flag.
+      security:
+        - sessionCookie: []
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/ConversationId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MarkMessagesReadRequest'
+      responses:
+        '200':
+          description: Read state recorded.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReadMessagesResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /notifications:
+    get:
+      tags: [Notifications]
+      operationId: listMyNotifications
+      summary: List in-app notifications for the current user
+      security:
+        - sessionCookie: []
+        - bearerAuth: []
+      parameters:
+        - name: unreadOnly
+          in: query
+          required: false
+          schema:
+            type: boolean
+            default: false
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/PageSize'
+      responses:
+        '200':
+          description: Notifications for the current user.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotificationListResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /notifications/{notificationId}/read:
+    post:
+      tags: [Notifications]
+      operationId: markNotificationRead
+      summary: Mark a notification read
+      security:
+        - sessionCookie: []
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/NotificationId'
+      responses:
+        '200':
+          description: Notification marked read.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Notification'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
 components:
+  securitySchemes:
+    sessionCookie:
+      type: apiKey
+      in: cookie
+      name: sid
+      description: Browser session cookie.
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: session
+      description: Opaque mobile session token.
+  parameters:
+    AuthorizationSessionHeader:
+      name: Authorization
+      in: header
+      required: false
+      description: Opaque session token — `Bearer <sid>`.
+      schema:
+        type: string
+    SessionCookie:
+      name: sid
+      in: cookie
+      required: false
+      description: Browser session cookie.
+      schema:
+        type: string
+    Page:
+      name: page
+      in: query
+      required: false
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+    PageSize:
+      name: pageSize
+      in: query
+      required: false
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+        default: 25
+    VesselId:
+      name: vesselId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+    CargoId:
+      name: cargoId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+    CapacityId:
+      name: capacityId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+    MatchId:
+      name: matchId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+    ConversationId:
+      name: conversationId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+    NotificationId:
+      name: notificationId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+  responses:
+    BadRequest:
+      description: Request validation failed.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+    Unauthorized:
+      description: Authentication is required.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+    Forbidden:
+      description: The current user is not allowed to access this resource.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+    NotFound:
+      description: Resource not found or not visible to the current user.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
   schemas:
     HealthStatus:
       type: object
@@ -33,4 +1152,1360 @@ components:
           type: string
       required:
         - status
+
+    CompanyActivity:
+      type: string
+      enum: [SHIPPER, CARRIER, CHARTERER]
+    MembershipRole:
+      type: string
+      enum: [OWNER, ADMIN, MEMBER]
+    CompanyStatus:
+      type: string
+      enum: [ACTIVE, SUSPENDED, CLOSED]
+    Company:
+      type: object
+      required:
+        - id
+        - name
+        - country
+        - activities
+        - primaryContactName
+        - email
+        - phone
+        - verified
+        - status
+        - createdAt
+        - updatedAt
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+          minLength: 1
+        country:
+          type: string
+        activities:
+          type: array
+          minItems: 1
+          uniqueItems: true
+          items:
+            $ref: '#/components/schemas/CompanyActivity'
+        primaryContactName:
+          type: string
+        email:
+          type: string
+          format: email
+        phone:
+          type: string
+        vatRegistrationNumber:
+          type: [string, 'null']
+        verified:
+          type: boolean
+        status:
+          $ref: '#/components/schemas/CompanyStatus'
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    CompanyCreateRequest:
+      type: object
+      required: [name, country, activities, primaryContactName, email, phone]
+      properties:
+        name:
+          type: string
+          minLength: 1
+        country:
+          type: string
+          minLength: 2
+        activities:
+          type: array
+          minItems: 1
+          uniqueItems: true
+          items:
+            $ref: '#/components/schemas/CompanyActivity'
+        primaryContactName:
+          type: string
+          minLength: 1
+        email:
+          type: string
+          format: email
+        phone:
+          type: string
+          minLength: 1
+        vatRegistrationNumber:
+          type: string
+        termsAccepted:
+          type: boolean
+        privacyAccepted:
+          type: boolean
+    CompanyUpdateRequest:
+      type: object
+      minProperties: 1
+      properties:
+        name:
+          type: string
+          minLength: 1
+        country:
+          type: string
+          minLength: 2
+        activities:
+          type: array
+          minItems: 1
+          uniqueItems: true
+          items:
+            $ref: '#/components/schemas/CompanyActivity'
+        primaryContactName:
+          type: string
+          minLength: 1
+        email:
+          type: string
+          format: email
+        phone:
+          type: string
+          minLength: 1
+        vatRegistrationNumber:
+          type: [string, 'null']
+
+    VesselType:
+      type: string
+      enum: [DRY_CARGO, TANKER, CONTAINER, PUSH_BARGE, OTHER]
+    Vessel:
+      type: object
+      required:
+        - id
+        - companyId
+        - vesselName
+        - vesselType
+        - totalCapacityTonnes
+        - cargoCompatibility
+        - active
+        - createdAt
+        - updatedAt
+      properties:
+        id:
+          type: string
+          format: uuid
+        companyId:
+          type: string
+          format: uuid
+        vesselName:
+          type: string
+          minLength: 1
+        eniNumber:
+          type: [string, 'null']
+        vesselType:
+          $ref: '#/components/schemas/VesselType'
+        totalCapacityTonnes:
+          type: number
+          exclusiveMinimum: 0
+        lengthMetres:
+          type: [number, 'null']
+          exclusiveMinimum: 0
+        widthMetres:
+          type: [number, 'null']
+          exclusiveMinimum: 0
+        maximumDraftMetres:
+          type: [number, 'null']
+          exclusiveMinimum: 0
+        cargoCompatibility:
+          type: array
+          items:
+            type: string
+          minItems: 1
+        homeRegion:
+          type: [string, 'null']
+        notes:
+          type: [string, 'null']
+        active:
+          type: boolean
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    VesselCreateRequest:
+      type: object
+      required: [vesselName, vesselType, totalCapacityTonnes, cargoCompatibility]
+      properties:
+        vesselName:
+          type: string
+          minLength: 1
+        eniNumber:
+          type: string
+        vesselType:
+          $ref: '#/components/schemas/VesselType'
+        totalCapacityTonnes:
+          type: number
+          exclusiveMinimum: 0
+        lengthMetres:
+          type: number
+          exclusiveMinimum: 0
+        widthMetres:
+          type: number
+          exclusiveMinimum: 0
+        maximumDraftMetres:
+          type: number
+          exclusiveMinimum: 0
+        cargoCompatibility:
+          type: array
+          items:
+            type: string
+          minItems: 1
+        homeRegion:
+          type: string
+        notes:
+          type: string
+        active:
+          type: boolean
+          default: true
+    VesselUpdateRequest:
+      type: object
+      minProperties: 1
+      properties:
+        vesselName:
+          type: string
+          minLength: 1
+        eniNumber:
+          type: [string, 'null']
+        vesselType:
+          $ref: '#/components/schemas/VesselType'
+        totalCapacityTonnes:
+          type: number
+          exclusiveMinimum: 0
+        lengthMetres:
+          type: [number, 'null']
+          exclusiveMinimum: 0
+        widthMetres:
+          type: [number, 'null']
+          exclusiveMinimum: 0
+        maximumDraftMetres:
+          type: [number, 'null']
+          exclusiveMinimum: 0
+        cargoCompatibility:
+          type: array
+          items:
+            type: string
+          minItems: 1
+        homeRegion:
+          type: [string, 'null']
+        notes:
+          type: [string, 'null']
+        active:
+          type: boolean
+
+    LocationType:
+      type: string
+      enum: [PORT, TERMINAL_AREA, CITY, INDUSTRIAL_AREA, OTHER]
+    Location:
+      type: object
+      required:
+        - id
+        - name
+        - country
+        - region
+        - latitude
+        - longitude
+        - privacyLatitude
+        - privacyLongitude
+        - locationType
+        - active
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        country:
+          type: string
+        region:
+          type: string
+        latitude:
+          type: number
+        longitude:
+          type: number
+        privacyLatitude:
+          type: number
+        privacyLongitude:
+          type: number
+        locationType:
+          $ref: '#/components/schemas/LocationType'
+        active:
+          type: boolean
+    LocationListResponse:
+      type: object
+      required: [items, page, pageSize, total]
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/PublicLocation'
+        page:
+          type: integer
+        pageSize:
+          type: integer
+        total:
+          type: integer
+    PublicLocation:
+      type: object
+      required: [id, name, country, region, locationType, active]
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        country:
+          type: string
+        region:
+          type: string
+        locationType:
+          $ref: '#/components/schemas/LocationType'
+        active:
+          type: boolean
+
+    Visibility:
+      type: string
+      enum: [PRIVATE, OPEN_NETWORK]
+      description: Pilot visibility is intentionally limited to private and open discovery.
+    ListingStatus:
+      type: string
+      enum: [DRAFT, ACTIVE, WITHDRAWN, EXPIRED, CLOSED]
+    AvailabilityType:
+      type: string
+      enum: [FULLY_EMPTY, PARTIALLY_AVAILABLE]
+    CargoListing:
+      type: object
+      required:
+        - id
+        - companyId
+        - cargoName
+        - cargoType
+        - weightTonnes
+        - loadingLocationId
+        - destinationLocationId
+        - loadingFrom
+        - loadingUntil
+        - requiredVesselType
+        - visibility
+        - listingStatus
+        - createdAt
+        - updatedAt
+      properties:
+        id:
+          type: string
+          format: uuid
+        companyId:
+          type: string
+          format: uuid
+        cargoName:
+          type: string
+          minLength: 1
+        cargoType:
+          type: string
+          minLength: 1
+        weightTonnes:
+          type: number
+          exclusiveMinimum: 0
+        loadingLocationId:
+          type: string
+          format: uuid
+        destinationLocationId:
+          type: string
+          format: uuid
+        loadingFrom:
+          type: string
+          format: date-time
+        loadingUntil:
+          type: string
+          format: date-time
+        expectedUnloadingDate:
+          type: [string, 'null']
+          format: date
+        requiredVesselType:
+          $ref: '#/components/schemas/VesselType'
+        specialRequirements:
+          type: [string, 'null']
+        visibility:
+          $ref: '#/components/schemas/Visibility'
+        notes:
+          type: [string, 'null']
+        listingStatus:
+          $ref: '#/components/schemas/ListingStatus'
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    CargoListingCreateRequest:
+      type: object
+      required:
+        - cargoName
+        - cargoType
+        - weightTonnes
+        - loadingLocationId
+        - destinationLocationId
+        - loadingFrom
+        - loadingUntil
+        - requiredVesselType
+        - visibility
+      properties:
+        cargoName:
+          type: string
+          minLength: 1
+        cargoType:
+          type: string
+          minLength: 1
+        weightTonnes:
+          type: number
+          exclusiveMinimum: 0
+        loadingLocationId:
+          type: string
+          format: uuid
+        destinationLocationId:
+          type: string
+          format: uuid
+        loadingFrom:
+          type: string
+          format: date-time
+        loadingUntil:
+          type: string
+          format: date-time
+        expectedUnloadingDate:
+          type: string
+          format: date
+        requiredVesselType:
+          $ref: '#/components/schemas/VesselType'
+        specialRequirements:
+          type: string
+        visibility:
+          $ref: '#/components/schemas/Visibility'
+        notes:
+          type: string
+        listingStatus:
+          $ref: '#/components/schemas/ListingStatus'
+          default: DRAFT
+    CargoListingUpdateRequest:
+      type: object
+      minProperties: 1
+      properties:
+        cargoName:
+          type: string
+          minLength: 1
+        cargoType:
+          type: string
+          minLength: 1
+        weightTonnes:
+          type: number
+          exclusiveMinimum: 0
+        loadingLocationId:
+          type: string
+          format: uuid
+        destinationLocationId:
+          type: string
+          format: uuid
+        loadingFrom:
+          type: string
+          format: date-time
+        loadingUntil:
+          type: string
+          format: date-time
+        expectedUnloadingDate:
+          type: [string, 'null']
+          format: date
+        requiredVesselType:
+          $ref: '#/components/schemas/VesselType'
+        specialRequirements:
+          type: [string, 'null']
+        visibility:
+          $ref: '#/components/schemas/Visibility'
+        notes:
+          type: [string, 'null']
+        listingStatus:
+          $ref: '#/components/schemas/ListingStatus'
+
+    CapacityOffer:
+      type: object
+      required:
+        - id
+        - companyId
+        - vesselId
+        - locationId
+        - availableFrom
+        - availableUntil
+        - availabilityType
+        - availableCapacityTonnes
+        - cargoCompatibility
+        - preferredDirection
+        - maximumPositioningDistanceKm
+        - visibility
+        - listingStatus
+        - createdAt
+        - updatedAt
+      properties:
+        id:
+          type: string
+          format: uuid
+        companyId:
+          type: string
+          format: uuid
+        vesselId:
+          type: string
+          format: uuid
+        locationId:
+          type: string
+          format: uuid
+        availableFrom:
+          type: string
+          format: date-time
+        availableUntil:
+          type: string
+          format: date-time
+        availabilityType:
+          $ref: '#/components/schemas/AvailabilityType'
+        availableCapacityTonnes:
+          type: number
+          exclusiveMinimum: 0
+        cargoCompatibility:
+          type: array
+          items:
+            type: string
+          minItems: 1
+        preferredDirection:
+          type: string
+          minLength: 1
+        maximumPositioningDistanceKm:
+          type: number
+          exclusiveMinimum: 0
+        visibility:
+          $ref: '#/components/schemas/Visibility'
+        notes:
+          type: [string, 'null']
+        listingStatus:
+          $ref: '#/components/schemas/ListingStatus'
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    CapacityOfferCreateRequest:
+      type: object
+      required:
+        - vesselId
+        - locationId
+        - availableFrom
+        - availableUntil
+        - availabilityType
+        - availableCapacityTonnes
+        - cargoCompatibility
+        - preferredDirection
+        - maximumPositioningDistanceKm
+        - visibility
+      properties:
+        vesselId:
+          type: string
+          format: uuid
+        locationId:
+          type: string
+          format: uuid
+        availableFrom:
+          type: string
+          format: date-time
+        availableUntil:
+          type: string
+          format: date-time
+        availabilityType:
+          $ref: '#/components/schemas/AvailabilityType'
+        availableCapacityTonnes:
+          type: number
+          exclusiveMinimum: 0
+        cargoCompatibility:
+          type: array
+          items:
+            type: string
+          minItems: 1
+        preferredDirection:
+          type: string
+          minLength: 1
+        maximumPositioningDistanceKm:
+          type: number
+          exclusiveMinimum: 0
+        visibility:
+          $ref: '#/components/schemas/Visibility'
+        notes:
+          type: string
+        listingStatus:
+          $ref: '#/components/schemas/ListingStatus'
+          default: DRAFT
+    CapacityOfferUpdateRequest:
+      type: object
+      minProperties: 1
+      properties:
+        vesselId:
+          type: string
+          format: uuid
+        locationId:
+          type: string
+          format: uuid
+        availableFrom:
+          type: string
+          format: date-time
+        availableUntil:
+          type: string
+          format: date-time
+        availabilityType:
+          $ref: '#/components/schemas/AvailabilityType'
+        availableCapacityTonnes:
+          type: number
+          exclusiveMinimum: 0
+        cargoCompatibility:
+          type: array
+          items:
+            type: string
+          minItems: 1
+        preferredDirection:
+          type: string
+          minLength: 1
+        maximumPositioningDistanceKm:
+          type: number
+          exclusiveMinimum: 0
+        visibility:
+          $ref: '#/components/schemas/Visibility'
+        notes:
+          type: [string, 'null']
+        listingStatus:
+          $ref: '#/components/schemas/ListingStatus'
+
+    VesselListResponse:
+      type: object
+      required: [items, page, pageSize, total]
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Vessel'
+        page:
+          type: integer
+        pageSize:
+          type: integer
+        total:
+          type: integer
+    CargoListResponse:
+      type: object
+      required: [items, page, pageSize, total]
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/CargoListing'
+        page:
+          type: integer
+        pageSize:
+          type: integer
+        total:
+          type: integer
+    CapacityListResponse:
+      type: object
+      required: [items, page, pageSize, total]
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/CapacityOffer'
+        page:
+          type: integer
+        pageSize:
+          type: integer
+        total:
+          type: integer
+
+    MarketplaceListingType:
+      type: string
+      enum: [CARGO, CAPACITY]
+    AnonymousCargoListing:
+      type: object
+      description: |
+        Privacy-safe open-network cargo representation. It intentionally
+        contains bands rather than exact tonnage, timestamps, coordinates, or
+        owner-entered notes.
+      required:
+        - id
+        - listingType
+        - cargoTypeBand
+        - loadingRegion
+        - destinationRegion
+        - requiredVesselType
+        - tonnageBand
+        - timeBand
+        - distanceBand
+        - visibility
+        - listingStatus
+      properties:
+        id:
+          type: string
+          format: uuid
+        listingType:
+          type: string
+          enum: [CARGO]
+        cargoTypeBand:
+          type: string
+        loadingRegion:
+          type: string
+        destinationRegion:
+          type: string
+        requiredVesselType:
+          $ref: '#/components/schemas/VesselType'
+        tonnageBand:
+          type: string
+          description: Anonymized cargo tonnage band, never an exact weight.
+        timeBand:
+          type: string
+          description: Anonymized loading-window band, never exact timestamps.
+        distanceBand:
+          type: string
+          description: Broad approximate positioning band, not a route or sailing distance.
+        visibility:
+          type: string
+          enum: [OPEN_NETWORK]
+        listingStatus:
+          type: string
+          enum: [ACTIVE]
+    AnonymousCapacityListing:
+      type: object
+      description: |
+        Privacy-safe open-network capacity representation. It intentionally
+        contains bands rather than exact tonnage, timestamps, coordinates,
+        vessel identity, or owner-entered notes.
+      required:
+        - id
+        - listingType
+        - vesselType
+        - availabilityType
+        - cargoCompatibilityBand
+        - directionBand
+        - availabilityRegion
+        - tonnageBand
+        - timeBand
+        - distanceBand
+        - visibility
+        - listingStatus
+      properties:
+        id:
+          type: string
+          format: uuid
+        listingType:
+          type: string
+          enum: [CAPACITY]
+        vesselType:
+          $ref: '#/components/schemas/VesselType'
+        availabilityType:
+          $ref: '#/components/schemas/AvailabilityType'
+        cargoCompatibilityBand:
+          type: string
+        directionBand:
+          type: string
+        availabilityRegion:
+          type: string
+        tonnageBand:
+          type: string
+          description: Anonymized available-capacity band, never an exact tonnage.
+        timeBand:
+          type: string
+          description: Anonymized availability band, never exact timestamps.
+        distanceBand:
+          type: string
+          description: Anonymized maximum-positioning band, never an exact distance.
+        visibility:
+          type: string
+          enum: [OPEN_NETWORK]
+        listingStatus:
+          type: string
+          enum: [ACTIVE]
+    MarketplaceListing:
+      oneOf:
+        - $ref: '#/components/schemas/AnonymousCargoListing'
+        - $ref: '#/components/schemas/AnonymousCapacityListing'
+    MarketplaceListResponse:
+      type: object
+      required: [items, page, pageSize, total]
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/MarketplaceListing'
+        page:
+          type: integer
+        pageSize:
+          type: integer
+        total:
+          type: integer
+
+    MatchStatus:
+      type: string
+      enum: [NEW, INTEREST_SENT, CONNECTED, DECLINED, EXPIRED]
+    MatchAction:
+      type: string
+      enum: [INTEREST, ACCEPT, DECLINE]
+    MatchNetworkCategory:
+      type: string
+      enum: [OPEN_NETWORK]
+    MatchScoreComponents:
+      type: object
+      description: Display-safe rounded component scores; no raw calculation inputs are returned.
+      required:
+        - distanceScore
+        - timingScore
+        - capacityScore
+        - vesselTypeScore
+        - directionScore
+        - cargoCompatibilityScore
+      properties:
+        distanceScore:
+          type: integer
+          minimum: 0
+          maximum: 100
+        timingScore:
+          type: integer
+          minimum: 0
+          maximum: 100
+        capacityScore:
+          type: integer
+          minimum: 0
+          maximum: 100
+        vesselTypeScore:
+          type: integer
+          minimum: 0
+          maximum: 100
+        directionScore:
+          type: integer
+          minimum: 0
+          maximum: 100
+        cargoCompatibilityScore:
+          type: integer
+          minimum: 0
+          maximum: 100
+    MatchEvaluationInputs:
+      type: object
+      description: Anonymized bands used to explain a score without exposing precise commercial inputs.
+      required:
+        - distanceBand
+        - timingBand
+        - capacityBand
+        - vesselTypeBand
+        - directionBand
+        - cargoCompatibilityBand
+      properties:
+        distanceBand:
+          type: string
+        timingBand:
+          type: string
+        capacityBand:
+          type: string
+        vesselTypeBand:
+          type: string
+        directionBand:
+          type: string
+        cargoCompatibilityBand:
+          type: string
+    MatchScore:
+      type: object
+      required:
+        - totalScore
+        - components
+        - evaluationInputs
+        - calculationVersion
+        - calculatedAt
+        - explanation
+      properties:
+        totalScore:
+          type: integer
+          minimum: 0
+          maximum: 100
+          description: Rounded display score only; the stored calculation may retain full precision.
+        components:
+          $ref: '#/components/schemas/MatchScoreComponents'
+        evaluationInputs:
+          $ref: '#/components/schemas/MatchEvaluationInputs'
+        calculationVersion:
+          type: string
+          example: v1
+        calculatedAt:
+          type: string
+          format: date-time
+        explanation:
+          type: string
+          description: Safe explanation that does not disclose identity or exact inputs.
+    MatchSummary:
+      type: object
+      required:
+        - id
+        - cargoListingId
+        - capacityOfferId
+        - status
+        - networkCategory
+        - cargo
+        - capacity
+        - score
+        - initiatedByMe
+        - canAccept
+        - createdAt
+        - updatedAt
+      properties:
+        id:
+          type: string
+          format: uuid
+        cargoListingId:
+          type: string
+          format: uuid
+        capacityOfferId:
+          type: string
+          format: uuid
+        status:
+          $ref: '#/components/schemas/MatchStatus'
+        networkCategory:
+          $ref: '#/components/schemas/MatchNetworkCategory'
+        cargo:
+          $ref: '#/components/schemas/AnonymousCargoListing'
+        capacity:
+          $ref: '#/components/schemas/AnonymousCapacityListing'
+        score:
+          $ref: '#/components/schemas/MatchScore'
+        initiatedByMe:
+          type: boolean
+          description: Whether the current company initiated the pending interest.
+        canAccept:
+          type: boolean
+          description: Whether the current company may accept the pending interest.
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    ConnectedCargoListing:
+      description: Exact cargo data permitted after connection, excluding private owner notes.
+      type: object
+      required:
+        - id
+        - companyId
+        - cargoName
+        - cargoType
+        - weightTonnes
+        - loadingLocationId
+        - destinationLocationId
+        - loadingFrom
+        - loadingUntil
+        - requiredVesselType
+        - visibility
+        - listingStatus
+        - createdAt
+        - updatedAt
+      properties:
+        id:
+          type: string
+          format: uuid
+        companyId:
+          type: string
+          format: uuid
+        cargoName:
+          type: string
+        cargoType:
+          type: string
+        weightTonnes:
+          type: number
+        loadingLocationId:
+          type: string
+          format: uuid
+        destinationLocationId:
+          type: string
+          format: uuid
+        loadingFrom:
+          type: string
+          format: date-time
+        loadingUntil:
+          type: string
+          format: date-time
+        expectedUnloadingDate:
+          type: [string, 'null']
+          format: date
+        requiredVesselType:
+          $ref: '#/components/schemas/VesselType'
+        specialRequirements:
+          type: [string, 'null']
+        visibility:
+          $ref: '#/components/schemas/Visibility'
+        listingStatus:
+          $ref: '#/components/schemas/ListingStatus'
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    ConnectedCapacityOffer:
+      description: Exact capacity data permitted after connection, excluding private owner notes.
+      type: object
+      required:
+        - id
+        - companyId
+        - vesselId
+        - locationId
+        - availableFrom
+        - availableUntil
+        - availabilityType
+        - availableCapacityTonnes
+        - cargoCompatibility
+        - preferredDirection
+        - maximumPositioningDistanceKm
+        - visibility
+        - listingStatus
+        - createdAt
+        - updatedAt
+      properties:
+        id:
+          type: string
+          format: uuid
+        companyId:
+          type: string
+          format: uuid
+        vesselId:
+          type: string
+          format: uuid
+        locationId:
+          type: string
+          format: uuid
+        availableFrom:
+          type: string
+          format: date-time
+        availableUntil:
+          type: string
+          format: date-time
+        availabilityType:
+          $ref: '#/components/schemas/AvailabilityType'
+        availableCapacityTonnes:
+          type: number
+        cargoCompatibility:
+          type: array
+          items:
+            type: string
+        preferredDirection:
+          type: string
+        maximumPositioningDistanceKm:
+          type: number
+        visibility:
+          $ref: '#/components/schemas/Visibility'
+        listingStatus:
+          $ref: '#/components/schemas/ListingStatus'
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    ConnectedCompany:
+      type: object
+      required: [id, name, country, activities, primaryContactName, email, phone]
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        country:
+          type: string
+        activities:
+          type: array
+          items:
+            $ref: '#/components/schemas/CompanyActivity'
+        primaryContactName:
+          type: string
+        email:
+          type: string
+          format: email
+        phone:
+          type: string
+    MatchDetail:
+      allOf:
+        - $ref: '#/components/schemas/MatchSummary'
+        - type: object
+          required: [disclosureState]
+          properties:
+            disclosureState:
+              type: string
+              enum: [ANONYMOUS, OWNER, CONNECTED]
+            ownedCargo:
+              oneOf:
+                - $ref: '#/components/schemas/CargoListing'
+                - type: 'null'
+            ownedCapacity:
+              oneOf:
+                - $ref: '#/components/schemas/CapacityOffer'
+                - type: 'null'
+            connectedCargo:
+              oneOf:
+                - $ref: '#/components/schemas/ConnectedCargoListing'
+                - type: 'null'
+            connectedCapacity:
+              oneOf:
+                - $ref: '#/components/schemas/ConnectedCapacityOffer'
+                - type: 'null'
+            connectedCompanies:
+              type: array
+              items:
+                $ref: '#/components/schemas/ConnectedCompany'
+    MatchActionRequest:
+      type: object
+      required: [action]
+      properties:
+        action:
+          $ref: '#/components/schemas/MatchAction'
+    MatchListResponse:
+      type: object
+      required: [items, page, pageSize, total]
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/MatchSummary'
+        page:
+          type: integer
+        pageSize:
+          type: integer
+        total:
+          type: integer
+
+    Conversation:
+      type: object
+      required:
+        - id
+        - matchId
+        - participantCompanies
+        - unreadCount
+        - createdAt
+        - updatedAt
+      properties:
+        id:
+          type: string
+          format: uuid
+        matchId:
+          type: string
+          format: uuid
+        participantCompanies:
+          type: array
+          minItems: 2
+          maxItems: 2
+          items:
+            $ref: '#/components/schemas/ConnectedCompany'
+        lastMessage:
+          oneOf:
+            - $ref: '#/components/schemas/Message'
+            - type: 'null'
+        unreadCount:
+          type: integer
+          minimum: 0
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    ConversationListResponse:
+      type: object
+      required: [items, page, pageSize, total]
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Conversation'
+        page:
+          type: integer
+        pageSize:
+          type: integer
+        total:
+          type: integer
+    Message:
+      type: object
+      required: [id, conversationId, senderCompanyId, senderUserId, body, createdAt, readAt]
+      properties:
+        id:
+          type: string
+          format: uuid
+        conversationId:
+          type: string
+          format: uuid
+        senderCompanyId:
+          type: string
+          format: uuid
+        senderUserId:
+          type: string
+          description: Opaque identity-provider subject identifier; not necessarily a UUID.
+        body:
+          type: string
+          minLength: 1
+          maxLength: 10000
+        createdAt:
+          type: string
+          format: date-time
+        readAt:
+          type: [string, 'null']
+          format: date-time
+    MessageListResponse:
+      type: object
+      required: [items, page, pageSize, total]
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Message'
+        page:
+          type: integer
+        pageSize:
+          type: integer
+        total:
+          type: integer
+    SendMessageRequest:
+      type: object
+      required: [body]
+      properties:
+        body:
+          type: string
+          minLength: 1
+          maxLength: 10000
+    MarkMessagesReadRequest:
+      type: object
+      required: [messageIds]
+      properties:
+        messageIds:
+          type: array
+          minItems: 1
+          uniqueItems: true
+          items:
+            type: string
+            format: uuid
+    ReadMessagesResponse:
+      type: object
+      required: [messageIds, readAt]
+      properties:
+        messageIds:
+          type: array
+          items:
+            type: string
+            format: uuid
+        readAt:
+          type: string
+          format: date-time
+
+    NotificationType:
+      type: string
+      enum: [NEW_MATCH, INTEREST_RECEIVED, INTEREST_ACCEPTED, INTEREST_DECLINED, NEW_MESSAGE, LISTING_EXPIRES_SOON]
+    Notification:
+      type: object
+      required: [id, type, title, message, readAt, createdAt]
+      properties:
+        id:
+          type: string
+          format: uuid
+        type:
+          $ref: '#/components/schemas/NotificationType'
+        title:
+          type: string
+        message:
+          type: string
+        relatedMatchId:
+          type: [string, 'null']
+          format: uuid
+        relatedConversationId:
+          type: [string, 'null']
+          format: uuid
+        readAt:
+          type: [string, 'null']
+          format: date-time
+        createdAt:
+          type: string
+          format: date-time
+    NotificationListResponse:
+      type: object
+      required: [items, page, pageSize, total, unreadCount]
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Notification'
+        page:
+          type: integer
+        pageSize:
+          type: integer
+        total:
+          type: integer
+        unreadCount:
+          type: integer
+          minimum: 0
+
+    AuthUser:
+      type: object
+      required: [id, email, firstName, lastName, profileImageUrl]
+      properties:
+        id:
+          type: string
+        email:
+          type: [string, 'null']
+          format: email
+        firstName:
+          type: [string, 'null']
+        lastName:
+          type: [string, 'null']
+        profileImageUrl:
+          type: [string, 'null']
+    AuthUserEnvelope:
+      type: object
+      required: [user]
+      properties:
+        user:
+          oneOf:
+            - $ref: '#/components/schemas/AuthUser'
+            - type: 'null'
+    MobileTokenExchangeRequest:
+      type: object
+      required: [code, code_verifier, redirect_uri, state]
+      properties:
+        code:
+          type: string
+          minLength: 1
+        code_verifier:
+          type: string
+          minLength: 1
+        redirect_uri:
+          type: string
+          minLength: 1
+          format: uri
+        state:
+          type: string
+          minLength: 1
+        nonce:
+          type: string
+          minLength: 1
+    MobileTokenExchangeSuccess:
+      type: object
+      required: [token]
+      properties:
+        token:
+          type: string
+    LogoutSuccess:
+      type: object
+      required: [success]
+      properties:
+        success:
+          type: boolean
+          const: true
+    ErrorEnvelope:
+      type: object
+      required: [error]
+      properties:
+        error:
+          type: string
 

@@ -1,10 +1,10 @@
-import { useAuth } from "@workspace/replit-auth-web";
+import { useDemoEntry } from "@/demo/entry";
 import { Button } from "@/components/ui/primitives";
 import { t } from "@/lib/i18n";
 import { Ship, Lock, Globe, ShieldCheck } from "lucide-react";
 
 export default function Landing() {
-  const { login } = useAuth();
+  const { startDemo, loginReal } = useDemoEntry();
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
@@ -14,7 +14,7 @@ export default function Landing() {
           {t("app.name")}
         </div>
         <div className="ml-auto">
-          <Button onClick={login}>{t("auth.login")}</Button>
+          <Button variant="outline" onClick={loginReal}>Inloggen voor echte gebruikers</Button>
         </div>
       </header>
 
@@ -31,10 +31,14 @@ export default function Landing() {
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center pt-8">
-            <Button size="lg" onClick={login} className="text-base px-8">
-              {t("auth.login")}
+            <Button size="lg" onClick={startDemo} className="text-base px-8">
+              Start demo als Andy Kers
             </Button>
           </div>
+          <p className="text-sm text-muted-foreground">
+            Geen account nodig. Probeer CargoMatch met fictieve ladingen en schepen.
+            Alles blijft lokaal in deze browser; er worden geen echte berichten of boekingen verstuurd.
+          </p>
         </div>
 
         <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto mt-24">

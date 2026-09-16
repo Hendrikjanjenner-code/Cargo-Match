@@ -1,4 +1,5 @@
 import { Route, Switch, Redirect, Router } from "wouter";
+import { useState } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useAuth } from "@workspace/replit-auth-web";
 import { useGetMyCompany, getGetMyCompanyQueryKey } from "@workspace/api-client-react";
@@ -17,6 +18,8 @@ import Messages from "./pages/messages/Messages";
 import MessageDetail from "./pages/messages/MessageDetail";
 import CompanyProfile from "./pages/company/CompanyProfile";
 import Notifications from "./pages/notifications/Notifications";
+import DemoApp from "./demo/DemoApp";
+import { DemoEntryContext } from "./demo/entry";
 
 function ProtectedRoute({ component: Component, requireCompany = true }: { component: React.ComponentType, requireCompany?: boolean }) {
   const { isAuthenticated, isLoading: authLoading } = useAuth();
@@ -101,11 +104,46 @@ const queryClient = new QueryClient({
 });
 
 export default function App() {
+  const [mode, setMode] = useState<"landing" | "demo" | "real">(() => {
+    try {
+      const saved = sessionStorage.getItem("cargomatch.entry");
+      if (saved === "demo" || saved === "real" || saved === "landing") return saved;
+    } catch { /* Storage errors are shown when starting the demo. */ }
+    return window.location.pathname === import.meta.env.BASE_URL ? "landing" : "real";
+  });
+  const [entryError, setEntryError] = useState("");
+  const changeMode = async (next: "landing" | "demo" | "real") => {
+    try {
+      sessionStorage.setItem("cargomatch.entry", next);
+    } catch {
+      if (next !== "landing") {
+        setEntryError("Deze browser blokkeert lokale opslag. Sta opslag toe om de demo te starten en te bewaren.");
+        return;
+      }
+      // Exiting must remain possible even when storage permissions changed.
+      try { sessionStorage.removeItem("cargomatch.entry"); } catch { /* Unavailable storage. */ }
+    }
+    await queryClient.cancelQueries();
+    queryClient.clear();
+    window.history.replaceState(null, "", import.meta.env.BASE_URL);
+    setMode(next);
+    setEntryError("");
+    if (next === "real") {
+      window.location.assign(`/api/login?returnTo=${encodeURIComponent(import.meta.env.BASE_URL)}`);
+    }
+  };
   return (
     <QueryClientProvider client={queryClient}>
-      <Router base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
-        <AppRouter />
-      </Router>
+      <DemoEntryContext.Provider value={{
+        startDemo: () => { void changeMode("demo"); },
+        loginReal: () => { void changeMode("real"); },
+      }}>
+        {entryError && <div role="alert" className="p-4 bg-destructive/10 text-destructive">{entryError}</div>}
+        {mode === "demo" ? <DemoApp onExit={() => { void changeMode("landing"); }} /> :
+          <Router base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
+            {mode === "landing" ? <Landing /> : <AppRouter />}
+          </Router>}
+      </DemoEntryContext.Provider>
     </QueryClientProvider>
   );
 }

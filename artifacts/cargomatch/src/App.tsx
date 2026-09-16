@@ -20,6 +20,7 @@ import CompanyProfile from "./pages/company/CompanyProfile";
 import Notifications from "./pages/notifications/Notifications";
 import DemoApp from "./demo/DemoApp";
 import { DemoEntryContext } from "./demo/entry";
+import { t } from "./lib/i18n";
 
 function ProtectedRoute({ component: Component, requireCompany = true }: { component: React.ComponentType, requireCompany?: boolean }) {
   const { isAuthenticated, isLoading: authLoading } = useAuth();
@@ -33,7 +34,7 @@ function ProtectedRoute({ component: Component, requireCompany = true }: { compo
   });
 
   if (authLoading || (isAuthenticated && companyLoading && !error)) {
-    return <div className="min-h-screen flex items-center justify-center bg-background text-muted-foreground">Loading...</div>;
+    return <div className="min-h-screen flex items-center justify-center bg-background text-muted-foreground">{t("common.loading")}</div>;
   }
 
   if (!isAuthenticated) {
@@ -42,7 +43,7 @@ function ProtectedRoute({ component: Component, requireCompany = true }: { compo
 
   if (requireCompany && !company) {
     if (error && (error as { status?: number }).status !== 404) {
-      return <div role="alert" className="p-8">Unable to load company. Please reload to try again.</div>;
+      return <div role="alert" className="p-8">{t("error.load_company")}</div>;
     }
     return <Redirect to="/onboarding" />;
   }
@@ -93,7 +94,7 @@ function AppRouter() {
       <Route path="/notifications">{() => <ProtectedRoute component={Notifications} />}</Route>
 
       <Route>
-        <div className="flex items-center justify-center min-h-screen">404 Not Found</div>
+        <div className="flex items-center justify-center min-h-screen">{t("not_found.title")}</div>
       </Route>
     </Switch>
   );
@@ -117,7 +118,7 @@ export default function App() {
       sessionStorage.setItem("cargomatch.entry", next);
     } catch {
       if (next !== "landing") {
-        setEntryError("Deze browser blokkeert lokale opslag. Sta opslag toe om de demo te starten en te bewaren.");
+        setEntryError(t("error.storage"));
         return;
       }
       // Exiting must remain possible even when storage permissions changed.

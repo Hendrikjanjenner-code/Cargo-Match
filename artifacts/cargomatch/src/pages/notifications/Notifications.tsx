@@ -4,6 +4,7 @@ import { Card, CardContent } from "@/components/ui/primitives";
 import { Bell, CheckCircle2 } from "lucide-react";
 import { formatDateTime } from "@/lib/utils";
 import { Button } from "@/components/ui/primitives";
+import { t } from "@/lib/i18n";
 
 export default function Notifications() {
   const queryClient = useQueryClient();
@@ -20,18 +21,18 @@ export default function Notifications() {
     <div className="space-y-6 max-w-3xl mx-auto">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight">Notifications</h1>
-          <p className="text-muted-foreground">Alerts for matches, interests, and system events.</p>
+           <h1 className="text-2xl font-bold tracking-tight">{t("notifications.title")}</h1>
+           <p className="text-muted-foreground">{t("notifications.subtitle")}</p>
         </div>
       </div>
 
       <div className="space-y-3">
         {isLoading ? (
-          <div className="text-center p-8 text-muted-foreground">Loading notifications...</div>
+           <div className="text-center p-8 text-muted-foreground">{t("notifications.loading")}</div>
         ) : data?.items.length === 0 ? (
           <Card className="p-12 text-center text-muted-foreground flex flex-col items-center">
             <Bell className="h-12 w-12 mb-4 opacity-20" />
-            <p>You have no notifications.</p>
+             <p>{t("notifications.empty")}</p>
           </Card>
         ) : (
           data?.items.map(notif => (
@@ -51,7 +52,7 @@ export default function Notifications() {
                 </div>
                 {!notif.readAt && (
                   <Button variant="ghost" size="sm" onClick={() => handleMarkRead(notif.id)} className="text-muted-foreground hover:text-primary shrink-0">
-                    <CheckCircle2 className="h-4 w-4 mr-2" /> Mark Read
+                     <CheckCircle2 className="h-4 w-4 mr-2" /> {t("action.mark_read")}
                   </Button>
                 )}
               </CardContent>

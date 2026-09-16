@@ -30,12 +30,12 @@ export default function Matches() {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Status</TableHead>
-              <TableHead>Match Score</TableHead>
-              <TableHead>My Listing</TableHead>
-              <TableHead>Counterparty Band</TableHead>
-              <TableHead>Generated On</TableHead>
-              <TableHead className="text-right">Action</TableHead>
+              <TableHead>{t("matches.status")}</TableHead>
+              <TableHead>{t("matches.score")}</TableHead>
+              <TableHead>{t("matches.my_listing")}</TableHead>
+              <TableHead>{t("matches.counterparty_band")}</TableHead>
+              <TableHead>{t("matches.generated_on")}</TableHead>
+              <TableHead className="text-right">{t("matches.action")}</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -61,8 +61,8 @@ export default function Matches() {
                     </div>
                   </TableCell>
                   <TableCell className="text-xs text-muted-foreground">
-                    Dist: {m.score.evaluationInputs.distanceBand}<br/>
-                    Time: {m.score.evaluationInputs.timingBand}
+                     {t("matches.distance_prefix")}: {m.score.evaluationInputs.distanceBand}<br/>
+                     {t("matches.time_prefix")}: {m.score.evaluationInputs.timingBand}
                   </TableCell>
                   <TableCell className="text-sm text-muted-foreground">
                     {formatDate(m.createdAt)}

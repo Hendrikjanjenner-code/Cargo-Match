@@ -444,7 +444,9 @@ test("eligibility rejects wrong types, insufficient capacity, max distance, and 
     "/api/vessels",
     B.cookie,
   );
-  const vesselId = vesselResponse.body.items[0].id;
+  const vesselId = vesselResponse.body.items.find(
+    (item: any) => item.vesselName === "Carrier Vessel",
+  ).id;
   const insufficient = await call(
     "POST",
     "/api/cargo",
@@ -466,7 +468,7 @@ test("eligibility rejects wrong types, insufficient capacity, max distance, and 
     capacityPayload(vesselId, {
       locationId: locations.Antwerp,
       maximumPositioningDistanceKm: 1,
-      availableCapacityTonnes: 5_000,
+      availableCapacityTonnes: 1_500,
     }),
   );
   assert.equal(farCapacity.status, 201);
@@ -501,9 +503,211 @@ test("eligibility rejects wrong types, insufficient capacity, max distance, and 
   );
 });
 
+test("capacity writes enforce vessel totals and protect outstanding offers", async () => {
+  const vesselResponse = await call("POST", "/api/vessels", B.cookie, {
+    vesselName: "Capacity Guard Vessel",
+    vesselType: "DRY_CARGO",
+    totalCapacityTonnes: 2_000,
+    cargoCompatibility: ["dry bulk"],
+  });
+  assert.equal(vesselResponse.status, 201, JSON.stringify(vesselResponse.body));
+  const vesselId = vesselResponse.body.id;
+
+  const tooLargeCreate = await call(
+    "POST",
+    "/api/capacity",
+    B.cookie,
+    capacityPayload(vesselId, { availableCapacityTonnes: 2_001 }),
+  );
+  assert.equal(tooLargeCreate.status, 400, JSON.stringify(tooLargeCreate.body));
+
+  const activeOffer = await call(
+    "POST",
+    "/api/capacity",
+    B.cookie,
+    capacityPayload(vesselId, { availableCapacityTonnes: 1_500 }),
+  );
+  assert.equal(activeOffer.status, 201, JSON.stringify(activeOffer.body));
+
+  const draftOffer = await call(
+    "POST",
+    "/api/capacity",
+    B.cookie,
+    capacityPayload(vesselId, {
+      availableCapacityTonnes: 1_800,
+      listingStatus: "DRAFT",
+    }),
+  );
+  assert.equal(draftOffer.status, 201, JSON.stringify(draftOffer.body));
+
+  const tooLargeUpdate = await call(
+    "PATCH",
+    `/api/capacity/${activeOffer.body.id}`,
+    B.cookie,
+    { availableCapacityTonnes: 2_001 },
+  );
+  assert.equal(tooLargeUpdate.status, 400, JSON.stringify(tooLargeUpdate.body));
+
+  const smallerVesselResponse = await call("POST", "/api/vessels", B.cookie, {
+    vesselName: "Capacity Guard Smaller Vessel",
+    vesselType: "DRY_CARGO",
+    totalCapacityTonnes: 1_000,
+    cargoCompatibility: ["dry bulk"],
+  });
+  assert.equal(
+    smallerVesselResponse.status,
+    201,
+    JSON.stringify(smallerVesselResponse.body),
+  );
+  const smallerVesselId = smallerVesselResponse.body.id;
+
+  const invalidSwitch = await call(
+    "PATCH",
+    `/api/capacity/${activeOffer.body.id}`,
+    B.cookie,
+    { vesselId: smallerVesselId },
+  );
+  assert.equal(invalidSwitch.status, 400, JSON.stringify(invalidSwitch.body));
+
+  const rejectedReduction = await call(
+    "PATCH",
+    `/api/vessels/${vesselId}`,
+    B.cookie,
+    { totalCapacityTonnes: 1_000 },
+  );
+  assert.equal(
+    rejectedReduction.status,
+    409,
+    JSON.stringify(rejectedReduction.body),
+  );
+
+  const activeOfferReduction = await call(
+    "PATCH",
+    `/api/capacity/${activeOffer.body.id}`,
+    B.cookie,
+    { availableCapacityTonnes: 900 },
+  );
+  assert.equal(
+    activeOfferReduction.status,
+    200,
+    JSON.stringify(activeOfferReduction.body),
+  );
+  const draftOfferReduction = await call(
+    "PATCH",
+    `/api/capacity/${draftOffer.body.id}`,
+    B.cookie,
+    { availableCapacityTonnes: 900 },
+  );
+  assert.equal(
+    draftOfferReduction.status,
+    200,
+    JSON.stringify(draftOfferReduction.body),
+  );
+
+  const validSwitch = await call(
+    "PATCH",
+    `/api/capacity/${activeOffer.body.id}`,
+    B.cookie,
+    { vesselId: smallerVesselId },
+  );
+  assert.equal(validSwitch.status, 200, JSON.stringify(validSwitch.body));
+  assert.equal(validSwitch.body.vesselId, smallerVesselId);
+
+  const acceptedReduction = await call(
+    "PATCH",
+    `/api/vessels/${vesselId}`,
+    B.cookie,
+    { totalCapacityTonnes: 1_000 },
+  );
+  assert.equal(
+    acceptedReduction.status,
+    200,
+    JSON.stringify(acceptedReduction.body),
+  );
+  assert.equal(acceptedReduction.body.totalCapacityTonnes, 1_000);
+});
+
+test("capacity and vessel mutations serialize without leaving an invalid offer", async () => {
+  const vesselResponse = await call("POST", "/api/vessels", B.cookie, {
+    vesselName: "Capacity Race Vessel",
+    vesselType: "DRY_CARGO",
+    totalCapacityTonnes: 2_000,
+    cargoCompatibility: ["dry bulk"],
+  });
+  assert.equal(vesselResponse.status, 201, JSON.stringify(vesselResponse.body));
+  const vesselId = vesselResponse.body.id;
+  const smallerVesselResponse = await call("POST", "/api/vessels", B.cookie, {
+    vesselName: "Capacity Race Smaller Vessel",
+    vesselType: "DRY_CARGO",
+    totalCapacityTonnes: 1_000,
+    cargoCompatibility: ["dry bulk"],
+  });
+  assert.equal(
+    smallerVesselResponse.status,
+    201,
+    JSON.stringify(smallerVesselResponse.body),
+  );
+  const smallerVesselId = smallerVesselResponse.body.id;
+  const offer = await call(
+    "POST",
+    "/api/capacity",
+    B.cookie,
+    capacityPayload(vesselId, {
+      availableCapacityTonnes: 1_500,
+      notes: "Capacity validation race",
+    }),
+  );
+  assert.equal(offer.status, 201, JSON.stringify(offer.body));
+
+  const heldLock = await holdDomainLock();
+  const switchPromise = call(
+    "PATCH",
+    `/api/capacity/${offer.body.id}`,
+    B.cookie,
+    { vesselId: smallerVesselId },
+  );
+  await waitForDomainWaiters(1);
+  const reductionPromise = call(
+    "PATCH",
+    `/api/vessels/${vesselId}`,
+    B.cookie,
+    { totalCapacityTonnes: 1_000 },
+  );
+  await waitForDomainWaiters(2);
+  heldLock.release();
+  const [switchResponse, reductionResponse] = await Promise.all([
+    switchPromise,
+    reductionPromise,
+  ]);
+  await heldLock.transaction;
+
+  assert.equal(switchResponse.status, 400, JSON.stringify(switchResponse.body));
+  assert.equal(
+    reductionResponse.status,
+    409,
+    JSON.stringify(reductionResponse.body),
+  );
+  const [storedVessel] = await db
+    .select({ totalCapacityTonnes: vesselsTable.totalCapacityTonnes })
+    .from(vesselsTable)
+    .where(eq(vesselsTable.id, vesselId));
+  const [storedOffer] = await db
+    .select({
+      vesselId: capacityOffersTable.vesselId,
+      availableCapacityTonnes: capacityOffersTable.availableCapacityTonnes,
+    })
+    .from(capacityOffersTable)
+    .where(eq(capacityOffersTable.id, offer.body.id));
+  assert.equal(storedVessel.totalCapacityTonnes, 2_000);
+  assert.equal(storedOffer.vesselId, vesselId);
+  assert.equal(storedOffer.availableCapacityTonnes, 1_500);
+});
+
 test("listing changes recalculate score and concurrent acceptance creates one conversation", async () => {
   const vesselResponse = await call("GET", "/api/vessels", B.cookie);
-  const vesselId = vesselResponse.body.items[0].id;
+  const vesselId = vesselResponse.body.items.find(
+    (item: any) => item.vesselName === "Carrier Vessel",
+  ).id;
   const cargo = await call(
     "POST",
     "/api/cargo",
@@ -590,7 +794,9 @@ test("listing changes recalculate score and concurrent acceptance creates one co
 
 test("recalculation preserves consent until a material edit, and terminal listings cannot revive", async () => {
   const vesselResponse = await call("GET", "/api/vessels", B.cookie);
-  const vesselId = vesselResponse.body.items[0].id;
+  const vesselId = vesselResponse.body.items.find(
+    (item: any) => item.vesselName === "Carrier Vessel",
+  ).id;
   const cargo = await call(
     "POST",
     "/api/cargo",
@@ -738,9 +944,14 @@ test("concurrent capacity withdraw and publish cannot revive a terminal listing"
     "POST",
     "/api/capacity",
     B.cookie,
-    capacityPayload(vesselResponse.body.items[0].id, {
-      notes: "Deterministic capacity race",
-    }),
+    capacityPayload(
+      vesselResponse.body.items.find(
+        (item: any) => item.vesselName === "Carrier Vessel",
+      ).id,
+      {
+        notes: "Deterministic capacity race",
+      },
+    ),
   );
   assert.equal(capacity.status, 201);
   const heldLock = await holdDomainLock();

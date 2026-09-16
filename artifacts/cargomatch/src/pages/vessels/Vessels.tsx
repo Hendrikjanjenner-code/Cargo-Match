@@ -10,11 +10,11 @@ import { formatDate } from "@/lib/utils";
 import { t } from "@/lib/i18n";
 
 const schema = z.object({
-  vesselName: z.string().min(1, "Vessel name is required"),
+  vesselName: z.string().min(1, t("vessels.error_name_required")),
   vesselType: z.nativeEnum(VesselType),
-  totalCapacityTonnes: z.coerce.number().min(1, "Capacity must be positive"),
+  totalCapacityTonnes: z.coerce.number().min(1, t("vessels.error_capacity_positive")),
   eniNumber: z.string().optional(),
-  cargoCompatibility: z.string().min(1, "Enter at least one compatibility (comma separated)"),
+  cargoCompatibility: z.string().min(1, t("vessels.error_compatibility_required")),
   notes: z.string().optional()
 });
 
@@ -83,7 +83,7 @@ export default function Vessels() {
   };
 
   const handleDeactivate = (id: string) => {
-    if (confirm("Are you sure you want to deactivate this vessel?")) {
+    if (confirm(t("vessels.confirm_deactivate"))) {
       deactivateVessel.mutate({ vesselId: id }, {
         onSuccess: () => {
           queryClient.invalidateQueries({ queryKey: getListMyVesselsQueryKey() });
@@ -108,39 +108,39 @@ export default function Vessels() {
       {showForm && (
         <Card>
           <CardHeader>
-            <CardTitle>{editingId ? t("action.edit") : t("action.create")} Vessel</CardTitle>
+            <CardTitle>{editingId ? t("action.edit") : t("action.create")} {t("vessels.entity")}</CardTitle>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label>Vessel Name *</Label>
-                  <Input {...register("vesselName")} placeholder="e.g. MS River King" />
+                  <Label>{t("vessels.vessel_name")}</Label>
+                  <Input {...register("vesselName")} placeholder={t("vessels.vessel_name_placeholder")} />
                   {errors.vesselName && <span className="text-xs text-destructive">{errors.vesselName.message}</span>}
                 </div>
                 <div className="space-y-2">
-                  <Label>ENI Number</Label>
-                  <Input {...register("eniNumber")} placeholder="Optional 8-digit ENI" />
+                  <Label>{t("vessels.eni_number")}</Label>
+                  <Input {...register("eniNumber")} placeholder={t("vessels.eni_placeholder")} />
                 </div>
                 <div className="space-y-2">
-                  <Label>Vessel Type *</Label>
+                  <Label>{t("vessels.vessel_type")}</Label>
                   <Select {...register("vesselType")}>
                     {Object.values(VesselType).map(t => <option key={t} value={t}>{t}</option>)}
                   </Select>
                 </div>
                 <div className="space-y-2">
-                  <Label>Total Capacity (Tonnes) *</Label>
+                  <Label>{t("vessels.total_capacity")}</Label>
                   <Input type="number" {...register("totalCapacityTonnes")} />
                   {errors.totalCapacityTonnes && <span className="text-xs text-destructive">{errors.totalCapacityTonnes.message}</span>}
                 </div>
                 <div className="space-y-2 md:col-span-2">
-                  <Label>Cargo Compatibility (comma separated) *</Label>
-                  <Input {...register("cargoCompatibility")} placeholder="e.g. GRAIN, COAL, STEEL" />
+                  <Label>{t("vessels.cargo_compatibility")}</Label>
+                  <Input {...register("cargoCompatibility")} placeholder={t("vessels.cargo_compatibility_placeholder")} />
                   {errors.cargoCompatibility && <span className="text-xs text-destructive">{errors.cargoCompatibility.message}</span>}
                 </div>
                 <div className="space-y-2 md:col-span-2">
-                  <Label>Internal Notes</Label>
-                  <Textarea {...register("notes")} placeholder="Private notes, never shared." />
+                  <Label>{t("vessels.internal_notes")}</Label>
+                  <Textarea {...register("notes")} placeholder={t("vessels.internal_notes_placeholder")} />
                 </div>
               </div>
               
@@ -163,11 +163,11 @@ export default function Vessels() {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Name / ENI</TableHead>
-              <TableHead>Type</TableHead>
-              <TableHead>Capacity</TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead>Added</TableHead>
+              <TableHead>{t("vessels.name_eni")}</TableHead>
+              <TableHead>{t("vessels.type")}</TableHead>
+              <TableHead>{t("vessels.capacity")}</TableHead>
+              <TableHead>{t("vessels.status")}</TableHead>
+              <TableHead>{t("vessels.added")}</TableHead>
               <TableHead className="text-right">{t("common.actions")}</TableHead>
             </TableRow>
           </TableHeader>
@@ -181,12 +181,12 @@ export default function Vessels() {
                 <TableRow key={v.id}>
                   <TableCell>
                     <div className="font-medium">{v.vesselName}</div>
-                    <div className="text-xs text-muted-foreground">{v.eniNumber || "No ENI"}</div>
+                    <div className="text-xs text-muted-foreground">{v.eniNumber || t("vessels.no_eni")}</div>
                   </TableCell>
                   <TableCell><Badge variant="secondary">{v.vesselType}</Badge></TableCell>
                   <TableCell>{v.totalCapacityTonnes} t</TableCell>
                   <TableCell>
-                    {v.active ? <Badge variant="default" className="bg-emerald-600">{t("status.active")}</Badge> : <Badge variant="outline">Inactive</Badge>}
+                    {v.active ? <Badge variant="default" className="bg-emerald-600">{t("status.active")}</Badge> : <Badge variant="outline">{t("status.inactive")}</Badge>}
                   </TableCell>
                   <TableCell>{formatDate(v.createdAt)}</TableCell>
                   <TableCell className="text-right space-x-2">

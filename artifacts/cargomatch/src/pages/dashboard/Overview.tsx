@@ -2,6 +2,7 @@ import { useListMyMatches, useListMyNotifications } from "@workspace/api-client-
 import { Card, CardHeader, CardTitle, CardContent, Button } from "@/components/ui/primitives";
 import { Handshake, Bell, Box, Anchor } from "lucide-react";
 import { useLocation } from "wouter";
+import { t } from "@/lib/i18n";
 
 export default function Overview() {
   const [, setLocation] = useLocation();
@@ -14,32 +15,32 @@ export default function Overview() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold tracking-tight">Operational Overview</h1>
-        <p className="text-muted-foreground">Welcome back. Here is your current network status.</p>
+        <h1 className="text-2xl font-bold tracking-tight">{t("overview.title")}</h1>
+        <p className="text-muted-foreground">{t("overview.subtitle")}</p>
       </div>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         <StatsCard 
-          title="Active Matches" 
+          title={t("overview.active_matches")}
           value={matchesLoading ? "-" : activeMatchesCount.toString()} 
           icon={<Handshake className="h-4 w-4 text-muted-foreground" />} 
           href="/matches"
         />
         <StatsCard 
-          title="Unread Alerts" 
+          title={t("overview.unread_alerts")}
           value={notifsLoading ? "-" : unreadNotifsCount.toString()} 
           icon={<Bell className="h-4 w-4 text-muted-foreground" />} 
           href="/notifications"
         />
         <StatsCard 
-          title="Marketplace Cargo" 
-          value="View" 
+          title={t("overview.marketplace_cargo")}
+          value={t("overview.view")}
           icon={<Box className="h-4 w-4 text-muted-foreground" />} 
           href="/marketplace"
         />
         <StatsCard 
-          title="Marketplace Capacity" 
-          value="View" 
+          title={t("overview.marketplace_capacity")}
+          value={t("overview.view")}
           icon={<Anchor className="h-4 w-4 text-muted-foreground" />} 
           href="/marketplace"
         />
@@ -48,36 +49,36 @@ export default function Overview() {
       <div className="grid gap-4 md:grid-cols-2">
         <Card>
           <CardHeader>
-            <CardTitle>Recent Matches</CardTitle>
+            <CardTitle>{t("overview.recent_matches")}</CardTitle>
           </CardHeader>
           <CardContent>
             {matchesLoading ? (
-              <div className="text-sm text-muted-foreground">Loading...</div>
+              <div className="text-sm text-muted-foreground">{t("common.loading")}</div>
             ) : matchesData?.items.length ? (
               <div className="space-y-4">
                 {matchesData.items.slice(0, 5).map(match => (
                   <div key={match.id} className="flex items-center justify-between text-sm border-b pb-2 last:border-0 last:pb-0">
                     <div>
-                      <div className="font-medium">{match.status} Match</div>
-                      <div className="text-muted-foreground">Score: {match.score.totalScore}</div>
+                      <div className="font-medium">{t(`status.${match.status.toLowerCase()}`)} {t("matches.title")}</div>
+                      <div className="text-muted-foreground">{t("overview.score")}: {match.score.totalScore}</div>
                     </div>
-                    <Button variant="ghost" size="sm" className="text-primary hover:text-primary/80" onClick={() => setLocation(`/matches/${match.id}`)}>View</Button>
+                    <Button variant="ghost" size="sm" className="text-primary hover:text-primary/80" onClick={() => setLocation(`/matches/${match.id}`)}>{t("action.view")}</Button>
                   </div>
                 ))}
               </div>
             ) : (
-              <div className="text-sm text-muted-foreground text-center py-6">No recent matches found.</div>
+              <div className="text-sm text-muted-foreground text-center py-6">{t("overview.no_recent_matches")}</div>
             )}
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader>
-            <CardTitle>Recent Notifications</CardTitle>
+            <CardTitle>{t("overview.recent_notifications")}</CardTitle>
           </CardHeader>
           <CardContent>
             {notifsLoading ? (
-              <div className="text-sm text-muted-foreground">Loading...</div>
+              <div className="text-sm text-muted-foreground">{t("common.loading")}</div>
             ) : notifsData?.items.length ? (
               <div className="space-y-4">
                 {notifsData.items.slice(0, 5).map(notif => (
@@ -88,7 +89,7 @@ export default function Overview() {
                 ))}
               </div>
             ) : (
-              <div className="text-sm text-muted-foreground text-center py-6">All caught up! No new notifications.</div>
+              <div className="text-sm text-muted-foreground text-center py-6">{t("overview.no_new_notifications")}</div>
             )}
           </CardContent>
         </Card>

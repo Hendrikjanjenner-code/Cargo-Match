@@ -50,6 +50,7 @@ import {
 import { capacityResponse, cargoResponse } from "../lib/privacy";
 import {
   lockDomain,
+  isCapacityWithinVessel,
   recalculateMatchesWithin,
 } from "../services/matching";
 
@@ -443,6 +444,14 @@ router.post("/capacity", async (req, res) => {
       )
       .for("update");
     if (!vessel) return { kind: "invalid-vessel" as const };
+    if (
+      !isCapacityWithinVessel(
+        parsed.data.availableCapacityTonnes,
+        vessel.totalCapacityTonnes,
+      )
+    ) {
+      return { kind: "invalid-capacity" as const };
+    }
     const [location] = await tx
       .select()
       .from(locationsTable)
@@ -469,6 +478,10 @@ router.post("/capacity", async (req, res) => {
   }
   if (result.kind === "invalid-vessel") {
     error(res, 400, "Vessel is not active or is not owned by the company");
+    return;
+  }
+  if (result.kind === "invalid-capacity") {
+    error(res, 400, "Offered capacity cannot exceed vessel total capacity");
     return;
   }
   if (result.kind === "invalid-location") {
@@ -546,25 +559,34 @@ router.patch("/capacity/:capacityId", async (req, res) => {
     const availableFrom = parsed.data.availableFrom ?? existing.availableFrom;
     const availableUntil = parsed.data.availableUntil ?? existing.availableUntil;
     const nextStatus = parsed.data.listingStatus ?? existing.listingStatus;
+    const nextAvailableCapacity =
+      parsed.data.availableCapacityTonnes ?? existing.availableCapacityTonnes;
     if (!validListingTransition(existing.listingStatus, nextStatus)) {
       return { kind: "invalid-transition" as const };
     }
     if (!validWindow(availableFrom, availableUntil)) {
       return { kind: "invalid-window" as const };
     }
-    if (parsed.data.vesselId) {
-      const [vessel] = await tx
-        .select({ id: vesselsTable.id })
-        .from(vesselsTable)
-        .where(
-          and(
-            eq(vesselsTable.id, parsed.data.vesselId),
-            eq(vesselsTable.companyId, writeMembership.company.id),
-            eq(vesselsTable.active, true),
-          ),
-        )
-        .for("update");
-      if (!vessel) return { kind: "invalid-vessel" as const };
+    const nextVesselId = parsed.data.vesselId ?? existing.vesselId;
+    const [vessel] = await tx
+      .select()
+      .from(vesselsTable)
+      .where(
+        and(
+          eq(vesselsTable.id, nextVesselId),
+          eq(vesselsTable.companyId, writeMembership.company.id),
+          eq(vesselsTable.active, true),
+        ),
+      )
+      .for("update");
+    if (!vessel) return { kind: "invalid-vessel" as const };
+    if (
+      !isCapacityWithinVessel(
+        nextAvailableCapacity,
+        vessel.totalCapacityTonnes,
+      )
+    ) {
+      return { kind: "invalid-capacity" as const };
     }
     if (parsed.data.locationId) {
       const [location] = await tx
@@ -614,6 +636,10 @@ router.patch("/capacity/:capacityId", async (req, res) => {
   }
   if (result.kind === "invalid-vessel") {
     error(res, 400, "Vessel is not active or is not owned by the company");
+    return;
+  }
+  if (result.kind === "invalid-capacity") {
+    error(res, 400, "Offered capacity cannot exceed vessel total capacity");
     return;
   }
   if (result.kind === "invalid-location") {

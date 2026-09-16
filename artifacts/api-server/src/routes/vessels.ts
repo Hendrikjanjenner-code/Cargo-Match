@@ -11,9 +11,13 @@ import {
   UpdateMyVesselParams,
   UpdateMyVesselResponse,
 } from "@workspace/api-zod";
-import { count, and, eq } from "drizzle-orm";
+import { and, count, eq, inArray } from "drizzle-orm";
 import { Router, type IRouter } from "express";
-import { db, vesselsTable } from "@workspace/db";
+import {
+  capacityOffersTable,
+  db,
+  vesselsTable,
+} from "@workspace/db";
 
 import {
   error,
@@ -23,6 +27,7 @@ import {
 } from "../lib/http";
 import { vesselResponse } from "../lib/privacy";
 import {
+  isCapacityWithinVessel,
   lockDomain,
   recalculateMatchesWithin,
 } from "../services/matching";
@@ -164,6 +169,34 @@ router.patch("/vessels/:vesselId", async (req, res) => {
     if (!existing.active && parsed.data.active === true) {
       return { kind: "invalid" as const };
     }
+    const nextTotalCapacity =
+      parsed.data.totalCapacityTonnes ?? existing.totalCapacityTonnes;
+    if (nextTotalCapacity < existing.totalCapacityTonnes) {
+      const outstandingOffers = await tx
+        .select({
+          id: capacityOffersTable.id,
+          availableCapacityTonnes: capacityOffersTable.availableCapacityTonnes,
+        })
+        .from(capacityOffersTable)
+        .where(
+          and(
+            eq(capacityOffersTable.vesselId, existing.id),
+            inArray(capacityOffersTable.listingStatus, ["DRAFT", "ACTIVE"]),
+          ),
+        )
+        .for("update");
+      if (
+        outstandingOffers.some(
+          (offer) =>
+            !isCapacityWithinVessel(
+              offer.availableCapacityTonnes,
+              nextTotalCapacity,
+            ),
+        )
+      ) {
+        return { kind: "capacity-conflict" as const };
+      }
+    }
     const [updated] = await tx
       .update(vesselsTable)
       .set({ ...parsed.data, updatedAt: new Date() })
@@ -180,6 +213,14 @@ router.patch("/vessels/:vesselId", async (req, res) => {
   }
   if (result.kind === "missing") {
     error(res, 404, "Vessel not found");
+    return;
+  }
+  if (result.kind === "capacity-conflict") {
+    error(
+      res,
+      409,
+      "Vessel capacity cannot be reduced below an outstanding capacity offer",
+    );
     return;
   }
   if (result.kind === "invalid" || !result.vessel) {

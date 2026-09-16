@@ -1,10 +1,44 @@
-import { useGetMyMatch, useActOnMatch, useListMyConversations, getListMyConversationsQueryKey, getGetMyMatchQueryKey, getListMyMatchesQueryKey, MatchAction, MatchStatus } from "@workspace/api-client-react";
-import { useQueryClient } from "@tanstack/react-query";
+import { listMyConversations, useGetMyMatch, useActOnMatch, getListMyConversationsQueryKey, getGetMyMatchQueryKey, getListMyMatchesQueryKey, MatchAction, MatchStatus } from "@workspace/api-client-react";
+import { useState } from "react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useRoute, useLocation } from "wouter";
 import { Card, CardHeader, CardTitle, CardContent, Badge, Button } from "@/components/ui/primitives";
 import { ArrowLeft, CheckCircle2, XCircle, Handshake, AlertCircle, MessageSquare } from "lucide-react";
 import { formatDate } from "@/lib/utils";
 import { t } from "@/lib/i18n";
+
+const CONVERSATION_PAGE_SIZE = 100;
+
+function errorMessage(error: unknown, fallback: string): string {
+  return error instanceof Error && error.message.trim() ? error.message : fallback;
+}
+
+async function listAllConversations() {
+  const firstPage = await listMyConversations({
+    page: 1,
+    pageSize: CONVERSATION_PAGE_SIZE,
+  });
+  const pageCount = Math.ceil(firstPage.total / CONVERSATION_PAGE_SIZE);
+
+  if (pageCount <= 1) return firstPage;
+
+  const remainingPages = await Promise.all(
+    Array.from({ length: pageCount - 1 }, (_, index) =>
+      listMyConversations({
+        page: index + 2,
+        pageSize: CONVERSATION_PAGE_SIZE,
+      }),
+    ),
+  );
+
+  return {
+    ...firstPage,
+    items: [
+      ...firstPage.items,
+      ...remainingPages.flatMap(page => page.items),
+    ],
+  };
+}
 
 export default function MatchDetail() {
   const [, params] = useRoute("/matches/:id");
@@ -12,27 +46,44 @@ export default function MatchDetail() {
   const id = params?.id || "";
   
   const queryClient = useQueryClient();
-  const { data: match, isLoading, error } = useGetMyMatch(id, {
+  const { data: match, isLoading, error: matchError } = useGetMyMatch(id, {
     query: { enabled: !!id, queryKey: getGetMyMatchQueryKey(id), refetchInterval: 15000 }
   });
 
-  const { data: convData } = useListMyConversations({ pageSize: 100 }, {
-    query: { queryKey: getListMyConversationsQueryKey({ pageSize: 100 }), enabled: match?.status === MatchStatus.CONNECTED }
+  // The API is paginated (pageSize 100 is a maximum), so fetch every page
+  // before looking up the conversation for this match.
+  const { data: convData, isLoading: conversationsLoading, error: conversationsError } = useQuery({
+    queryKey: [...getListMyConversationsQueryKey({ pageSize: CONVERSATION_PAGE_SIZE }), "all"],
+    queryFn: listAllConversations,
+    enabled: match?.status === MatchStatus.CONNECTED,
   });
   
   const relatedConversation = convData?.items.find(c => c.matchId === id);
   
   const actOnMatch = useActOnMatch();
+  const [actionError, setActionError] = useState<string | null>(null);
 
   if (isLoading) return <div className="p-8 text-center text-muted-foreground">{t("common.loading")}</div>;
-  if (error || !match) return <div className="p-8 text-center text-destructive">{t("error.load_match")}</div>;
+  if (matchError || !match) {
+    return (
+      <div role="alert" className="p-8 text-center text-destructive">
+        {errorMessage(matchError, t("error.load_match"))}
+      </div>
+    );
+  }
 
   const handleAction = (action: MatchAction) => {
+    setActionError(null);
     actOnMatch.mutate({ matchId: id, data: { action } }, {
-      onSuccess: () => {
-        queryClient.invalidateQueries({ queryKey: getGetMyMatchQueryKey(id) });
-        queryClient.invalidateQueries({ queryKey: getListMyMatchesQueryKey() });
-      }
+      onSuccess: updatedMatch => {
+        queryClient.setQueryData(getGetMyMatchQueryKey(id), updatedMatch);
+        void queryClient.invalidateQueries({ queryKey: getGetMyMatchQueryKey(id) });
+        void queryClient.invalidateQueries({ queryKey: getListMyMatchesQueryKey() });
+        // Acceptance creates a conversation, so refresh every conversation
+        // list variant, including the paginated lookup used on this page.
+        void queryClient.invalidateQueries({ queryKey: getListMyConversationsQueryKey() });
+      },
+      onError: error => setActionError(errorMessage(error, t("error.action")))
     });
   };
 
@@ -69,19 +120,19 @@ export default function MatchDetail() {
                   <>
                     <div className="font-semibold">{match.connectedCargo.cargoName}</div>
                     <div className="text-muted-foreground">{match.connectedCargo.weightTonnes}t · {match.connectedCargo.cargoType}</div>
-                    <div className="text-muted-foreground">Req: {match.connectedCargo.requiredVesselType}</div>
+                     <div className="text-muted-foreground">{t("marketplace.required")}: {match.connectedCargo.requiredVesselType}</div>
                   </>
                 ) : match.ownedCargo ? (
                   <>
                     <div className="font-semibold">{match.ownedCargo.cargoName}</div>
                     <div className="text-muted-foreground">{match.ownedCargo.weightTonnes}t · {match.ownedCargo.cargoType}</div>
-                    <div className="text-muted-foreground">Req: {match.ownedCargo.requiredVesselType}</div>
+                     <div className="text-muted-foreground">{t("marketplace.required")}: {match.ownedCargo.requiredVesselType}</div>
                   </>
                 ) : (
                   <>
                     <div className="font-semibold">{match.cargo.loadingRegion} &rarr; {match.cargo.destinationRegion}</div>
                     <div className="text-muted-foreground">{match.cargo.tonnageBand}</div>
-                    <div className="text-muted-foreground">Req: {match.cargo.requiredVesselType}</div>
+                    <div className="text-muted-foreground">{t("marketplace.required")}: {match.cargo.requiredVesselType}</div>
                   </>
                 )}
               </CardContent>
@@ -94,21 +145,21 @@ export default function MatchDetail() {
               <CardContent className="pt-4 space-y-2 text-sm">
                 {match.connectedCapacity ? (
                   <>
-                    <div className="font-semibold">Capacity at {match.connectedCapacity.locationId /* Note: ideally resolve location name but ID is available */}</div>
+                     <div className="font-semibold">{t("match.capacity_at")} {match.connectedCapacity.locationId}</div>
                     <div className="text-muted-foreground">{match.connectedCapacity.availableCapacityTonnes}t</div>
-                    <div className="text-muted-foreground">Window: {formatDate(match.connectedCapacity.availableFrom)} - {formatDate(match.connectedCapacity.availableUntil)}</div>
+                     <div className="text-muted-foreground">{t("match.window_label")} {formatDate(match.connectedCapacity.availableFrom)} - {formatDate(match.connectedCapacity.availableUntil)}</div>
                   </>
                 ) : match.ownedCapacity ? (
                   <>
-                    <div className="font-semibold">Capacity at {match.ownedCapacity.locationId}</div>
+                     <div className="font-semibold">{t("match.capacity_at")} {match.ownedCapacity.locationId}</div>
                     <div className="text-muted-foreground">{match.ownedCapacity.availableCapacityTonnes}t</div>
-                    <div className="text-muted-foreground">Window: {formatDate(match.ownedCapacity.availableFrom)} - {formatDate(match.ownedCapacity.availableUntil)}</div>
+                     <div className="text-muted-foreground">{t("match.window_label")} {formatDate(match.ownedCapacity.availableFrom)} - {formatDate(match.ownedCapacity.availableUntil)}</div>
                   </>
                 ) : (
                   <>
-                    <div className="font-semibold">Capacity in {match.capacity.availabilityRegion}</div>
+                     <div className="font-semibold">{t("match.capacity_in")} {match.capacity.availabilityRegion}</div>
                     <div className="text-muted-foreground">{match.capacity.tonnageBand}</div>
-                    <div className="text-muted-foreground">Vessel: {match.capacity.vesselType}</div>
+                     <div className="text-muted-foreground">{t("marketplace.vessel")}: {match.capacity.vesselType}</div>
                   </>
                 )}
               </CardContent>
@@ -118,7 +169,7 @@ export default function MatchDetail() {
           <Card>
             <CardHeader className="bg-muted/30 border-b">
               <CardTitle className="flex justify-between items-center">
-                <span>Evaluation Score</span>
+                <span>{t("match.evaluation_score")}</span>
                 <span className="text-3xl text-primary">{match.score.totalScore}/100</span>
               </CardTitle>
             </CardHeader>
@@ -185,10 +236,10 @@ export default function MatchDetail() {
                     <div key={comp.id} className="p-4 bg-white rounded border border-emerald-100 shadow-sm">
                       <div className="font-bold text-lg">{comp.name}</div>
                       <div className="text-sm text-muted-foreground grid grid-cols-2 mt-2 gap-y-2">
-                        <div>Contact: {comp.primaryContactName}</div>
-                        <div>Phone: {comp.phone}</div>
-                        <div>Email: {comp.email}</div>
-                        <div>Country: {comp.country}</div>
+                        <div>{t("company.primary_contact")}: {comp.primaryContactName}</div>
+                        <div>{t("company.phone")}: {comp.phone}</div>
+                        <div>{t("company.email")}: {comp.email}</div>
+                        <div>{t("company.country_code")}: {comp.country}</div>
                       </div>
                     </div>
                   ))}
@@ -227,6 +278,15 @@ export default function MatchDetail() {
                   <div className="flex items-center gap-2 text-sm text-emerald-700 p-3 bg-emerald-100/50 rounded-md border border-emerald-200">
                     <CheckCircle2 className="h-5 w-5 shrink-0" /> {t("match.connection_confirmed")}
                   </div>
+                  {conversationsError && (
+                    <div role="alert" className="flex items-start gap-2 text-sm text-destructive p-3 bg-destructive/10 rounded-md border border-destructive/20">
+                      <AlertCircle className="h-5 w-5 shrink-0" />
+                      <span>{errorMessage(conversationsError, t("error.load_conversations"))}</span>
+                    </div>
+                  )}
+                  {conversationsLoading && (
+                    <div className="text-sm text-muted-foreground">{t("common.loading")}</div>
+                  )}
                   {relatedConversation && (
                     <Button className="w-full mt-2" variant="outline" onClick={() => setLocation(`/messages/${relatedConversation.id}`)}>
                       <MessageSquare className="mr-2 h-4 w-4" /> {t("action.open_conversation")}
@@ -245,9 +305,10 @@ export default function MatchDetail() {
                 </div>
               )}
               
-              {actOnMatch.isError && (
-                <div className="text-sm text-destructive mt-4 p-2 bg-destructive/10 rounded">
-                  {t("error.action")}
+              {actionError && (
+                <div role="alert" className="flex items-start gap-2 text-sm text-destructive mt-4 p-2 bg-destructive/10 rounded">
+                  <AlertCircle className="h-4 w-4 shrink-0" />
+                  <span>{actionError}</span>
                 </div>
               )}
             </CardContent>

@@ -14,14 +14,14 @@ export default function Landing() {
           {t("app.name")}
         </div>
         <div className="ml-auto">
-          <Button variant="outline" onClick={loginReal}>Inloggen voor echte gebruikers</Button>
+           <Button variant="outline" onClick={loginReal}>{t("landing.login")}</Button>
         </div>
       </header>
 
       <main className="flex-1 flex flex-col items-center justify-center px-4 py-24 bg-gradient-to-b from-background to-muted">
         <div className="max-w-3xl text-center space-y-8">
           <Badge className="bg-accent/10 text-accent hover:bg-accent/20 border-accent/20 mb-4 inline-flex">
-            European Logistics Pilot
+             {t("landing.badge")}
           </Badge>
           <h1 className="text-4xl md:text-6xl font-bold tracking-tight text-foreground">
             {t("app.tagline")}
@@ -44,24 +44,24 @@ export default function Landing() {
         <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto mt-24">
           <Feature 
             icon={<Lock className="h-6 w-6 text-accent" />}
-            title="Privacy First"
-            description="Your exact capacity, precise coordinates, and commercial strategy remain hidden until both parties consent."
+             title={t("landing.privacy_title")}
+             description={t("landing.privacy_description")}
           />
           <Feature 
             icon={<Globe className="h-6 w-6 text-accent" />}
-            title="Open Network"
-            description="Discover suitable matches across the European inland waterways based on robust eligibility rules."
+             title={t("landing.network_title")}
+             description={t("landing.network_description")}
           />
           <Feature 
             icon={<ShieldCheck className="h-6 w-6 text-accent" />}
-            title="Direct Connection"
-            description="No middlemen. Connect directly when a match is mutually accepted and take the conversation offline or in-app."
+             title={t("landing.connection_title")}
+             description={t("landing.connection_description")}
           />
         </div>
       </main>
       
       <footer className="py-6 border-t text-center text-sm text-muted-foreground">
-        &copy; {new Date().getFullYear()} CargoMatch Pilot. All rights reserved.
+         &copy; {new Date().getFullYear()} {t("landing.footer_brand")}. {t("landing.footer")}
       </footer>
     </div>
   );

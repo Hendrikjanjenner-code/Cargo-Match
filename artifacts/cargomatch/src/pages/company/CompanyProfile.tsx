@@ -6,6 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Button, Input, Label, Card, CardHeader, CardTitle, CardContent, Badge } from "@/components/ui/primitives";
 import { useState, useEffect } from "react";
 import { Building2 } from "lucide-react";
+import { t } from "@/lib/i18n";
 
 const schema = z.object({
   name: z.string().min(2),
@@ -48,7 +49,7 @@ export default function CompanyProfile() {
     }
   }, [company, isEditing, reset]);
 
-  if (isLoading) return <div className="p-8 text-center">Loading profile...</div>;
+  if (isLoading) return <div className="p-8 text-center">{t("company.loading")}</div>;
   if (!company) return null;
 
   const onSubmit = (data: FormValues) => {
@@ -72,11 +73,11 @@ export default function CompanyProfile() {
     <div className="max-w-2xl mx-auto space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight">Company Profile</h1>
-          <p className="text-muted-foreground">Manage your tenant profile and contact details.</p>
+          <h1 className="text-2xl font-bold tracking-tight">{t("company.title")}</h1>
+          <p className="text-muted-foreground">{t("company.subtitle")}</p>
         </div>
         {!isEditing && (
-          <Button onClick={() => setIsEditing(true)}>Edit Profile</Button>
+          <Button onClick={() => setIsEditing(true)}>{t("company.edit_profile")}</Button>
         )}
       </div>
 
@@ -89,9 +90,9 @@ export default function CompanyProfile() {
             <CardTitle className="text-xl">{company.name}</CardTitle>
             <div className="flex items-center gap-2 mt-2">
               <Badge variant={company.status === 'ACTIVE' ? 'default' : 'destructive'} className={company.status === 'ACTIVE' ? "bg-emerald-600" : ""}>
-                {company.status}
+                {t(`status.${company.status.toLowerCase()}`)}
               </Badge>
-              {company.verified && <Badge variant="secondary" className="bg-blue-100 text-blue-800 border-blue-200">Verified</Badge>}
+              {company.verified && <Badge variant="secondary" className="bg-blue-100 text-blue-800 border-blue-200">{t("company.verified")}</Badge>}
             </div>
           </div>
         </CardHeader>
@@ -100,16 +101,16 @@ export default function CompanyProfile() {
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label>Company Name</Label>
+                  <Label>{t("company.name")}</Label>
                   <Input {...register("name")} />
                   {errors.name && <span className="text-xs text-destructive">{errors.name.message}</span>}
                 </div>
                 <div className="space-y-2">
-                  <Label>Country (2-letter)</Label>
+                  <Label>{t("company.country_code")}</Label>
                   <Input {...register("country")} maxLength={2} />
                 </div>
                 <div className="space-y-2 md:col-span-2">
-                  <Label>Activities</Label>
+                  <Label>{t("company.activities")}</Label>
                   <div className="flex gap-2">
                     {Object.values(CompanyActivity).map(act => (
                       <button
@@ -129,56 +130,56 @@ export default function CompanyProfile() {
                   {errors.activities && <span className="text-xs text-destructive">{errors.activities.message}</span>}
                 </div>
                 <div className="space-y-2">
-                  <Label>Primary Contact</Label>
+                  <Label>{t("company.primary_contact")}</Label>
                   <Input {...register("primaryContactName")} />
                 </div>
                 <div className="space-y-2">
-                  <Label>Email</Label>
+                  <Label>{t("company.email")}</Label>
                   <Input type="email" {...register("email")} />
                 </div>
                 <div className="space-y-2">
-                  <Label>Phone</Label>
+                  <Label>{t("company.phone")}</Label>
                   <Input {...register("phone")} />
                 </div>
                 <div className="space-y-2">
-                  <Label>VAT Number</Label>
+                  <Label>{t("company.vat_number")}</Label>
                   <Input {...register("vatRegistrationNumber")} />
                 </div>
               </div>
               <div className="flex justify-end gap-2 pt-4">
-                <Button type="button" variant="outline" onClick={() => setIsEditing(false)}>Cancel</Button>
-                <Button type="submit" disabled={updateCompany.isPending}>Save Changes</Button>
+                <Button type="button" variant="outline" onClick={() => setIsEditing(false)}>{t("action.cancel")}</Button>
+                <Button type="submit" disabled={updateCompany.isPending}>{t("action.save_changes")}</Button>
               </div>
             </form>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-y-6 gap-x-4 text-sm">
               <div>
-                <div className="font-semibold text-muted-foreground mb-1">Country</div>
+                <div className="font-semibold text-muted-foreground mb-1">{t("company.country_code")}</div>
                 <div>{company.country}</div>
               </div>
               <div>
-                <div className="font-semibold text-muted-foreground mb-1">VAT Number</div>
+                <div className="font-semibold text-muted-foreground mb-1">{t("company.vat_number")}</div>
                 <div>{company.vatRegistrationNumber || "-"}</div>
               </div>
               <div className="md:col-span-2">
-                <div className="font-semibold text-muted-foreground mb-1">Activities</div>
+                <div className="font-semibold text-muted-foreground mb-1">{t("company.activities")}</div>
                 <div className="flex gap-2">
                   {company.activities.map(a => <Badge key={a} variant="outline">{a}</Badge>)}
                 </div>
               </div>
               <div className="pt-4 border-t md:col-span-2">
-                <h3 className="font-semibold text-base mb-4">Contact Information</h3>
+                <h3 className="font-semibold text-base mb-4">{t("company.contact_information")}</h3>
               </div>
               <div>
-                <div className="font-semibold text-muted-foreground mb-1">Primary Contact</div>
+                <div className="font-semibold text-muted-foreground mb-1">{t("company.primary_contact")}</div>
                 <div>{company.primaryContactName}</div>
               </div>
               <div>
-                <div className="font-semibold text-muted-foreground mb-1">Email</div>
+                <div className="font-semibold text-muted-foreground mb-1">{t("company.email")}</div>
                 <div>{company.email}</div>
               </div>
               <div>
-                <div className="font-semibold text-muted-foreground mb-1">Phone</div>
+                <div className="font-semibold text-muted-foreground mb-1">{t("company.phone")}</div>
                 <div>{company.phone}</div>
               </div>
             </div>

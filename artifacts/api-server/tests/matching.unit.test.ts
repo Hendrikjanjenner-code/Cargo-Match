@@ -148,6 +148,27 @@ test("eligibility rejects insufficient capacity, wrong vessel type, and distance
   );
 });
 
+test("eligibility rejects stored capacity claims above vessel capacity", () => {
+  const result = evaluateEligibility(
+    pair({
+      capacity: { availableCapacityTonnes: 1_501 },
+      vessel: { totalCapacityTonnes: 1_500 },
+    }),
+    now,
+  );
+  assert.deepEqual(result, {
+    eligible: false,
+    reason: "invalid_physical_capacity",
+  });
+  assert.equal(
+    evaluateEligibility(
+      pair({ cargo: { weightTonnes: Number.NaN } }),
+      now,
+    ).eligible,
+    false,
+  );
+});
+
 test("eligible pairs are scored only after eligibility and components remain bounded", () => {
   const input = pair();
   const eligibility = evaluateEligibility(input, now);

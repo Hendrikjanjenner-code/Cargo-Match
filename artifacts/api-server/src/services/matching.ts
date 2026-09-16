@@ -45,6 +45,25 @@ export type ScoreResult = {
   explanation: string;
 };
 
+/**
+ * Capacity is a physical claim about a specific vessel. Keep this check in
+ * the matching layer as well as the write routes so legacy or manually
+ * imported rows can never become eligible just because they bypassed the
+ * API validation.
+ */
+export function isCapacityWithinVessel(
+  availableCapacityTonnes: number,
+  totalCapacityTonnes: number,
+) {
+  return (
+    Number.isFinite(availableCapacityTonnes) &&
+    availableCapacityTonnes > 0 &&
+    Number.isFinite(totalCapacityTonnes) &&
+    totalCapacityTonnes > 0 &&
+    availableCapacityTonnes <= totalCapacityTonnes
+  );
+}
+
 function distanceKm(
   from: { latitude: number; longitude: number },
   to: { latitude: number; longitude: number },
@@ -135,6 +154,36 @@ export function evaluateEligibility(pair: PairInput, now = new Date()): Eligibil
   }
   if (cargo.loadingUntil <= now || capacity.availableUntil <= now) {
     return { eligible: false, reason: "expired" };
+  }
+  if (
+    !Number.isFinite(cargo.weightTonnes) ||
+    cargo.weightTonnes <= 0
+  ) {
+    return { eligible: false, reason: "invalid_cargo_weight" };
+  }
+  if (
+    !Number.isFinite(cargo.loadingFrom.getTime()) ||
+    !Number.isFinite(cargo.loadingUntil.getTime()) ||
+    cargo.loadingFrom >= cargo.loadingUntil ||
+    !Number.isFinite(capacity.availableFrom.getTime()) ||
+    !Number.isFinite(capacity.availableUntil.getTime()) ||
+    capacity.availableFrom >= capacity.availableUntil
+  ) {
+    return { eligible: false, reason: "invalid_time_window" };
+  }
+  if (
+    !isCapacityWithinVessel(
+      capacity.availableCapacityTonnes,
+      vessel.totalCapacityTonnes,
+    )
+  ) {
+    return { eligible: false, reason: "invalid_physical_capacity" };
+  }
+  if (
+    !Number.isFinite(capacity.maximumPositioningDistanceKm) ||
+    capacity.maximumPositioningDistanceKm <= 0
+  ) {
+    return { eligible: false, reason: "invalid_positioning_distance" };
   }
   if (capacity.availableCapacityTonnes < cargo.weightTonnes) {
     return { eligible: false, reason: "insufficient_capacity" };

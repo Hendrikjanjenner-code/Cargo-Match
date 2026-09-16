@@ -1,0 +1,1056 @@
+# Build CargoMatch – B2B Logistics Capacity Matching Platform
+
+Build a production-quality MVP web application called **CargoMatch**.
+
+CargoMatch is a B2B logistics platform that matches available or partially available inland shipping capacity with cargo that needs transportation.
+
+The initial market is **inland shipping in the Netherlands, Belgium and the Rhine corridor into Germany**.
+
+The core problem:
+
+Transport companies, charterers and shipping agents often know only the available vessels inside their own network. As a result, a vessel may travel empty for a significant distance to collect cargo while another suitable empty vessel is already much closer to the loading location but is invisible because it belongs to another network.
+
+CargoMatch should make this capacity discoverable while protecting commercially sensitive information.
+
+The product should feel like a professional European logistics SaaS platform — not a generic marketplace.
+
+---
+
+# 1. Core product concept
+
+There are two primary marketplace objects:
+
+1. AVAILABLE CAPACITY
+2. AVAILABLE CARGO
+
+A transport company can publish that a vessel will become empty or partially empty.
+
+Example:
+
+Vessel type: Motor cargo vessel
+Region: Antwerp
+Available from: 18 September 2026 08:00
+Total capacity: 1,850 tonnes
+Available capacity: 1,300 tonnes
+Cargo compatibility: dry bulk
+Preferred direction: Rotterdam / Rhine / Germany
+Maximum positioning distance: 100 km
+
+A charterer or shipper can publish cargo.
+
+Example:
+
+Cargo: Grain
+Weight: 1,200 tonnes
+Loading location: Dordrecht
+Loading window: 18 September 12:00–18:00
+Destination: Duisburg
+Required vessel type: dry cargo vessel
+
+CargoMatch should automatically calculate suitable matches.
+
+Example result:
+
+96% MATCH
+
+Available capacity: 1,300 t
+Cargo: 1,200 t
+Positioning distance: 75 km
+Timing: compatible
+Vessel type: compatible
+Direction: compatible
+
+---
+
+# 2. User roles
+
+Support the following roles:
+
+* Shipper
+* Transport company / vessel operator
+* Charterer / shipping agent
+* Admin
+
+One company can have multiple users.
+
+A company may also perform multiple roles.
+
+Create a multi-tenant architecture where users belong to companies and company data is properly separated.
+
+---
+
+# 3. Authentication
+
+Build:
+
+* Sign up
+* Login
+* Forgot password
+* Logout
+* Company onboarding
+* User profile
+* Company profile
+
+During company onboarding ask:
+
+Company name
+Country
+Company type
+Primary contact
+Email
+Phone
+VAT/company registration number (optional for MVP)
+
+Company types:
+
+* Shipper
+* Carrier
+* Charterer / Agent
+* Mixed
+
+Include a placeholder for future company verification.
+
+---
+
+# 4. Main application navigation
+
+Create a desktop-first responsive application with a left sidebar.
+
+Navigation:
+
+Dashboard
+Map
+Cargo
+Capacity
+Matches
+Messages
+Network
+Vessels
+Company
+Settings
+
+At the top show:
+
+CargoMatch logo
+Search
+Notifications
+User/company profile
+
+The application must also work properly on tablets and mobile devices.
+
+---
+
+# 5. Dashboard
+
+Create a professional logistics dashboard.
+
+Show KPI cards:
+
+Available vessels
+Available cargo
+New matches
+Active conversations
+Estimated empty distance avoided
+Estimated CO2 reduction
+
+Add sections:
+
+BEST NEW MATCHES
+
+Show the five strongest matches.
+
+RECENT CAPACITY
+
+Show recently published available vessel capacity.
+
+RECENT CARGO
+
+Show recently published cargo.
+
+ACTIVITY
+
+Show events such as:
+
+New match found
+Company showed interest
+Capacity published
+Cargo updated
+
+Use realistic demo data from Rotterdam, Antwerp, Dordrecht, Amsterdam, Moerdijk, Ghent, Duisburg and Cologne.
+
+---
+
+# 6. Interactive map
+
+The map is one of the most important parts of CargoMatch.
+
+Create a full-page logistics map.
+
+Use Mapbox if an API key is available.
+
+If no Mapbox key exists, use OpenStreetMap with Leaflet so the application still works.
+
+Display:
+
+Available vessels
+Cargo loading locations
+Destinations
+Matches
+
+Use visually different markers.
+
+For example:
+
+Blue/green = available capacity
+Orange/red = cargo
+Lines = potential transport routes
+
+Clicking a marker should open a side panel.
+
+Capacity marker example:
+
+Dry cargo vessel
+Region: Antwerp
+Available: tomorrow 08:00
+Capacity: 1,300 t
+Direction: Rhine
+Match possibilities: 4
+
+Cargo marker example:
+
+1,200 t grain
+Dordrecht → Duisburg
+Loading tomorrow
+3 suitable vessels
+
+Add map filters:
+
+Date
+Available capacity
+Cargo weight
+Vessel type
+Cargo type
+Maximum positioning distance
+Direction
+Network type
+
+---
+
+# 7. Add available capacity
+
+Create a simple multi-step form.
+
+The entire process should take less than approximately one minute.
+
+Fields:
+
+Vessel
+Current / expected empty location
+Available from
+Available until
+Total vessel capacity
+Available capacity
+Cargo compatibility
+Preferred direction
+Maximum positioning distance
+Notes
+
+Allow:
+
+Fully empty
+Partially available
+
+Include an option:
+
+"Automatically expire this offer after the availability window."
+
+After publishing, immediately run the matching engine.
+
+---
+
+# 8. Add cargo
+
+Create a multi-step cargo form.
+
+Fields:
+
+Cargo name
+Cargo type
+Weight in tonnes
+Loading location
+Destination
+Loading from
+Loading until
+Expected unloading date
+Required vessel type
+Special requirements
+Notes
+
+After publishing cargo, immediately search for matching capacity.
+
+Show:
+
+"Searching available capacity..."
+
+Then display the best matches.
+
+---
+
+# 9. Vessel management
+
+Create a vessel database per transport company.
+
+Vessel fields:
+
+Vessel name
+ENI number (optional)
+Vessel type
+Total capacity
+Length
+Width
+Maximum draft
+Cargo compatibility
+Home region
+Notes
+
+Vessel types should include:
+
+Dry cargo vessel
+Tanker
+Container vessel
+Push barge
+Other
+
+Make the architecture expandable later.
+
+---
+
+# 10. Privacy model
+
+This is extremely important.
+
+CargoMatch should NOT immediately expose vessel identity or company identity to every marketplace participant.
+
+Before mutual interest, other companies should see anonymized capacity.
+
+Example:
+
+Dry cargo vessel
+
+Region: Antwerp
+Capacity: 1,000–1,500 tonnes
+Available: tomorrow from 08:00
+Direction: Rhine
+
+Button:
+
+SHOW INTEREST
+
+Do not show:
+
+Exact vessel name
+Exact company
+Exact berth/location
+Contact person
+Phone number
+
+When one party shows interest, notify the other party.
+
+The other party can:
+
+Accept
+Decline
+
+Only after mutual acceptance should CargoMatch reveal:
+
+Company name
+Vessel name
+Contact person
+Phone/email
+More precise location
+
+Create the data model and permission logic for this.
+
+A user should never be able to bypass the UI and retrieve hidden commercial information through an API endpoint.
+
+Enforce permissions server-side.
+
+---
+
+# 11. Matching engine
+
+Create an explainable rule-based matching engine.
+
+Do NOT use AI for the first matching implementation.
+
+Start with these weights:
+
+Distance to loading location: 30%
+Timing compatibility: 25%
+Capacity compatibility: 20%
+Vessel type: 10%
+Direction compatibility: 10%
+Cargo compatibility: 5%
+
+Total = 100%.
+
+Every match should receive a score from 0–100.
+
+Example:
+
+Distance: 95/100
+Timing: 100/100
+Capacity: 98/100
+Vessel type: 100/100
+Direction: 85/100
+Cargo compatibility: 100/100
+
+Overall:
+
+96% MATCH
+
+Store both the total score and component scores.
+
+Create an explanation such as:
+
+"Excellent match because the vessel becomes available before the loading window, has sufficient capacity and is located close to the loading location."
+
+Do not claim exact travel time unless routing data supports it.
+
+For MVP geographic calculations, calculate approximate positioning distance based on coordinates.
+
+Structure the matching service so that real inland-waterway routing can replace this later.
+
+---
+
+# 12. Matches page
+
+Create:
+
+All matches
+New matches
+Interested
+Accepted
+Declined
+Expired
+
+Each match card should show:
+
+Match score
+Cargo summary
+Capacity summary
+Approximate positioning distance
+Loading window
+Capacity utilization
+Direction
+Status
+
+Clicking the match opens a detailed Match page.
+
+---
+
+# 13. Match detail page
+
+Show a large match score.
+
+Then show component scores visually.
+
+Example:
+
+DISTANCE 95
+TIMING 100
+CAPACITY 98
+VESSEL TYPE 100
+DIRECTION 85
+CARGO 100
+
+Also calculate:
+
+Available capacity
+Cargo weight
+Unused capacity after loading
+
+Example:
+
+Available: 1,300 t
+Cargo: 1,200 t
+Remaining: 100 t
+
+Show the approximate vessel-to-loading-location distance.
+
+Include:
+
+SHOW INTEREST
+
+After mutual interest:
+
+OPEN CONVERSATION
+
+---
+
+# 14. Private Networks
+
+This is a core differentiator.
+
+Companies should be able to create trusted networks.
+
+Create three visibility/matching levels:
+
+LEVEL 1 — OWN NETWORK
+
+Company's own fleet and directly managed vessels.
+
+LEVEL 2 — TRUSTED PARTNERS
+
+Companies explicitly connected as trusted partners.
+
+LEVEL 3 — OPEN CARGOMATCH NETWORK
+
+All eligible marketplace participants.
+
+When cargo is created, show matches grouped by these levels.
+
+Example:
+
+YOUR NETWORK
+
+No suitable vessel within 75 km.
+
+TRUSTED PARTNERS
+
+1 vessel
+87% match
+
+OPEN CARGOMATCH NETWORK
+
+4 vessels
+Best match: 96%
+
+Allow a company to choose visibility when publishing capacity:
+
+Private company only
+Trusted network
+Open CargoMatch network
+
+Enforce these visibility settings in backend queries and APIs.
+
+---
+
+# 15. Network page
+
+Allow companies to:
+
+Invite another company
+Accept connection
+Reject connection
+Remove connection
+
+Show:
+
+Company
+Relationship
+Connection status
+Number of active capacity offers
+Number of successful matches
+
+Do not expose private data that the company has not chosen to share.
+
+---
+
+# 16. Messaging
+
+Create messaging linked to a match.
+
+Once mutual interest exists, parties can communicate.
+
+Create:
+
+Conversation list
+Message thread
+Timestamp
+Read/unread state
+
+Messages should belong to a Match.
+
+Keep the architecture ready for future email/push notifications.
+
+---
+
+# 17. Notifications
+
+Create in-app notifications.
+
+Examples:
+
+New 94% match found
+A company is interested in your capacity
+Your interest was accepted
+New message
+Capacity offer expires tomorrow
+Cargo loading window approaching
+
+Allow users to mark notifications as read.
+
+---
+
+# 18. Database architecture
+
+Use PostgreSQL.
+
+Prefer Supabase if easy to configure.
+
+Create tables approximately like:
+
+companies
+
+id
+name
+country
+company_type
+verified
+created_at
+
+users
+
+id
+company_id
+name
+email
+role
+created_at
+
+vessels
+
+id
+company_id
+name
+eni_number
+vessel_type
+total_capacity
+length
+width
+draft
+cargo_types
+home_region
+created_at
+
+capacity_offers
+
+id
+company_id
+vessel_id
+location_name
+latitude
+longitude
+available_from
+available_until
+available_capacity
+cargo_types
+preferred_direction
+max_positioning_distance
+visibility
+status
+created_at
+
+cargo
+
+id
+company_id
+cargo_name
+cargo_type
+weight
+loading_location
+loading_latitude
+loading_longitude
+destination
+destination_latitude
+destination_longitude
+loading_from
+loading_until
+unloading_date
+required_vessel_type
+special_requirements
+status
+visibility
+created_at
+
+matches
+
+id
+cargo_id
+capacity_offer_id
+total_score
+distance_score
+timing_score
+capacity_score
+vessel_type_score
+direction_score
+cargo_compatibility_score
+approx_positioning_distance
+status
+created_at
+
+interests
+
+id
+match_id
+company_id
+status
+created_at
+
+company_connections
+
+id
+company_a_id
+company_b_id
+status
+created_at
+
+conversations
+
+id
+match_id
+created_at
+
+messages
+
+id
+conversation_id
+sender_user_id
+message
+read_at
+created_at
+
+notifications
+
+id
+user_id
+type
+title
+body
+read_at
+created_at
+
+activity_log
+
+id
+company_id
+user_id
+action
+entity_type
+entity_id
+created_at
+
+Use proper foreign keys, indexes and constraints.
+
+---
+
+# 19. Security
+
+Treat security as a core requirement.
+
+Implement:
+
+Server-side authorization
+Company-level data isolation
+Role-based access
+Protected API routes
+Input validation
+Rate limiting where appropriate
+Secure authentication
+No secrets in frontend code
+
+Most importantly:
+
+Anonymized marketplace information must remain anonymized in API responses until access is authorized.
+
+Do not merely hide sensitive fields using CSS or frontend logic.
+
+---
+
+# 20. Demo data
+
+Seed the database with realistic but fictional demo data.
+
+Create approximately:
+
+8 companies
+15 vessels
+12 active capacity offers
+12 cargo offers
+20+ matches
+Several trusted network relationships
+Several messages and notifications
+
+Use locations such as:
+
+Rotterdam
+Dordrecht
+Moerdijk
+Antwerp
+Ghent
+Amsterdam
+Nijmegen
+Duisburg
+Cologne
+
+Make all company and vessel names fictional.
+
+The demo should immediately feel alive after login.
+
+---
+
+# 21. Design language
+
+The product should look trustworthy, modern and professional.
+
+Target aesthetic:
+
+European logistics SaaS
+Marine / inland shipping
+Clean B2B software
+Information dense without looking cluttered
+
+Use:
+
+Dark navy
+Marine blue
+Teal
+White
+Light grey backgrounds
+
+Avoid:
+
+Cartoonish design
+Excessive gradients
+Generic crypto/startup aesthetic
+Huge empty spaces
+Excessive animations
+
+Use cards, tables, maps and compact dashboards.
+
+Desktop use by logistics planners is the primary scenario.
+
+---
+
+# 22. Language architecture
+
+Build the UI initially in English, but make all text ready for internationalization.
+
+Prepare translations for:
+
+English
+Dutch
+German
+
+Add a language selector.
+
+Use translation files rather than hardcoding UI strings throughout the components.
+
+---
+
+# 23. Admin dashboard
+
+Create a basic admin area.
+
+Admin can see:
+
+Companies
+Users
+Vessels
+Cargo
+Capacity offers
+Matches
+Reported issues
+
+Allow admin to:
+
+Verify company
+Suspend company
+Deactivate listing
+View platform activity
+
+Do not allow admin functions to be accessible to regular users.
+
+---
+
+# 24. Analytics
+
+Create basic company analytics.
+
+Show:
+
+Capacity offers published
+Cargo offers published
+Matches generated
+Matches accepted
+Estimated positioning distance avoided
+Estimated capacity utilization
+
+Create platform-level analytics for admin.
+
+Do not present estimated metrics as exact measured savings.
+
+Clearly label estimates.
+
+---
+
+# 25. Future-ready architecture
+
+Do NOT build these integrations yet, but structure the application so they can be added later:
+
+AIS vessel tracking
+Inland waterway routing
+Water levels
+Locks and bridges
+Weather
+ERP integrations
+TMS integrations
+API access
+Automatic capacity prediction
+Machine-learning matching
+CO2 calculation
+Truck capacity
+Rail
+Containers
+
+Create clear service interfaces so that approximate geographic distance can later be replaced by a real inland-waterway routing service.
+
+---
+
+# 26. Important MVP principle
+
+Do not over-engineer.
+
+The objective is to create a WORKING pilot that can be tested with approximately:
+
+5–10 charterers / agents
+10–20 transport companies
+
+The key hypothesis is:
+
+"Will companies share anonymized available capacity and will this produce commercially useful matches that reduce empty positioning?"
+
+Prioritize features that test this hypothesis.
+
+---
+
+# 27. Required user journey
+
+Make sure this complete flow works end-to-end:
+
+USER A
+
+Registers transport company
+Adds vessel
+Publishes 1,300 t available capacity near Antwerp
+
+USER B
+
+Registers chartering company
+Publishes 1,200 t cargo
+
+Dordrecht → Duisburg
+
+CargoMatch:
+
+Automatically finds the vessel
+Calculates the match score
+Shows the anonymized vessel to User B
+Shows the cargo opportunity to User A
+
+User B clicks:
+
+SHOW INTEREST
+
+User A receives notification.
+
+User A clicks:
+
+ACCEPT
+
+CargoMatch now reveals identities.
+
+A conversation is automatically created.
+
+Both companies can communicate.
+
+Match status becomes:
+
+CONNECTED
+
+This complete workflow is the most important acceptance test.
+
+---
+
+# 28. Development approach
+
+Before writing large amounts of code:
+
+1. Review this specification.
+2. Create a concise implementation plan.
+3. Define the database schema.
+4. Define routes/pages.
+5. Define authorization rules.
+6. Define matching-engine functions.
+7. Then build the application incrementally.
+
+Do not replace core functionality with static mockups.
+
+Where an external API is unavailable, create a clean fallback implementation.
+
+Run the application after major changes.
+
+Fix TypeScript errors, runtime errors and broken routes before continuing.
+
+Use reusable components.
+
+Keep business logic separate from presentation logic.
+
+Add comments only where they genuinely help explain non-obvious business logic.
+
+---
+
+# 29. MVP acceptance criteria
+
+The project is ready for pilot testing when:
+
+* A user can register and create a company.
+* A carrier can create vessels.
+* A carrier can publish available capacity.
+* A charterer can publish cargo.
+* Locations can be selected and stored with coordinates.
+* Cargo and capacity appear on the map.
+* The matching engine automatically creates matches.
+* Matches have explainable component scores.
+* Users can filter and view matches.
+* Commercial information remains anonymized before mutual acceptance.
+* Users can show interest.
+* The counterparty can accept or decline.
+* Identity/contact details are revealed only after acceptance.
+* A conversation is created after acceptance.
+* Private-network visibility works.
+* Notifications work.
+* The dashboard displays real database data.
+* Demo data can be loaded.
+* The application works on desktop and mobile.
+* There are no major TypeScript/runtime errors.
+* Sensitive authorization is enforced server-side.
+
+---
+
+# 30. Start building
+
+Start with the implementation plan and architecture, then build the MVP.
+
+The most important priorities are:
+
+1. Functional marketplace
+2. Strong privacy model
+3. Useful matching
+4. Excellent map experience
+5. Fast workflow for logistics planners
+6. Clean professional design
+7. Architecture that can later support AIS and other transport modes
+
+Build CargoMatch as if it will be demonstrated to real inland-shipping companies after the MVP is complete.

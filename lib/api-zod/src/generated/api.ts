@@ -541,6 +541,199 @@ export const GetMyVesselAisResponse = zod.object({
 
 
 /**
+ * Returns only mappings and conflict attempts belonging to the current
+ * user's company. Names are not accepted as identity keys and no other
+ * tenant's mapping or conflict details are disclosed.
+ * @summary List AIS identities for an owned vessel
+ */
+export const ListMyVesselAisIdentitiesParams = zod.object({
+  "vesselId": zod.coerce.string().uuid()
+})
+
+export const listMyVesselAisIdentitiesResponseItemsItemEvidenceOneSourceMax = 200;
+
+export const listMyVesselAisIdentitiesResponseItemsItemEvidenceOneReferenceMax = 1000;
+
+export const listMyVesselAisIdentitiesResponseItemsItemEvidenceOneNotesMax = 2000;
+
+
+
+export const ListMyVesselAisIdentitiesResponse = zod.object({
+  "items": zod.array(zod.object({
+  "id": zod.string().uuid(),
+  "companyId": zod.string().uuid(),
+  "vesselId": zod.string().uuid(),
+  "identifierType": zod.enum(['ENI', 'MMSI', 'IMO', 'VESSELFINDER_ID', 'MARINETRAFFIC_ID', 'OTHER']),
+  "identifierValue": zod.string(),
+  "provider": zod.string().nullable(),
+  "verified": zod.boolean(),
+  "evidence": zod.union([zod.object({
+  "source": zod.string().min(1).max(listMyVesselAisIdentitiesResponseItemsItemEvidenceOneSourceMax),
+  "reference": zod.string().max(listMyVesselAisIdentitiesResponseItemsItemEvidenceOneReferenceMax).optional(),
+  "notes": zod.string().max(listMyVesselAisIdentitiesResponseItemsItemEvidenceOneNotesMax).optional(),
+  "capturedAt": zod.coerce.date().optional()
+}),zod.null()]),
+  "verifiedAt": zod.coerce.date().nullable(),
+  "createdAt": zod.coerce.date(),
+  "updatedAt": zod.coerce.date()
+})),
+  "conflicts": zod.array(zod.object({
+  "id": zod.string().uuid(),
+  "vesselId": zod.string().uuid(),
+  "identifierType": zod.enum(['ENI', 'MMSI', 'IMO', 'VESSELFINDER_ID', 'MARINETRAFFIC_ID', 'OTHER']),
+  "identifierValue": zod.string().describe('The current tenant\'s attempted value; no conflicting tenant data is included.'),
+  "provider": zod.string().nullable(),
+  "reason": zod.string(),
+  "status": zod.enum(['OPEN', 'RESOLVED']),
+  "createdAt": zod.coerce.date()
+})),
+  "canManage": zod.boolean().describe('Whether the current tenant member may create, update, or delete mappings.')
+})
+
+
+/**
+ * OWNER and ADMIN only. Registration is atomic and the stable external
+ * identity is globally unique. A duplicate returns a generic conflict
+ * without revealing the owning tenant.
+ * @summary Register an AIS identity for an owned vessel
+ */
+export const RegisterMyVesselAisIdentityParams = zod.object({
+  "vesselId": zod.coerce.string().uuid()
+})
+
+export const registerMyVesselAisIdentityBodyIdentifierValueMax = 200;
+
+export const registerMyVesselAisIdentityBodyProviderMax = 64;
+
+
+export const registerMyVesselAisIdentityBodyProviderRegExp = new RegExp('^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$');
+export const registerMyVesselAisIdentityBodyVerifiedDefault = false;
+export const registerMyVesselAisIdentityBodyEvidenceOneSourceMax = 200;
+
+export const registerMyVesselAisIdentityBodyEvidenceOneReferenceMax = 1000;
+
+export const registerMyVesselAisIdentityBodyEvidenceOneNotesMax = 2000;
+
+
+
+export const RegisterMyVesselAisIdentityBody = zod.object({
+  "identifierType": zod.enum(['ENI', 'MMSI', 'IMO', 'VESSELFINDER_ID', 'MARINETRAFFIC_ID', 'OTHER']),
+  "identifierValue": zod.string().min(1).max(registerMyVesselAisIdentityBodyIdentifierValueMax).describe('Stable ENI, MMSI, IMO, or provider identifier; never a vessel name.'),
+  "provider": zod.string().max(registerMyVesselAisIdentityBodyProviderMax).regex(registerMyVesselAisIdentityBodyProviderRegExp).nullish(),
+  "verified": zod.literal(false).default(registerMyVesselAisIdentityBodyVerifiedDefault).describe('Tenant claims are always unverified. Only the server-filesystem operator verification procedure may promote a claim.'),
+  "evidence": zod.union([zod.object({
+  "source": zod.string().min(1).max(registerMyVesselAisIdentityBodyEvidenceOneSourceMax),
+  "reference": zod.string().max(registerMyVesselAisIdentityBodyEvidenceOneReferenceMax).optional(),
+  "notes": zod.string().max(registerMyVesselAisIdentityBodyEvidenceOneNotesMax).optional(),
+  "capturedAt": zod.coerce.date().optional()
+}),zod.null()]).optional()
+})
+
+export const registerMyVesselAisIdentityResponseEvidenceOneSourceMax = 200;
+
+export const registerMyVesselAisIdentityResponseEvidenceOneReferenceMax = 1000;
+
+export const registerMyVesselAisIdentityResponseEvidenceOneNotesMax = 2000;
+
+
+
+export const RegisterMyVesselAisIdentityResponse = zod.object({
+  "id": zod.string().uuid(),
+  "companyId": zod.string().uuid(),
+  "vesselId": zod.string().uuid(),
+  "identifierType": zod.enum(['ENI', 'MMSI', 'IMO', 'VESSELFINDER_ID', 'MARINETRAFFIC_ID', 'OTHER']),
+  "identifierValue": zod.string(),
+  "provider": zod.string().nullable(),
+  "verified": zod.boolean(),
+  "evidence": zod.union([zod.object({
+  "source": zod.string().min(1).max(registerMyVesselAisIdentityResponseEvidenceOneSourceMax),
+  "reference": zod.string().max(registerMyVesselAisIdentityResponseEvidenceOneReferenceMax).optional(),
+  "notes": zod.string().max(registerMyVesselAisIdentityResponseEvidenceOneNotesMax).optional(),
+  "capturedAt": zod.coerce.date().optional()
+}),zod.null()]),
+  "verifiedAt": zod.coerce.date().nullable(),
+  "createdAt": zod.coerce.date(),
+  "updatedAt": zod.coerce.date()
+})
+
+
+/**
+ * OWNER and ADMIN only. Updating the stable key re-checks global uniqueness atomically.
+ * @summary Update an AIS identity mapping
+ */
+export const UpdateMyVesselAisIdentityParams = zod.object({
+  "vesselId": zod.coerce.string().uuid(),
+  "mappingId": zod.coerce.string().uuid()
+})
+
+export const updateMyVesselAisIdentityBodyIdentifierValueMax = 200;
+
+export const updateMyVesselAisIdentityBodyProviderMax = 64;
+
+
+export const updateMyVesselAisIdentityBodyProviderRegExp = new RegExp('^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$');
+export const updateMyVesselAisIdentityBodyEvidenceOneSourceMax = 200;
+
+export const updateMyVesselAisIdentityBodyEvidenceOneReferenceMax = 1000;
+
+export const updateMyVesselAisIdentityBodyEvidenceOneNotesMax = 2000;
+
+
+
+export const UpdateMyVesselAisIdentityBody = zod.object({
+  "identifierType": zod.enum(['ENI', 'MMSI', 'IMO', 'VESSELFINDER_ID', 'MARINETRAFFIC_ID', 'OTHER']).optional(),
+  "identifierValue": zod.string().min(1).max(updateMyVesselAisIdentityBodyIdentifierValueMax).optional().describe('Stable ENI, MMSI, IMO, or provider identifier; never a vessel name.'),
+  "provider": zod.string().max(updateMyVesselAisIdentityBodyProviderMax).regex(updateMyVesselAisIdentityBodyProviderRegExp).nullish(),
+  "verified": zod.literal(false).optional().describe('Set false to revoke an operator verification. Tenant updates cannot promote a claim.'),
+  "evidence": zod.union([zod.object({
+  "source": zod.string().min(1).max(updateMyVesselAisIdentityBodyEvidenceOneSourceMax),
+  "reference": zod.string().max(updateMyVesselAisIdentityBodyEvidenceOneReferenceMax).optional(),
+  "notes": zod.string().max(updateMyVesselAisIdentityBodyEvidenceOneNotesMax).optional(),
+  "capturedAt": zod.coerce.date().optional()
+}),zod.null()]).optional()
+})
+
+export const updateMyVesselAisIdentityResponseEvidenceOneSourceMax = 200;
+
+export const updateMyVesselAisIdentityResponseEvidenceOneReferenceMax = 1000;
+
+export const updateMyVesselAisIdentityResponseEvidenceOneNotesMax = 2000;
+
+
+
+export const UpdateMyVesselAisIdentityResponse = zod.object({
+  "id": zod.string().uuid(),
+  "companyId": zod.string().uuid(),
+  "vesselId": zod.string().uuid(),
+  "identifierType": zod.enum(['ENI', 'MMSI', 'IMO', 'VESSELFINDER_ID', 'MARINETRAFFIC_ID', 'OTHER']),
+  "identifierValue": zod.string(),
+  "provider": zod.string().nullable(),
+  "verified": zod.boolean(),
+  "evidence": zod.union([zod.object({
+  "source": zod.string().min(1).max(updateMyVesselAisIdentityResponseEvidenceOneSourceMax),
+  "reference": zod.string().max(updateMyVesselAisIdentityResponseEvidenceOneReferenceMax).optional(),
+  "notes": zod.string().max(updateMyVesselAisIdentityResponseEvidenceOneNotesMax).optional(),
+  "capturedAt": zod.coerce.date().optional()
+}),zod.null()]),
+  "verifiedAt": zod.coerce.date().nullable(),
+  "createdAt": zod.coerce.date(),
+  "updatedAt": zod.coerce.date()
+})
+
+
+/**
+ * OWNER and ADMIN only.
+ * @summary Delete an AIS identity mapping
+ */
+export const DeleteMyVesselAisIdentityParams = zod.object({
+  "vesselId": zod.coerce.string().uuid(),
+  "mappingId": zod.coerce.string().uuid()
+})
+
+export const DeleteMyVesselAisIdentityResponse = zod.void()
+
+
+/**
  * Returns curated inland-shipping locations; arbitrary free-form addresses are not part of the pilot.
  * @summary List active catalogue locations
  */

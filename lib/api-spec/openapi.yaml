@@ -19,6 +19,8 @@ tags:
     description: The current user's company.
   - name: Vessels
     description: Vessels owned by the current user's company.
+  - name: Vessel identities
+    description: Tenant-scoped, verified external AIS identities for owned vessels.
   - name: Locations
     description: Curated inland-shipping location catalogue.
   - name: Listings
@@ -53,15 +55,15 @@ paths:
       operationId: getCurrentAuthUser
       summary: Get the currently authenticated user
       parameters:
-        - $ref: '#/components/parameters/AuthorizationSessionHeader'
-        - $ref: '#/components/parameters/SessionCookie'
+        - $ref: "#/components/parameters/AuthorizationSessionHeader"
+        - $ref: "#/components/parameters/SessionCookie"
       responses:
-        '200':
+        "200":
           description: Auth status resolved successfully.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AuthUserEnvelope'
+                $ref: "#/components/schemas/AuthUserEnvelope"
   /login:
     get:
       tags: [Auth]
@@ -76,7 +78,7 @@ paths:
           schema:
             type: string
       responses:
-        '302':
+        "302":
           description: Redirect to the OIDC authorization endpoint.
   /callback:
     get:
@@ -102,7 +104,7 @@ paths:
             type: string
             format: uri
       responses:
-        '302':
+        "302":
           description: Redirect to the `returnTo` path on success (defaults to `/`) or `/api/login` on failure.
   /logout:
     get:
@@ -110,8 +112,8 @@ paths:
       operationId: logoutBrowserSession
       summary: Clear the session and begin OIDC logout
       parameters:
-        - $ref: '#/components/parameters/AuthorizationSessionHeader'
-        - $ref: '#/components/parameters/SessionCookie'
+        - $ref: "#/components/parameters/AuthorizationSessionHeader"
+        - $ref: "#/components/parameters/SessionCookie"
         - name: returnTo
           in: query
           required: false
@@ -119,7 +121,7 @@ paths:
             type: string
             default: /
       responses:
-        '302':
+        "302":
           description: Redirect to the OIDC provider logout URL with a post-logout redirect back to the validated `returnTo` path.
   /mobile-auth/token-exchange:
     post:
@@ -132,46 +134,46 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/MobileTokenExchangeRequest'
+              $ref: "#/components/schemas/MobileTokenExchangeRequest"
       responses:
-        '200':
+        "200":
           description: Session created successfully.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/MobileTokenExchangeSuccess'
-        '400':
+                $ref: "#/components/schemas/MobileTokenExchangeSuccess"
+        "400":
           description: Missing or invalid required fields.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorEnvelope'
-        '401':
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "401":
           description: Token did not contain usable claims.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorEnvelope'
-        '500':
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "500":
           description: Token exchange failed.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorEnvelope'
+                $ref: "#/components/schemas/ErrorEnvelope"
   /mobile-auth/logout:
     post:
       tags: [Auth]
       operationId: logoutMobileSession
       summary: Delete a mobile session token
       parameters:
-        - $ref: '#/components/parameters/AuthorizationSessionHeader'
+        - $ref: "#/components/parameters/AuthorizationSessionHeader"
       responses:
-        '200':
+        "200":
           description: Logout processed.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/LogoutSuccess'
+                $ref: "#/components/schemas/LogoutSuccess"
 
   /company:
     get:
@@ -183,16 +185,16 @@ paths:
         - sessionCookie: []
         - bearerAuth: []
       responses:
-        '200':
+        "200":
           description: Current company.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Company'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
+                $ref: "#/components/schemas/Company"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
     post:
       tags: [Company]
       operationId: createMyCompany
@@ -206,24 +208,24 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CompanyCreateRequest'
+              $ref: "#/components/schemas/CompanyCreateRequest"
       responses:
-        '201':
+        "201":
           description: Company created.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Company'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '409':
+                $ref: "#/components/schemas/Company"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "409":
           description: The user already belongs to a company.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorEnvelope'
+                $ref: "#/components/schemas/ErrorEnvelope"
     patch:
       tags: [Company]
       operationId: updateMyCompany
@@ -236,22 +238,22 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CompanyUpdateRequest'
+              $ref: "#/components/schemas/CompanyUpdateRequest"
       responses:
-        '200':
+        "200":
           description: Company updated.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Company'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
+                $ref: "#/components/schemas/Company"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
 
   /vessels:
     get:
@@ -262,8 +264,8 @@ paths:
         - sessionCookie: []
         - bearerAuth: []
       parameters:
-        - $ref: '#/components/parameters/Page'
-        - $ref: '#/components/parameters/PageSize'
+        - $ref: "#/components/parameters/Page"
+        - $ref: "#/components/parameters/PageSize"
         - name: activeOnly
           in: query
           required: false
@@ -271,14 +273,14 @@ paths:
             type: boolean
             default: false
       responses:
-        '200':
+        "200":
           description: Owned vessels.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/VesselListResponse'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
+                $ref: "#/components/schemas/VesselListResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
     post:
       tags: [Vessels]
       operationId: createMyVessel
@@ -291,23 +293,23 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/VesselCreateRequest'
+              $ref: "#/components/schemas/VesselCreateRequest"
       responses:
-        '201':
+        "201":
           description: Vessel created.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Vessel'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
+                $ref: "#/components/schemas/Vessel"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
   /vessels/{vesselId}:
     parameters:
-      - $ref: '#/components/parameters/VesselId'
+      - $ref: "#/components/parameters/VesselId"
     get:
       tags: [Vessels]
       operationId: getMyVessel
@@ -316,16 +318,16 @@ paths:
         - sessionCookie: []
         - bearerAuth: []
       responses:
-        '200':
+        "200":
           description: Owned vessel.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Vessel'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
+                $ref: "#/components/schemas/Vessel"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
     patch:
       tags: [Vessels]
       operationId: updateMyVessel
@@ -338,22 +340,22 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/VesselUpdateRequest'
+              $ref: "#/components/schemas/VesselUpdateRequest"
       responses:
-        '200':
+        "200":
           description: Vessel updated.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Vessel'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
+                $ref: "#/components/schemas/Vessel"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
   /vessels/{vesselId}/deactivate:
     post:
       tags: [Vessels]
@@ -364,20 +366,20 @@ paths:
         - sessionCookie: []
         - bearerAuth: []
       parameters:
-        - $ref: '#/components/parameters/VesselId'
+        - $ref: "#/components/parameters/VesselId"
       responses:
-        '200':
+        "200":
           description: Vessel deactivated.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Vessel'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
+                $ref: "#/components/schemas/Vessel"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
 
   /vessels/{vesselId}/ais:
     get:
@@ -392,22 +394,154 @@ paths:
         - sessionCookie: []
         - bearerAuth: []
       parameters:
-        - $ref: '#/components/parameters/VesselId'
+        - $ref: "#/components/parameters/VesselId"
       responses:
-        '200':
+        "200":
           description: AIS context, including not-configured and unavailable states.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/VesselAisResponse'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
+                $ref: "#/components/schemas/VesselAisResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+
+  /vessels/{vesselId}/ais-identities:
+    parameters:
+      - $ref: "#/components/parameters/VesselId"
+    get:
+      tags: [Vessel identities]
+      operationId: listMyVesselAisIdentities
+      summary: List AIS identities for an owned vessel
+      description: |
+        Returns only mappings and conflict attempts belonging to the current
+        user's company. Names are not accepted as identity keys and no other
+        tenant's mapping or conflict details are disclosed.
+      security:
+        - sessionCookie: []
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Tenant-scoped AIS identity mappings and conflicts.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VesselAisIdentityListResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+    post:
+      tags: [Vessel identities]
+      operationId: registerMyVesselAisIdentity
+      summary: Register an AIS identity for an owned vessel
+      description: |
+        OWNER and ADMIN only. Registration is atomic and the stable external
+        identity is globally unique. A duplicate returns a generic conflict
+        without revealing the owning tenant.
+      security:
+        - sessionCookie: []
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AisIdentityCreateRequest"
+      responses:
+        "201":
+          description: AIS identity registered.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VesselAisIdentity"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "409":
+          description: The stable external identity is already mapped.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AisIdentityConflictError"
+
+  /vessels/{vesselId}/ais-identities/{mappingId}:
+    parameters:
+      - $ref: "#/components/parameters/VesselId"
+      - name: mappingId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+    patch:
+      tags: [Vessel identities]
+      operationId: updateMyVesselAisIdentity
+      summary: Update an AIS identity mapping
+      description: OWNER and ADMIN only. Updating the stable key re-checks global uniqueness atomically.
+      security:
+        - sessionCookie: []
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AisIdentityUpdateRequest"
+      responses:
+        "200":
+          description: AIS identity updated.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VesselAisIdentity"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "409":
+          description: The stable external identity is already mapped.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AisIdentityConflictError"
+    delete:
+      tags: [Vessel identities]
+      operationId: deleteMyVesselAisIdentity
+      summary: Delete an AIS identity mapping
+      description: OWNER and ADMIN only.
+      security:
+        - sessionCookie: []
+        - bearerAuth: []
+      responses:
+        "204":
+          description: AIS identity deleted.
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
 
   /locations:
     get:
@@ -431,16 +565,16 @@ paths:
           in: query
           required: false
           schema:
-            $ref: '#/components/schemas/LocationType'
-        - $ref: '#/components/parameters/Page'
-        - $ref: '#/components/parameters/PageSize'
+            $ref: "#/components/schemas/LocationType"
+        - $ref: "#/components/parameters/Page"
+        - $ref: "#/components/parameters/PageSize"
       responses:
-        '200':
+        "200":
           description: Active catalogue locations.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/LocationListResponse'
+                $ref: "#/components/schemas/LocationListResponse"
 
   /cargo:
     get:
@@ -455,18 +589,18 @@ paths:
           in: query
           required: false
           schema:
-            $ref: '#/components/schemas/ListingStatus'
-        - $ref: '#/components/parameters/Page'
-        - $ref: '#/components/parameters/PageSize'
+            $ref: "#/components/schemas/ListingStatus"
+        - $ref: "#/components/parameters/Page"
+        - $ref: "#/components/parameters/PageSize"
       responses:
-        '200':
+        "200":
           description: Owned cargo listings.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CargoListResponse'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
+                $ref: "#/components/schemas/CargoListResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
     post:
       tags: [Listings]
       operationId: createMyCargo
@@ -479,23 +613,23 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CargoListingCreateRequest'
+              $ref: "#/components/schemas/CargoListingCreateRequest"
       responses:
-        '201':
+        "201":
           description: Cargo listing created.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CargoListing'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
+                $ref: "#/components/schemas/CargoListing"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
   /cargo/{cargoId}:
     parameters:
-      - $ref: '#/components/parameters/CargoId'
+      - $ref: "#/components/parameters/CargoId"
     get:
       tags: [Listings]
       operationId: getMyCargo
@@ -504,16 +638,16 @@ paths:
         - sessionCookie: []
         - bearerAuth: []
       responses:
-        '200':
+        "200":
           description: Owned cargo listing.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CargoListing'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
+                $ref: "#/components/schemas/CargoListing"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
     patch:
       tags: [Listings]
       operationId: updateMyCargo
@@ -526,22 +660,22 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CargoListingUpdateRequest'
+              $ref: "#/components/schemas/CargoListingUpdateRequest"
       responses:
-        '200':
+        "200":
           description: Cargo listing updated.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CargoListing'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
+                $ref: "#/components/schemas/CargoListing"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
   /cargo/{cargoId}/withdraw:
     post:
       tags: [Listings]
@@ -551,20 +685,20 @@ paths:
         - sessionCookie: []
         - bearerAuth: []
       parameters:
-        - $ref: '#/components/parameters/CargoId'
+        - $ref: "#/components/parameters/CargoId"
       responses:
-        '200':
+        "200":
           description: Cargo listing withdrawn.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CargoListing'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
+                $ref: "#/components/schemas/CargoListing"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
   /cargo/{cargoId}/close:
     post:
       tags: [Listings]
@@ -574,20 +708,20 @@ paths:
         - sessionCookie: []
         - bearerAuth: []
       parameters:
-        - $ref: '#/components/parameters/CargoId'
+        - $ref: "#/components/parameters/CargoId"
       responses:
-        '200':
+        "200":
           description: Cargo listing closed.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CargoListing'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
+                $ref: "#/components/schemas/CargoListing"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
 
   /capacity:
     get:
@@ -602,18 +736,18 @@ paths:
           in: query
           required: false
           schema:
-            $ref: '#/components/schemas/ListingStatus'
-        - $ref: '#/components/parameters/Page'
-        - $ref: '#/components/parameters/PageSize'
+            $ref: "#/components/schemas/ListingStatus"
+        - $ref: "#/components/parameters/Page"
+        - $ref: "#/components/parameters/PageSize"
       responses:
-        '200':
+        "200":
           description: Owned capacity offers.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CapacityListResponse'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
+                $ref: "#/components/schemas/CapacityListResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
     post:
       tags: [Listings]
       operationId: createMyCapacity
@@ -626,23 +760,23 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CapacityOfferCreateRequest'
+              $ref: "#/components/schemas/CapacityOfferCreateRequest"
       responses:
-        '201':
+        "201":
           description: Capacity offer created.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CapacityOffer'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
+                $ref: "#/components/schemas/CapacityOffer"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
   /capacity/{capacityId}:
     parameters:
-      - $ref: '#/components/parameters/CapacityId'
+      - $ref: "#/components/parameters/CapacityId"
     get:
       tags: [Listings]
       operationId: getMyCapacity
@@ -651,16 +785,16 @@ paths:
         - sessionCookie: []
         - bearerAuth: []
       responses:
-        '200':
+        "200":
           description: Owned capacity offer.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CapacityOffer'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
+                $ref: "#/components/schemas/CapacityOffer"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
     patch:
       tags: [Listings]
       operationId: updateMyCapacity
@@ -673,22 +807,22 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CapacityOfferUpdateRequest'
+              $ref: "#/components/schemas/CapacityOfferUpdateRequest"
       responses:
-        '200':
+        "200":
           description: Capacity offer updated.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CapacityOffer'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
+                $ref: "#/components/schemas/CapacityOffer"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
   /capacity/{capacityId}/withdraw:
     post:
       tags: [Listings]
@@ -698,20 +832,20 @@ paths:
         - sessionCookie: []
         - bearerAuth: []
       parameters:
-        - $ref: '#/components/parameters/CapacityId'
+        - $ref: "#/components/parameters/CapacityId"
       responses:
-        '200':
+        "200":
           description: Capacity offer withdrawn.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CapacityOffer'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
+                $ref: "#/components/schemas/CapacityOffer"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
   /capacity/{capacityId}/close:
     post:
       tags: [Listings]
@@ -721,20 +855,20 @@ paths:
         - sessionCookie: []
         - bearerAuth: []
       parameters:
-        - $ref: '#/components/parameters/CapacityId'
+        - $ref: "#/components/parameters/CapacityId"
       responses:
-        '200':
+        "200":
           description: Capacity offer closed.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CapacityOffer'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
+                $ref: "#/components/schemas/CapacityOffer"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
 
   /marketplace:
     get:
@@ -754,12 +888,12 @@ paths:
           in: query
           required: false
           schema:
-            $ref: '#/components/schemas/MarketplaceListingType'
+            $ref: "#/components/schemas/MarketplaceListingType"
         - name: vesselType
           in: query
           required: false
           schema:
-            $ref: '#/components/schemas/VesselType'
+            $ref: "#/components/schemas/VesselType"
         - name: cargoType
           in: query
           required: false
@@ -787,12 +921,12 @@ paths:
             maximum: 100
             default: 25
       responses:
-        '200':
+        "200":
           description: Anonymous open-network listings.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/MarketplaceListResponse'
+                $ref: "#/components/schemas/MarketplaceListResponse"
 
   /matches:
     get:
@@ -808,21 +942,21 @@ paths:
           in: query
           required: false
           schema:
-            $ref: '#/components/schemas/MatchStatus'
-        - $ref: '#/components/parameters/Page'
-        - $ref: '#/components/parameters/PageSize'
+            $ref: "#/components/schemas/MatchStatus"
+        - $ref: "#/components/parameters/Page"
+        - $ref: "#/components/parameters/PageSize"
       responses:
-        '200':
+        "200":
           description: Privacy-safe matches for the current company.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/MatchListResponse'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
+                $ref: "#/components/schemas/MatchListResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
   /matches/{matchId}:
     parameters:
-      - $ref: '#/components/parameters/MatchId'
+      - $ref: "#/components/parameters/MatchId"
     get:
       tags: [Matches]
       operationId: getMyMatch
@@ -832,16 +966,16 @@ paths:
         - sessionCookie: []
         - bearerAuth: []
       responses:
-        '200':
+        "200":
           description: Match detail.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/MatchDetail'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
+                $ref: "#/components/schemas/MatchDetail"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
   /matches/{matchId}/actions:
     post:
       tags: [Matches]
@@ -856,34 +990,34 @@ paths:
         - sessionCookie: []
         - bearerAuth: []
       parameters:
-        - $ref: '#/components/parameters/MatchId'
+        - $ref: "#/components/parameters/MatchId"
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/MatchActionRequest'
+              $ref: "#/components/schemas/MatchActionRequest"
       responses:
-        '200':
+        "200":
           description: Match action applied.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/MatchDetail'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '409':
+                $ref: "#/components/schemas/MatchDetail"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "409":
           description: Invalid transition, duplicate interest, or stale match.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorEnvelope'
+                $ref: "#/components/schemas/ErrorEnvelope"
 
   /conversations:
     get:
@@ -894,20 +1028,20 @@ paths:
         - sessionCookie: []
         - bearerAuth: []
       parameters:
-        - $ref: '#/components/parameters/Page'
-        - $ref: '#/components/parameters/PageSize'
+        - $ref: "#/components/parameters/Page"
+        - $ref: "#/components/parameters/PageSize"
       responses:
-        '200':
+        "200":
           description: Conversations accessible to the current user's company.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ConversationListResponse'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
+                $ref: "#/components/schemas/ConversationListResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
   /conversations/{conversationId}:
     parameters:
-      - $ref: '#/components/parameters/ConversationId'
+      - $ref: "#/components/parameters/ConversationId"
     get:
       tags: [Conversations]
       operationId: getMyConversation
@@ -917,18 +1051,18 @@ paths:
         - sessionCookie: []
         - bearerAuth: []
       responses:
-        '200':
+        "200":
           description: Conversation detail.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Conversation'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
+                $ref: "#/components/schemas/Conversation"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
   /conversations/{conversationId}/messages:
     get:
       tags: [Conversations]
@@ -938,20 +1072,20 @@ paths:
         - sessionCookie: []
         - bearerAuth: []
       parameters:
-        - $ref: '#/components/parameters/ConversationId'
+        - $ref: "#/components/parameters/ConversationId"
       responses:
-        '200':
+        "200":
           description: Messages in the authorized conversation.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/MessageListResponse'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
+                $ref: "#/components/schemas/MessageListResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
     post:
       tags: [Conversations]
       operationId: sendConversationMessage
@@ -960,28 +1094,28 @@ paths:
         - sessionCookie: []
         - bearerAuth: []
       parameters:
-        - $ref: '#/components/parameters/ConversationId'
+        - $ref: "#/components/parameters/ConversationId"
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/SendMessageRequest'
+              $ref: "#/components/schemas/SendMessageRequest"
       responses:
-        '201':
+        "201":
           description: Message sent.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Message'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
+                $ref: "#/components/schemas/Message"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
   /conversations/{conversationId}/read:
     post:
       tags: [Conversations]
@@ -992,28 +1126,28 @@ paths:
         - sessionCookie: []
         - bearerAuth: []
       parameters:
-        - $ref: '#/components/parameters/ConversationId'
+        - $ref: "#/components/parameters/ConversationId"
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/MarkMessagesReadRequest'
+              $ref: "#/components/schemas/MarkMessagesReadRequest"
       responses:
-        '200':
+        "200":
           description: Read state recorded.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ReadMessagesResponse'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
+                $ref: "#/components/schemas/ReadMessagesResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
 
   /notifications:
     get:
@@ -1030,17 +1164,17 @@ paths:
           schema:
             type: boolean
             default: false
-        - $ref: '#/components/parameters/Page'
-        - $ref: '#/components/parameters/PageSize'
+        - $ref: "#/components/parameters/Page"
+        - $ref: "#/components/parameters/PageSize"
       responses:
-        '200':
+        "200":
           description: Notifications for the current user.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/NotificationListResponse'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
+                $ref: "#/components/schemas/NotificationListResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
   /notifications/{notificationId}/read:
     post:
       tags: [Notifications]
@@ -1050,18 +1184,18 @@ paths:
         - sessionCookie: []
         - bearerAuth: []
       parameters:
-        - $ref: '#/components/parameters/NotificationId'
+        - $ref: "#/components/parameters/NotificationId"
       responses:
-        '200':
+        "200":
           description: Notification marked read.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Notification'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
+                $ref: "#/components/schemas/Notification"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
 
 components:
   securitySchemes:
@@ -1155,25 +1289,25 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/ErrorEnvelope'
+            $ref: "#/components/schemas/ErrorEnvelope"
     Unauthorized:
       description: Authentication is required.
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/ErrorEnvelope'
+            $ref: "#/components/schemas/ErrorEnvelope"
     Forbidden:
       description: The current user is not allowed to access this resource.
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/ErrorEnvelope'
+            $ref: "#/components/schemas/ErrorEnvelope"
     NotFound:
       description: Resource not found or not visible to the current user.
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/ErrorEnvelope'
+            $ref: "#/components/schemas/ErrorEnvelope"
   schemas:
     AisFreshness:
       type: string
@@ -1206,60 +1340,71 @@ components:
         provider:
           type: string
         providerVesselId:
-          type: [string, 'null']
+          type: [string, "null"]
         mmsi:
-          type: [string, 'null']
+          type: [string, "null"]
         imo:
-          type: [string, 'null']
+          type: [string, "null"]
         eni:
-          type: [string, 'null']
+          type: [string, "null"]
         vesselName:
-          type: [string, 'null']
+          type: [string, "null"]
         latitude:
-          type: [number, 'null']
+          type: [number, "null"]
           minimum: -90
           maximum: 90
         longitude:
-          type: [number, 'null']
+          type: [number, "null"]
           minimum: -180
           maximum: 180
         speedKnots:
-          type: [number, 'null']
+          type: [number, "null"]
           minimum: 0
         courseDegrees:
-          type: [number, 'null']
+          type: [number, "null"]
           minimum: 0
           exclusiveMaximum: 360
         headingDegrees:
-          type: [number, 'null']
+          type: [number, "null"]
           minimum: 0
           exclusiveMaximum: 360
         navigationStatus:
-          type: [string, 'null']
+          type: [string, "null"]
         reportedDestination:
-          type: [string, 'null']
+          type: [string, "null"]
         reportedEta:
-          type: [string, 'null']
+          type: [string, "null"]
           format: date-time
         reportedDraughtMeters:
-          type: [number, 'null']
+          type: [number, "null"]
           minimum: 0
         observedAt:
-          type: [string, 'null']
+          type: [string, "null"]
           format: date-time
         receivedAt:
           type: string
           format: date-time
         sourceType:
-          type: [string, 'null']
+          type: [string, "null"]
         dataFreshness:
-          $ref: '#/components/schemas/AisFreshness'
+          $ref: "#/components/schemas/AisFreshness"
         rawDataReference:
-          type: [string, 'null']
+          type: [string, "null"]
     VesselAisResponse:
       type: object
       additionalProperties: false
-      required: [vesselId, status, simulation, telemetry, attempts, checkedAt, cacheHit, freshForSeconds, staleAfterSeconds]
+      required:
+        [
+          vesselId,
+          status,
+          simulation,
+          telemetry,
+          attempts,
+          checkedAt,
+          cacheHit,
+          freshForSeconds,
+          staleAfterSeconds,
+        ]
       properties:
         vesselId:
           type: string
@@ -1271,8 +1416,8 @@ components:
           type: boolean
         telemetry:
           anyOf:
-            - $ref: '#/components/schemas/NormalizedVesselTelemetry'
-            - type: 'null'
+            - $ref: "#/components/schemas/NormalizedVesselTelemetry"
+            - type: "null"
         attempts:
           type: array
           items:
@@ -1295,6 +1440,184 @@ components:
         staleAfterSeconds:
           type: integer
           minimum: 1
+    AisIdentityIdentifierType:
+      type: string
+      enum: [ENI, MMSI, IMO, VESSELFINDER_ID, MARINETRAFFIC_ID, OTHER]
+    AisIdentityEvidence:
+      type: object
+      additionalProperties: false
+      required: [source]
+      properties:
+        source:
+          type: string
+          minLength: 1
+          maxLength: 200
+        reference:
+          type: string
+          maxLength: 1000
+        notes:
+          type: string
+          maxLength: 2000
+        capturedAt:
+          type: string
+          format: date-time
+    AisIdentityCreateRequest:
+      type: object
+      additionalProperties: false
+      required: [identifierType, identifierValue]
+      properties:
+        identifierType:
+          $ref: "#/components/schemas/AisIdentityIdentifierType"
+        identifierValue:
+          type: string
+          minLength: 1
+          maxLength: 200
+          description: Stable ENI, MMSI, IMO, or provider identifier; never a vessel name.
+        provider:
+          type: [string, "null"]
+          maxLength: 64
+          pattern: "^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$"
+        verified:
+          type: boolean
+          enum: [false]
+          default: false
+          description: Tenant claims are always unverified. Only the server-filesystem operator verification procedure may promote a claim.
+        evidence:
+          anyOf:
+            - $ref: "#/components/schemas/AisIdentityEvidence"
+            - type: "null"
+    AisIdentityUpdateRequest:
+      type: object
+      additionalProperties: false
+      minProperties: 1
+      properties:
+        identifierType:
+          $ref: "#/components/schemas/AisIdentityIdentifierType"
+        identifierValue:
+          type: string
+          minLength: 1
+          maxLength: 200
+          description: Stable ENI, MMSI, IMO, or provider identifier; never a vessel name.
+        provider:
+          type: [string, "null"]
+          maxLength: 64
+          pattern: "^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$"
+        verified:
+          type: boolean
+          enum: [false]
+          description: Set false to revoke an operator verification. Tenant updates cannot promote a claim.
+        evidence:
+          anyOf:
+            - $ref: "#/components/schemas/AisIdentityEvidence"
+            - type: "null"
+    VesselAisIdentity:
+      type: object
+      additionalProperties: false
+      required:
+        - id
+        - companyId
+        - vesselId
+        - identifierType
+        - identifierValue
+        - provider
+        - verified
+        - evidence
+        - verifiedAt
+        - createdAt
+        - updatedAt
+      properties:
+        id:
+          type: string
+          format: uuid
+        companyId:
+          type: string
+          format: uuid
+        vesselId:
+          type: string
+          format: uuid
+        identifierType:
+          $ref: "#/components/schemas/AisIdentityIdentifierType"
+        identifierValue:
+          type: string
+        provider:
+          type: [string, "null"]
+        verified:
+          type: boolean
+        evidence:
+          anyOf:
+            - $ref: "#/components/schemas/AisIdentityEvidence"
+            - type: "null"
+        verifiedAt:
+          type: [string, "null"]
+          format: date-time
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    VesselAisIdentityConflict:
+      type: object
+      additionalProperties: false
+      required:
+        [
+          id,
+          vesselId,
+          identifierType,
+          identifierValue,
+          provider,
+          reason,
+          status,
+          createdAt,
+        ]
+      properties:
+        id:
+          type: string
+          format: uuid
+        vesselId:
+          type: string
+          format: uuid
+        identifierType:
+          $ref: "#/components/schemas/AisIdentityIdentifierType"
+        identifierValue:
+          type: string
+          description: The current tenant's attempted value; no conflicting tenant data is included.
+        provider:
+          type: [string, "null"]
+        reason:
+          type: string
+        status:
+          type: string
+          enum: [OPEN, RESOLVED]
+        createdAt:
+          type: string
+          format: date-time
+    VesselAisIdentityListResponse:
+      type: object
+      additionalProperties: false
+      required: [items, conflicts, canManage]
+      properties:
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/VesselAisIdentity"
+        conflicts:
+          type: array
+          items:
+            $ref: "#/components/schemas/VesselAisIdentityConflict"
+        canManage:
+          type: boolean
+          description: Whether the current tenant member may create, update, or delete mappings.
+    AisIdentityConflictError:
+      type: object
+      additionalProperties: false
+      required: [error, code]
+      properties:
+        error:
+          type: string
+        code:
+          type: string
+          enum: [IDENTITY_CONFLICT]
     HealthStatus:
       type: object
       properties:
@@ -1340,7 +1663,7 @@ components:
           minItems: 1
           uniqueItems: true
           items:
-            $ref: '#/components/schemas/CompanyActivity'
+            $ref: "#/components/schemas/CompanyActivity"
         primaryContactName:
           type: string
         email:
@@ -1349,11 +1672,11 @@ components:
         phone:
           type: string
         vatRegistrationNumber:
-          type: [string, 'null']
+          type: [string, "null"]
         verified:
           type: boolean
         status:
-          $ref: '#/components/schemas/CompanyStatus'
+          $ref: "#/components/schemas/CompanyStatus"
         createdAt:
           type: string
           format: date-time
@@ -1375,7 +1698,7 @@ components:
           minItems: 1
           uniqueItems: true
           items:
-            $ref: '#/components/schemas/CompanyActivity'
+            $ref: "#/components/schemas/CompanyActivity"
         primaryContactName:
           type: string
           minLength: 1
@@ -1406,7 +1729,7 @@ components:
           minItems: 1
           uniqueItems: true
           items:
-            $ref: '#/components/schemas/CompanyActivity'
+            $ref: "#/components/schemas/CompanyActivity"
         primaryContactName:
           type: string
           minLength: 1
@@ -1417,7 +1740,7 @@ components:
           type: string
           minLength: 1
         vatRegistrationNumber:
-          type: [string, 'null']
+          type: [string, "null"]
 
     VesselType:
       type: string
@@ -1445,20 +1768,20 @@ components:
           type: string
           minLength: 1
         eniNumber:
-          type: [string, 'null']
+          type: [string, "null"]
         vesselType:
-          $ref: '#/components/schemas/VesselType'
+          $ref: "#/components/schemas/VesselType"
         totalCapacityTonnes:
           type: number
           exclusiveMinimum: 0
         lengthMetres:
-          type: [number, 'null']
+          type: [number, "null"]
           exclusiveMinimum: 0
         widthMetres:
-          type: [number, 'null']
+          type: [number, "null"]
           exclusiveMinimum: 0
         maximumDraftMetres:
-          type: [number, 'null']
+          type: [number, "null"]
           exclusiveMinimum: 0
         cargoCompatibility:
           type: array
@@ -1466,9 +1789,9 @@ components:
             type: string
           minItems: 1
         homeRegion:
-          type: [string, 'null']
+          type: [string, "null"]
         notes:
-          type: [string, 'null']
+          type: [string, "null"]
         active:
           type: boolean
         createdAt:
@@ -1479,7 +1802,8 @@ components:
           format: date-time
     VesselCreateRequest:
       type: object
-      required: [vesselName, vesselType, totalCapacityTonnes, cargoCompatibility]
+      required:
+        [vesselName, vesselType, totalCapacityTonnes, cargoCompatibility]
       properties:
         vesselName:
           type: string
@@ -1487,7 +1811,7 @@ components:
         eniNumber:
           type: string
         vesselType:
-          $ref: '#/components/schemas/VesselType'
+          $ref: "#/components/schemas/VesselType"
         totalCapacityTonnes:
           type: number
           exclusiveMinimum: 0
@@ -1520,20 +1844,20 @@ components:
           type: string
           minLength: 1
         eniNumber:
-          type: [string, 'null']
+          type: [string, "null"]
         vesselType:
-          $ref: '#/components/schemas/VesselType'
+          $ref: "#/components/schemas/VesselType"
         totalCapacityTonnes:
           type: number
           exclusiveMinimum: 0
         lengthMetres:
-          type: [number, 'null']
+          type: [number, "null"]
           exclusiveMinimum: 0
         widthMetres:
-          type: [number, 'null']
+          type: [number, "null"]
           exclusiveMinimum: 0
         maximumDraftMetres:
-          type: [number, 'null']
+          type: [number, "null"]
           exclusiveMinimum: 0
         cargoCompatibility:
           type: array
@@ -1541,9 +1865,9 @@ components:
             type: string
           minItems: 1
         homeRegion:
-          type: [string, 'null']
+          type: [string, "null"]
         notes:
-          type: [string, 'null']
+          type: [string, "null"]
         active:
           type: boolean
 
@@ -1582,7 +1906,7 @@ components:
         privacyLongitude:
           type: number
         locationType:
-          $ref: '#/components/schemas/LocationType'
+          $ref: "#/components/schemas/LocationType"
         active:
           type: boolean
     LocationListResponse:
@@ -1592,7 +1916,7 @@ components:
         items:
           type: array
           items:
-            $ref: '#/components/schemas/PublicLocation'
+            $ref: "#/components/schemas/PublicLocation"
         page:
           type: integer
         pageSize:
@@ -1613,7 +1937,7 @@ components:
         region:
           type: string
         locationType:
-          $ref: '#/components/schemas/LocationType'
+          $ref: "#/components/schemas/LocationType"
         active:
           type: boolean
 
@@ -1673,18 +1997,18 @@ components:
           type: string
           format: date-time
         expectedUnloadingDate:
-          type: [string, 'null']
+          type: [string, "null"]
           format: date
         requiredVesselType:
-          $ref: '#/components/schemas/VesselType'
+          $ref: "#/components/schemas/VesselType"
         specialRequirements:
-          type: [string, 'null']
+          type: [string, "null"]
         visibility:
-          $ref: '#/components/schemas/Visibility'
+          $ref: "#/components/schemas/Visibility"
         notes:
-          type: [string, 'null']
+          type: [string, "null"]
         listingStatus:
-          $ref: '#/components/schemas/ListingStatus'
+          $ref: "#/components/schemas/ListingStatus"
         createdAt:
           type: string
           format: date-time
@@ -1729,15 +2053,15 @@ components:
           type: string
           format: date
         requiredVesselType:
-          $ref: '#/components/schemas/VesselType'
+          $ref: "#/components/schemas/VesselType"
         specialRequirements:
           type: string
         visibility:
-          $ref: '#/components/schemas/Visibility'
+          $ref: "#/components/schemas/Visibility"
         notes:
           type: string
         listingStatus:
-          $ref: '#/components/schemas/ListingStatus'
+          $ref: "#/components/schemas/ListingStatus"
           default: DRAFT
     CargoListingUpdateRequest:
       type: object
@@ -1765,18 +2089,18 @@ components:
           type: string
           format: date-time
         expectedUnloadingDate:
-          type: [string, 'null']
+          type: [string, "null"]
           format: date
         requiredVesselType:
-          $ref: '#/components/schemas/VesselType'
+          $ref: "#/components/schemas/VesselType"
         specialRequirements:
-          type: [string, 'null']
+          type: [string, "null"]
         visibility:
-          $ref: '#/components/schemas/Visibility'
+          $ref: "#/components/schemas/Visibility"
         notes:
-          type: [string, 'null']
+          type: [string, "null"]
         listingStatus:
-          $ref: '#/components/schemas/ListingStatus'
+          $ref: "#/components/schemas/ListingStatus"
 
     CapacityOffer:
       type: object
@@ -1816,7 +2140,7 @@ components:
           type: string
           format: date-time
         availabilityType:
-          $ref: '#/components/schemas/AvailabilityType'
+          $ref: "#/components/schemas/AvailabilityType"
         availableCapacityTonnes:
           type: number
           exclusiveMinimum: 0
@@ -1832,11 +2156,11 @@ components:
           type: number
           exclusiveMinimum: 0
         visibility:
-          $ref: '#/components/schemas/Visibility'
+          $ref: "#/components/schemas/Visibility"
         notes:
-          type: [string, 'null']
+          type: [string, "null"]
         listingStatus:
-          $ref: '#/components/schemas/ListingStatus'
+          $ref: "#/components/schemas/ListingStatus"
         createdAt:
           type: string
           format: date-time
@@ -1870,7 +2194,7 @@ components:
           type: string
           format: date-time
         availabilityType:
-          $ref: '#/components/schemas/AvailabilityType'
+          $ref: "#/components/schemas/AvailabilityType"
         availableCapacityTonnes:
           type: number
           exclusiveMinimum: 0
@@ -1886,11 +2210,11 @@ components:
           type: number
           exclusiveMinimum: 0
         visibility:
-          $ref: '#/components/schemas/Visibility'
+          $ref: "#/components/schemas/Visibility"
         notes:
           type: string
         listingStatus:
-          $ref: '#/components/schemas/ListingStatus'
+          $ref: "#/components/schemas/ListingStatus"
           default: DRAFT
     CapacityOfferUpdateRequest:
       type: object
@@ -1909,7 +2233,7 @@ components:
           type: string
           format: date-time
         availabilityType:
-          $ref: '#/components/schemas/AvailabilityType'
+          $ref: "#/components/schemas/AvailabilityType"
         availableCapacityTonnes:
           type: number
           exclusiveMinimum: 0
@@ -1925,11 +2249,11 @@ components:
           type: number
           exclusiveMinimum: 0
         visibility:
-          $ref: '#/components/schemas/Visibility'
+          $ref: "#/components/schemas/Visibility"
         notes:
-          type: [string, 'null']
+          type: [string, "null"]
         listingStatus:
-          $ref: '#/components/schemas/ListingStatus'
+          $ref: "#/components/schemas/ListingStatus"
 
     VesselListResponse:
       type: object
@@ -1938,7 +2262,7 @@ components:
         items:
           type: array
           items:
-            $ref: '#/components/schemas/Vessel'
+            $ref: "#/components/schemas/Vessel"
         page:
           type: integer
         pageSize:
@@ -1952,7 +2276,7 @@ components:
         items:
           type: array
           items:
-            $ref: '#/components/schemas/CargoListing'
+            $ref: "#/components/schemas/CargoListing"
         page:
           type: integer
         pageSize:
@@ -1966,7 +2290,7 @@ components:
         items:
           type: array
           items:
-            $ref: '#/components/schemas/CapacityOffer'
+            $ref: "#/components/schemas/CapacityOffer"
         page:
           type: integer
         pageSize:
@@ -2009,7 +2333,7 @@ components:
         destinationRegion:
           type: string
         requiredVesselType:
-          $ref: '#/components/schemas/VesselType'
+          $ref: "#/components/schemas/VesselType"
         tonnageBand:
           type: string
           description: Anonymized cargo tonnage band, never an exact weight.
@@ -2052,9 +2376,9 @@ components:
           type: string
           enum: [CAPACITY]
         vesselType:
-          $ref: '#/components/schemas/VesselType'
+          $ref: "#/components/schemas/VesselType"
         availabilityType:
-          $ref: '#/components/schemas/AvailabilityType'
+          $ref: "#/components/schemas/AvailabilityType"
         cargoCompatibilityBand:
           type: string
         directionBand:
@@ -2078,8 +2402,8 @@ components:
           enum: [ACTIVE]
     MarketplaceListing:
       oneOf:
-        - $ref: '#/components/schemas/AnonymousCargoListing'
-        - $ref: '#/components/schemas/AnonymousCapacityListing'
+        - $ref: "#/components/schemas/AnonymousCargoListing"
+        - $ref: "#/components/schemas/AnonymousCapacityListing"
     MarketplaceListResponse:
       type: object
       required: [items, page, pageSize, total]
@@ -2087,7 +2411,7 @@ components:
         items:
           type: array
           items:
-            $ref: '#/components/schemas/MarketplaceListing'
+            $ref: "#/components/schemas/MarketplaceListing"
         page:
           type: integer
         pageSize:
@@ -2178,9 +2502,9 @@ components:
           maximum: 100
           description: Rounded display score only; the stored calculation may retain full precision.
         components:
-          $ref: '#/components/schemas/MatchScoreComponents'
+          $ref: "#/components/schemas/MatchScoreComponents"
         evaluationInputs:
-          $ref: '#/components/schemas/MatchEvaluationInputs'
+          $ref: "#/components/schemas/MatchEvaluationInputs"
         calculationVersion:
           type: string
           example: v1
@@ -2216,15 +2540,15 @@ components:
           type: string
           format: uuid
         status:
-          $ref: '#/components/schemas/MatchStatus'
+          $ref: "#/components/schemas/MatchStatus"
         networkCategory:
-          $ref: '#/components/schemas/MatchNetworkCategory'
+          $ref: "#/components/schemas/MatchNetworkCategory"
         cargo:
-          $ref: '#/components/schemas/AnonymousCargoListing'
+          $ref: "#/components/schemas/AnonymousCargoListing"
         capacity:
-          $ref: '#/components/schemas/AnonymousCapacityListing'
+          $ref: "#/components/schemas/AnonymousCapacityListing"
         score:
-          $ref: '#/components/schemas/MatchScore'
+          $ref: "#/components/schemas/MatchScore"
         initiatedByMe:
           type: boolean
           description: Whether the current company initiated the pending interest.
@@ -2281,16 +2605,16 @@ components:
           type: string
           format: date-time
         expectedUnloadingDate:
-          type: [string, 'null']
+          type: [string, "null"]
           format: date
         requiredVesselType:
-          $ref: '#/components/schemas/VesselType'
+          $ref: "#/components/schemas/VesselType"
         specialRequirements:
-          type: [string, 'null']
+          type: [string, "null"]
         visibility:
-          $ref: '#/components/schemas/Visibility'
+          $ref: "#/components/schemas/Visibility"
         listingStatus:
-          $ref: '#/components/schemas/ListingStatus'
+          $ref: "#/components/schemas/ListingStatus"
         createdAt:
           type: string
           format: date-time
@@ -2336,7 +2660,7 @@ components:
           type: string
           format: date-time
         availabilityType:
-          $ref: '#/components/schemas/AvailabilityType'
+          $ref: "#/components/schemas/AvailabilityType"
         availableCapacityTonnes:
           type: number
         cargoCompatibility:
@@ -2348,9 +2672,9 @@ components:
         maximumPositioningDistanceKm:
           type: number
         visibility:
-          $ref: '#/components/schemas/Visibility'
+          $ref: "#/components/schemas/Visibility"
         listingStatus:
-          $ref: '#/components/schemas/ListingStatus'
+          $ref: "#/components/schemas/ListingStatus"
         createdAt:
           type: string
           format: date-time
@@ -2359,7 +2683,8 @@ components:
           format: date-time
     ConnectedCompany:
       type: object
-      required: [id, name, country, activities, primaryContactName, email, phone]
+      required:
+        [id, name, country, activities, primaryContactName, email, phone]
       properties:
         id:
           type: string
@@ -2371,7 +2696,7 @@ components:
         activities:
           type: array
           items:
-            $ref: '#/components/schemas/CompanyActivity'
+            $ref: "#/components/schemas/CompanyActivity"
         primaryContactName:
           type: string
         email:
@@ -2381,7 +2706,7 @@ components:
           type: string
     MatchDetail:
       allOf:
-        - $ref: '#/components/schemas/MatchSummary'
+        - $ref: "#/components/schemas/MatchSummary"
         - type: object
           required: [disclosureState]
           properties:
@@ -2390,30 +2715,30 @@ components:
               enum: [ANONYMOUS, OWNER, CONNECTED]
             ownedCargo:
               oneOf:
-                - $ref: '#/components/schemas/CargoListing'
-                - type: 'null'
+                - $ref: "#/components/schemas/CargoListing"
+                - type: "null"
             ownedCapacity:
               oneOf:
-                - $ref: '#/components/schemas/CapacityOffer'
-                - type: 'null'
+                - $ref: "#/components/schemas/CapacityOffer"
+                - type: "null"
             connectedCargo:
               oneOf:
-                - $ref: '#/components/schemas/ConnectedCargoListing'
-                - type: 'null'
+                - $ref: "#/components/schemas/ConnectedCargoListing"
+                - type: "null"
             connectedCapacity:
               oneOf:
-                - $ref: '#/components/schemas/ConnectedCapacityOffer'
-                - type: 'null'
+                - $ref: "#/components/schemas/ConnectedCapacityOffer"
+                - type: "null"
             connectedCompanies:
               type: array
               items:
-                $ref: '#/components/schemas/ConnectedCompany'
+                $ref: "#/components/schemas/ConnectedCompany"
     MatchActionRequest:
       type: object
       required: [action]
       properties:
         action:
-          $ref: '#/components/schemas/MatchAction'
+          $ref: "#/components/schemas/MatchAction"
     MatchListResponse:
       type: object
       required: [items, page, pageSize, total]
@@ -2421,7 +2746,7 @@ components:
         items:
           type: array
           items:
-            $ref: '#/components/schemas/MatchSummary'
+            $ref: "#/components/schemas/MatchSummary"
         page:
           type: integer
         pageSize:
@@ -2450,11 +2775,11 @@ components:
           minItems: 2
           maxItems: 2
           items:
-            $ref: '#/components/schemas/ConnectedCompany'
+            $ref: "#/components/schemas/ConnectedCompany"
         lastMessage:
           oneOf:
-            - $ref: '#/components/schemas/Message'
-            - type: 'null'
+            - $ref: "#/components/schemas/Message"
+            - type: "null"
         unreadCount:
           type: integer
           minimum: 0
@@ -2471,7 +2796,7 @@ components:
         items:
           type: array
           items:
-            $ref: '#/components/schemas/Conversation'
+            $ref: "#/components/schemas/Conversation"
         page:
           type: integer
         pageSize:
@@ -2480,7 +2805,16 @@ components:
           type: integer
     Message:
       type: object
-      required: [id, conversationId, senderCompanyId, senderUserId, body, createdAt, readAt]
+      required:
+        [
+          id,
+          conversationId,
+          senderCompanyId,
+          senderUserId,
+          body,
+          createdAt,
+          readAt,
+        ]
       properties:
         id:
           type: string
@@ -2502,7 +2836,7 @@ components:
           type: string
           format: date-time
         readAt:
-          type: [string, 'null']
+          type: [string, "null"]
           format: date-time
     MessageListResponse:
       type: object
@@ -2511,7 +2845,7 @@ components:
         items:
           type: array
           items:
-            $ref: '#/components/schemas/Message'
+            $ref: "#/components/schemas/Message"
         page:
           type: integer
         pageSize:
@@ -2552,7 +2886,15 @@ components:
 
     NotificationType:
       type: string
-      enum: [NEW_MATCH, INTEREST_RECEIVED, INTEREST_ACCEPTED, INTEREST_DECLINED, NEW_MESSAGE, LISTING_EXPIRES_SOON]
+      enum:
+        [
+          NEW_MATCH,
+          INTEREST_RECEIVED,
+          INTEREST_ACCEPTED,
+          INTEREST_DECLINED,
+          NEW_MESSAGE,
+          LISTING_EXPIRES_SOON,
+        ]
     Notification:
       type: object
       required: [id, type, title, message, readAt, createdAt]
@@ -2561,19 +2903,19 @@ components:
           type: string
           format: uuid
         type:
-          $ref: '#/components/schemas/NotificationType'
+          $ref: "#/components/schemas/NotificationType"
         title:
           type: string
         message:
           type: string
         relatedMatchId:
-          type: [string, 'null']
+          type: [string, "null"]
           format: uuid
         relatedConversationId:
-          type: [string, 'null']
+          type: [string, "null"]
           format: uuid
         readAt:
-          type: [string, 'null']
+          type: [string, "null"]
           format: date-time
         createdAt:
           type: string
@@ -2585,7 +2927,7 @@ components:
         items:
           type: array
           items:
-            $ref: '#/components/schemas/Notification'
+            $ref: "#/components/schemas/Notification"
         page:
           type: integer
         pageSize:
@@ -2603,22 +2945,22 @@ components:
         id:
           type: string
         email:
-          type: [string, 'null']
+          type: [string, "null"]
           format: email
         firstName:
-          type: [string, 'null']
+          type: [string, "null"]
         lastName:
-          type: [string, 'null']
+          type: [string, "null"]
         profileImageUrl:
-          type: [string, 'null']
+          type: [string, "null"]
     AuthUserEnvelope:
       type: object
       required: [user]
       properties:
         user:
           oneOf:
-            - $ref: '#/components/schemas/AuthUser'
-            - type: 'null'
+            - $ref: "#/components/schemas/AuthUser"
+            - type: "null"
     MobileTokenExchangeRequest:
       type: object
       required: [code, code_verifier, redirect_uri, state]
@@ -2658,4 +3000,3 @@ components:
       properties:
         error:
           type: string
-

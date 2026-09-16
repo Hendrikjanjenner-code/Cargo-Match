@@ -9,6 +9,7 @@ import { db, vesselsTable } from "@workspace/db";
 
 import { error, requireMembership } from "../lib/http";
 import { aisProviderManager } from "../services/ais";
+import { getVerifiedAisIdentity } from "../services/ais/identity";
 
 const router: IRouter = Router();
 
@@ -47,9 +48,32 @@ router.get("/vessels/:vesselId/ais", async (req, res): Promise<void> => {
     return;
   }
 
-  const response = await aisProviderManager.getLatestTelemetry({
-    vesselId: vessel.id,
-  });
+  const identity = await getVerifiedAisIdentity(current.company.id, vessel.id);
+  const response = await aisProviderManager.getLatestTelemetry(
+    identity ?? { vesselId: vessel.id, tenantId: current.company.id },
+  );
+  // Provider requests can be slow. Do not disclose exact data after membership,
+  // ownership, or a verified link has been withdrawn during the request.
+  const latestMembership = await requireMembership(req, res);
+  if (!latestMembership) return;
+  if (latestMembership.company.id !== current.company.id) {
+    error(res, 404, "Vessel not found");
+    return;
+  }
+  const [stillOwned] = await db.select({ id: vesselsTable.id }).from(vesselsTable)
+    .where(and(eq(vesselsTable.id, vessel.id), eq(vesselsTable.companyId, current.company.id)));
+  if (!stillOwned) {
+    error(res, 404, "Vessel not found");
+    return;
+  }
+  const latestIdentity = await getVerifiedAisIdentity(current.company.id, vessel.id);
+  if (identity?.mappingRevision !== latestIdentity?.mappingRevision) {
+    res.json(GetMyVesselAisResponse.parse({
+      ...response, status: "UNAVAILABLE", telemetry: null, cacheHit: false,
+      attempts: [{ provider: "identity", outcome: "IDENTITY_REVOKED" }],
+    }));
+    return;
+  }
   res.json(GetMyVesselAisResponse.parse(response));
 });
 

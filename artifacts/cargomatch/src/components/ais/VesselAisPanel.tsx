@@ -5,12 +5,14 @@ import { Badge, Button } from "@/components/ui/primitives";
 import { t } from "@/lib/i18n";
 import { RefreshCcw, CheckCircle2, Clock, AlertTriangle, HelpCircle, Info } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { VesselAisIdentitiesPanel } from "@/components/ais/VesselAisIdentitiesPanel";
 
 export function VesselAisPanel({ vesselId }: { vesselId: string }) {
   const { data, isError, isLoading, refetch, isFetching } = useGetMyVesselAis(vesselId, {
     query: {
       queryKey: getGetMyVesselAisQueryKey(vesselId),
       staleTime: 30000, // 30 seconds
+      gcTime: 0, // Exact telemetry is discarded when its private panel closes.
       refetchOnWindowFocus: false,
       refetchOnMount: "always",
       refetchOnReconnect: false,
@@ -19,17 +21,25 @@ export function VesselAisPanel({ vesselId }: { vesselId: string }) {
   });
 
   if (isLoading) {
-    return <div className="text-sm text-muted-foreground p-4">{t("common.loading")}</div>;
+    return (
+      <div className="space-y-4 p-2">
+        <VesselAisIdentitiesPanel vesselId={vesselId} />
+        <div className="text-sm text-muted-foreground p-4">{t("common.loading")}</div>
+      </div>
+    );
   }
 
   if (isError || !data) {
     return (
-      <div className="space-y-2 p-4" role="alert">
-        <div className="text-sm text-destructive font-medium">{t("vessels.ais.error")}</div>
-        <Button variant="outline" size="sm" onClick={() => refetch()} disabled={isFetching}>
-          <RefreshCcw className={cn("h-3 w-3 mr-2", isFetching && "animate-spin")} />
-          {t("vessels.ais.refresh")}
-        </Button>
+      <div className="space-y-4 p-2">
+        <VesselAisIdentitiesPanel vesselId={vesselId} />
+        <div className="space-y-2 p-4" role="alert">
+          <div className="text-sm text-destructive font-medium">{t("vessels.ais.error")}</div>
+          <Button variant="outline" size="sm" onClick={() => refetch()} disabled={isFetching}>
+            <RefreshCcw className={cn("h-3 w-3 mr-2", isFetching && "animate-spin")} />
+            {t("vessels.ais.refresh")}
+          </Button>
+        </div>
       </div>
     );
   }
@@ -38,7 +48,9 @@ export function VesselAisPanel({ vesselId }: { vesselId: string }) {
 
   if (status === "NOT_CONFIGURED") {
     return (
-      <div className="space-y-2 p-4">
+      <div className="space-y-4 p-2">
+        <VesselAisIdentitiesPanel vesselId={vesselId} />
+        <div className="space-y-2 p-4">
         <div className="flex items-center gap-2">
           <Badge variant="outline">{t("vessels.ais.status.not_configured")}</Badge>
           <span className="text-sm text-muted-foreground mr-2">{t("vessels.ais.not_configured")}</span>
@@ -47,13 +59,16 @@ export function VesselAisPanel({ vesselId }: { vesselId: string }) {
             {t("vessels.ais.refresh")}
           </Button>
         </div>
+        </div>
       </div>
     );
   }
 
   if (status === "UNAVAILABLE" || !telemetry) {
     return (
-      <div className="space-y-4 p-4">
+      <div className="space-y-4 p-2">
+        <VesselAisIdentitiesPanel vesselId={vesselId} />
+        <div className="space-y-4 p-4">
         <div className="flex flex-wrap items-center gap-2">
           <Badge variant="destructive">{t("vessels.ais.status.unavailable")}</Badge>
           <span className="text-sm text-muted-foreground mr-2">{t("vessels.ais.unavailable")}</span>
@@ -79,12 +94,14 @@ export function VesselAisPanel({ vesselId }: { vesselId: string }) {
           <Info className="h-4 w-4 shrink-0 text-muted-foreground/70" />
           <p className="leading-snug">{t("vessels.ais.disclaimer")}</p>
         </div>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="p-2">
+    <div className="space-y-4 p-2">
+      <VesselAisIdentitiesPanel vesselId={vesselId} />
       <VesselAisTelemetry data={data} onRefresh={() => refetch()} isFetching={isFetching} />
     </div>
   );

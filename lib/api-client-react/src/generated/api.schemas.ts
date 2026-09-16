@@ -108,6 +108,125 @@ export interface VesselAisResponse {
   staleAfterSeconds: number;
 }
 
+export type AisIdentityIdentifierType = typeof AisIdentityIdentifierType[keyof typeof AisIdentityIdentifierType];
+
+
+export const AisIdentityIdentifierType = {
+  ENI: 'ENI',
+  MMSI: 'MMSI',
+  IMO: 'IMO',
+  VESSELFINDER_ID: 'VESSELFINDER_ID',
+  MARINETRAFFIC_ID: 'MARINETRAFFIC_ID',
+  OTHER: 'OTHER',
+} as const;
+
+export interface AisIdentityEvidence {
+  /**
+     * @minLength 1
+     * @maxLength 200
+     */
+  source: string;
+  /** @maxLength 1000 */
+  reference?: string;
+  /** @maxLength 2000 */
+  notes?: string;
+  capturedAt?: string;
+}
+
+export interface AisIdentityCreateRequest {
+  identifierType: AisIdentityIdentifierType;
+  /**
+     * Stable ENI, MMSI, IMO, or provider identifier; never a vessel name.
+     * @minLength 1
+     * @maxLength 200
+     */
+  identifierValue: string;
+  /**
+     * @maxLength 64
+     * @nullable
+     * @pattern ^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$
+     */
+  provider?: string | null;
+  /** Tenant claims are always unverified. Only the server-filesystem operator verification procedure may promote a claim. */
+  verified?: false;
+  evidence?: AisIdentityEvidence | null;
+}
+
+export interface AisIdentityUpdateRequest {
+  identifierType?: AisIdentityIdentifierType;
+  /**
+     * Stable ENI, MMSI, IMO, or provider identifier; never a vessel name.
+     * @minLength 1
+     * @maxLength 200
+     */
+  identifierValue?: string;
+  /**
+     * @maxLength 64
+     * @nullable
+     * @pattern ^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$
+     */
+  provider?: string | null;
+  /** Set false to revoke an operator verification. Tenant updates cannot promote a claim. */
+  verified?: false;
+  evidence?: AisIdentityEvidence | null;
+}
+
+export interface VesselAisIdentity {
+  id: string;
+  companyId: string;
+  vesselId: string;
+  identifierType: AisIdentityIdentifierType;
+  identifierValue: string;
+  /** @nullable */
+  provider: string | null;
+  verified: boolean;
+  evidence: AisIdentityEvidence | null;
+  /** @nullable */
+  verifiedAt: string | null;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export type VesselAisIdentityConflictStatus = typeof VesselAisIdentityConflictStatus[keyof typeof VesselAisIdentityConflictStatus];
+
+
+export const VesselAisIdentityConflictStatus = {
+  OPEN: 'OPEN',
+  RESOLVED: 'RESOLVED',
+} as const;
+
+export interface VesselAisIdentityConflict {
+  id: string;
+  vesselId: string;
+  identifierType: AisIdentityIdentifierType;
+  /** The current tenant's attempted value; no conflicting tenant data is included. */
+  identifierValue: string;
+  /** @nullable */
+  provider: string | null;
+  reason: string;
+  status: VesselAisIdentityConflictStatus;
+  createdAt: string;
+}
+
+export interface VesselAisIdentityListResponse {
+  items: VesselAisIdentity[];
+  conflicts: VesselAisIdentityConflict[];
+  /** Whether the current tenant member may create, update, or delete mappings. */
+  canManage: boolean;
+}
+
+export type AisIdentityConflictErrorCode = typeof AisIdentityConflictErrorCode[keyof typeof AisIdentityConflictErrorCode];
+
+
+export const AisIdentityConflictErrorCode = {
+  IDENTITY_CONFLICT: 'IDENTITY_CONFLICT',
+} as const;
+
+export interface AisIdentityConflictError {
+  error: string;
+  code: AisIdentityConflictErrorCode;
+}
+
 export interface HealthStatus {
   status: string;
 }

@@ -60,6 +60,10 @@ export function loadAisConfiguration(
   const simulation =
     env.AIS_MODE === "simulation" &&
     (env.NODE_ENV === "development" || env.NODE_ENV === "test");
+  // Commercial mode is an explicit activation switch. Credentials alone
+  // never activate a paid provider, and license authorization remains a
+  // separate manager gate.
+  const commercial = env.AIS_MODE === "commercial";
   const freshForSeconds = Math.floor(
     boundedNumber(
       env.AIS_FRESH_SECONDS,
@@ -80,8 +84,9 @@ export function loadAisConfiguration(
     ),
   );
   return {
-    enabled: simulation,
+    enabled: simulation || commercial,
     simulation,
+    commercial,
     providerOrder: parseProviderOrder(env.AIS_PROVIDER_ORDER),
     freshForSeconds,
     staleAfterSeconds,

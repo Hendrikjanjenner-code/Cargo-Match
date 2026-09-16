@@ -8,6 +8,7 @@
     "build": "node ./build.mjs",
     "start": "node --enable-source-maps ./dist/index.mjs",
     "test": "NODE_ENV=test tsx --test tests/*.test.ts",
+    "verify-ais-identity": "tsx ./scripts/verify-ais-identity.ts",
     "test:typecheck": "tsc -p tsconfig.test.json --noEmit",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },

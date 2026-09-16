@@ -10,6 +10,12 @@
  */
 
 export * from './aisFreshness';
+export * from './aisIdentityConflictError';
+export * from './aisIdentityConflictErrorCode';
+export * from './aisIdentityCreateRequest';
+export * from './aisIdentityEvidence';
+export * from './aisIdentityIdentifierType';
+export * from './aisIdentityUpdateRequest';
 export * from './anonymousCapacityListing';
 export * from './anonymousCapacityListingListingStatus';
 export * from './anonymousCapacityListingListingType';
@@ -92,6 +98,10 @@ export * from './readMessagesResponse';
 export * from './sendMessageRequest';
 export * from './unauthorizedResponse';
 export * from './vessel';
+export * from './vesselAisIdentity';
+export * from './vesselAisIdentityConflict';
+export * from './vesselAisIdentityConflictStatus';
+export * from './vesselAisIdentityListResponse';
 export * from './vesselAisResponse';
 export * from './vesselAisResponseAttemptsItem';
 export * from './vesselAisResponseStatus';

@@ -23,6 +23,9 @@ import type {
 } from '@tanstack/react-query';
 
 import type {
+  AisIdentityConflictError,
+  AisIdentityCreateRequest,
+  AisIdentityUpdateRequest,
   AuthUserEnvelope,
   BadRequestResponse,
   BeginBrowserLoginParams,
@@ -70,6 +73,8 @@ import type {
   SendMessageRequest,
   UnauthorizedResponse,
   Vessel,
+  VesselAisIdentity,
+  VesselAisIdentityListResponse,
   VesselAisResponse,
   VesselCreateRequest,
   VesselListResponse,
@@ -1419,6 +1424,347 @@ export function useGetMyVesselAis<TData = Awaited<ReturnType<typeof getMyVesselA
 
 
 
+
+export const getListMyVesselAisIdentitiesUrl = (vesselId: string,) => {
+
+
+
+
+  return `/api/vessels/${vesselId}/ais-identities`
+}
+
+/**
+ * Returns only mappings and conflict attempts belonging to the current
+ * user's company. Names are not accepted as identity keys and no other
+ * tenant's mapping or conflict details are disclosed.
+ * @summary List AIS identities for an owned vessel
+ */
+export const listMyVesselAisIdentities = async (vesselId: string, options?: Parameters<typeof customFetch>[1]): Promise<VesselAisIdentityListResponse> => {
+
+  return customFetch<VesselAisIdentityListResponse>(getListMyVesselAisIdentitiesUrl(vesselId),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getListMyVesselAisIdentitiesQueryKey = (vesselId: string,) => {
+    return [
+    `/api/vessels/${vesselId}/ais-identities`
+    ] as const;
+    }
+
+
+export const getListMyVesselAisIdentitiesQueryOptions = <TData = Awaited<ReturnType<typeof listMyVesselAisIdentities>>, TError = ErrorType<BadRequestResponse | UnauthorizedResponse | ForbiddenResponse | NotFoundResponse>>(vesselId: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof listMyVesselAisIdentities>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getListMyVesselAisIdentitiesQueryKey(vesselId);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof listMyVesselAisIdentities>>> = ({ signal }) => listMyVesselAisIdentities(vesselId, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: vesselId !== null && vesselId !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof listMyVesselAisIdentities>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type ListMyVesselAisIdentitiesQueryResult = NonNullable<Awaited<ReturnType<typeof listMyVesselAisIdentities>>>
+export type ListMyVesselAisIdentitiesQueryError = ErrorType<BadRequestResponse | UnauthorizedResponse | ForbiddenResponse | NotFoundResponse>
+
+
+/**
+ * @summary List AIS identities for an owned vessel
+ */
+
+export function useListMyVesselAisIdentities<TData = Awaited<ReturnType<typeof listMyVesselAisIdentities>>, TError = ErrorType<BadRequestResponse | UnauthorizedResponse | ForbiddenResponse | NotFoundResponse>>(
+ vesselId: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof listMyVesselAisIdentities>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getListMyVesselAisIdentitiesQueryOptions(vesselId,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getRegisterMyVesselAisIdentityUrl = (vesselId: string,) => {
+
+
+
+
+  return `/api/vessels/${vesselId}/ais-identities`
+}
+
+/**
+ * OWNER and ADMIN only. Registration is atomic and the stable external
+ * identity is globally unique. A duplicate returns a generic conflict
+ * without revealing the owning tenant.
+ * @summary Register an AIS identity for an owned vessel
+ */
+export const registerMyVesselAisIdentity = async (vesselId: string,
+    aisIdentityCreateRequest: AisIdentityCreateRequest, options?: Parameters<typeof customFetch>[1]): Promise<VesselAisIdentity> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return customFetch<VesselAisIdentity>(getRegisterMyVesselAisIdentityUrl(vesselId),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(aisIdentityCreateRequest)
+  }
+);}
+
+
+
+
+
+export const getRegisterMyVesselAisIdentityMutationKey = () => ['registerMyVesselAisIdentity'] as const;
+
+export const getRegisterMyVesselAisIdentityMutationOptions = <TError = ErrorType<BadRequestResponse | UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | AisIdentityConflictError>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof registerMyVesselAisIdentity>>, TError,RegisterMyVesselAisIdentityMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof registerMyVesselAisIdentity>>, TError,RegisterMyVesselAisIdentityMutationVariables, TContext> => {
+
+const mutationKey = getRegisterMyVesselAisIdentityMutationKey();
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof registerMyVesselAisIdentity>>, RegisterMyVesselAisIdentityMutationVariables> = (props) => {
+          const {vesselId,data} = props ?? {};
+
+          return  registerMyVesselAisIdentity(vesselId,data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type RegisterMyVesselAisIdentityMutationResult = NonNullable<Awaited<ReturnType<typeof registerMyVesselAisIdentity>>>
+    export type RegisterMyVesselAisIdentityMutationBody = BodyType<AisIdentityCreateRequest>
+    export type RegisterMyVesselAisIdentityMutationError = ErrorType<BadRequestResponse | UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | AisIdentityConflictError>
+    export type RegisterMyVesselAisIdentityMutationVariables = {vesselId: string;data: BodyType<AisIdentityCreateRequest>}
+
+    /**
+ * @summary Register an AIS identity for an owned vessel
+ */
+export const useRegisterMyVesselAisIdentity = <TError = ErrorType<BadRequestResponse | UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | AisIdentityConflictError>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof registerMyVesselAisIdentity>>, TError,RegisterMyVesselAisIdentityMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof registerMyVesselAisIdentity>>,
+        TError,
+        RegisterMyVesselAisIdentityMutationVariables,
+        TContext
+      > => {
+      return useMutation(getRegisterMyVesselAisIdentityMutationOptions(options));
+    }
+
+export const getUpdateMyVesselAisIdentityUrl = (vesselId: string,
+    mappingId: string,) => {
+
+
+
+
+  return `/api/vessels/${vesselId}/ais-identities/${mappingId}`
+}
+
+/**
+ * OWNER and ADMIN only. Updating the stable key re-checks global uniqueness atomically.
+ * @summary Update an AIS identity mapping
+ */
+export const updateMyVesselAisIdentity = async (vesselId: string,
+    mappingId: string,
+    aisIdentityUpdateRequest: AisIdentityUpdateRequest, options?: Parameters<typeof customFetch>[1]): Promise<VesselAisIdentity> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return customFetch<VesselAisIdentity>(getUpdateMyVesselAisIdentityUrl(vesselId,mappingId),
+  {
+    ...options,
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(aisIdentityUpdateRequest)
+  }
+);}
+
+
+
+
+
+export const getUpdateMyVesselAisIdentityMutationKey = () => ['updateMyVesselAisIdentity'] as const;
+
+export const getUpdateMyVesselAisIdentityMutationOptions = <TError = ErrorType<BadRequestResponse | UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | AisIdentityConflictError>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateMyVesselAisIdentity>>, TError,UpdateMyVesselAisIdentityMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof updateMyVesselAisIdentity>>, TError,UpdateMyVesselAisIdentityMutationVariables, TContext> => {
+
+const mutationKey = getUpdateMyVesselAisIdentityMutationKey();
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateMyVesselAisIdentity>>, UpdateMyVesselAisIdentityMutationVariables> = (props) => {
+          const {vesselId,mappingId,data} = props ?? {};
+
+          return  updateMyVesselAisIdentity(vesselId,mappingId,data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type UpdateMyVesselAisIdentityMutationResult = NonNullable<Awaited<ReturnType<typeof updateMyVesselAisIdentity>>>
+    export type UpdateMyVesselAisIdentityMutationBody = BodyType<AisIdentityUpdateRequest>
+    export type UpdateMyVesselAisIdentityMutationError = ErrorType<BadRequestResponse | UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | AisIdentityConflictError>
+    export type UpdateMyVesselAisIdentityMutationVariables = {vesselId: string;mappingId: string;data: BodyType<AisIdentityUpdateRequest>}
+
+    /**
+ * @summary Update an AIS identity mapping
+ */
+export const useUpdateMyVesselAisIdentity = <TError = ErrorType<BadRequestResponse | UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | AisIdentityConflictError>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateMyVesselAisIdentity>>, TError,UpdateMyVesselAisIdentityMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof updateMyVesselAisIdentity>>,
+        TError,
+        UpdateMyVesselAisIdentityMutationVariables,
+        TContext
+      > => {
+      return useMutation(getUpdateMyVesselAisIdentityMutationOptions(options));
+    }
+
+export const getDeleteMyVesselAisIdentityUrl = (vesselId: string,
+    mappingId: string,) => {
+
+
+
+
+  return `/api/vessels/${vesselId}/ais-identities/${mappingId}`
+}
+
+/**
+ * OWNER and ADMIN only.
+ * @summary Delete an AIS identity mapping
+ */
+export const deleteMyVesselAisIdentity = async (vesselId: string,
+    mappingId: string, options?: Parameters<typeof customFetch>[1]): Promise<void> => {
+
+  return customFetch<void>(getDeleteMyVesselAisIdentityUrl(vesselId,mappingId),
+  {
+    ...options,
+    method: 'DELETE'
+
+
+  }
+);}
+
+
+
+
+
+export const getDeleteMyVesselAisIdentityMutationKey = () => ['deleteMyVesselAisIdentity'] as const;
+
+export const getDeleteMyVesselAisIdentityMutationOptions = <TError = ErrorType<BadRequestResponse | UnauthorizedResponse | ForbiddenResponse | NotFoundResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteMyVesselAisIdentity>>, TError,DeleteMyVesselAisIdentityMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof deleteMyVesselAisIdentity>>, TError,DeleteMyVesselAisIdentityMutationVariables, TContext> => {
+
+const mutationKey = getDeleteMyVesselAisIdentityMutationKey();
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteMyVesselAisIdentity>>, DeleteMyVesselAisIdentityMutationVariables> = (props) => {
+          const {vesselId,mappingId} = props ?? {};
+
+          return  deleteMyVesselAisIdentity(vesselId,mappingId,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type DeleteMyVesselAisIdentityMutationResult = NonNullable<Awaited<ReturnType<typeof deleteMyVesselAisIdentity>>>
+
+    export type DeleteMyVesselAisIdentityMutationError = ErrorType<BadRequestResponse | UnauthorizedResponse | ForbiddenResponse | NotFoundResponse>
+    export type DeleteMyVesselAisIdentityMutationVariables = {vesselId: string;mappingId: string}
+
+    /**
+ * @summary Delete an AIS identity mapping
+ */
+export const useDeleteMyVesselAisIdentity = <TError = ErrorType<BadRequestResponse | UnauthorizedResponse | ForbiddenResponse | NotFoundResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteMyVesselAisIdentity>>, TError,DeleteMyVesselAisIdentityMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof deleteMyVesselAisIdentity>>,
+        TError,
+        DeleteMyVesselAisIdentityMutationVariables,
+        TContext
+      > => {
+      return useMutation(getDeleteMyVesselAisIdentityMutationOptions(options));
+    }
 
 export const getListLocationsUrl = (params?: ListLocationsParams,) => {
   const normalizedParams = new URLSearchParams();

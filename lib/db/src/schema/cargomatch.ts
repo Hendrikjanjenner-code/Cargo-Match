@@ -79,6 +79,18 @@ export const notificationTypeEnum = pgEnum("notification_type", [
   "NEW_MESSAGE",
   "LISTING_EXPIRES_SOON",
 ]);
+export const vesselIdentifierTypeEnum = pgEnum("vessel_identifier_type", [
+  "ENI",
+  "MMSI",
+  "IMO",
+  "VESSELFINDER_ID",
+  "MARINETRAFFIC_ID",
+  "OTHER",
+]);
+export const identityConflictStatusEnum = pgEnum("identity_conflict_status", [
+  "OPEN",
+  "RESOLVED",
+]);
 
 export const companiesTable = pgTable(
   "companies",
@@ -188,7 +200,131 @@ export const vesselsTable = pgTable(
   (table) => [
     index("vessels_company_idx").on(table.companyId),
     index("vessels_company_active_idx").on(table.companyId, table.active),
-    uniqueIndex("vessels_company_name_idx").on(table.companyId, table.vesselName),
+    uniqueIndex("vessels_company_name_idx").on(
+      table.companyId,
+      table.vesselName,
+    ),
+  ],
+);
+
+/**
+ * A tenant claim about a CargoMatch vessel and one stable external AIS
+ * identity. Draft claims are tenant-local; only operator-reviewed verified
+ * rows participate in the global uniqueness boundary used by AIS.
+ * Identifier values are kept separate from vessel names deliberately: names
+ * are not an identity key and are never accepted by the identity API.
+ */
+export const vesselExternalIdentifiersTable = pgTable(
+  "vessel_external_identifiers",
+  {
+    id: uuid("id").defaultRandom().primaryKey(),
+    companyId: uuid("company_id")
+      .notNull()
+      .references(() => companiesTable.id, { onDelete: "cascade" }),
+    vesselId: uuid("vessel_id")
+      .notNull()
+      .references(() => vesselsTable.id, { onDelete: "cascade" }),
+    identifierType: vesselIdentifierTypeEnum("identifier_type").notNull(),
+    identifierValue: varchar("identifier_value", { length: 200 }).notNull(),
+    /**
+     * Normalized key material is intentionally not exposed by the API. It
+     * makes the uniqueness constraint deterministic across casing/whitespace
+     * and treats canonical ENI/MMSI/IMO identifiers as provider-neutral.
+     */
+    normalizedIdentifierValue: varchar("normalized_identifier_value", {
+      length: 200,
+    }).notNull(),
+    provider: varchar("provider", { length: 64 }),
+    providerKey: varchar("provider_key", { length: 64 }).notNull(),
+    verified: boolean("verified").notNull().default(false),
+    verificationEvidence: jsonb("verification_evidence").$type<{
+      source: string;
+      reference?: string;
+      notes?: string;
+      capturedAt?: string;
+    } | null>(),
+    verifiedAt: timestamp("verified_at", { withTimezone: true }),
+    /**
+     * Only the server-filesystem operator verification path may set this
+     * marker. A tenant's evidence and verified flag never establish trust.
+     */
+    operatorReviewedAt: timestamp("operator_reviewed_at", {
+      withTimezone: true,
+    }),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .notNull()
+      .defaultNow(),
+    updatedAt: timestamp("updated_at", { withTimezone: true })
+      .notNull()
+      .defaultNow()
+      .$onUpdate(() => new Date()),
+  },
+  (table) => [
+    uniqueIndex("vessel_external_identifiers_verified_unique_idx")
+      .on(
+        table.identifierType,
+        table.normalizedIdentifierValue,
+        table.providerKey,
+      )
+      .where(
+        sql`${table.verified} = true AND ${table.operatorReviewedAt} IS NOT NULL`,
+      ),
+    uniqueIndex("vessel_external_identifiers_draft_unique_idx").on(
+      table.companyId,
+      table.identifierType,
+      table.normalizedIdentifierValue,
+      table.providerKey,
+    ),
+    index("vessel_external_identifiers_company_vessel_idx").on(
+      table.companyId,
+      table.vesselId,
+    ),
+    index("vessel_external_identifiers_vessel_idx").on(table.vesselId),
+  ],
+);
+
+/**
+ * Failed registrations are recorded without copying any conflicting tenant's
+ * mapping into the caller-visible response. This gives operators an auditable
+ * conflict trail while preserving tenant isolation.
+ */
+export const vesselIdentityConflictsTable = pgTable(
+  "vessel_identity_conflicts",
+  {
+    id: uuid("id").defaultRandom().primaryKey(),
+    companyId: uuid("company_id")
+      .notNull()
+      .references(() => companiesTable.id, { onDelete: "cascade" }),
+    vesselId: uuid("vessel_id")
+      .notNull()
+      .references(() => vesselsTable.id, { onDelete: "cascade" }),
+    identifierType: vesselIdentifierTypeEnum("identifier_type").notNull(),
+    normalizedIdentifierValue: varchar("normalized_identifier_value", {
+      length: 200,
+    }).notNull(),
+    providerKey: varchar("provider_key", { length: 64 }).notNull(),
+    provider: varchar("provider", { length: 64 }),
+    reason: varchar("reason", { length: 80 }).notNull(),
+    status: identityConflictStatusEnum("status").notNull().default("OPEN"),
+    resolvedAt: timestamp("resolved_at", { withTimezone: true }),
+    resolvedByUserId: varchar("resolved_by_user_id").references(
+      () => usersTable.id,
+      { onDelete: "set null" },
+    ),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .notNull()
+      .defaultNow(),
+  },
+  (table) => [
+    index("vessel_identity_conflicts_company_vessel_idx").on(
+      table.companyId,
+      table.vesselId,
+      table.createdAt,
+    ),
+    index("vessel_identity_conflicts_status_idx").on(
+      table.status,
+      table.createdAt,
+    ),
   ],
 );
 
@@ -250,7 +386,9 @@ export const capacityOffersTable = pgTable(
     locationId: uuid("location_id")
       .notNull()
       .references(() => locationsTable.id),
-    availableFrom: timestamp("available_from", { withTimezone: true }).notNull(),
+    availableFrom: timestamp("available_from", {
+      withTimezone: true,
+    }).notNull(),
     availableUntil: timestamp("available_until", {
       withTimezone: true,
     }).notNull(),
@@ -259,7 +397,9 @@ export const capacityOffersTable = pgTable(
       "available_capacity_tonnes",
     ).notNull(),
     cargoCompatibility: text("cargo_compatibility").array().notNull(),
-    preferredDirection: varchar("preferred_direction", { length: 200 }).notNull(),
+    preferredDirection: varchar("preferred_direction", {
+      length: 200,
+    }).notNull(),
     maximumPositioningDistanceKm: doublePrecision(
       "maximum_positioning_distance_km",
     ).notNull(),
@@ -311,7 +451,9 @@ export const matchesTable = pgTable(
     approximatePositioningDistanceKm: doublePrecision(
       "approximate_positioning_distance_km",
     ).notNull(),
-    calculationVersion: varchar("calculation_version", { length: 32 }).notNull(),
+    calculationVersion: varchar("calculation_version", {
+      length: 32,
+    }).notNull(),
     calculatedAt: timestamp("calculated_at", { withTimezone: true })
       .notNull()
       .defaultNow(),
@@ -420,9 +562,7 @@ export const messageReadsTable = pgTable(
     userId: varchar("user_id")
       .notNull()
       .references(() => usersTable.id, { onDelete: "cascade" }),
-    readAt: timestamp("read_at", { withTimezone: true })
-      .notNull()
-      .defaultNow(),
+    readAt: timestamp("read_at", { withTimezone: true }).notNull().defaultNow(),
   },
   (table) => [
     primaryKey({ columns: [table.messageId, table.userId] }),

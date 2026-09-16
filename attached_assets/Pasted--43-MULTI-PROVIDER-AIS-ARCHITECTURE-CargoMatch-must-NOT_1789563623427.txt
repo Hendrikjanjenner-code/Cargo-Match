@@ -1,0 +1,1023 @@
+# 43. MULTI-PROVIDER AIS ARCHITECTURE
+
+CargoMatch must NOT be tightly coupled to one AIS data provider.
+
+Design the AIS architecture from the beginning to support multiple independent providers.
+
+Initial providers to prepare for:
+
+* VesselFinder
+* MarineTraffic
+
+Potential future providers must be addable without changing CargoMatch's core marketplace, matching, vessel, skipper or availability logic.
+
+The purpose is to avoid vendor lock-in and allow CargoMatch to select providers based on:
+
+* inland-waterway coverage
+* geographic coverage
+* data freshness
+* data quality
+* API availability
+* commercial licensing
+* cost
+* available datasets
+
+---
+
+# 44. SEPARATE API CONNECTORS
+
+Implement separate provider connectors.
+
+Conceptually:
+
+AISProvider interface
+
+├── VesselFinderConnector
+
+├── MarineTrafficConnector
+
+└── FutureAISProviderConnector
+
+Do NOT put VesselFinder-specific or MarineTraffic-specific API response structures directly into CargoMatch business logic.
+
+Each connector is responsible for:
+
+authentication
+
+API requests
+
+provider-specific parameters
+
+pagination where applicable
+
+rate-limit handling
+
+provider errors
+
+response parsing
+
+data normalization
+
+provider-specific identifiers
+
+usage/cost metadata where available
+
+---
+
+# 45. NORMALIZED AIS MODEL
+
+Both provider connectors must convert provider-specific responses into one internal CargoMatch AIS model.
+
+Conceptual normalized object:
+
+NormalizedVesselTelemetry
+
+provider
+
+providerVesselId
+
+mmsi
+
+imo
+
+eni
+
+vesselName
+
+latitude
+
+longitude
+
+speedKnots
+
+courseDegrees
+
+headingDegrees
+
+navigationStatus
+
+reportedDestination
+
+reportedEta
+
+reportedDraughtMeters
+
+observedAt
+
+receivedAt
+
+sourceType
+
+dataFreshness
+
+rawDataReference
+
+Fields may be NULL when unavailable.
+
+Never invent missing provider data.
+
+---
+
+# 46. IDENTIFIER STRATEGY FOR INLAND VESSELS
+
+CargoMatch must support multiple vessel identifiers.
+
+Possible identifiers:
+
+ENI
+
+MMSI
+
+IMO
+
+provider-specific vessel ID
+
+Do NOT assume every inland vessel has a useful IMO number.
+
+Do NOT identify vessels by name alone.
+
+Create a vessel identity mapping layer.
+
+Conceptually:
+
+vessel_external_identifiers
+
+id
+
+vessel_id
+
+identifier_type
+
+identifier_value
+
+provider
+
+verified
+
+created_at
+
+Possible identifier types:
+
+ENI
+
+MMSI
+
+IMO
+
+VESSELFINDER_ID
+
+MARINETRAFFIC_ID
+
+OTHER
+
+Prefer stable verified identifiers when linking external AIS records to CargoMatch vessels.
+
+---
+
+# 47. VESSELFINDER CONNECTOR
+
+Create:
+
+VesselFinderConnector
+
+The connector should be architecturally capable of supporting, where available under the selected commercial API plan:
+
+* vessel position
+* AIS telemetry
+* vessels in geographic area
+* fleet/list monitoring
+* voyage information
+* port calls
+* vessel master data
+* expected arrivals where relevant
+
+Do NOT assume CargoMatch has access to every VesselFinder endpoint.
+
+Feature availability must depend on configured API access.
+
+Keep credentials in secure environment variables.
+
+Never expose VesselFinder API keys to frontend clients.
+
+---
+
+# 48. MARINETRAFFIC CONNECTOR
+
+Create:
+
+MarineTrafficConnector
+
+The connector should be architecturally capable of supporting available licensed MarineTraffic AIS services such as:
+
+* vessel position
+* vessel tracking
+* voyage information where available
+* port/vessel events where available
+* vessel information where available
+
+Do NOT assume every MarineTraffic product or endpoint is included in the account.
+
+The connector must gracefully handle unavailable capabilities.
+
+Keep credentials in secure environment variables.
+
+Never expose MarineTraffic API keys to frontend clients.
+
+---
+
+# 49. PROVIDER CAPABILITY MODEL
+
+Different providers may expose different functionality.
+
+Do not assume feature parity.
+
+Create a capability model.
+
+Example:
+
+ProviderCapabilities
+
+LIVE_POSITION
+
+AREA_SEARCH
+
+VESSEL_LOOKUP
+
+FLEET_TRACKING
+
+PORT_CALLS
+
+VOYAGE_DATA
+
+MASTER_DATA
+
+DRAUGHT
+
+DESTINATION
+
+ETA
+
+HISTORICAL_POSITIONS
+
+EXPECTED_ARRIVALS
+
+Before requesting data, CargoMatch should know whether the configured provider supports the required capability.
+
+---
+
+# 50. AIS PROVIDER MANAGER
+
+Create a central service:
+
+AISProviderManager
+
+CargoMatch business logic communicates with:
+
+AISProviderManager
+
+NOT directly with:
+
+VesselFinderConnector
+
+or:
+
+MarineTrafficConnector
+
+Example:
+
+CargoMatch
+
+↓
+
+AISProviderManager.getLatestPosition(vessel)
+
+↓
+
+selected provider
+
+↓
+
+normalized result
+
+↓
+
+CargoMatch
+
+This keeps provider selection outside business logic.
+
+---
+
+# 51. PROVIDER PRIORITY
+
+Support configurable provider priority.
+
+Example configuration:
+
+PRIMARY:
+
+VesselFinder
+
+SECONDARY:
+
+MarineTraffic
+
+or:
+
+PRIMARY:
+
+MarineTraffic
+
+SECONDARY:
+
+VesselFinder
+
+Do not hardcode one provider permanently as primary.
+
+The administrator should eventually be able to configure provider priority.
+
+---
+
+# 52. FALLBACK STRATEGY
+
+If the primary provider:
+
+* fails
+* times out
+* returns no vessel
+* returns stale information
+* does not support the requested capability
+
+CargoMatch may attempt the secondary provider.
+
+Conceptually:
+
+request telemetry
+
+↓
+
+PRIMARY provider
+
+↓
+
+valid + fresh?
+
+YES → use result
+
+NO
+
+↓
+
+SECONDARY provider
+
+↓
+
+valid + fresh?
+
+YES → use result
+
+NO
+
+↓
+
+AIS status unavailable
+
+The marketplace must continue functioning when AIS is unavailable.
+
+AIS failure must NEVER break manual commercial availability or matching.
+
+---
+
+# 53. DO NOT QUERY BOTH PROVIDERS BY DEFAULT
+
+Do NOT automatically call both VesselFinder and MarineTraffic for every vessel update.
+
+This may create unnecessary:
+
+* API cost
+* rate-limit usage
+* latency
+* duplicate data
+
+Default strategy:
+
+PRIMARY → FALLBACK
+
+Only query multiple providers simultaneously when there is a defined business reason.
+
+---
+
+# 54. OPTIONAL VERIFY MODE
+
+Prepare architecture for a future:
+
+VERIFY / COMPARE mode.
+
+This may query two providers for important cases.
+
+Example:
+
+VesselFinder:
+
+Antwerp
+14:31
+
+MarineTraffic:
+
+Antwerp
+14:30
+
+↓
+
+consistent
+
+or:
+
+Provider A:
+
+Antwerp
+
+Provider B:
+
+Rotterdam
+
+↓
+
+data conflict
+
+CargoMatch may flag:
+
+AIS_DATA_CONFLICT
+
+Do NOT automatically assume one provider is correct.
+
+This feature is optional and not required for initial AIS MVP.
+
+---
+
+# 55. DATA FRESHNESS
+
+Every normalized AIS observation must include:
+
+observed_at
+
+received_at
+
+provider
+
+Determine freshness.
+
+Example categories:
+
+FRESH
+
+AGING
+
+STALE
+
+UNKNOWN
+
+Do not show an old AIS position as if it were live.
+
+UI example:
+
+Last AIS update:
+
+3 minutes ago
+
+or:
+
+AIS position may be outdated.
+
+---
+
+# 56. AIS CONFIDENCE
+
+Prepare for an internal confidence concept.
+
+Signals may include:
+
+data freshness
+
+agreement between providers
+
+identifier confidence
+
+position continuity
+
+provider source type
+
+Do not expose an artificial precise confidence percentage unless there is a defensible calculation.
+
+Prefer descriptive internal states.
+
+---
+
+# 57. PROVIDER OBSERVATIONS VS CANONICAL TELEMETRY
+
+Keep raw/provider observations conceptually separate from CargoMatch's selected canonical telemetry.
+
+Example:
+
+Provider observations:
+
+VesselFinder observation
+
+MarineTraffic observation
+
+↓
+
+AISProviderManager
+
+↓
+
+Canonical vessel telemetry
+
+↓
+
+CargoMatch application
+
+This allows debugging provider disagreements without contaminating business logic.
+
+---
+
+# 58. AIS DATA PROVENANCE
+
+For every AIS-derived value, preserve enough provenance to determine:
+
+which provider supplied it
+
+when it was observed
+
+when CargoMatch received it
+
+which external vessel identifier was used
+
+Do not lose source information during normalization.
+
+---
+
+# 59. PROVIDER-SPECIFIC RAW DATA
+
+Do not spread raw provider JSON throughout the application.
+
+If raw responses must be retained for debugging:
+
+store them separately
+
+apply retention limits
+
+restrict access
+
+respect provider licensing
+
+never expose them directly to normal CargoMatch users
+
+The normalized model remains authoritative for CargoMatch application logic.
+
+---
+
+# 60. AIS COST CONTROL
+
+AIS data can become a significant operating cost.
+
+Build cost-awareness into the architecture.
+
+Avoid unnecessary polling.
+
+Potential strategies:
+
+higher update frequency for active participating vessels
+
+lower frequency for inactive vessels
+
+event-driven refresh when possible
+
+cache recent telemetry
+
+do not repeatedly request unchanged data
+
+prioritize vessels with active capacity or expected availability
+
+Track:
+
+provider
+
+request type
+
+timestamp
+
+success/failure
+
+estimated usage units where available
+
+This allows CargoMatch to understand AIS operating cost.
+
+---
+
+# 61. SMART REFRESH STRATEGY
+
+Do not poll every participating vessel at the same frequency forever.
+
+Example future strategy:
+
+VESSEL WITH ACTIVE MATCH:
+
+higher refresh priority
+
+VESSEL APPROACHING EXPECTED AVAILABILITY:
+
+higher refresh priority
+
+VESSEL WITH NO ACTIVE COMMERCIAL CONTEXT:
+
+lower refresh priority
+
+INACTIVE VESSEL:
+
+minimal/no refresh
+
+The goal is commercial usefulness, not maximum tracking frequency.
+
+---
+
+# 62. AREA MONITORING
+
+Where the provider and license allow it, support geographic-area monitoring.
+
+Potential CargoMatch regions:
+
+Rotterdam
+
+Dordrecht
+
+Moerdijk
+
+Antwerp
+
+Ghent
+
+Rhine corridor
+
+Duisburg
+
+Cologne
+
+Area monitoring may help CargoMatch detect operational vessel context.
+
+However:
+
+Do NOT automatically turn every observed AIS vessel into a CargoMatch marketplace participant.
+
+Observed vessel ≠ participating vessel.
+
+---
+
+# 63. PARTICIPATING VESSELS ONLY FOR COMMERCIAL MATCHING
+
+AIS may observe thousands of vessels.
+
+CargoMatch commercial matching should only use vessels that are:
+
+registered/authorized
+
+and
+
+linked to a participating company
+
+and
+
+commercially available according to CargoMatch rules.
+
+Never interpret AIS visibility as consent to participate in CargoMatch.
+
+---
+
+# 64. PROVIDER HEALTH MONITORING
+
+Create provider health states:
+
+AVAILABLE
+
+DEGRADED
+
+UNAVAILABLE
+
+UNKNOWN
+
+Track:
+
+recent successful requests
+
+recent errors
+
+latency
+
+authentication failures
+
+rate-limit errors
+
+stale data
+
+The platform admin should eventually be able to see provider status.
+
+---
+
+# 65. PROVIDER ADMIN PAGE
+
+Future admin settings:
+
+AIS Providers
+
+VesselFinder
+
+Status:
+Connected
+
+Priority:
+1
+
+Capabilities:
+Live position
+Area search
+Port calls
+Master data
+
+MarineTraffic
+
+Status:
+Connected
+
+Priority:
+2
+
+Capabilities:
+Live position
+Vessel tracking
+...
+
+Allow configuration of:
+
+enabled/disabled
+
+priority
+
+fallback behavior
+
+without exposing API credentials.
+
+---
+
+# 66. PROVIDER FAILURE MUST NOT BREAK CARGOMATCH
+
+AIS is an enhancement layer.
+
+Core CargoMatch marketplace functionality must work without AIS.
+
+If all AIS providers fail:
+
+users can still:
+
+publish capacity manually
+
+select expected availability location
+
+publish cargo
+
+receive matches
+
+show interest
+
+connect
+
+message
+
+The UI should gracefully display:
+
+"AIS data temporarily unavailable."
+
+Never block commercial workflows unnecessarily.
+
+---
+
+# 67. AIS PROVIDER TESTING
+
+Create mocked provider tests.
+
+Test:
+
+VesselFinder succeeds.
+
+VesselFinder fails → MarineTraffic fallback succeeds.
+
+Both providers fail → manual CargoMatch workflow continues.
+
+Primary returns stale position → fallback considered.
+
+Provider returns vessel not found.
+
+Provider returns incomplete AIS data.
+
+Provider returns malformed response.
+
+Rate limit reached.
+
+Authentication fails.
+
+Same MMSI returned by both providers.
+
+Conflicting positions returned.
+
+Unknown vessel identifier.
+
+No provider capability available.
+
+Do not require real paid API calls for automated tests.
+
+---
+
+# 68. AIS DEVELOPMENT MODE
+
+Create mock AIS providers for development.
+
+Example:
+
+MockAISProvider
+
+Simulate:
+
+vessel moving
+
+vessel stationary
+
+port arrival
+
+port departure
+
+draught change
+
+stale telemetry
+
+provider outage
+
+This allows the complete AIS intelligence layer to be developed and tested before commercial API contracts are activated.
+
+---
+
+# 69. LICENSING GATE
+
+Before enabling a real provider in production, require confirmation that CargoMatch's intended use complies with the provider agreement.
+
+Review:
+
+commercial use
+
+storage rights
+
+retention
+
+derived data
+
+redistribution
+
+display rights
+
+area monitoring
+
+historical storage
+
+third-party user access
+
+Do not assume an API subscription automatically permits all forms of commercial reuse.
+
+---
+
+# 70. IMPLEMENTATION ORDER FOR AIS CONNECTORS
+
+Implement in this order:
+
+STEP 1
+
+Create normalized AIS data model.
+
+STEP 2
+
+Create AISProvider interface.
+
+STEP 3
+
+Create MockAISProvider.
+
+STEP 4
+
+Connect skipper/vessel UI to the provider-independent AIS layer.
+
+STEP 5
+
+Implement VesselFinderConnector.
+
+STEP 6
+
+Test with participating vessels.
+
+STEP 7
+
+Implement MarineTrafficConnector.
+
+STEP 8
+
+Add PRIMARY/FALLBACK provider selection.
+
+STEP 9
+
+Add provider health monitoring.
+
+STEP 10
+
+Consider VERIFY mode only if commercially useful.
+
+Do NOT implement two full provider integrations before the normalized provider architecture and mock provider are working.
+
+---
+
+# 71. TARGET ARCHITECTURE
+
+The intended architecture is:
+
+VESSELFINDER API
+↓
+VesselFinderConnector
+↓
+┐
+│
+MARINETRAFFIC API
+↓
+MarineTrafficConnector
+↓
+├──── AISProviderManager
+│            ↓
+MockAISProvider    ↓
+┘     Normalized AIS Data
+↓
+Vessel Intelligence
+↓
+Availability Suggestions
+↓
+User Confirmation
+↓
+Capacity Offer
+↓
+Eligibility Engine
+↓
+Matching Engine
+↓
+Nearby / Upcoming Cargo
+↓
+Skipper / Planner
+
+CargoMatch core business logic must remain unaware of which commercial AIS provider supplied the underlying observation.
+
+---
+
+# FINAL MULTI-PROVIDER PRINCIPLE
+
+VesselFinder and MarineTraffic are DATA SOURCES.
+
+They are not CargoMatch's business logic.
+
+CargoMatch owns:
+
+vessel identity mapping
+
+commercial availability
+
+privacy
+
+eligibility
+
+matching
+
+user permissions
+
+skipper workflow
+
+planner workflow
+
+commercial introductions
+
+AIS providers only supply permitted external vessel observations.
+
+This separation is mandatory because CargoMatch must remain operational and maintainable if:
+
+a provider changes pricing
+
+a provider changes API structure
+
+coverage differs by region
+
+one provider has an outage
+
+a license changes
+
+a better AIS provider becomes available
+
+or CargoMatch later operates its own AIS data source.

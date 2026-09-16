@@ -1,0 +1,2453 @@
+# CARGOMATCH — MASTER PRODUCT & BUILD SPECIFICATION v2.0
+
+You are the lead product engineer and software architect responsible for building **CargoMatch**, a professional B2B logistics capacity-matching platform.
+
+Treat this document as the authoritative product specification.
+
+Do not blindly build everything at once.
+
+First understand the business rules, architecture, privacy model, data model, matching logic and state machines. Then build the product incrementally, starting with the core end-to-end vertical slice.
+
+When requirements conflict, prioritize in this order:
+
+1. Security and authorization
+2. Commercial privacy
+3. Correct business rules
+4. Core end-to-end workflow
+5. Data integrity
+6. Matching correctness
+7. User experience
+8. Secondary functionality
+9. Visual polish
+
+---
+
+# 1. PRODUCT
+
+Product name:
+
+**CargoMatch**
+
+CargoMatch is a B2B logistics platform that matches available or partially available transport capacity with cargo that needs transportation.
+
+The first version focuses exclusively on:
+
+**European inland shipping**
+
+Initial geography:
+
+* Netherlands
+* Belgium
+* Rhine corridor into Western Germany
+
+Do NOT build trucks, rail or containers as separate transport modes in the MVP.
+
+The architecture may prepare for them later.
+
+---
+
+# 2. PROBLEM
+
+Transport companies, charterers, agents and shippers frequently operate inside their own commercial networks.
+
+A charterer may know 50 suitable vessels.
+
+Another company may know another 100 vessels.
+
+These networks do not necessarily overlap.
+
+As a result, a vessel may travel empty for a significant distance to collect cargo while another suitable vessel is already much closer to the loading location.
+
+The closer vessel may be invisible because:
+
+* it belongs to another commercial network
+* its future availability is unknown
+* it is partially loaded but has spare capacity
+* its operator does not know about the cargo
+* the cargo owner does not know about the vessel
+
+CargoMatch should make these opportunities discoverable without requiring companies to publicly expose commercially sensitive information.
+
+---
+
+# 3. CORE VALUE PROPOSITION
+
+CargoMatch should answer:
+
+> "What suitable transport capacity is available near this cargo?"
+
+and:
+
+> "What suitable cargo is available near where my vessel becomes available?"
+
+The system should create privacy-protected commercial introductions.
+
+CargoMatch MVP is NOT a freight booking platform.
+
+CargoMatch does NOT:
+
+* negotiate prices
+* create freight contracts
+* reserve vessel capacity
+* confirm transport bookings
+* guarantee vessel suitability
+* guarantee navigability
+* calculate exact sailing routes
+* claim verified cost savings
+* claim verified CO2 savings
+
+The MVP facilitates discovery, matching, consent-based identity disclosure and communication.
+
+---
+
+# 4. CORE PILOT HYPOTHESIS
+
+Every product decision should support testing this hypothesis:
+
+> "Will logistics companies share privacy-protected available capacity, and will CargoMatch create commercially useful introductions between cargo and nearby suitable capacity?"
+
+When choosing between adding functionality and making the core workflow more reliable, always prioritize the core workflow.
+
+---
+
+# 5. PRIMARY USER TYPES
+
+CargoMatch supports companies that perform one or more business activities.
+
+COMPANY ACTIVITIES:
+
+* SHIPPER
+* CARRIER
+* CHARTERER
+
+A company may select multiple activities.
+
+Do NOT use company activities as permission roles.
+
+---
+
+# 6. USER PERMISSIONS
+
+Company membership permissions:
+
+* OWNER
+* ADMIN
+* MEMBER
+
+Platform roles:
+
+* USER
+* PLATFORM_ADMIN
+
+OWNER can:
+
+* manage company
+* invite users
+* remove users
+* manage network relationships
+* create/edit listings
+* manage vessels
+* view matches/messages
+
+ADMIN can perform most company operations but should not delete the company or remove the last owner.
+
+MEMBER can use operational marketplace functionality according to company permissions.
+
+PLATFORM_ADMIN is a separate platform-level role.
+
+Never infer platform administrator rights from company roles.
+
+---
+
+# 7. MULTI-TENANT ARCHITECTURE
+
+CargoMatch is a multi-company B2B platform.
+
+Every relevant object must belong to the correct company.
+
+Company isolation must be enforced server-side.
+
+Never rely only on:
+
+* hidden UI
+* disabled buttons
+* frontend filtering
+* client-side authorization
+
+Users must never be able to retrieve unauthorized records by manually changing IDs or calling API endpoints.
+
+---
+
+# 8. CORE END-TO-END WORKFLOW
+
+This is the most important acceptance journey.
+
+## Company A — Carrier
+
+Registers
+
+→ creates company
+
+→ creates vessel
+
+→ publishes capacity offer
+
+Example:
+
+Vessel type:
+Dry cargo vessel
+
+Availability region:
+Antwerp
+
+Available:
+18 September 2026 from 08:00
+
+Available capacity:
+1,300 tonnes
+
+Compatible cargo:
+Dry bulk
+
+Preferred direction:
+Rhine / Germany
+
+Maximum approximate positioning distance:
+100 km
+
+---
+
+## Company B — Charterer
+
+Registers
+
+→ creates company
+
+→ publishes cargo
+
+Example:
+
+Cargo:
+Grain
+
+Weight:
+1,200 tonnes
+
+Loading:
+Dordrecht
+
+Loading window:
+18 September 2026 12:00–18:00
+
+Destination:
+Duisburg
+
+Required vessel:
+Dry cargo vessel
+
+---
+
+## CargoMatch
+
+Runs eligibility rules.
+
+If eligible:
+
+→ calculates match score
+
+→ creates match
+
+→ shows privacy-safe match information to both parties.
+
+Company B clicks:
+
+**SHOW INTEREST**
+
+Company A receives notification.
+
+Company A can:
+
+**ACCEPT**
+
+or:
+
+**DECLINE**
+
+When accepted:
+
+Match becomes:
+
+**CONNECTED**
+
+Only then does CargoMatch reveal the authorized identity/contact information.
+
+CargoMatch creates exactly ONE conversation.
+
+Both companies can communicate.
+
+CONNECTED does NOT mean transport is booked.
+
+This complete workflow must work before secondary functionality is prioritized.
+
+---
+
+# 9. BUILD STRATEGY
+
+Do NOT attempt to build the entire specification in one pass.
+
+First create:
+
+1. implementation plan
+2. architecture
+3. database schema
+4. authorization model
+5. privacy model
+6. matching design
+7. state machines
+8. routes/pages
+9. test strategy
+
+Then build ONE complete vertical slice.
+
+The first vertical slice must be:
+
+Company A
+→ vessel
+→ capacity offer
+
+Company B
+→ cargo
+
+System
+→ eligibility
+→ matching
+→ anonymized result
+
+Company B
+→ interest
+
+Company A
+→ accept
+
+System
+→ CONNECTED
+→ reveal authorized information
+→ create one conversation
+
+Test this end-to-end.
+
+Only then continue with secondary features.
+
+---
+
+# 10. AUTHENTICATION
+
+Implement:
+
+* sign up
+* login
+* logout
+* forgot/reset password
+* protected routes
+* user profile
+* company onboarding
+
+Prefer managed authentication.
+
+Use Supabase Auth if appropriate for the selected architecture.
+
+Never store plain-text passwords.
+
+---
+
+# 11. COMPANY ONBOARDING
+
+Collect:
+
+* company name
+* country
+* company activities
+* primary contact
+* email
+* phone
+* VAT/company registration number (optional)
+* terms/privacy acceptance if appropriate
+
+Company activities are multi-select.
+
+Add:
+
+verified
+
+status
+
+Possible company statuses:
+
+* ACTIVE
+* SUSPENDED
+* CLOSED
+
+Suspended companies cannot create listings, show interest or participate in new matches.
+
+---
+
+# 12. COMPANY MEMBERS
+
+A company can contain multiple users.
+
+Implement colleague invitations.
+
+OWNER or ADMIN can invite colleagues by email.
+
+Invitation states:
+
+* PENDING
+* ACCEPTED
+* EXPIRED
+* REVOKED
+
+Prevent unauthorized users from joining companies.
+
+---
+
+# 13. VESSELS
+
+A vessel is a persistent company asset.
+
+A vessel is NOT the same thing as available capacity.
+
+Fields:
+
+* id
+* company_id
+* vessel_name
+* ENI number optional
+* vessel_type
+* total_capacity_tonnes
+* length optional
+* width optional
+* maximum_draft optional
+* cargo_compatibility
+* home_region optional
+* notes
+* active
+* created_at
+* updated_at
+
+Initial vessel types:
+
+* DRY_CARGO
+* TANKER
+* CONTAINER
+* PUSH_BARGE
+* OTHER
+
+Even if some vessel types are not heavily used during the pilot, keep the enum extensible.
+
+---
+
+# 14. CAPACITY OFFERS
+
+A capacity offer represents temporary marketplace availability.
+
+One vessel can create many capacity offers over time.
+
+Fields should include:
+
+* id
+* company_id
+* vessel_id
+* location_id
+* available_from
+* available_until
+* available_capacity_tonnes
+* cargo_compatibility
+* preferred_direction
+* maximum_positioning_distance_km
+* visibility
+* notes
+* listing_status
+* created_at
+* updated_at
+
+Availability type:
+
+* FULLY_EMPTY
+* PARTIALLY_AVAILABLE
+
+Listing status:
+
+* DRAFT
+* ACTIVE
+* WITHDRAWN
+* EXPIRED
+* CLOSED
+
+Automatically expire offers when appropriate.
+
+Users must be able to manually withdraw or close capacity offers.
+
+---
+
+# 15. CARGO LISTINGS
+
+Fields:
+
+* id
+* company_id
+* cargo_name
+* cargo_type
+* weight_tonnes
+* loading_location_id
+* destination_location_id
+* loading_from
+* loading_until
+* expected_unloading_date optional
+* required_vessel_type
+* special_requirements
+* visibility
+* listing_status
+* created_at
+* updated_at
+
+Listing status:
+
+* DRAFT
+* ACTIVE
+* WITHDRAWN
+* EXPIRED
+* CLOSED
+
+Users must be able to edit, withdraw and close cargo listings.
+
+---
+
+# 16. LOCATION CATALOGUE
+
+Do NOT depend on arbitrary free-form addresses for the first pilot.
+
+Create a curated logistics location catalogue.
+
+Include important inland-shipping locations across:
+
+Netherlands
+Belgium
+Western Germany / Rhine corridor
+
+Seed examples:
+
+* Rotterdam
+* Dordrecht
+* Moerdijk
+* Amsterdam
+* Nijmegen
+* Terneuzen
+* Vlissingen
+* Antwerp
+* Ghent
+* Duisburg
+* Düsseldorf
+* Cologne
+
+Each location:
+
+* id
+* name
+* country
+* region
+* latitude
+* longitude
+* privacy_latitude
+* privacy_longitude
+* location_type
+* active
+
+Location types may include:
+
+* PORT
+* TERMINAL_AREA
+* CITY
+* INDUSTRIAL_AREA
+* OTHER
+
+The catalogue should be expandable by administrators later.
+
+---
+
+# 17. GEOGRAPHIC CALCULATIONS
+
+For MVP, approximate geographic distance may use straight-line / great-circle distance.
+
+Implement geography behind a replaceable service.
+
+Example interface concept:
+
+GeographyService
+
+calculateApproximateDistance(origin, destination)
+
+Later this can be replaced with:
+
+InlandWaterwayRoutingService
+
+Do NOT couple matching logic directly to straight-line calculations.
+
+Always label MVP distances:
+
+**Approximate positioning distance**
+
+Do NOT call them:
+
+* sailing distance
+* travel distance
+* route distance
+* ETA
+* navigable distance
+
+unless supported by an appropriate future routing service.
+
+---
+
+# 18. ELIGIBILITY ENGINE
+
+Eligibility MUST happen before scoring.
+
+Create a separate module:
+
+EligibilityEngine
+
+Conceptually:
+
+isEligible(cargo, capacityOffer)
+
+Return:
+
+eligible: true/false
+
+and machine-readable reasons.
+
+Exclude a pair if:
+
+* cargo is not ACTIVE
+* capacity offer is not ACTIVE
+* either listing is expired
+* either company is suspended
+* visibility rules prevent discovery
+* capacity is insufficient
+* vessel type is incompatible
+* cargo compatibility is incompatible
+* availability cannot satisfy loading requirements
+* maximum approximate positioning distance is exceeded
+* required data is missing
+
+Only eligible pairs proceed to scoring.
+
+---
+
+# 19. WHOLE-LOAD MATCHING
+
+For MVP:
+
+ONE cargo listing matches ONE capacity offer.
+
+Do NOT automatically split one cargo across multiple vessels.
+
+Example:
+
+Cargo:
+1,500 t
+
+Available vessel A:
+750 t
+
+Available vessel B:
+750 t
+
+Do NOT create a combined 1,500 t solution.
+
+Multi-vessel splitting may be added later.
+
+---
+
+# 20. MATCHING ENGINE
+
+Use an explainable rule-based matching engine.
+
+Do NOT use AI/ML for MVP matching.
+
+Weights:
+
+Approximate distance to loading location:
+30%
+
+Timing:
+25%
+
+Capacity:
+20%
+
+Vessel type:
+10%
+
+Direction:
+10%
+
+Cargo compatibility:
+5%
+
+Total:
+100%.
+
+Calculate scores with full precision.
+
+Round only the final DISPLAY score to nearest integer.
+
+Example:
+
+96.6 → display 97%.
+
+Store unrounded score if practical.
+
+---
+
+# 21. COMPONENT SCORES
+
+Each match should store:
+
+* total_score
+* distance_score
+* timing_score
+* capacity_score
+* vessel_type_score
+* direction_score
+* cargo_compatibility_score
+* approximate_positioning_distance_km
+* calculation_version
+* calculated_at
+
+Generate a human-readable explanation.
+
+Example:
+
+"Strong match because suitable capacity is available before the loading window, the vessel has sufficient tonnage, and its availability region is relatively close to the loading location."
+
+Do not generate unsupported claims.
+
+---
+
+# 22. MATCH CALCULATION VERSIONING
+
+Matching rules will change.
+
+Create:
+
+calculation_version
+
+Example:
+
+"v1"
+
+Store:
+
+calculated_at
+
+When material cargo/capacity fields change:
+
+* recalculate affected matches
+
+or
+
+* mark them stale and recalculate before showing them as current.
+
+Do not silently display outdated scores as current.
+
+---
+
+# 23. MATCH SNAPSHOTS
+
+Preserve enough input context to understand historically why a match received its score.
+
+Where practical, store privacy-safe calculation snapshots or relevant immutable calculation inputs.
+
+Do not depend solely on mutable live records when auditing historical calculations.
+
+---
+
+# 24. MATCH LIFECYCLE
+
+Use exactly these primary states:
+
+* NEW
+* INTEREST_SENT
+* CONNECTED
+* DECLINED
+* EXPIRED
+
+Flow:
+
+NEW
+
+→ first party shows interest
+
+INTEREST_SENT
+
+→ counterparty accepts
+
+CONNECTED
+
+or
+
+→ counterparty declines
+
+DECLINED
+
+Invalid/expired opportunity:
+
+EXPIRED
+
+Do NOT use ACCEPTED as a separate equivalent state.
+
+---
+
+# 25. CONNECTION IS NOT BOOKING
+
+This is a critical business rule.
+
+CONNECTED means:
+
+Both companies consented to reveal authorized commercial identity/contact information and communicate.
+
+CONNECTED does NOT mean:
+
+* cargo booked
+* transport confirmed
+* capacity reserved
+* price agreed
+* contract signed
+* transport completed
+
+Do NOT automatically reserve capacity after CONNECTED.
+
+---
+
+# 26. OPTIONAL OUTCOME TRACKING
+
+After the core MVP works, optionally allow connected parties to record commercial outcome.
+
+Possible states:
+
+* DISCUSSING
+* TRANSPORT_AGREED
+* NO_AGREEMENT
+* UNKNOWN
+
+Outcome is separate from match lifecycle.
+
+Never automatically infer that a transport happened.
+
+---
+
+# 27. PRIVACY PRINCIPLE
+
+Commercial privacy is one of CargoMatch's core product features.
+
+Privacy must be symmetric.
+
+Protect BOTH:
+
+* capacity owner
+* cargo owner
+
+before CONNECTED.
+
+Do NOT simply hide names in the frontend.
+
+Create server-side response models.
+
+---
+
+# 28. THREE PRIVACY VIEWS
+
+Implement conceptually separate representations.
+
+## OWNER VIEW
+
+Full information for the company that owns the record.
+
+## ANONYMOUS MARKETPLACE VIEW
+
+Privacy-safe representation for authorized marketplace participants before connection.
+
+## CONNECTED VIEW
+
+Authorized information available after CONNECTED status.
+
+The API must decide which representation the requesting user is allowed to receive.
+
+---
+
+# 29. INDIRECT IDENTIFICATION
+
+Removing company/vessel names is not enough.
+
+Before connection, protect potentially identifying combinations including:
+
+* exact coordinates
+* exact berth
+* vessel name
+* ENI number
+* company name
+* contact person
+* phone
+* email
+* unusually precise vessel dimensions
+* precise capacity when identifying
+* precise timestamps when identifying
+* free-text notes containing identity
+* overly precise distance values where identifying
+
+Use privacy-safe representations.
+
+Example before connection:
+
+Dry cargo vessel
+
+Region:
+Antwerp
+
+Capacity class:
+1,000–1,500 t
+
+Available:
+Tomorrow morning
+
+Preferred direction:
+Rhine
+
+Approximate positioning:
+< 50 km
+
+Do not expose the underlying private values in network/API responses.
+
+---
+
+# 30. FREE-TEXT PRIVACY
+
+Free-text notes can accidentally reveal identity.
+
+Before connection:
+
+* do not automatically expose owner-entered private notes
+* use dedicated public/anonymized fields if necessary
+* sanitize/validate user-generated marketplace text
+* warn users not to include company/vessel/contact information in anonymous descriptions
+
+---
+
+# 31. VISIBILITY LEVELS
+
+Listings support:
+
+* PRIVATE
+* TRUSTED_NETWORK
+* OPEN_NETWORK
+
+PRIVATE:
+
+Visible only inside the owning company's permitted users.
+
+TRUSTED_NETWORK:
+
+Discoverable by connected trusted partner companies.
+
+OPEN_NETWORK:
+
+Discoverable by eligible CargoMatch marketplace participants.
+
+Visibility determines DISCOVERY.
+
+Visibility does NOT automatically reveal identity.
+
+---
+
+# 32. PRIVATE / TRUSTED NETWORKS
+
+Companies can establish trusted relationships.
+
+Connection states:
+
+* PENDING
+* ACCEPTED
+* DECLINED
+* REMOVED
+
+Companies can:
+
+* invite partner
+* accept invitation
+* decline
+* remove connection
+
+Prevent duplicate partner connections.
+
+Trusted partners gain discovery access according to listing visibility.
+
+They do NOT automatically gain full identity disclosure for anonymous listings unless future settings explicitly allow this.
+
+---
+
+# 33. MATCH GROUPING
+
+Where useful, show matches grouped as:
+
+YOUR COMPANY / OWN NETWORK
+
+TRUSTED PARTNERS
+
+OPEN CARGOMATCH NETWORK
+
+Example:
+
+OWN NETWORK
+
+No eligible vessel within the configured positioning distance.
+
+TRUSTED PARTNERS
+
+1 eligible opportunity
+87% match
+
+OPEN NETWORK
+
+4 eligible opportunities
+Best score 97%
+
+Do not expose identities contrary to privacy rules.
+
+---
+
+# 34. INTEREST
+
+Either eligible party may show interest in a match.
+
+Record:
+
+* match_id
+* company_id
+* created_at
+* status
+
+Prevent duplicate interest from the same company for the same match.
+
+The initial interest represents the sender's consent to identity disclosure if the counterparty accepts.
+
+---
+
+# 35. ACCEPT / DECLINE
+
+The counterparty can:
+
+ACCEPT
+
+or:
+
+DECLINE
+
+On ACCEPT:
+
+* transition match to CONNECTED
+* persist mutual consent
+* create exactly one conversation
+* create notifications
+* permit connected-view API responses
+
+This operation must be transactional.
+
+---
+
+# 36. CONCURRENCY
+
+Assume two requests may happen simultaneously.
+
+Database/application logic must prevent:
+
+* duplicate matches
+* duplicate interests
+* duplicate conversations
+* duplicate partner relationships
+* inconsistent state transitions
+
+Use database constraints and transactions.
+
+Examples:
+
+Unique match:
+cargo_id + capacity_offer_id
+
+Unique conversation:
+match_id
+
+Unique interest:
+match_id + company_id
+
+Normalized unique partner relationship:
+company A + company B
+
+---
+
+# 37. MESSAGING
+
+Messaging becomes available after CONNECTED.
+
+Conversation belongs to exactly one match.
+
+Implement:
+
+* conversation list
+* message thread
+* sender
+* timestamps
+* unread state
+* message read state
+
+Messages must respect company access permissions.
+
+A user from unrelated Company C must never access the conversation.
+
+---
+
+# 38. MESSAGE READ RECEIPTS
+
+Do not use one global read flag if multiple users can belong to one company.
+
+Implement per-user read state where practical.
+
+Example:
+
+message_reads
+
+* message_id
+* user_id
+* read_at
+
+or an equivalent scalable design.
+
+---
+
+# 39. NOTIFICATIONS
+
+Implement basic in-app notifications.
+
+Examples:
+
+* New match found
+* Company showed interest
+* Interest accepted
+* Interest declined
+* New message
+* Listing expires soon
+* Partner invitation
+* Partner invitation accepted
+
+Users can mark notifications as read.
+
+Keep architecture ready for future email/push notifications.
+
+---
+
+# 40. LISTING EXPIRY
+
+Implement scheduled/background expiry.
+
+Capacity and cargo should automatically become EXPIRED when their relevant time window has passed.
+
+Expired listings:
+
+* must not create new matches
+* must not appear as active marketplace opportunities
+
+Existing historical records should remain auditable.
+
+---
+
+# 41. MAP
+
+Create a professional map-focused logistics interface.
+
+Preferred options:
+
+Mapbox if configured correctly.
+
+Otherwise:
+
+Leaflet with a properly licensed/configured tile provider.
+
+Do not hardcode paid API secrets in frontend code.
+
+---
+
+# 42. MAP PRIVACY
+
+Before CONNECTED:
+
+Use privacy-safe regional coordinates.
+
+Do NOT plot exact private coordinates.
+
+After CONNECTED:
+
+More precise location information may be shown only when authorized and appropriate.
+
+Map privacy must use the same server-side privacy logic as list/search APIs.
+
+---
+
+# 43. MAP CONTENT
+
+Display privacy-safe markers for:
+
+* capacity opportunities
+* cargo loading regions
+* relevant match opportunities
+
+Use distinct visual styles.
+
+Example:
+
+teal/blue:
+capacity
+
+orange:
+cargo
+
+Lines:
+potential relationship or direction where useful
+
+Do not imply that straight lines are navigable sailing routes.
+
+---
+
+# 44. MAP FILTERS
+
+Initial filters:
+
+* date
+* available capacity
+* cargo weight
+* vessel type
+* cargo type
+* maximum positioning distance
+* direction
+* visibility/network
+* listing status where appropriate
+
+Keep filters useful and compact.
+
+---
+
+# 45. DASHBOARD
+
+Build a professional logistics dashboard after the core workflow works.
+
+Useful KPI cards:
+
+* active capacity offers
+* active cargo
+* new matches
+* connected matches
+* unread conversations
+
+Potential capacity utilization may be shown where correctly derived.
+
+Do NOT show unsupported achieved savings.
+
+---
+
+# 46. SAVINGS AND CO2
+
+For MVP do NOT claim:
+
+* empty kilometres avoided
+* fuel saved
+* money saved
+* CO2 avoided
+
+unless a defensible baseline and methodology exists.
+
+Approximate positioning distance does not prove avoided distance.
+
+Instead show measurable/derived metrics:
+
+* approximate positioning distance
+* available capacity
+* cargo tonnage
+* potential capacity utilization
+
+Example:
+
+Cargo:
+1,200 t
+
+Available capacity:
+1,300 t
+
+Potential utilization:
+92.3%
+
+Clearly label estimates.
+
+---
+
+# 47. MAIN NAVIGATION
+
+Desktop-first responsive layout.
+
+Suggested sidebar:
+
+Dashboard
+Map
+Cargo
+Capacity
+Matches
+Messages
+Network
+Vessels
+Company
+Settings
+
+Platform admins get a separate Admin section.
+
+Top navigation:
+
+* CargoMatch
+* notifications
+* company/user profile
+* language selector later if implemented
+
+---
+
+# 48. DESIGN
+
+The product should feel like:
+
+Professional European logistics SaaS.
+
+Visual characteristics:
+
+* compact
+* trustworthy
+* operational
+* data-focused
+* modern
+* map-oriented
+
+Primary palette:
+
+* dark navy
+* marine blue
+* teal
+* white
+* light grey
+
+Avoid:
+
+* crypto/startup aesthetic
+* excessive gradients
+* cartoon graphics
+* excessive animations
+* oversized empty spaces
+* consumer marketplace styling
+
+Primary users are logistics planners working on desktop screens.
+
+Mobile/tablet should remain usable.
+
+---
+
+# 49. CAPACITY CREATION UX
+
+Creating capacity should take approximately one minute for an experienced planner.
+
+Use a concise form or short multi-step workflow.
+
+Fields:
+
+* vessel
+* expected availability location
+* available from
+* available until
+* fully empty / partially available
+* available capacity
+* cargo compatibility
+* preferred direction
+* maximum approximate positioning distance
+* visibility
+* private notes
+
+After activation:
+
+Run/re-run matching.
+
+---
+
+# 50. CARGO CREATION UX
+
+Fields:
+
+* cargo name/type
+* tonnage
+* loading location
+* destination
+* loading from
+* loading until
+* expected unloading date optional
+* required vessel type
+* special requirements
+* visibility
+* private notes
+
+After activation:
+
+Run matching.
+
+Show:
+
+"Searching available capacity..."
+
+Then show eligible matches.
+
+---
+
+# 51. MATCH PAGE
+
+Display:
+
+* rounded match score
+* approximate positioning distance
+* cargo summary
+* capacity summary
+* loading window
+* capacity utilization
+* component scores
+* explanation
+* network category
+* status
+
+Before CONNECTED:
+
+Only anonymous representations.
+
+After CONNECTED:
+
+Authorized details.
+
+---
+
+# 52. DATABASE
+
+Use PostgreSQL.
+
+Supabase is preferred if it fits the environment well.
+
+Suggested entities:
+
+companies
+
+company_activities
+
+users / auth users
+
+company_memberships
+
+company_invitations
+
+vessels
+
+locations
+
+capacity_offers
+
+cargo_listings
+
+matches
+
+interests
+
+company_connections
+
+conversations
+
+messages
+
+message_reads
+
+notifications
+
+issue_reports
+
+activity_log / audit_log
+
+Optional:
+
+match_outcomes
+
+---
+
+# 53. DATABASE CONSTRAINTS
+
+Use:
+
+* foreign keys
+* NOT NULL where appropriate
+* check constraints
+* unique constraints
+* useful indexes
+* enum/status validation where appropriate
+
+Prevent duplicate:
+
+* matches
+* interests
+* conversations
+* partner relationships
+* accepted invitations where inappropriate
+
+Use database constraints as a second layer of protection behind application logic.
+
+---
+
+# 54. AUDITABILITY
+
+Important commercial/security actions should be auditable.
+
+Track events such as:
+
+* listing created
+* listing edited
+* listing withdrawn
+* interest sent
+* interest accepted
+* interest declined
+* identity disclosure became authorized
+* company suspended
+* admin moderation
+
+Do not expose sensitive audit information to unauthorized users.
+
+---
+
+# 55. ADMIN
+
+Create a basic platform admin area after core functionality works.
+
+Admin can view:
+
+* companies
+* users
+* vessels
+* cargo
+* capacity offers
+* matches
+* issue reports
+* platform activity
+
+Admin can:
+
+* verify company
+* suspend company
+* reactivate company
+* deactivate inappropriate listing
+* review issue report
+
+All admin routes must be protected server-side.
+
+---
+
+# 56. ISSUE REPORTING
+
+Since admin moderation includes issues, implement a basic reporting mechanism.
+
+Users can report:
+
+* listing
+* company
+* message/conversation issue where appropriate
+
+Issue report:
+
+* reporter
+* target type
+* target id
+* reason
+* description
+* status
+* created_at
+
+Admin can review and resolve reports.
+
+---
+
+# 57. DEMO DATA
+
+Seed realistic but fictional data.
+
+Create approximately:
+
+* 8 fictional companies
+* 15 fictional vessels
+* 12 active capacity offers
+* 12 cargo listings
+* 20+ eligible matches
+* several trusted network relationships
+* interests
+* connected matches
+* messages
+* notifications
+
+Use real geographic locations but fictional commercial identities.
+
+Do NOT use real vessel/company identities.
+
+---
+
+# 58. DEMO ACCOUNTS
+
+Where secure and appropriate in development/demo mode, create easy demo personas such as:
+
+Carrier demo
+Charterer demo
+Platform admin demo
+
+Do not expose insecure production credentials.
+
+---
+
+# 59. INTERNATIONALIZATION
+
+Architecture should support:
+
+* English
+* Dutch
+* German
+
+Do not scatter hardcoded UI text unnecessarily.
+
+Use translation resources/files.
+
+However:
+
+Full translation coverage is SECONDARY to the core workflow.
+
+English may be the initial complete implementation.
+
+---
+
+# 60. SECURITY
+
+Security is a pilot-critical requirement.
+
+Implement:
+
+* server-side authorization
+* tenant isolation
+* protected routes
+* input validation
+* output redaction
+* secure authentication
+* safe secret management
+* rate limiting where appropriate
+* safe error responses
+* CSRF protection where relevant to architecture
+* secure database access
+
+Never send hidden commercial data to the frontend and merely hide it visually.
+
+---
+
+# 61. AUTHORIZATION TESTING
+
+Write tests that directly request protected APIs.
+
+Test at minimum:
+
+Company A cannot retrieve Company B's private vessel record.
+
+Company A cannot retrieve Company B's private cargo data.
+
+Company A cannot retrieve exact coordinates it is not authorized to see.
+
+Anonymous user cannot retrieve protected marketplace data.
+
+Trusted partner receives only fields permitted by trusted visibility.
+
+OPEN network user receives only anonymous marketplace fields.
+
+CONNECTED company receives only authorized connected information.
+
+Company C cannot access conversation between A and B.
+
+Suspended company cannot publish.
+
+Suspended company cannot send new interest.
+
+Regular user cannot access platform admin routes.
+
+Do not consider privacy complete because UI elements are hidden.
+
+---
+
+# 62. MATCHING TESTS
+
+Create unit tests for:
+
+Insufficient capacity
+→ ineligible
+
+Wrong vessel type
+→ ineligible
+
+Wrong cargo compatibility
+→ ineligible
+
+Expired capacity
+→ ineligible
+
+Expired cargo
+→ ineligible
+
+Outside maximum positioning distance
+→ ineligible
+
+Unauthorized visibility
+→ ineligible
+
+Valid pair
+→ scored
+
+96.6 final score
+→ displayed as 97
+
+Modified listing
+→ affected match recalculated/stale
+
+---
+
+# 63. STATE MACHINE TESTS
+
+Test:
+
+NEW → INTEREST_SENT
+
+INTEREST_SENT → CONNECTED
+
+INTEREST_SENT → DECLINED
+
+NEW → EXPIRED
+
+INTEREST_SENT → EXPIRED
+
+Prevent invalid transitions.
+
+Ensure simultaneous acceptance cannot create multiple conversations.
+
+---
+
+# 64. PERFORMANCE
+
+The MVP does not need hyperscale architecture.
+
+However:
+
+Avoid obviously inefficient N+1 matching queries.
+
+Use appropriate indexes.
+
+Keep matching service isolated so it can later move to background jobs if marketplace volume grows.
+
+For pilot scale, correctness is more important than premature optimization.
+
+---
+
+# 65. BACKGROUND WORK
+
+Use scheduled/background processing for:
+
+* listing expiry
+* match recalculation where appropriate
+* expiry notifications
+
+Do not create unnecessary distributed infrastructure for pilot scale.
+
+---
+
+# 66. TECHNOLOGY
+
+Preferred architecture:
+
+Frontend:
+React / Next.js or equivalent modern React framework
+
+Backend:
+Modular server-side application/API
+
+Database:
+PostgreSQL
+
+Authentication:
+Managed authentication such as Supabase Auth
+
+Map:
+Mapbox or Leaflet
+
+Matching:
+Dedicated rule-based service/module
+
+Use TypeScript where practical.
+
+Choose boring, maintainable technology over unnecessary complexity.
+
+---
+
+# 67. CODE ORGANIZATION
+
+Separate:
+
+UI
+
+API/routes
+
+authorization
+
+privacy/redaction
+
+business logic
+
+eligibility
+
+matching
+
+geography
+
+notifications
+
+database access
+
+Do not put matching/privacy rules directly inside React components.
+
+Create clear modules/services.
+
+Example conceptual structure:
+
+/auth
+
+/companies
+
+/vessels
+
+/cargo
+
+/capacity
+
+/locations
+
+/matching
+eligibility
+scoring
+explanations
+
+/privacy
+
+/networks
+
+/conversations
+
+/notifications
+
+/admin
+
+/services
+geography
+
+---
+
+# 68. FUTURE SERVICE INTERFACES
+
+Prepare interfaces but do NOT build full integrations for:
+
+AIS
+
+inland-waterway routing
+
+water levels
+
+locks
+
+bridges
+
+ETA
+
+fuel calculations
+
+CO2 calculations
+
+TMS
+
+ERP
+
+external API
+
+machine learning
+
+capacity prediction
+
+trucks
+
+rail
+
+containers
+
+Do not allow future architecture to overcomplicate the pilot.
+
+---
+
+# 69. MVP PRIORITY — PILOT CRITICAL
+
+Must work:
+
+Authentication
+
+Company onboarding
+
+Company activities
+
+Company memberships
+
+Company invitations
+
+Vessels
+
+Location catalogue
+
+Capacity offers
+
+Cargo listings
+
+Listing lifecycle
+
+Visibility rules
+
+Eligibility engine
+
+Matching engine
+
+Anonymous marketplace responses
+
+Privacy-safe map
+
+Interest
+
+Accept/decline
+
+CONNECTED state
+
+Identity disclosure
+
+Exactly one conversation
+
+Messaging
+
+Basic notifications
+
+Trusted networks
+
+Basic admin/moderation
+
+Demo data
+
+Authorization tests
+
+Matching tests
+
+State-machine tests
+
+---
+
+# 70. SECONDARY
+
+Only after core workflow works:
+
+Advanced dashboard
+
+Advanced analytics
+
+Global search
+
+Rich activity reporting
+
+Full Dutch/German translation
+
+Advanced notification preferences
+
+Advanced reporting
+
+Outcome analytics
+
+More visual polish
+
+---
+
+# 71. FUTURE
+
+Do NOT implement during initial pilot unless explicitly requested later:
+
+AIS tracking
+
+Exact inland-waterway routing
+
+ETA
+
+Locks/bridges
+
+Water levels
+
+Fuel savings
+
+CO2 savings
+
+Automated booking
+
+Payments
+
+Freight contracts
+
+TMS integrations
+
+ERP integrations
+
+External marketplace API
+
+Machine-learning matching
+
+Automatic capacity prediction
+
+Truck marketplace
+
+Rail marketplace
+
+Container marketplace
+
+---
+
+# 72. DEVELOPMENT PHASES
+
+## PHASE 0 — PLAN
+
+Before major implementation:
+
+Produce:
+
+* architecture summary
+* schema
+* route/page list
+* authorization matrix
+* privacy matrix
+* match lifecycle
+* listing lifecycle
+* matching design
+* testing plan
+
+Identify contradictions before coding.
+
+Do not spend excessive time writing documentation instead of building.
+
+---
+
+## PHASE 1 — IDENTITY & SECURITY FOUNDATION
+
+Build:
+
+authentication
+
+companies
+
+company activities
+
+memberships
+
+invitations
+
+roles
+
+authorization
+
+privacy/redaction foundation
+
+Completion condition:
+
+Company A cannot retrieve Company B's unauthorized private data through UI OR direct API requests.
+
+---
+
+## PHASE 2 — MARKETPLACE OBJECTS
+
+Build:
+
+locations
+
+vessels
+
+capacity offers
+
+cargo listings
+
+listing lifecycle
+
+visibility
+
+privacy-safe marketplace responses
+
+map
+
+Completion condition:
+
+Authorized listings appear correctly while protected information remains hidden.
+
+---
+
+## PHASE 3 — MATCHING
+
+Build:
+
+eligibility engine
+
+geographic approximation
+
+scoring
+
+match explanations
+
+match persistence
+
+recalculation
+
+Completion condition:
+
+Eligible pairs receive correct scores.
+
+Ineligible pairs never appear as normal matches.
+
+---
+
+## PHASE 4 — INTRODUCTION WORKFLOW
+
+Build:
+
+interest
+
+accept
+
+decline
+
+CONNECTED
+
+identity disclosure
+
+conversation creation
+
+Completion condition:
+
+The complete Company A → Company B workflow works end-to-end.
+
+---
+
+## PHASE 5 — COLLABORATION
+
+Build:
+
+messages
+
+unread states
+
+notifications
+
+trusted partner invitations
+
+network management
+
+Completion condition:
+
+Connected companies can communicate securely.
+
+---
+
+## PHASE 6 — PILOT OPERATIONS
+
+Build:
+
+dashboard
+
+admin
+
+issue reporting
+
+demo data
+
+basic analytics
+
+responsive polish
+
+i18n architecture
+
+Completion condition:
+
+The platform can be reliably demonstrated and operated during a pilot.
+
+---
+
+# 73. MVP ACCEPTANCE TEST
+
+The MVP is pilot-ready only when this exact scenario succeeds:
+
+1. User A registers.
+
+2. User A creates Carrier Company A.
+
+3. User A creates Vessel A.
+
+4. User A publishes 1,300 tonnes available capacity near Antwerp.
+
+5. User B registers.
+
+6. User B creates Charterer Company B.
+
+7. User B publishes 1,200 tonnes cargo from Dordrecht to Duisburg.
+
+8. Eligibility engine confirms compatibility.
+
+9. Matching engine calculates score.
+
+10. Both parties receive privacy-safe match representations.
+
+11. Neither party can retrieve unauthorized identity/private details through direct API calls.
+
+12. User B clicks SHOW INTEREST.
+
+13. User A receives notification.
+
+14. User A clicks ACCEPT.
+
+15. Match becomes CONNECTED.
+
+16. Authorized identity/contact information becomes available.
+
+17. Exactly one conversation is created.
+
+18. Both parties can exchange messages.
+
+19. Unrelated Company C cannot retrieve match-private information or messages.
+
+20. CONNECTED is not displayed as booked transport.
+
+If this journey fails, the MVP is not complete.
+
+---
+
+# 74. PRODUCT COPY
+
+Use clear operational terminology.
+
+Preferred:
+
+Available capacity
+
+Cargo opportunity
+
+Approximate positioning distance
+
+Show interest
+
+Connected
+
+Trusted network
+
+Open network
+
+Capacity utilization
+
+Avoid unsupported terminology such as:
+
+Guaranteed match
+
+Best vessel
+
+Exact sailing distance
+
+Guaranteed savings
+
+CO2 saved
+
+Transport booked
+
+unless the product genuinely supports the claim.
+
+---
+
+# 75. UX PRINCIPLES
+
+A logistics planner should understand the interface without training.
+
+Prioritize:
+
+speed
+
+clarity
+
+information density
+
+few clicks
+
+good filtering
+
+clear status
+
+clear privacy
+
+obvious next action
+
+Avoid unnecessary onboarding screens and decorative interactions.
+
+Creating cargo/capacity should be fast.
+
+Reviewing matches should be even faster.
+
+---
+
+# 76. EMPTY STATES
+
+Create useful empty states.
+
+Examples:
+
+No matches yet.
+
+"CargoMatch will automatically check new capacity when it becomes available."
+
+No capacity.
+
+"Publish where your vessel becomes available to discover nearby cargo."
+
+No trusted partners.
+
+"Invite companies you already work with to create a private discovery network."
+
+---
+
+# 77. ERROR HANDLING
+
+Provide clear errors.
+
+Examples:
+
+Insufficient permissions
+
+Listing expired
+
+Match no longer available
+
+Capacity changed
+
+Cargo changed
+
+Connection already exists
+
+Interest already sent
+
+Conversation already exists
+
+Do not expose stack traces, database details or sensitive internal information to normal users.
+
+---
+
+# 78. DATA INTEGRITY
+
+Use transactions for important multi-record changes.
+
+Examples:
+
+accept interest
+
+→ change match state
+
+→ record consent
+
+→ create conversation
+
+→ create notification
+
+This should either succeed consistently or fail safely.
+
+---
+
+# 79. OBSERVABILITY
+
+Use structured server logging where practical.
+
+Log technical failures without leaking commercial data.
+
+Make matching and authorization failures diagnosable during pilot testing.
+
+---
+
+# 80. FINAL BUILD INSTRUCTION
+
+Start by reviewing this entire specification.
+
+Do NOT immediately generate the entire application.
+
+First return a concise implementation plan containing:
+
+1. proposed technical stack
+2. database/entity plan
+3. authorization model
+4. privacy/redaction model
+5. eligibility engine design
+6. matching engine design
+7. state machines
+8. route/page structure
+9. vertical-slice implementation order
+10. testing strategy
+
+Then begin implementation with the smallest complete vertical slice.
+
+After every major phase:
+
+* run the application
+* run tests
+* fix TypeScript/build errors
+* fix runtime errors
+* test authorization
+* test direct API access
+* verify privacy redaction
+* verify database constraints
+
+Do not proceed to secondary visual features while core authorization or matching tests are failing.
+
+Do not replace required core functionality with static mockups.
+
+Where an external service is unavailable, implement a clean fallback.
+
+Prefer simple, maintainable solutions.
+
+The target is not a flashy prototype.
+
+The target is a **credible, secure, testable pilot platform that can be demonstrated to real inland-shipping companies.**
+
+---
+
+# FINAL PRODUCT PRINCIPLE
+
+CargoMatch exists to make commercially useful transport capacity discoverable without forcing companies to publicly expose commercially sensitive information.
+
+The core product loop is:
+
+**Publish →**

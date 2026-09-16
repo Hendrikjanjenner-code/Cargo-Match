@@ -1,0 +1,733 @@
+Hier is Prompt 1, klaar om direct in Replit te plakken.
+
+CARGOMATCH — DEEPSEA, LINER & DIGITAL IMPORT MASTER EXTENSION V2
+
+Extend the existing CargoMatch application and Master Specification.
+
+The original application may currently be oriented toward inland-waterway vessels such as barges/coasters.
+
+Do NOT remove that functionality.
+
+Expand the architecture so CargoMatch can ultimately support deepsea shipping while preserving the existing secure matching, privacy, company, messaging and network architecture.
+
+The primary new maritime segments are:
+
+1. INLAND WATERWAY
+2. DEEPSEA DRY BULK
+3. CONVENTIONAL / BREAKBULK
+4. LINER SHIPPING
+5. LCL / GROUPAGE IMPORT
+
+Do not implement all segments as one identical workflow.
+
+Use shared CargoMatch infrastructure with mode-specific commercial logic.
+
+---
+
+1. DEEPSEA CORE PROBLEM
+
+CargoMatch must solve future vessel-positioning inefficiency.
+
+Example:
+
+An owner has fixed a vessel on a voyage.
+
+The vessel will eventually discharge and become commercially open in Southeast Asia.
+
+The next known employment may require substantial ballast repositioning.
+
+Meanwhile a charterer may have suitable cargo near the vessel's future open position.
+
+The parties may not know about each other.
+
+CargoMatch should identify this opportunity BEFORE the vessel becomes empty.
+
+Core flow:
+
+CURRENT VOYAGE
+
+→ EXPECTED DISCHARGE
+
+→ FUTURE OPEN POSITION
+
+→ FUTURE CARGO
+
+→ ELIGIBILITY
+
+→ MATCH
+
+→ INTEREST
+
+→ CONNECTED
+
+→ COMMERCIAL DISCUSSION
+
+The objective is to create commercial introductions before unnecessary ballast repositioning occurs.
+
+---
+
+2. DEEPSEA VESSEL CLASSES
+
+Support extensible dry-bulk vessel classes:
+
+HANDYSIZE
+
+HANDYMAX
+
+SUPRAMAX
+
+ULTRAMAX
+
+PANAMAX
+
+KAMSARMAX
+
+POST_PANAMAX
+
+CAPESIZE
+
+NEWCASTLEMAX
+
+OTHER
+
+Actual vessel specifications remain more authoritative than class labels.
+
+---
+
+3. DEEPSEA VESSEL PROFILE
+
+Support fields such as:
+
+vessel name
+
+IMO
+
+MMSI
+
+flag
+
+year built
+
+DWT
+
+summer draft
+
+LOA
+
+beam
+
+vessel class
+
+holds
+
+hatches
+
+gear configuration
+
+crane capacity
+
+grab capability
+
+grain capacity
+
+cargo restrictions
+
+registered owner
+
+commercial operator
+
+technical manager
+
+AIS identifiers
+
+Apply CargoMatch privacy rules to commercially sensitive information.
+
+---
+
+4. OPEN POSITION
+
+Introduce:
+
+VESSEL_OPEN_POSITION
+
+Fields:
+
+vessel
+
+expected open port
+
+expected open region
+
+open_from
+
+open_until
+
+available DWT
+
+previous voyage context
+
+preferred employment
+
+preferred trade lane
+
+cargo compatibility
+
+maximum preferred ballast positioning
+
+visibility
+
+source
+
+status
+
+Possible status:
+
+EXPECTED
+
+CONFIRMED
+
+WITHDRAWN
+
+EXPIRED
+
+Commercial availability must be confirmed by an authorized user.
+
+---
+
+5. FUTURE OPEN POSITION
+
+Do not only match currently empty vessels.
+
+Example:
+
+Capesize currently sailing.
+
+Expected discharge:
+Malaysia
+
+Expected open:
+Malaysia region
+
+Expected date:
+18 October
+
+CargoMatch should already search cargo around Southeast Asia with compatible future laycan.
+
+This forward-looking functionality is central to CargoMatch.
+
+---
+
+6. DEEPSEA CARGO ORDER
+
+Fields may include:
+
+cargo
+
+commodity
+
+quantity
+
+quantity tolerance
+
+load port
+
+load range
+
+discharge port
+
+discharge range
+
+laycan start
+
+laycan end
+
+minimum DWT
+
+maximum DWT
+
+preferred vessel class
+
+draft restrictions
+
+gear requirements
+
+loading rate
+
+discharge rate
+
+special requirements
+
+visibility
+
+company
+
+status
+
+private commercial notes
+
+---
+
+7. DEEPSEA ELIGIBILITY
+
+Before scoring, exclude:
+
+incompatible open date / laycan
+
+insufficient DWT
+
+excessive vessel size where restricted
+
+draft incompatibility
+
+cargo incompatibility
+
+gear incompatibility
+
+trade/geographic restrictions
+
+unacceptable positioning range
+
+expired listings
+
+unauthorized visibility
+
+suspended companies
+
+Only eligible combinations receive a score.
+
+---
+
+8. DEEPSEA MATCHING
+
+Create:
+
+DeepseaBulkEligibilityStrategy
+
+and:
+
+DeepseaBulkMatchingStrategy
+
+Potential scoring factors:
+
+ballast proximity
+
+open date vs laycan
+
+DWT utilization
+
+vessel class suitability
+
+cargo compatibility
+
+trade-lane compatibility
+
+gear compatibility
+
+owner/charterer preferences
+
+Keep scoring explainable.
+
+Do not reuse inland-waterway scoring weights.
+
+---
+
+9. BALLAST POSITIONING
+
+Eventually support maritime routing.
+
+Until appropriate routing exists:
+
+label geographic calculations as approximate.
+
+Never describe straight-line distance as actual nautical sailing distance.
+
+Do not claim verified bunker, monetary or emissions savings without a defensible calculation methodology.
+
+---
+
+10. TWO-SIDED DISCOVERY
+
+CargoMatch must work from both directions.
+
+CHARTERER:
+
+"I have 75,000 mt loading Indonesia."
+
+↓
+
+"What participating vessels are expected to open nearby?"
+
+OWNER:
+
+"My Kamsarmax opens Malaysia 20 October."
+
+↓
+
+"What suitable cargo may be available nearby?"
+
+Both workflows are equally important.
+
+---
+
+11. AIS SUPPORT
+
+Keep separate connectors:
+
+VesselFinderConnector
+
+MarineTrafficConnector
+
+FutureAISConnector
+
+Use a provider-independent AISProviderManager.
+
+AIS can support:
+
+position
+
+speed
+
+course
+
+destination
+
+reported draft
+
+ETA
+
+port calls
+
+voyage progression
+
+AIS does NOT prove commercial availability.
+
+Owner/operator/authorized broker confirms open position.
+
+---
+
+12. CONVENTIONAL / BREAKBULK
+
+Support cargo including:
+
+breakbulk
+
+project cargo
+
+heavy lift
+
+steel
+
+machinery
+
+RoRo where applicable
+
+Create service/sailing compatibility based on:
+
+origin
+
+destination
+
+trade lane
+
+departure
+
+dimensions
+
+weight
+
+lifting requirements
+
+deck/hold requirements
+
+cargo type
+
+---
+
+13. LINER SHIPPING
+
+Create:
+
+SHIPPING_SERVICE
+
+SAILING
+
+PORT_ROTATION
+
+TRADE_LANE
+
+Example:
+
+North Europe → West Africa
+
+Antwerp
+→ Rotterdam
+→ Bilbao
+→ Dakar
+→ Tema
+
+CargoMatch should answer:
+
+Which participating carrier/service is relevant?
+
+Which upcoming sailing may accept the cargo?
+
+Do not reduce liner shipping to vessel-position matching alone.
+
+---
+
+14. LCL / GROUPAGE — SEPARATE CARGOMATCH IMPORT MODULE
+
+Create a separate future module:
+
+CARGOMATCH IMPORT
+
+Purpose:
+
+digitize destination handling of LCL/groupage shipments.
+
+This is separate from capacity matching.
+
+Shared infrastructure may include:
+
+companies
+
+users
+
+permissions
+
+documents
+
+notifications
+
+payments
+
+audit logging
+
+---
+
+15. LCL STRUCTURE
+
+Model:
+
+MASTER CONSOLIDATION
+
+→ CONTAINER
+
+→ HOUSE SHIPMENTS
+
+→ CONSIGNEES
+
+Each consignee only sees its authorized shipment.
+
+Never expose information about other receivers in the consolidation.
+
+---
+
+16. ORIGIN DATA
+
+Allow authorized origin-side parties to populate:
+
+master reference
+
+house reference
+
+container
+
+seal
+
+shipper
+
+consignee
+
+notify party
+
+origin
+
+destination
+
+vessel/voyage
+
+ETA
+
+packages
+
+weight
+
+volume
+
+commodity
+
+documents
+
+local charges where authorized
+
+---
+
+17. CONSIGNEE PORTAL
+
+Provide:
+
+shipment overview
+
+arrival status
+
+documents
+
+required actions
+
+charges
+
+payment status
+
+customs/release status
+
+warehouse information
+
+pickup information
+
+notifications
+
+support/contact
+
+---
+
+18. PAYMENTS
+
+Prepare for payment through a regulated payment provider.
+
+Possible methods:
+
+credit/debit card
+
+bank transfer
+
+future local methods
+
+Never store raw payment-card details.
+
+Statuses:
+
+PENDING
+
+PAID
+
+FAILED
+
+REFUNDED
+
+DISPUTED
+
+---
+
+19. CUSTOMS
+
+Do NOT claim CargoMatch automatically replaces customs agents or legally required customs representatives.
+
+Initially CargoMatch Import is:
+
+INFORMATION
+
++ 
+
+DOCUMENTS
+
++ 
+
+WORKFLOW
+
++ 
+
+PAYMENT
+
++ 
+
+INTEGRATION
+
+Future authorized integrations may connect customs brokers/software/government systems.
+
+---
+
+20. RELEASE WORKFLOW
+
+SHIPMENT CREATED
+
+→ CONSIGNEE INVITED
+
+→ ARRIVAL INFORMATION
+
+→ DOCUMENT REQUIREMENTS
+
+→ CHARGES
+
+→ PAYMENT
+
+→ CUSTOMS/RELEASE REQUIREMENTS
+
+→ AUTHORIZED RELEASE
+
+→ PICKUP INFORMATION
+
+→ COLLECTED
+
+Audit every important state transition.
+
+---
+
+21. PRODUCT MODULE STRUCTURE
+
+Long-term maritime product:
+
+CARGOMATCH
+
+├── CAPACITY
+│   ├── Inland Waterway
+│   ├── Deepsea Bulk
+│   ├── Conventional
+│   └── Liner
+│
+└── IMPORT
+├── LCL / Groupage
+├── Shipments
+├── Documents
+├── Charges
+├── Payments
+├── Release
+└── Pickup
+
+---
+
+22. DEVELOPMENT PRIORITY
+
+Do not build every module simultaneously.
+
+First prove:
+
+FUTURE OPEN POSITION
+
+→ CARGO
+
+→ MATCH
+
+→ COMMERCIAL INTRODUCTION
+
+Then expand.
+
+Keep CargoMatch Import technically separated and feature-flagged until explicitly activated.
+
+---
+
+FINAL PRINCIPLE
+
+For deepsea shipping, do not wait until the vessel is already empty.
+
+CargoMatch should determine:
+
+WHERE THE VESSEL IS EXPECTED TO OPEN
+
+WHEN
+
+WITH WHAT CAPACITY
+
+WHAT SUITABLE CARGO MAY EXIST NEARBY
+
+and create a privacy-protected commercial introduction before unnecessary ballast repositioning occurs.Deze versie kun je na je bestaande CargoMatch-masterprompt invoeren; hij is bedoeld als uitbreiding, niet als opdracht om het huidige project opnieuw te bouwen.

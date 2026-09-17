@@ -20,6 +20,11 @@ const locations = [
   ["Balikpapan", "ID", "East Kalimantan", -1.2675, 116.8289, "PORT"],
   ["Qingdao", "CN", "Shandong", 36.0671, 120.3826, "PORT"],
   ["Newcastle", "AU", "New South Wales", -32.9283, 151.7817, "PORT"],
+  // Conventional liner pilot catalogue; approximate port-area points only.
+  // Port identity/order, not coordinates, determines liner route compatibility.
+  ["Bilbao", "ES", "Basque Country", 43.35, -3.05, "PORT"],
+  ["Dakar", "SN", "Dakar Region", 14.68, -17.42, "PORT"],
+  ["Tema", "GH", "Greater Accra", 5.63, 0.02, "PORT"],
 ] as const;
 
 for (const [name, country, region, latitude, longitude, locationType] of locations) {

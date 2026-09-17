@@ -420,6 +420,8 @@ export interface Company {
   vatRegistrationNumber?: string | null;
   verified: boolean;
   status: CompanyStatus;
+  /** Current caller's role, returned only for their own company. */
+  membershipRole?: MembershipRole;
   createdAt: string;
   updatedAt: string;
 }
@@ -796,6 +798,45 @@ export interface AvailabilitySuggestionCreateRequest {
   sourceUseConfirmed: true;
   uncertaintyAcknowledged: true;
 }
+
+export type AvailabilitySuggestionStatus = typeof AvailabilitySuggestionStatus[keyof typeof AvailabilitySuggestionStatus];
+
+
+export const AvailabilitySuggestionStatus = {
+  PENDING: 'PENDING',
+  DISMISSED: 'DISMISSED',
+  CONVERTED: 'CONVERTED',
+  EXPIRED: 'EXPIRED',
+  INVALIDATED: 'INVALIDATED',
+} as const;
+
+export interface AvailabilitySuggestion {
+  id: string;
+  vesselId: string;
+  locationId: string;
+  expectedAvailableFrom: string;
+  expectedAvailableUntil: string;
+  /** @maxLength 300 */
+  sourceReference: string;
+  sourceObservedAt: string;
+  createdAt: string;
+  expiresAt: string;
+  status: AvailabilitySuggestionStatus;
+  uncertainty: 'UNCERTAIN';
+  explanation: string;
+  unknowns: string[];
+  /** @nullable */
+  capacityOfferId: string | null;
+  canConfirm: boolean;
+}
+
+export interface AvailabilitySuggestionListResponse {
+  items: AvailabilitySuggestion[];
+  page: number;
+  pageSize: number;
+  total: number;
+}
+
 export interface VesselListResponse {
   items: Vessel[];
   page: number;
@@ -812,6 +853,485 @@ export interface CargoListResponse {
 
 export interface CapacityListResponse {
   items: CapacityOffer[];
+  page: number;
+  pageSize: number;
+  total: number;
+}
+
+export type LinerCargoType = typeof LinerCargoType[keyof typeof LinerCargoType];
+
+
+export const LinerCargoType = {
+  BREAKBULK: 'BREAKBULK',
+  PROJECT_CARGO: 'PROJECT_CARGO',
+  HEAVY_LIFT: 'HEAVY_LIFT',
+  STEEL: 'STEEL',
+  MACHINERY: 'MACHINERY',
+  RORO: 'RORO',
+} as const;
+
+export type LinerStowage = typeof LinerStowage[keyof typeof LinerStowage];
+
+
+export const LinerStowage = {
+  DECK: 'DECK',
+  HOLD: 'HOLD',
+  EITHER: 'EITHER',
+} as const;
+
+export interface LinerVessel {
+  id: string;
+  companyId: string;
+  vesselName: string;
+  /**
+     * Actual IMO identifier; no placeholder vessels are supported.
+     * @pattern ^[0-9]{7}$
+     */
+  imoNumber: string;
+  active: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface LinerVesselInput {
+  /**
+     * @minLength 1
+     * @maxLength 200
+     */
+  vesselName: string;
+  /** @pattern ^[0-9]{7}$ */
+  imoNumber: string;
+}
+
+export interface LinerVesselUpdate {
+  /**
+     * @minLength 1
+     * @maxLength 200
+     */
+  vesselName?: string;
+  active?: boolean;
+}
+
+export interface LinerService {
+  id: string;
+  companyId: string;
+  serviceName: string;
+  tradeLane: string;
+  visibility: Visibility;
+  listingStatus: ListingStatus;
+  /** @nullable */
+  notes?: string | null;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface LinerServiceInput {
+  /**
+     * @minLength 1
+     * @maxLength 200
+     */
+  serviceName: string;
+  /**
+     * @minLength 1
+     * @maxLength 300
+     */
+  tradeLane: string;
+  visibility: Visibility;
+  listingStatus?: ListingStatus;
+  /** @maxLength 4000 */
+  notes?: string;
+}
+
+export interface LinerServiceUpdate {
+  /**
+     * @minLength 1
+     * @maxLength 200
+     */
+  serviceName?: string;
+  /**
+     * @minLength 1
+     * @maxLength 300
+     */
+  tradeLane?: string;
+  visibility?: Visibility;
+  listingStatus?: ListingStatus;
+  /**
+     * @maxLength 4000
+     * @nullable
+     */
+  notes?: string | null;
+}
+
+export interface LinerPortRotationCall {
+  locationId: string;
+  /** @minimum 1 */
+  sequence: number;
+  estimatedArrival: string;
+  estimatedDeparture: string;
+}
+
+export interface LinerCommercialCapacity {
+  /** @exclusiveMinimum 0 */
+  availableCommercialTonnes: number;
+  /** @exclusiveMinimum 0 */
+  maximumPieceWeightTonnes: number;
+  /** @exclusiveMinimum 0 */
+  maximumPieceLengthMetres: number;
+  /** @exclusiveMinimum 0 */
+  maximumPieceWidthMetres: number;
+  /** @exclusiveMinimum 0 */
+  maximumPieceHeightMetres: number;
+  /** @exclusiveMinimum 0 */
+  liftingCapacityTonnes: number;
+  stowage: LinerStowage;
+  /** @minItems 1 */
+  acceptedCargoTypes: LinerCargoType[];
+}
+
+export interface LinerSailing {
+  id: string;
+  serviceId: string;
+  linerVesselId: string;
+  voyageReference: string;
+  departureAt: string;
+  cargoCutoffAt: string;
+  visibility: Visibility;
+  listingStatus: ListingStatus;
+  /** @minItems 2 */
+  portRotation: LinerPortRotationCall[];
+  commercialCapacity: LinerCommercialCapacity;
+  /** @nullable */
+  notes?: string | null;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface LinerSailingInput {
+  linerVesselId: string;
+  /**
+     * @minLength 1
+     * @maxLength 100
+     */
+  voyageReference: string;
+  departureAt: string;
+  cargoCutoffAt: string;
+  visibility: Visibility;
+  listingStatus?: ListingStatus;
+  /** @minItems 2 */
+  portRotation: LinerPortRotationCall[];
+  commercialCapacity: LinerCommercialCapacity;
+  /** @maxLength 4000 */
+  notes?: string;
+}
+
+export interface LinerSailingUpdate {
+  linerVesselId?: string;
+  /**
+     * @minLength 1
+     * @maxLength 100
+     */
+  voyageReference?: string;
+  departureAt?: string;
+  cargoCutoffAt?: string;
+  visibility?: Visibility;
+  listingStatus?: ListingStatus;
+  /** @minItems 2 */
+  portRotation?: LinerPortRotationCall[];
+  commercialCapacity?: LinerCommercialCapacity;
+  /**
+     * @maxLength 4000
+     * @nullable
+     */
+  notes?: string | null;
+}
+
+export interface LinerCargo {
+  id: string;
+  companyId: string;
+  cargoName: string;
+  cargoType: LinerCargoType;
+  /** @minimum 1 */
+  pieceCount: number;
+  /** @exclusiveMinimum 0 */
+  totalWeightTonnes: number;
+  /** @exclusiveMinimum 0 */
+  pieceWeightTonnes: number;
+  /** @exclusiveMinimum 0 */
+  pieceLengthMetres: number;
+  /** @exclusiveMinimum 0 */
+  pieceWidthMetres: number;
+  /** @exclusiveMinimum 0 */
+  pieceHeightMetres: number;
+  /**
+     * @exclusiveMinimum 0
+     * @nullable
+     */
+  requiredLiftingTonnes?: number | null;
+  requiredStowage: LinerStowage;
+  originLocationId: string;
+  destinationLocationId: string;
+  readyAt: string;
+  visibility: Visibility;
+  listingStatus: ListingStatus;
+  /** @nullable */
+  notes?: string | null;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface LinerCargoInput {
+  /**
+     * @minLength 1
+     * @maxLength 200
+     */
+  cargoName: string;
+  cargoType: LinerCargoType;
+  /** @minimum 1 */
+  pieceCount: number;
+  /** @exclusiveMinimum 0 */
+  totalWeightTonnes: number;
+  /** @exclusiveMinimum 0 */
+  pieceWeightTonnes: number;
+  /** @exclusiveMinimum 0 */
+  pieceLengthMetres: number;
+  /** @exclusiveMinimum 0 */
+  pieceWidthMetres: number;
+  /** @exclusiveMinimum 0 */
+  pieceHeightMetres: number;
+  /**
+     * @exclusiveMinimum 0
+     * @nullable
+     */
+  requiredLiftingTonnes?: number | null;
+  requiredStowage: LinerStowage;
+  originLocationId: string;
+  destinationLocationId: string;
+  readyAt: string;
+  visibility: Visibility;
+  listingStatus?: ListingStatus;
+  /** @maxLength 4000 */
+  notes?: string;
+}
+
+export interface LinerCargoUpdate {
+  /**
+     * @minLength 1
+     * @maxLength 200
+     */
+  cargoName?: string;
+  cargoType?: LinerCargoType;
+  /** @minimum 1 */
+  pieceCount?: number;
+  /** @exclusiveMinimum 0 */
+  totalWeightTonnes?: number;
+  /** @exclusiveMinimum 0 */
+  pieceWeightTonnes?: number;
+  /** @exclusiveMinimum 0 */
+  pieceLengthMetres?: number;
+  /** @exclusiveMinimum 0 */
+  pieceWidthMetres?: number;
+  /** @exclusiveMinimum 0 */
+  pieceHeightMetres?: number;
+  /**
+     * @exclusiveMinimum 0
+     * @nullable
+     */
+  requiredLiftingTonnes?: number | null;
+  requiredStowage?: LinerStowage;
+  originLocationId?: string;
+  destinationLocationId?: string;
+  readyAt?: string;
+  visibility?: Visibility;
+  listingStatus?: ListingStatus;
+  /**
+     * @maxLength 4000
+     * @nullable
+     */
+  notes?: string | null;
+}
+
+export interface LinerVesselListResponse {
+  items: LinerVessel[];
+  page: number;
+  pageSize: number;
+  total: number;
+}
+
+export interface LinerServiceListResponse {
+  items: LinerService[];
+  page: number;
+  pageSize: number;
+  total: number;
+}
+
+export interface LinerSailingListResponse {
+  items: LinerSailing[];
+  page: number;
+  pageSize: number;
+  total: number;
+}
+
+export interface LinerCargoListResponse {
+  items: LinerCargo[];
+  page: number;
+  pageSize: number;
+  total: number;
+}
+
+export type LinerMarketplaceListingType = typeof LinerMarketplaceListingType[keyof typeof LinerMarketplaceListingType];
+
+
+export const LinerMarketplaceListingType = {
+  CARGO: 'CARGO',
+  SAILING: 'SAILING',
+} as const;
+
+export type AnonymousLinerCargoListingType = typeof AnonymousLinerCargoListingType[keyof typeof AnonymousLinerCargoListingType];
+
+
+export const AnonymousLinerCargoListingType = {
+  CARGO: 'CARGO',
+} as const;
+
+export interface AnonymousLinerCargo {
+  id: string;
+  listingType: AnonymousLinerCargoListingType;
+  cargoType: LinerCargoType;
+  originRegion: string;
+  destinationRegion: string;
+  totalWeightBand: string;
+  pieceDimensionBand: string;
+  liftingBand: string;
+  stowage: LinerStowage;
+  readyBand: string;
+}
+
+export type AnonymousLinerSailingListingType = typeof AnonymousLinerSailingListingType[keyof typeof AnonymousLinerSailingListingType];
+
+
+export const AnonymousLinerSailingListingType = {
+  SAILING: 'SAILING',
+} as const;
+
+export interface AnonymousLinerSailing {
+  id: string;
+  listingType: AnonymousLinerSailingListingType;
+  tradeLaneBand: string;
+  departureBand: string;
+  cutoffBand: string;
+  capacityBand: string;
+  cargoTypes: LinerCargoType[];
+  stowage: LinerStowage;
+}
+
+export type LinerMarketplaceListing = AnonymousLinerCargo | AnonymousLinerSailing;
+
+export interface LinerMarketplaceListResponse {
+  items: LinerMarketplaceListing[];
+  page: number;
+  pageSize: number;
+  total: number;
+}
+
+export interface LinerMatchScore {
+  /**
+     * @minimum 0
+     * @maximum 100
+     */
+  totalScore: number;
+  /**
+     * @minimum 0
+     * @maximum 100
+     */
+  dimensionsFit: number;
+  /**
+     * @minimum 0
+     * @maximum 100
+     */
+  weightFit: number;
+  /**
+     * @minimum 0
+     * @maximum 100
+     */
+  liftingFit: number;
+  /**
+     * @minimum 0
+     * @maximum 100
+     */
+  stowageFit: number;
+  /**
+     * @minimum 0
+     * @maximum 100
+     */
+  rotationFit: number;
+  /**
+     * @minimum 0
+     * @maximum 100
+     */
+  timingFit: number;
+  explanation: string;
+  calculatedAt: string;
+}
+
+export type MatchStatus = typeof MatchStatus[keyof typeof MatchStatus];
+
+
+export const MatchStatus = {
+  NEW: 'NEW',
+  INTEREST_SENT: 'INTEREST_SENT',
+  CONNECTED: 'CONNECTED',
+  DECLINED: 'DECLINED',
+  EXPIRED: 'EXPIRED',
+} as const;
+
+export interface LinerMatchSummary {
+  id: string;
+  linerCargoId: string;
+  linerSailingId: string;
+  status: MatchStatus;
+  cargo: AnonymousLinerCargo;
+  sailing: AnonymousLinerSailing;
+  score: LinerMatchScore;
+  initiatedByMe: boolean;
+  canAccept: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export type LinerMatchDetailDisclosureState = typeof LinerMatchDetailDisclosureState[keyof typeof LinerMatchDetailDisclosureState];
+
+
+export const LinerMatchDetailDisclosureState = {
+  ANONYMOUS: 'ANONYMOUS',
+  OWNER: 'OWNER',
+  CONNECTED: 'CONNECTED',
+} as const;
+
+export interface ConnectedCompany {
+  id: string;
+  name: string;
+  country: string;
+  activities: CompanyActivity[];
+  primaryContactName: string;
+  email: string;
+  phone: string;
+}
+
+export type LinerMatchDetail = LinerMatchSummary & ({
+  disclosureState: LinerMatchDetailDisclosureState;
+  ownedCargo: LinerCargo | null;
+  ownedSailing: LinerSailing | null;
+  ownedService: LinerService | null;
+  ownedVessel: LinerVessel | null;
+  connectedCargo: LinerCargo | null;
+  connectedSailing: LinerSailing | null;
+  connectedService: LinerService | null;
+  connectedVessel: LinerVessel | null;
+  connectedCompanies: ConnectedCompany[];
+});
+
+export interface LinerMatchListResponse {
+  items: LinerMatchSummary[];
   page: number;
   pageSize: number;
   total: number;
@@ -938,15 +1458,12 @@ export interface MarketplaceListResponse {
   total: number;
 }
 
-export type MatchStatus = typeof MatchStatus[keyof typeof MatchStatus];
+export type MatchDomain = typeof MatchDomain[keyof typeof MatchDomain];
 
 
-export const MatchStatus = {
-  NEW: 'NEW',
-  INTEREST_SENT: 'INTEREST_SENT',
-  CONNECTED: 'CONNECTED',
-  DECLINED: 'DECLINED',
-  EXPIRED: 'EXPIRED',
+export const MatchDomain = {
+  MARKETPLACE: 'MARKETPLACE',
+  LINER: 'LINER',
 } as const;
 
 export type MatchAction = typeof MatchAction[keyof typeof MatchAction];
@@ -1165,16 +1682,6 @@ export interface ConnectedCapacityOffer {
   deepseaExtension?: DeepseaCapacityExtension | null;
 }
 
-export interface ConnectedCompany {
-  id: string;
-  name: string;
-  country: string;
-  activities: CompanyActivity[];
-  primaryContactName: string;
-  email: string;
-  phone: string;
-}
-
 export type MatchDetailDisclosureState = typeof MatchDetailDisclosureState[keyof typeof MatchDetailDisclosureState];
 
 
@@ -1286,6 +1793,7 @@ export interface Notification {
   message: string;
   /** @nullable */
   relatedMatchId?: string | null;
+  relatedMatchDomain: MatchDomain;
   /** @nullable */
   relatedConversationId?: string | null;
   /** @nullable */
@@ -1368,6 +1876,7 @@ export type NotFoundResponse = ErrorEnvelope;
  * The requested state transition conflicts with the current resource state.
  */
 export type ConflictResponse = ErrorEnvelope;
+
 /**
  * Opaque session token — `Bearer <sid>`.
  */
@@ -1462,6 +1971,71 @@ page?: PageParameter;
  */
 pageSize?: PageSizeParameter;
 };
+
+export type ListMyLinerVesselsParams = {
+/**
+ * @minimum 1
+ */
+page?: PageParameter;
+/**
+ * @minimum 1
+ * @maximum 100
+ */
+pageSize?: PageSizeParameter;
+};
+
+export type ListMyLinerServicesParams = {
+listingStatus?: ListingStatus;
+/**
+ * @minimum 1
+ */
+page?: PageParameter;
+/**
+ * @minimum 1
+ * @maximum 100
+ */
+pageSize?: PageSizeParameter;
+};
+
+export type ListMyLinerCargoParams = {
+listingStatus?: ListingStatus;
+/**
+ * @minimum 1
+ */
+page?: PageParameter;
+/**
+ * @minimum 1
+ * @maximum 100
+ */
+pageSize?: PageSizeParameter;
+};
+
+export type ListLinerMarketplaceParams = {
+listingType?: LinerMarketplaceListingType;
+/**
+ * @minimum 1
+ */
+page?: PageParameter;
+/**
+ * @minimum 1
+ * @maximum 100
+ */
+pageSize?: PageSizeParameter;
+};
+
+export type ListMyLinerMatchesParams = {
+status?: MatchStatus;
+/**
+ * @minimum 1
+ */
+page?: PageParameter;
+/**
+ * @minimum 1
+ * @maximum 100
+ */
+pageSize?: PageSizeParameter;
+};
+
 export type ListMarketplaceParams = {
 listingType?: MarketplaceListingType;
 transportMode?: TransportMode;
@@ -1518,40 +2092,3 @@ page?: PageParameter;
 pageSize?: PageSizeParameter;
 };
 
-
-export const AvailabilitySuggestionStatus = {
-  PENDING: 'PENDING',
-  DISMISSED: 'DISMISSED',
-  CONVERTED: 'CONVERTED',
-  EXPIRED: 'EXPIRED',
-  INVALIDATED: 'INVALIDATED',
-} as const;
-
-export interface AvailabilitySuggestion {
-  id: string;
-  vesselId: string;
-  locationId: string;
-  expectedAvailableFrom: string;
-  expectedAvailableUntil: string;
-  /** @maxLength 300 */
-  sourceReference: string;
-  sourceObservedAt: string;
-  createdAt: string;
-  expiresAt: string;
-  status: AvailabilitySuggestionStatus;
-  uncertainty: 'UNCERTAIN';
-  explanation: string;
-  unknowns: string[];
-  /** @nullable */
-  capacityOfferId: string | null;
-  canConfirm: boolean;
-}
-
-export interface AvailabilitySuggestionListResponse {
-  items: AvailabilitySuggestion[];
-  page: number;
-  pageSize: number;
-  total: number;
-}
-
-export type AvailabilitySuggestionStatus = typeof AvailabilitySuggestionStatus[keyof typeof AvailabilitySuggestionStatus];

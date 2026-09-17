@@ -12,6 +12,7 @@ import matchesRouter from "./matches";
 import conversationsRouter from "./conversations";
 import notificationsRouter from "./notifications";
 import availabilitySuggestionsRouter from "./availabilitySuggestions";
+import linerRouter from "./liner";
 
 const router: IRouter = Router();
 
@@ -28,5 +29,5 @@ router.use(matchesRouter);
 router.use(conversationsRouter);
 router.use(notificationsRouter);
 router.use(availabilitySuggestionsRouter);
-
+router.use(linerRouter);
 export default router;

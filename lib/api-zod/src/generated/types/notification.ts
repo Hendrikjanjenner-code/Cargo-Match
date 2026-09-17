@@ -8,6 +8,7 @@
  *
  * OpenAPI spec version: 0.1.0
  */
+import type { MatchDomain } from './matchDomain';
 import type { NotificationType } from './notificationType';
 
 export interface Notification {
@@ -17,6 +18,7 @@ export interface Notification {
   message: string;
   /** @nullable */
   relatedMatchId?: string | null;
+  relatedMatchDomain: MatchDomain;
   /** @nullable */
   relatedConversationId?: string | null;
   /** @nullable */

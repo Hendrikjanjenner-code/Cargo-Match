@@ -18,7 +18,7 @@ import {
   db,
 } from "@workspace/db";
 
-import { error, pageParams, requireMembership } from "../lib/http";
+import { error, getMembershipWithin, pageParams, requireMembership } from "../lib/http";
 import {
   matchDetail,
   matchSummary,
@@ -29,6 +29,7 @@ import {
   listPairRows,
   lockDomain,
 } from "../services/matching";
+import { applyMatchConsent } from "../services/consent";
 
 const router: IRouter = Router();
 
@@ -154,6 +155,15 @@ router.post("/matches/:matchId/actions", async (req, res) => {
   try {
     await db.transaction(async (tx) => {
       await lockDomain(tx);
+      const freshMembership = await getMembershipWithin(tx, req.user!.id, true);
+      if (
+        !freshMembership ||
+        !freshMembership.membership.active ||
+        freshMembership.company.status !== "ACTIVE" ||
+        freshMembership.company.id !== current.company.id
+      ) {
+        throw new Error("FORBIDDEN");
+      }
       const [locked] = await tx
         .select()
         .from(matchesTable)
@@ -191,161 +201,26 @@ router.post("/matches/:matchId/actions", async (req, res) => {
         initiatedByCompanyId: initiatedInterest?.companyId ?? null,
         ...freshPair,
       };
-      const [existingInterest] = await tx
-        .select()
-        .from(interestsTable)
-        .where(
-          and(
-            eq(interestsTable.matchId, locked.id),
-            eq(interestsTable.companyId, current.company.id),
-          ),
-        );
-      if (body.data.action === "INTEREST") {
-        if (locked.status !== "NEW" || existingInterest) {
-          throw new Error("INVALID_INTEREST");
-        }
-        await tx.insert(interestsTable).values({
-          matchId: locked.id,
-          companyId: current.company.id,
-          status: "PENDING",
-        });
-        await tx
-          .update(matchesTable)
-          .set({ status: "INTEREST_SENT", updatedAt: new Date() })
-          .where(eq(matchesTable.id, locked.id));
-        const recipientCompanyId =
-          transactionBundle.cargoCompany.id === current.company.id
-            ? transactionBundle.capacityCompany.id
-            : transactionBundle.cargoCompany.id;
-        const recipients = await tx
-          .select({ userId: companyMembersTable.userId })
-          .from(companyMembersTable)
-          .where(
-            and(
-              eq(companyMembersTable.companyId, recipientCompanyId),
-              eq(companyMembersTable.active, true),
-            ),
-          );
-        if (recipients.length) {
-          await tx.insert(notificationsTable).values(
-            recipients.map(({ userId }) => ({
-              userId,
-              type: "INTEREST_RECEIVED" as const,
-              title: "New match interest",
-              message: "A company has shown interest in an eligible marketplace match.",
-              relatedMatchId: locked.id,
-            })),
-          );
-        }
-      } else if (body.data.action === "ACCEPT") {
-        if (locked.status !== "INTEREST_SENT" || existingInterest) {
-          throw new Error("INVALID_ACCEPT");
-        }
-        const [pending] = await tx
-          .select()
-          .from(interestsTable)
-          .where(
-            and(
-              eq(interestsTable.matchId, locked.id),
-              eq(interestsTable.status, "PENDING"),
-            ),
-          );
-        if (!pending || pending.companyId === current.company.id) {
-          throw new Error("INVALID_ACCEPT");
-        }
-        await tx
-          .update(interestsTable)
-          .set({ status: "ACCEPTED", updatedAt: new Date() })
-          .where(eq(interestsTable.id, pending.id));
-        await tx.insert(interestsTable).values({
-          matchId: locked.id,
-          companyId: current.company.id,
-          status: "ACCEPTED",
-        });
-        const [conversation] = await tx
-          .insert(conversationsTable)
-          .values({ matchId: locked.id })
-          .onConflictDoNothing({ target: conversationsTable.matchId })
-          .returning();
-        const conversationId = conversation?.id;
-        await tx
-          .update(matchesTable)
-          .set({ status: "CONNECTED", isStale: false, updatedAt: new Date() })
-          .where(eq(matchesTable.id, locked.id));
-        const recipientUsers = await tx
-          .select({ userId: companyMembersTable.userId })
-          .from(companyMembersTable)
-          .where(
-            and(
-              inArray(companyMembersTable.companyId, [
-                transactionBundle.cargoCompany.id,
-                transactionBundle.capacityCompany.id,
-              ]),
-              eq(companyMembersTable.active, true),
-            ),
-          );
-        if (recipientUsers.length) {
-          await tx.insert(notificationsTable).values(
-            recipientUsers.map(({ userId }) => ({
-              userId,
-              type: "INTEREST_ACCEPTED" as const,
-              title: "Match connected",
-              message: "Both companies consented to connect. Conversation access is now available.",
-              relatedMatchId: locked.id,
-              relatedConversationId: conversationId,
-            })),
-          );
-        }
-      } else {
-        if (locked.status !== "INTEREST_SENT" || existingInterest) {
-          throw new Error("INVALID_DECLINE");
-        }
-        await tx
-          .update(interestsTable)
-          .set({ status: "DECLINED", updatedAt: new Date() })
-          .where(
-            and(
-              eq(interestsTable.matchId, locked.id),
-              eq(interestsTable.status, "PENDING"),
-            ),
-          );
-        await tx
-          .update(matchesTable)
-          .set({ status: "DECLINED", updatedAt: new Date() })
-          .where(eq(matchesTable.id, locked.id));
-        const recipientCompanyId =
-          transactionBundle.cargoCompany.id === current.company.id
-            ? transactionBundle.capacityCompany.id
-            : transactionBundle.cargoCompany.id;
-        const recipients = await tx
-          .select({ userId: companyMembersTable.userId })
-          .from(companyMembersTable)
-          .where(
-            and(
-              eq(companyMembersTable.companyId, recipientCompanyId),
-              eq(companyMembersTable.active, true),
-            ),
-          );
-        if (recipients.length) {
-          await tx.insert(notificationsTable).values(
-            recipients.map(({ userId }) => ({
-              userId,
-              type: "INTEREST_DECLINED" as const,
-              title: "Match declined",
-              message: "The other company declined this marketplace match.",
-              relatedMatchId: locked.id,
-            })),
-          );
-        }
-      }
+      await applyMatchConsent(tx, {
+        match: locked,
+        actorCompanyId: current.company.id,
+        action: body.data.action,
+        participantCompanyIds: [
+          transactionBundle.cargoCompany.id,
+          transactionBundle.capacityCompany.id,
+        ],
+        notificationDomain: "marketplace",
+      });
     });
   } catch (cause) {
     const reason = cause instanceof Error ? cause.message : "";
     error(
       res,
-      reason === "STALE_MATCH" ? 409 : 422,
+      reason === "STALE_MATCH" ? 409 : reason === "FORBIDDEN" ? 403 : 422,
       reason === "STALE_MATCH"
         ? "This match is stale or expired"
+        : reason === "FORBIDDEN"
+          ? "Company membership is no longer authorized"
         : "Match action is not valid for the current state",
     );
     return;

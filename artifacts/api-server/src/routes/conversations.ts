@@ -24,10 +24,13 @@ import {
   messageReadsTable,
   messagesTable,
   notificationsTable,
+  linerCargoTable,
+  linerSailingsTable,
+  linerServicesTable,
   db,
 } from "@workspace/db";
 
-import { error, pageParams, requireMembership } from "../lib/http";
+import { error, getMembershipWithin, pageParams, requireMembership } from "../lib/http";
 import { connectedCompany } from "../lib/privacy";
 import { lockDomain } from "../services/matching";
 
@@ -45,32 +48,24 @@ async function getConversation(
   userId: string,
   companyId: string,
 ): Promise<ConversationView | null> {
-  const [row] = await db
-    .select({
-      conversation: conversationsTable,
-      cargoCompanyId: cargoListingsTable.companyId,
-      capacityCompanyId: capacityOffersTable.companyId,
-    })
-    .from(conversationsTable)
-    .innerJoin(matchesTable, eq(matchesTable.id, conversationsTable.matchId))
-    .innerJoin(
-      cargoListingsTable,
-      eq(cargoListingsTable.id, matchesTable.cargoListingId),
-    )
-    .innerJoin(
-      capacityOffersTable,
-      eq(capacityOffersTable.id, matchesTable.capacityOfferId),
-    )
-    .where(
-      and(
-        eq(conversationsTable.id, conversationId),
-        eq(matchesTable.status, "CONNECTED"),
-        or(
-          eq(cargoListingsTable.companyId, companyId),
-          eq(capacityOffersTable.companyId, companyId),
-        ),
-      ),
-    );
+  const [base] = await db.select({ conversation: conversationsTable, match: matchesTable })
+    .from(conversationsTable).innerJoin(matchesTable, eq(matchesTable.id, conversationsTable.matchId))
+    .where(and(eq(conversationsTable.id, conversationId), eq(matchesTable.status, "CONNECTED")));
+  if (!base) return null;
+  let row: { conversation: typeof conversationsTable.$inferSelect; cargoCompanyId: string; capacityCompanyId: string } | null = null;
+  if (base.match.linerCargoId && base.match.linerSailingId) {
+    const [liner] = await db.select({ cargoCompanyId: linerCargoTable.companyId, capacityCompanyId: linerServicesTable.companyId })
+      .from(linerCargoTable).innerJoin(linerSailingsTable, eq(linerSailingsTable.id, base.match.linerSailingId))
+      .innerJoin(linerServicesTable, eq(linerServicesTable.id, linerSailingsTable.serviceId))
+      .where(eq(linerCargoTable.id, base.match.linerCargoId));
+    if (liner) row = { conversation: base.conversation, ...liner };
+  } else if (base.match.cargoListingId && base.match.capacityOfferId) {
+    const [standard] = await db.select({ cargoCompanyId: cargoListingsTable.companyId, capacityCompanyId: capacityOffersTable.companyId })
+      .from(cargoListingsTable).innerJoin(capacityOffersTable, eq(capacityOffersTable.id, base.match.capacityOfferId))
+      .where(eq(cargoListingsTable.id, base.match.cargoListingId));
+    if (standard) row = { conversation: base.conversation, ...standard };
+  }
+  if (!row || (row.cargoCompanyId !== companyId && row.capacityCompanyId !== companyId)) return null;
   return row ? buildConversationView(row, userId) : null;
 }
 
@@ -144,41 +139,10 @@ router.get("/conversations", async (req, res) => {
     error(res, 400, "Invalid conversation filters");
     return;
   }
-  const ids = await db
-    .select({ id: conversationsTable.id })
-    .from(conversationsTable)
+  const rows = await db.select({ id: conversationsTable.id }).from(conversationsTable)
     .innerJoin(matchesTable, eq(matchesTable.id, conversationsTable.matchId))
-    .innerJoin(
-      cargoListingsTable,
-      eq(cargoListingsTable.id, matchesTable.cargoListingId),
-    )
-    .innerJoin(
-      capacityOffersTable,
-      eq(capacityOffersTable.id, matchesTable.capacityOfferId),
-    )
-    .where(
-      and(
-        eq(matchesTable.status, "CONNECTED"),
-        inArray(cargoListingsTable.companyId, [current.company.id]),
-      ),
-    );
-  const capacityIds = await db
-    .select({ id: conversationsTable.id })
-    .from(conversationsTable)
-    .innerJoin(matchesTable, eq(matchesTable.id, conversationsTable.matchId))
-    .innerJoin(
-      capacityOffersTable,
-      eq(capacityOffersTable.id, matchesTable.capacityOfferId),
-    )
-    .where(
-      and(
-        eq(matchesTable.status, "CONNECTED"),
-        inArray(capacityOffersTable.companyId, [current.company.id]),
-      ),
-    );
-  const conversationIds = [
-    ...new Set([...ids.map(({ id }) => id), ...capacityIds.map(({ id }) => id)]),
-  ];
+    .where(eq(matchesTable.status, "CONNECTED"));
+  const conversationIds = rows.map(({ id }) => id);
   const views = [];
   for (const id of conversationIds) {
     const view = await getConversation(id, req.user!.id, current.company.id);
@@ -286,13 +250,15 @@ router.post("/conversations/:conversationId/messages", async (req, res) => {
     error(res, 404, "Conversation not found");
     return;
   }
-  const [message] = await db.transaction(async (tx) => {
+  const message = await db.transaction(async (tx) => {
     await lockDomain(tx);
+    const freshMembership = await getMembershipWithin(tx, req.user!.id, true);
+    if (!freshMembership || !freshMembership.membership.active || freshMembership.company.status !== "ACTIVE" || freshMembership.company.id !== current.company.id) return null;
     const [created] = await tx
       .insert(messagesTable)
       .values({
         conversationId: view.conversation.id,
-        senderCompanyId: current.company.id,
+        senderCompanyId: freshMembership.company.id,
         senderUserId: req.user!.id,
         body: body.data.body.trim(),
       })
@@ -303,7 +269,7 @@ router.post("/conversations/:conversationId/messages", async (req, res) => {
       .where(
         and(
           inArray(companyMembersTable.companyId, view.participantCompanies.map((company) => company.id)),
-          notInArray(companyMembersTable.companyId, [current.company.id]),
+          notInArray(companyMembersTable.companyId, [freshMembership.company.id]),
           eq(companyMembersTable.active, true),
         ),
       );
@@ -318,8 +284,9 @@ router.post("/conversations/:conversationId/messages", async (req, res) => {
         })),
       );
     }
-    return [created];
+    return created;
   });
+  if (!message) return error(res, 403, "Company membership is no longer authorized");
   res.status(201).json(
     SendConversationMessageResponse.parse({ ...message, readAt: null }),
   );
@@ -357,8 +324,10 @@ router.post("/conversations/:conversationId/read", async (req, res) => {
     return;
   }
   const readAt = new Date();
-  await db.transaction(async (tx) => {
+  const marked = await db.transaction(async (tx) => {
     await lockDomain(tx);
+    const freshMembership = await getMembershipWithin(tx, req.user!.id, true);
+    if (!freshMembership || !freshMembership.membership.active || freshMembership.company.status !== "ACTIVE" || freshMembership.company.id !== current.company.id) return false;
     await tx
       .insert(messageReadsTable)
       .values(
@@ -372,7 +341,12 @@ router.post("/conversations/:conversationId/read", async (req, res) => {
         target: [messageReadsTable.messageId, messageReadsTable.userId],
         set: { readAt },
       });
-    });
+    return true;
+  });
+  if (!marked) {
+    error(res, 403, "Company membership is no longer authorized");
+    return;
+  }
   res.json(
     MarkConversationMessagesReadResponse.parse({
       messageIds: messages.map(({ id }) => id),

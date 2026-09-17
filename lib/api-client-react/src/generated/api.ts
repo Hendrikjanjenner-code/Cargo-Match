@@ -50,12 +50,36 @@ import type {
   ForbiddenResponse,
   HandleBrowserLoginCallbackParams,
   HealthStatus,
+  LinerCargo,
+  LinerCargoInput,
+  LinerCargoListResponse,
+  LinerCargoUpdate,
+  LinerMarketplaceListResponse,
+  LinerMatchDetail,
+  LinerMatchListResponse,
+  LinerSailing,
+  LinerSailingInput,
+  LinerSailingListResponse,
+  LinerSailingUpdate,
+  LinerService,
+  LinerServiceInput,
+  LinerServiceListResponse,
+  LinerServiceUpdate,
+  LinerVessel,
+  LinerVesselInput,
+  LinerVesselListResponse,
+  LinerVesselUpdate,
+  ListLinerMarketplaceParams,
   ListLocationsParams,
   ListMarketplaceParams,
   ListMyAvailabilitySuggestionsParams,
   ListMyCapacityParams,
   ListMyCargoParams,
   ListMyConversationsParams,
+  ListMyLinerCargoParams,
+  ListMyLinerMatchesParams,
+  ListMyLinerServicesParams,
+  ListMyLinerVesselsParams,
   ListMyMatchesParams,
   ListMyNotificationsParams,
   ListMyVesselsParams,
@@ -3078,6 +3102,1909 @@ export const useCloseMyCapacity = <TError = ErrorType<UnauthorizedResponse | For
         TContext
       > => {
       return useMutation(getCloseMyCapacityMutationOptions(options));
+    }
+
+export const getListMyLinerVesselsUrl = (params?: ListMyLinerVesselsParams,) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : String(value))
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0 ? `/api/liner/vessels?${stringifiedParams}` : `/api/liner/vessels`
+}
+
+/**
+ * @summary List actual liner vessels owned by the current carrier
+ */
+export const listMyLinerVessels = async (params?: ListMyLinerVesselsParams, options?: Parameters<typeof customFetch>[1]): Promise<LinerVesselListResponse> => {
+
+  return customFetch<LinerVesselListResponse>(getListMyLinerVesselsUrl(params),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getListMyLinerVesselsQueryKey = (params?: ListMyLinerVesselsParams,) => {
+    return [
+    `/api/liner/vessels`, ...(params ? [params] : [])
+    ] as const;
+    }
+
+
+export const getListMyLinerVesselsQueryOptions = <TData = Awaited<ReturnType<typeof listMyLinerVessels>>, TError = ErrorType<unknown>>(params?: ListMyLinerVesselsParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof listMyLinerVessels>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getListMyLinerVesselsQueryKey(params);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof listMyLinerVessels>>> = ({ signal }) => listMyLinerVessels(params, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof listMyLinerVessels>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type ListMyLinerVesselsQueryResult = NonNullable<Awaited<ReturnType<typeof listMyLinerVessels>>>
+export type ListMyLinerVesselsQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary List actual liner vessels owned by the current carrier
+ */
+
+export function useListMyLinerVessels<TData = Awaited<ReturnType<typeof listMyLinerVessels>>, TError = ErrorType<unknown>>(
+ params?: ListMyLinerVesselsParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof listMyLinerVessels>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getListMyLinerVesselsQueryOptions(params,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getCreateMyLinerVesselUrl = () => {
+
+
+
+
+  return `/api/liner/vessels`
+}
+
+/**
+ * This vertical never creates a vessel implicitly from a service or sailing.
+ * @summary Register an actual vessel before it can be assigned to a sailing
+ */
+export const createMyLinerVessel = async (linerVesselInput: LinerVesselInput, options?: Parameters<typeof customFetch>[1]): Promise<LinerVessel> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return customFetch<LinerVessel>(getCreateMyLinerVesselUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(linerVesselInput)
+  }
+);}
+
+
+
+
+
+export const getCreateMyLinerVesselMutationKey = () => ['createMyLinerVessel'] as const;
+
+export const getCreateMyLinerVesselMutationOptions = <TError = ErrorType<BadRequestResponse | ForbiddenResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createMyLinerVessel>>, TError,CreateMyLinerVesselMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof createMyLinerVessel>>, TError,CreateMyLinerVesselMutationVariables, TContext> => {
+
+const mutationKey = getCreateMyLinerVesselMutationKey();
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof createMyLinerVessel>>, CreateMyLinerVesselMutationVariables> = (props) => {
+          const {data} = props ?? {};
+
+          return  createMyLinerVessel(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type CreateMyLinerVesselMutationResult = NonNullable<Awaited<ReturnType<typeof createMyLinerVessel>>>
+    export type CreateMyLinerVesselMutationBody = BodyType<LinerVesselInput>
+    export type CreateMyLinerVesselMutationError = ErrorType<BadRequestResponse | ForbiddenResponse>
+    export type CreateMyLinerVesselMutationVariables = {data: BodyType<LinerVesselInput>}
+
+    /**
+ * @summary Register an actual vessel before it can be assigned to a sailing
+ */
+export const useCreateMyLinerVessel = <TError = ErrorType<BadRequestResponse | ForbiddenResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createMyLinerVessel>>, TError,CreateMyLinerVesselMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof createMyLinerVessel>>,
+        TError,
+        CreateMyLinerVesselMutationVariables,
+        TContext
+      > => {
+      return useMutation(getCreateMyLinerVesselMutationOptions(options));
+    }
+
+export const getGetMyLinerVesselUrl = (linerVesselId: string,) => {
+
+
+
+
+  return `/api/liner/vessels/${linerVesselId}`
+}
+
+/**
+ * @summary Get an owned liner vessel
+ */
+export const getMyLinerVessel = async (linerVesselId: string, options?: Parameters<typeof customFetch>[1]): Promise<LinerVessel> => {
+
+  return customFetch<LinerVessel>(getGetMyLinerVesselUrl(linerVesselId),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetMyLinerVesselQueryKey = (linerVesselId: string,) => {
+    return [
+    `/api/liner/vessels/${linerVesselId}`
+    ] as const;
+    }
+
+
+export const getGetMyLinerVesselQueryOptions = <TData = Awaited<ReturnType<typeof getMyLinerVessel>>, TError = ErrorType<NotFoundResponse>>(linerVesselId: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getMyLinerVessel>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetMyLinerVesselQueryKey(linerVesselId);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getMyLinerVessel>>> = ({ signal }) => getMyLinerVessel(linerVesselId, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: linerVesselId !== null && linerVesselId !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getMyLinerVessel>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetMyLinerVesselQueryResult = NonNullable<Awaited<ReturnType<typeof getMyLinerVessel>>>
+export type GetMyLinerVesselQueryError = ErrorType<NotFoundResponse>
+
+
+/**
+ * @summary Get an owned liner vessel
+ */
+
+export function useGetMyLinerVessel<TData = Awaited<ReturnType<typeof getMyLinerVessel>>, TError = ErrorType<NotFoundResponse>>(
+ linerVesselId: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getMyLinerVessel>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetMyLinerVesselQueryOptions(linerVesselId,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getUpdateMyLinerVesselUrl = (linerVesselId: string,) => {
+
+
+
+
+  return `/api/liner/vessels/${linerVesselId}`
+}
+
+/**
+ * @summary Update an owned liner vessel
+ */
+export const updateMyLinerVessel = async (linerVesselId: string,
+    linerVesselUpdate: LinerVesselUpdate, options?: Parameters<typeof customFetch>[1]): Promise<LinerVessel> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return customFetch<LinerVessel>(getUpdateMyLinerVesselUrl(linerVesselId),
+  {
+    ...options,
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(linerVesselUpdate)
+  }
+);}
+
+
+
+
+
+export const getUpdateMyLinerVesselMutationKey = () => ['updateMyLinerVessel'] as const;
+
+export const getUpdateMyLinerVesselMutationOptions = <TError = ErrorType<BadRequestResponse | ForbiddenResponse | NotFoundResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateMyLinerVessel>>, TError,UpdateMyLinerVesselMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof updateMyLinerVessel>>, TError,UpdateMyLinerVesselMutationVariables, TContext> => {
+
+const mutationKey = getUpdateMyLinerVesselMutationKey();
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateMyLinerVessel>>, UpdateMyLinerVesselMutationVariables> = (props) => {
+          const {linerVesselId,data} = props ?? {};
+
+          return  updateMyLinerVessel(linerVesselId,data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type UpdateMyLinerVesselMutationResult = NonNullable<Awaited<ReturnType<typeof updateMyLinerVessel>>>
+    export type UpdateMyLinerVesselMutationBody = BodyType<LinerVesselUpdate>
+    export type UpdateMyLinerVesselMutationError = ErrorType<BadRequestResponse | ForbiddenResponse | NotFoundResponse>
+    export type UpdateMyLinerVesselMutationVariables = {linerVesselId: string;data: BodyType<LinerVesselUpdate>}
+
+    /**
+ * @summary Update an owned liner vessel
+ */
+export const useUpdateMyLinerVessel = <TError = ErrorType<BadRequestResponse | ForbiddenResponse | NotFoundResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateMyLinerVessel>>, TError,UpdateMyLinerVesselMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof updateMyLinerVessel>>,
+        TError,
+        UpdateMyLinerVesselMutationVariables,
+        TContext
+      > => {
+      return useMutation(getUpdateMyLinerVesselMutationOptions(options));
+    }
+
+export const getListMyLinerServicesUrl = (params?: ListMyLinerServicesParams,) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : String(value))
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0 ? `/api/liner/services?${stringifiedParams}` : `/api/liner/services`
+}
+
+/**
+ * @summary List owned liner services
+ */
+export const listMyLinerServices = async (params?: ListMyLinerServicesParams, options?: Parameters<typeof customFetch>[1]): Promise<LinerServiceListResponse> => {
+
+  return customFetch<LinerServiceListResponse>(getListMyLinerServicesUrl(params),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getListMyLinerServicesQueryKey = (params?: ListMyLinerServicesParams,) => {
+    return [
+    `/api/liner/services`, ...(params ? [params] : [])
+    ] as const;
+    }
+
+
+export const getListMyLinerServicesQueryOptions = <TData = Awaited<ReturnType<typeof listMyLinerServices>>, TError = ErrorType<unknown>>(params?: ListMyLinerServicesParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof listMyLinerServices>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getListMyLinerServicesQueryKey(params);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof listMyLinerServices>>> = ({ signal }) => listMyLinerServices(params, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof listMyLinerServices>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type ListMyLinerServicesQueryResult = NonNullable<Awaited<ReturnType<typeof listMyLinerServices>>>
+export type ListMyLinerServicesQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary List owned liner services
+ */
+
+export function useListMyLinerServices<TData = Awaited<ReturnType<typeof listMyLinerServices>>, TError = ErrorType<unknown>>(
+ params?: ListMyLinerServicesParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof listMyLinerServices>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getListMyLinerServicesQueryOptions(params,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getCreateMyLinerServiceUrl = () => {
+
+
+
+
+  return `/api/liner/services`
+}
+
+/**
+ * @summary Publish a named liner service
+ */
+export const createMyLinerService = async (linerServiceInput: LinerServiceInput, options?: Parameters<typeof customFetch>[1]): Promise<LinerService> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return customFetch<LinerService>(getCreateMyLinerServiceUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(linerServiceInput)
+  }
+);}
+
+
+
+
+
+export const getCreateMyLinerServiceMutationKey = () => ['createMyLinerService'] as const;
+
+export const getCreateMyLinerServiceMutationOptions = <TError = ErrorType<BadRequestResponse | ForbiddenResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createMyLinerService>>, TError,CreateMyLinerServiceMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof createMyLinerService>>, TError,CreateMyLinerServiceMutationVariables, TContext> => {
+
+const mutationKey = getCreateMyLinerServiceMutationKey();
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof createMyLinerService>>, CreateMyLinerServiceMutationVariables> = (props) => {
+          const {data} = props ?? {};
+
+          return  createMyLinerService(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type CreateMyLinerServiceMutationResult = NonNullable<Awaited<ReturnType<typeof createMyLinerService>>>
+    export type CreateMyLinerServiceMutationBody = BodyType<LinerServiceInput>
+    export type CreateMyLinerServiceMutationError = ErrorType<BadRequestResponse | ForbiddenResponse>
+    export type CreateMyLinerServiceMutationVariables = {data: BodyType<LinerServiceInput>}
+
+    /**
+ * @summary Publish a named liner service
+ */
+export const useCreateMyLinerService = <TError = ErrorType<BadRequestResponse | ForbiddenResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createMyLinerService>>, TError,CreateMyLinerServiceMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof createMyLinerService>>,
+        TError,
+        CreateMyLinerServiceMutationVariables,
+        TContext
+      > => {
+      return useMutation(getCreateMyLinerServiceMutationOptions(options));
+    }
+
+export const getGetMyLinerServiceUrl = (linerServiceId: string,) => {
+
+
+
+
+  return `/api/liner/services/${linerServiceId}`
+}
+
+/**
+ * @summary Get an owned liner service
+ */
+export const getMyLinerService = async (linerServiceId: string, options?: Parameters<typeof customFetch>[1]): Promise<LinerService> => {
+
+  return customFetch<LinerService>(getGetMyLinerServiceUrl(linerServiceId),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetMyLinerServiceQueryKey = (linerServiceId: string,) => {
+    return [
+    `/api/liner/services/${linerServiceId}`
+    ] as const;
+    }
+
+
+export const getGetMyLinerServiceQueryOptions = <TData = Awaited<ReturnType<typeof getMyLinerService>>, TError = ErrorType<NotFoundResponse>>(linerServiceId: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getMyLinerService>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetMyLinerServiceQueryKey(linerServiceId);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getMyLinerService>>> = ({ signal }) => getMyLinerService(linerServiceId, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: linerServiceId !== null && linerServiceId !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getMyLinerService>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetMyLinerServiceQueryResult = NonNullable<Awaited<ReturnType<typeof getMyLinerService>>>
+export type GetMyLinerServiceQueryError = ErrorType<NotFoundResponse>
+
+
+/**
+ * @summary Get an owned liner service
+ */
+
+export function useGetMyLinerService<TData = Awaited<ReturnType<typeof getMyLinerService>>, TError = ErrorType<NotFoundResponse>>(
+ linerServiceId: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getMyLinerService>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetMyLinerServiceQueryOptions(linerServiceId,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getUpdateMyLinerServiceUrl = (linerServiceId: string,) => {
+
+
+
+
+  return `/api/liner/services/${linerServiceId}`
+}
+
+/**
+ * @summary Update an owned liner service
+ */
+export const updateMyLinerService = async (linerServiceId: string,
+    linerServiceUpdate: LinerServiceUpdate, options?: Parameters<typeof customFetch>[1]): Promise<LinerService> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return customFetch<LinerService>(getUpdateMyLinerServiceUrl(linerServiceId),
+  {
+    ...options,
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(linerServiceUpdate)
+  }
+);}
+
+
+
+
+
+export const getUpdateMyLinerServiceMutationKey = () => ['updateMyLinerService'] as const;
+
+export const getUpdateMyLinerServiceMutationOptions = <TError = ErrorType<BadRequestResponse | ForbiddenResponse | NotFoundResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateMyLinerService>>, TError,UpdateMyLinerServiceMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof updateMyLinerService>>, TError,UpdateMyLinerServiceMutationVariables, TContext> => {
+
+const mutationKey = getUpdateMyLinerServiceMutationKey();
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateMyLinerService>>, UpdateMyLinerServiceMutationVariables> = (props) => {
+          const {linerServiceId,data} = props ?? {};
+
+          return  updateMyLinerService(linerServiceId,data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type UpdateMyLinerServiceMutationResult = NonNullable<Awaited<ReturnType<typeof updateMyLinerService>>>
+    export type UpdateMyLinerServiceMutationBody = BodyType<LinerServiceUpdate>
+    export type UpdateMyLinerServiceMutationError = ErrorType<BadRequestResponse | ForbiddenResponse | NotFoundResponse>
+    export type UpdateMyLinerServiceMutationVariables = {linerServiceId: string;data: BodyType<LinerServiceUpdate>}
+
+    /**
+ * @summary Update an owned liner service
+ */
+export const useUpdateMyLinerService = <TError = ErrorType<BadRequestResponse | ForbiddenResponse | NotFoundResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateMyLinerService>>, TError,UpdateMyLinerServiceMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof updateMyLinerService>>,
+        TError,
+        UpdateMyLinerServiceMutationVariables,
+        TContext
+      > => {
+      return useMutation(getUpdateMyLinerServiceMutationOptions(options));
+    }
+
+export const getWithdrawMyLinerServiceUrl = (linerServiceId: string,) => {
+
+
+
+
+  return `/api/liner/services/${linerServiceId}/withdraw`
+}
+
+/**
+ * @summary Withdraw an owned liner service and its discoverable sailings
+ */
+export const withdrawMyLinerService = async (linerServiceId: string, options?: Parameters<typeof customFetch>[1]): Promise<LinerService> => {
+
+  return customFetch<LinerService>(getWithdrawMyLinerServiceUrl(linerServiceId),
+  {
+    ...options,
+    method: 'POST'
+
+
+  }
+);}
+
+
+
+
+
+export const getWithdrawMyLinerServiceMutationKey = () => ['withdrawMyLinerService'] as const;
+
+export const getWithdrawMyLinerServiceMutationOptions = <TError = ErrorType<ForbiddenResponse | NotFoundResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof withdrawMyLinerService>>, TError,WithdrawMyLinerServiceMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof withdrawMyLinerService>>, TError,WithdrawMyLinerServiceMutationVariables, TContext> => {
+
+const mutationKey = getWithdrawMyLinerServiceMutationKey();
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof withdrawMyLinerService>>, WithdrawMyLinerServiceMutationVariables> = (props) => {
+          const {linerServiceId} = props ?? {};
+
+          return  withdrawMyLinerService(linerServiceId,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type WithdrawMyLinerServiceMutationResult = NonNullable<Awaited<ReturnType<typeof withdrawMyLinerService>>>
+
+    export type WithdrawMyLinerServiceMutationError = ErrorType<ForbiddenResponse | NotFoundResponse>
+    export type WithdrawMyLinerServiceMutationVariables = {linerServiceId: string}
+
+    /**
+ * @summary Withdraw an owned liner service and its discoverable sailings
+ */
+export const useWithdrawMyLinerService = <TError = ErrorType<ForbiddenResponse | NotFoundResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof withdrawMyLinerService>>, TError,WithdrawMyLinerServiceMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof withdrawMyLinerService>>,
+        TError,
+        WithdrawMyLinerServiceMutationVariables,
+        TContext
+      > => {
+      return useMutation(getWithdrawMyLinerServiceMutationOptions(options));
+    }
+
+export const getListMyLinerSailingsUrl = (linerServiceId: string,) => {
+
+
+
+
+  return `/api/liner/services/${linerServiceId}/sailings`
+}
+
+/**
+ * @summary List sailings for an owned liner service
+ */
+export const listMyLinerSailings = async (linerServiceId: string, options?: Parameters<typeof customFetch>[1]): Promise<LinerSailingListResponse> => {
+
+  return customFetch<LinerSailingListResponse>(getListMyLinerSailingsUrl(linerServiceId),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getListMyLinerSailingsQueryKey = (linerServiceId: string,) => {
+    return [
+    `/api/liner/services/${linerServiceId}/sailings`
+    ] as const;
+    }
+
+
+export const getListMyLinerSailingsQueryOptions = <TData = Awaited<ReturnType<typeof listMyLinerSailings>>, TError = ErrorType<unknown>>(linerServiceId: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof listMyLinerSailings>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getListMyLinerSailingsQueryKey(linerServiceId);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof listMyLinerSailings>>> = ({ signal }) => listMyLinerSailings(linerServiceId, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: linerServiceId !== null && linerServiceId !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof listMyLinerSailings>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type ListMyLinerSailingsQueryResult = NonNullable<Awaited<ReturnType<typeof listMyLinerSailings>>>
+export type ListMyLinerSailingsQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary List sailings for an owned liner service
+ */
+
+export function useListMyLinerSailings<TData = Awaited<ReturnType<typeof listMyLinerSailings>>, TError = ErrorType<unknown>>(
+ linerServiceId: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof listMyLinerSailings>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getListMyLinerSailingsQueryOptions(linerServiceId,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getCreateMyLinerSailingUrl = (linerServiceId: string,) => {
+
+
+
+
+  return `/api/liner/services/${linerServiceId}/sailings`
+}
+
+/**
+ * @summary Publish an actual-vessel sailing, ordered port rotation, and commercial capacity
+ */
+export const createMyLinerSailing = async (linerServiceId: string,
+    linerSailingInput: LinerSailingInput, options?: Parameters<typeof customFetch>[1]): Promise<LinerSailing> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return customFetch<LinerSailing>(getCreateMyLinerSailingUrl(linerServiceId),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(linerSailingInput)
+  }
+);}
+
+
+
+
+
+export const getCreateMyLinerSailingMutationKey = () => ['createMyLinerSailing'] as const;
+
+export const getCreateMyLinerSailingMutationOptions = <TError = ErrorType<BadRequestResponse | ForbiddenResponse | NotFoundResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createMyLinerSailing>>, TError,CreateMyLinerSailingMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof createMyLinerSailing>>, TError,CreateMyLinerSailingMutationVariables, TContext> => {
+
+const mutationKey = getCreateMyLinerSailingMutationKey();
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof createMyLinerSailing>>, CreateMyLinerSailingMutationVariables> = (props) => {
+          const {linerServiceId,data} = props ?? {};
+
+          return  createMyLinerSailing(linerServiceId,data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type CreateMyLinerSailingMutationResult = NonNullable<Awaited<ReturnType<typeof createMyLinerSailing>>>
+    export type CreateMyLinerSailingMutationBody = BodyType<LinerSailingInput>
+    export type CreateMyLinerSailingMutationError = ErrorType<BadRequestResponse | ForbiddenResponse | NotFoundResponse>
+    export type CreateMyLinerSailingMutationVariables = {linerServiceId: string;data: BodyType<LinerSailingInput>}
+
+    /**
+ * @summary Publish an actual-vessel sailing, ordered port rotation, and commercial capacity
+ */
+export const useCreateMyLinerSailing = <TError = ErrorType<BadRequestResponse | ForbiddenResponse | NotFoundResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createMyLinerSailing>>, TError,CreateMyLinerSailingMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof createMyLinerSailing>>,
+        TError,
+        CreateMyLinerSailingMutationVariables,
+        TContext
+      > => {
+      return useMutation(getCreateMyLinerSailingMutationOptions(options));
+    }
+
+export const getGetMyLinerSailingUrl = (linerSailingId: string,) => {
+
+
+
+
+  return `/api/liner/sailings/${linerSailingId}`
+}
+
+/**
+ * @summary Get an owned liner sailing
+ */
+export const getMyLinerSailing = async (linerSailingId: string, options?: Parameters<typeof customFetch>[1]): Promise<LinerSailing> => {
+
+  return customFetch<LinerSailing>(getGetMyLinerSailingUrl(linerSailingId),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetMyLinerSailingQueryKey = (linerSailingId: string,) => {
+    return [
+    `/api/liner/sailings/${linerSailingId}`
+    ] as const;
+    }
+
+
+export const getGetMyLinerSailingQueryOptions = <TData = Awaited<ReturnType<typeof getMyLinerSailing>>, TError = ErrorType<NotFoundResponse>>(linerSailingId: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getMyLinerSailing>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetMyLinerSailingQueryKey(linerSailingId);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getMyLinerSailing>>> = ({ signal }) => getMyLinerSailing(linerSailingId, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: linerSailingId !== null && linerSailingId !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getMyLinerSailing>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetMyLinerSailingQueryResult = NonNullable<Awaited<ReturnType<typeof getMyLinerSailing>>>
+export type GetMyLinerSailingQueryError = ErrorType<NotFoundResponse>
+
+
+/**
+ * @summary Get an owned liner sailing
+ */
+
+export function useGetMyLinerSailing<TData = Awaited<ReturnType<typeof getMyLinerSailing>>, TError = ErrorType<NotFoundResponse>>(
+ linerSailingId: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getMyLinerSailing>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetMyLinerSailingQueryOptions(linerSailingId,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getUpdateMyLinerSailingUrl = (linerSailingId: string,) => {
+
+
+
+
+  return `/api/liner/sailings/${linerSailingId}`
+}
+
+/**
+ * @summary Update sailing, ordered rotation, or commercial capacity
+ */
+export const updateMyLinerSailing = async (linerSailingId: string,
+    linerSailingUpdate: LinerSailingUpdate, options?: Parameters<typeof customFetch>[1]): Promise<LinerSailing> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return customFetch<LinerSailing>(getUpdateMyLinerSailingUrl(linerSailingId),
+  {
+    ...options,
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(linerSailingUpdate)
+  }
+);}
+
+
+
+
+
+export const getUpdateMyLinerSailingMutationKey = () => ['updateMyLinerSailing'] as const;
+
+export const getUpdateMyLinerSailingMutationOptions = <TError = ErrorType<BadRequestResponse | ForbiddenResponse | NotFoundResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateMyLinerSailing>>, TError,UpdateMyLinerSailingMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof updateMyLinerSailing>>, TError,UpdateMyLinerSailingMutationVariables, TContext> => {
+
+const mutationKey = getUpdateMyLinerSailingMutationKey();
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateMyLinerSailing>>, UpdateMyLinerSailingMutationVariables> = (props) => {
+          const {linerSailingId,data} = props ?? {};
+
+          return  updateMyLinerSailing(linerSailingId,data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type UpdateMyLinerSailingMutationResult = NonNullable<Awaited<ReturnType<typeof updateMyLinerSailing>>>
+    export type UpdateMyLinerSailingMutationBody = BodyType<LinerSailingUpdate>
+    export type UpdateMyLinerSailingMutationError = ErrorType<BadRequestResponse | ForbiddenResponse | NotFoundResponse>
+    export type UpdateMyLinerSailingMutationVariables = {linerSailingId: string;data: BodyType<LinerSailingUpdate>}
+
+    /**
+ * @summary Update sailing, ordered rotation, or commercial capacity
+ */
+export const useUpdateMyLinerSailing = <TError = ErrorType<BadRequestResponse | ForbiddenResponse | NotFoundResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateMyLinerSailing>>, TError,UpdateMyLinerSailingMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof updateMyLinerSailing>>,
+        TError,
+        UpdateMyLinerSailingMutationVariables,
+        TContext
+      > => {
+      return useMutation(getUpdateMyLinerSailingMutationOptions(options));
+    }
+
+export const getWithdrawMyLinerSailingUrl = (linerSailingId: string,) => {
+
+
+
+
+  return `/api/liner/sailings/${linerSailingId}/withdraw`
+}
+
+/**
+ * @summary Withdraw an owned sailing
+ */
+export const withdrawMyLinerSailing = async (linerSailingId: string, options?: Parameters<typeof customFetch>[1]): Promise<LinerSailing> => {
+
+  return customFetch<LinerSailing>(getWithdrawMyLinerSailingUrl(linerSailingId),
+  {
+    ...options,
+    method: 'POST'
+
+
+  }
+);}
+
+
+
+
+
+export const getWithdrawMyLinerSailingMutationKey = () => ['withdrawMyLinerSailing'] as const;
+
+export const getWithdrawMyLinerSailingMutationOptions = <TError = ErrorType<ForbiddenResponse | NotFoundResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof withdrawMyLinerSailing>>, TError,WithdrawMyLinerSailingMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof withdrawMyLinerSailing>>, TError,WithdrawMyLinerSailingMutationVariables, TContext> => {
+
+const mutationKey = getWithdrawMyLinerSailingMutationKey();
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof withdrawMyLinerSailing>>, WithdrawMyLinerSailingMutationVariables> = (props) => {
+          const {linerSailingId} = props ?? {};
+
+          return  withdrawMyLinerSailing(linerSailingId,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type WithdrawMyLinerSailingMutationResult = NonNullable<Awaited<ReturnType<typeof withdrawMyLinerSailing>>>
+
+    export type WithdrawMyLinerSailingMutationError = ErrorType<ForbiddenResponse | NotFoundResponse>
+    export type WithdrawMyLinerSailingMutationVariables = {linerSailingId: string}
+
+    /**
+ * @summary Withdraw an owned sailing
+ */
+export const useWithdrawMyLinerSailing = <TError = ErrorType<ForbiddenResponse | NotFoundResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof withdrawMyLinerSailing>>, TError,WithdrawMyLinerSailingMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof withdrawMyLinerSailing>>,
+        TError,
+        WithdrawMyLinerSailingMutationVariables,
+        TContext
+      > => {
+      return useMutation(getWithdrawMyLinerSailingMutationOptions(options));
+    }
+
+export const getListMyLinerCargoUrl = (params?: ListMyLinerCargoParams,) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : String(value))
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0 ? `/api/liner/cargo?${stringifiedParams}` : `/api/liner/cargo`
+}
+
+/**
+ * @summary List owned breakbulk or project-cargo listings
+ */
+export const listMyLinerCargo = async (params?: ListMyLinerCargoParams, options?: Parameters<typeof customFetch>[1]): Promise<LinerCargoListResponse> => {
+
+  return customFetch<LinerCargoListResponse>(getListMyLinerCargoUrl(params),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getListMyLinerCargoQueryKey = (params?: ListMyLinerCargoParams,) => {
+    return [
+    `/api/liner/cargo`, ...(params ? [params] : [])
+    ] as const;
+    }
+
+
+export const getListMyLinerCargoQueryOptions = <TData = Awaited<ReturnType<typeof listMyLinerCargo>>, TError = ErrorType<unknown>>(params?: ListMyLinerCargoParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof listMyLinerCargo>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getListMyLinerCargoQueryKey(params);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof listMyLinerCargo>>> = ({ signal }) => listMyLinerCargo(params, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof listMyLinerCargo>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type ListMyLinerCargoQueryResult = NonNullable<Awaited<ReturnType<typeof listMyLinerCargo>>>
+export type ListMyLinerCargoQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary List owned breakbulk or project-cargo listings
+ */
+
+export function useListMyLinerCargo<TData = Awaited<ReturnType<typeof listMyLinerCargo>>, TError = ErrorType<unknown>>(
+ params?: ListMyLinerCargoParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof listMyLinerCargo>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getListMyLinerCargoQueryOptions(params,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getCreateMyLinerCargoUrl = () => {
+
+
+
+
+  return `/api/liner/cargo`
+}
+
+/**
+ * @summary Create a breakbulk or project-cargo opportunity
+ */
+export const createMyLinerCargo = async (linerCargoInput: LinerCargoInput, options?: Parameters<typeof customFetch>[1]): Promise<LinerCargo> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return customFetch<LinerCargo>(getCreateMyLinerCargoUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(linerCargoInput)
+  }
+);}
+
+
+
+
+
+export const getCreateMyLinerCargoMutationKey = () => ['createMyLinerCargo'] as const;
+
+export const getCreateMyLinerCargoMutationOptions = <TError = ErrorType<BadRequestResponse | ForbiddenResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createMyLinerCargo>>, TError,CreateMyLinerCargoMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof createMyLinerCargo>>, TError,CreateMyLinerCargoMutationVariables, TContext> => {
+
+const mutationKey = getCreateMyLinerCargoMutationKey();
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof createMyLinerCargo>>, CreateMyLinerCargoMutationVariables> = (props) => {
+          const {data} = props ?? {};
+
+          return  createMyLinerCargo(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type CreateMyLinerCargoMutationResult = NonNullable<Awaited<ReturnType<typeof createMyLinerCargo>>>
+    export type CreateMyLinerCargoMutationBody = BodyType<LinerCargoInput>
+    export type CreateMyLinerCargoMutationError = ErrorType<BadRequestResponse | ForbiddenResponse>
+    export type CreateMyLinerCargoMutationVariables = {data: BodyType<LinerCargoInput>}
+
+    /**
+ * @summary Create a breakbulk or project-cargo opportunity
+ */
+export const useCreateMyLinerCargo = <TError = ErrorType<BadRequestResponse | ForbiddenResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createMyLinerCargo>>, TError,CreateMyLinerCargoMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof createMyLinerCargo>>,
+        TError,
+        CreateMyLinerCargoMutationVariables,
+        TContext
+      > => {
+      return useMutation(getCreateMyLinerCargoMutationOptions(options));
+    }
+
+export const getGetMyLinerCargoUrl = (linerCargoId: string,) => {
+
+
+
+
+  return `/api/liner/cargo/${linerCargoId}`
+}
+
+/**
+ * @summary Get owned liner cargo
+ */
+export const getMyLinerCargo = async (linerCargoId: string, options?: Parameters<typeof customFetch>[1]): Promise<LinerCargo> => {
+
+  return customFetch<LinerCargo>(getGetMyLinerCargoUrl(linerCargoId),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetMyLinerCargoQueryKey = (linerCargoId: string,) => {
+    return [
+    `/api/liner/cargo/${linerCargoId}`
+    ] as const;
+    }
+
+
+export const getGetMyLinerCargoQueryOptions = <TData = Awaited<ReturnType<typeof getMyLinerCargo>>, TError = ErrorType<NotFoundResponse>>(linerCargoId: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getMyLinerCargo>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetMyLinerCargoQueryKey(linerCargoId);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getMyLinerCargo>>> = ({ signal }) => getMyLinerCargo(linerCargoId, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: linerCargoId !== null && linerCargoId !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getMyLinerCargo>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetMyLinerCargoQueryResult = NonNullable<Awaited<ReturnType<typeof getMyLinerCargo>>>
+export type GetMyLinerCargoQueryError = ErrorType<NotFoundResponse>
+
+
+/**
+ * @summary Get owned liner cargo
+ */
+
+export function useGetMyLinerCargo<TData = Awaited<ReturnType<typeof getMyLinerCargo>>, TError = ErrorType<NotFoundResponse>>(
+ linerCargoId: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getMyLinerCargo>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetMyLinerCargoQueryOptions(linerCargoId,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getUpdateMyLinerCargoUrl = (linerCargoId: string,) => {
+
+
+
+
+  return `/api/liner/cargo/${linerCargoId}`
+}
+
+/**
+ * @summary Update owned liner cargo
+ */
+export const updateMyLinerCargo = async (linerCargoId: string,
+    linerCargoUpdate: LinerCargoUpdate, options?: Parameters<typeof customFetch>[1]): Promise<LinerCargo> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return customFetch<LinerCargo>(getUpdateMyLinerCargoUrl(linerCargoId),
+  {
+    ...options,
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(linerCargoUpdate)
+  }
+);}
+
+
+
+
+
+export const getUpdateMyLinerCargoMutationKey = () => ['updateMyLinerCargo'] as const;
+
+export const getUpdateMyLinerCargoMutationOptions = <TError = ErrorType<BadRequestResponse | ForbiddenResponse | NotFoundResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateMyLinerCargo>>, TError,UpdateMyLinerCargoMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof updateMyLinerCargo>>, TError,UpdateMyLinerCargoMutationVariables, TContext> => {
+
+const mutationKey = getUpdateMyLinerCargoMutationKey();
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateMyLinerCargo>>, UpdateMyLinerCargoMutationVariables> = (props) => {
+          const {linerCargoId,data} = props ?? {};
+
+          return  updateMyLinerCargo(linerCargoId,data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type UpdateMyLinerCargoMutationResult = NonNullable<Awaited<ReturnType<typeof updateMyLinerCargo>>>
+    export type UpdateMyLinerCargoMutationBody = BodyType<LinerCargoUpdate>
+    export type UpdateMyLinerCargoMutationError = ErrorType<BadRequestResponse | ForbiddenResponse | NotFoundResponse>
+    export type UpdateMyLinerCargoMutationVariables = {linerCargoId: string;data: BodyType<LinerCargoUpdate>}
+
+    /**
+ * @summary Update owned liner cargo
+ */
+export const useUpdateMyLinerCargo = <TError = ErrorType<BadRequestResponse | ForbiddenResponse | NotFoundResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateMyLinerCargo>>, TError,UpdateMyLinerCargoMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof updateMyLinerCargo>>,
+        TError,
+        UpdateMyLinerCargoMutationVariables,
+        TContext
+      > => {
+      return useMutation(getUpdateMyLinerCargoMutationOptions(options));
+    }
+
+export const getWithdrawMyLinerCargoUrl = (linerCargoId: string,) => {
+
+
+
+
+  return `/api/liner/cargo/${linerCargoId}/withdraw`
+}
+
+/**
+ * @summary Withdraw owned liner cargo
+ */
+export const withdrawMyLinerCargo = async (linerCargoId: string, options?: Parameters<typeof customFetch>[1]): Promise<LinerCargo> => {
+
+  return customFetch<LinerCargo>(getWithdrawMyLinerCargoUrl(linerCargoId),
+  {
+    ...options,
+    method: 'POST'
+
+
+  }
+);}
+
+
+
+
+
+export const getWithdrawMyLinerCargoMutationKey = () => ['withdrawMyLinerCargo'] as const;
+
+export const getWithdrawMyLinerCargoMutationOptions = <TError = ErrorType<ForbiddenResponse | NotFoundResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof withdrawMyLinerCargo>>, TError,WithdrawMyLinerCargoMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof withdrawMyLinerCargo>>, TError,WithdrawMyLinerCargoMutationVariables, TContext> => {
+
+const mutationKey = getWithdrawMyLinerCargoMutationKey();
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof withdrawMyLinerCargo>>, WithdrawMyLinerCargoMutationVariables> = (props) => {
+          const {linerCargoId} = props ?? {};
+
+          return  withdrawMyLinerCargo(linerCargoId,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type WithdrawMyLinerCargoMutationResult = NonNullable<Awaited<ReturnType<typeof withdrawMyLinerCargo>>>
+
+    export type WithdrawMyLinerCargoMutationError = ErrorType<ForbiddenResponse | NotFoundResponse>
+    export type WithdrawMyLinerCargoMutationVariables = {linerCargoId: string}
+
+    /**
+ * @summary Withdraw owned liner cargo
+ */
+export const useWithdrawMyLinerCargo = <TError = ErrorType<ForbiddenResponse | NotFoundResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof withdrawMyLinerCargo>>, TError,WithdrawMyLinerCargoMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof withdrawMyLinerCargo>>,
+        TError,
+        WithdrawMyLinerCargoMutationVariables,
+        TContext
+      > => {
+      return useMutation(getWithdrawMyLinerCargoMutationOptions(options));
+    }
+
+export const getListLinerMarketplaceUrl = (params?: ListLinerMarketplaceParams,) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : String(value))
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0 ? `/api/liner/marketplace?${stringifiedParams}` : `/api/liner/marketplace`
+}
+
+/**
+ * @summary List privacy-safe breakbulk cargo and liner sailing opportunities
+ */
+export const listLinerMarketplace = async (params?: ListLinerMarketplaceParams, options?: Parameters<typeof customFetch>[1]): Promise<LinerMarketplaceListResponse> => {
+
+  return customFetch<LinerMarketplaceListResponse>(getListLinerMarketplaceUrl(params),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getListLinerMarketplaceQueryKey = (params?: ListLinerMarketplaceParams,) => {
+    return [
+    `/api/liner/marketplace`, ...(params ? [params] : [])
+    ] as const;
+    }
+
+
+export const getListLinerMarketplaceQueryOptions = <TData = Awaited<ReturnType<typeof listLinerMarketplace>>, TError = ErrorType<unknown>>(params?: ListLinerMarketplaceParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof listLinerMarketplace>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getListLinerMarketplaceQueryKey(params);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof listLinerMarketplace>>> = ({ signal }) => listLinerMarketplace(params, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof listLinerMarketplace>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type ListLinerMarketplaceQueryResult = NonNullable<Awaited<ReturnType<typeof listLinerMarketplace>>>
+export type ListLinerMarketplaceQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary List privacy-safe breakbulk cargo and liner sailing opportunities
+ */
+
+export function useListLinerMarketplace<TData = Awaited<ReturnType<typeof listLinerMarketplace>>, TError = ErrorType<unknown>>(
+ params?: ListLinerMarketplaceParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof listLinerMarketplace>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getListLinerMarketplaceQueryOptions(params,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getListMyLinerMatchesUrl = (params?: ListMyLinerMatchesParams,) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : String(value))
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0 ? `/api/liner/matches?${stringifiedParams}` : `/api/liner/matches`
+}
+
+/**
+ * @summary List liner matches using the shared consent workflow
+ */
+export const listMyLinerMatches = async (params?: ListMyLinerMatchesParams, options?: Parameters<typeof customFetch>[1]): Promise<LinerMatchListResponse> => {
+
+  return customFetch<LinerMatchListResponse>(getListMyLinerMatchesUrl(params),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getListMyLinerMatchesQueryKey = (params?: ListMyLinerMatchesParams,) => {
+    return [
+    `/api/liner/matches`, ...(params ? [params] : [])
+    ] as const;
+    }
+
+
+export const getListMyLinerMatchesQueryOptions = <TData = Awaited<ReturnType<typeof listMyLinerMatches>>, TError = ErrorType<unknown>>(params?: ListMyLinerMatchesParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof listMyLinerMatches>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getListMyLinerMatchesQueryKey(params);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof listMyLinerMatches>>> = ({ signal }) => listMyLinerMatches(params, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof listMyLinerMatches>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type ListMyLinerMatchesQueryResult = NonNullable<Awaited<ReturnType<typeof listMyLinerMatches>>>
+export type ListMyLinerMatchesQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary List liner matches using the shared consent workflow
+ */
+
+export function useListMyLinerMatches<TData = Awaited<ReturnType<typeof listMyLinerMatches>>, TError = ErrorType<unknown>>(
+ params?: ListMyLinerMatchesParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof listMyLinerMatches>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getListMyLinerMatchesQueryOptions(params,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getGetMyLinerMatchUrl = (matchId: string,) => {
+
+
+
+
+  return `/api/liner/matches/${matchId}`
+}
+
+/**
+ * @summary Get a liner match with disclosure based on consent
+ */
+export const getMyLinerMatch = async (matchId: string, options?: Parameters<typeof customFetch>[1]): Promise<LinerMatchDetail> => {
+
+  return customFetch<LinerMatchDetail>(getGetMyLinerMatchUrl(matchId),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetMyLinerMatchQueryKey = (matchId: string,) => {
+    return [
+    `/api/liner/matches/${matchId}`
+    ] as const;
+    }
+
+
+export const getGetMyLinerMatchQueryOptions = <TData = Awaited<ReturnType<typeof getMyLinerMatch>>, TError = ErrorType<NotFoundResponse>>(matchId: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getMyLinerMatch>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetMyLinerMatchQueryKey(matchId);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getMyLinerMatch>>> = ({ signal }) => getMyLinerMatch(matchId, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: matchId !== null && matchId !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getMyLinerMatch>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetMyLinerMatchQueryResult = NonNullable<Awaited<ReturnType<typeof getMyLinerMatch>>>
+export type GetMyLinerMatchQueryError = ErrorType<NotFoundResponse>
+
+
+/**
+ * @summary Get a liner match with disclosure based on consent
+ */
+
+export function useGetMyLinerMatch<TData = Awaited<ReturnType<typeof getMyLinerMatch>>, TError = ErrorType<NotFoundResponse>>(
+ matchId: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getMyLinerMatch>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetMyLinerMatchQueryOptions(matchId,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getActOnLinerMatchUrl = (matchId: string,) => {
+
+
+
+
+  return `/api/liner/matches/${matchId}/actions`
+}
+
+/**
+ * @summary Show interest, accept, or decline using shared consent
+ */
+export const actOnLinerMatch = async (matchId: string,
+    matchActionRequest: MatchActionRequest, options?: Parameters<typeof customFetch>[1]): Promise<LinerMatchDetail> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return customFetch<LinerMatchDetail>(getActOnLinerMatchUrl(matchId),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(matchActionRequest)
+  }
+);}
+
+
+
+
+
+export const getActOnLinerMatchMutationKey = () => ['actOnLinerMatch'] as const;
+
+export const getActOnLinerMatchMutationOptions = <TError = ErrorType<BadRequestResponse | ForbiddenResponse | NotFoundResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof actOnLinerMatch>>, TError,ActOnLinerMatchMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof actOnLinerMatch>>, TError,ActOnLinerMatchMutationVariables, TContext> => {
+
+const mutationKey = getActOnLinerMatchMutationKey();
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof actOnLinerMatch>>, ActOnLinerMatchMutationVariables> = (props) => {
+          const {matchId,data} = props ?? {};
+
+          return  actOnLinerMatch(matchId,data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type ActOnLinerMatchMutationResult = NonNullable<Awaited<ReturnType<typeof actOnLinerMatch>>>
+    export type ActOnLinerMatchMutationBody = BodyType<MatchActionRequest>
+    export type ActOnLinerMatchMutationError = ErrorType<BadRequestResponse | ForbiddenResponse | NotFoundResponse>
+    export type ActOnLinerMatchMutationVariables = {matchId: string;data: BodyType<MatchActionRequest>}
+
+    /**
+ * @summary Show interest, accept, or decline using shared consent
+ */
+export const useActOnLinerMatch = <TError = ErrorType<BadRequestResponse | ForbiddenResponse | NotFoundResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof actOnLinerMatch>>, TError,ActOnLinerMatchMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof actOnLinerMatch>>,
+        TError,
+        ActOnLinerMatchMutationVariables,
+        TContext
+      > => {
+      return useMutation(getActOnLinerMatchMutationOptions(options));
     }
 
 export const getListMarketplaceUrl = (params?: ListMarketplaceParams,) => {

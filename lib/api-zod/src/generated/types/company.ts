@@ -10,6 +10,7 @@
  */
 import type { CompanyActivity } from './companyActivity';
 import type { CompanyStatus } from './companyStatus';
+import type { MembershipRole } from './membershipRole';
 
 export interface Company {
   id: string;
@@ -25,6 +26,8 @@ export interface Company {
   vatRegistrationNumber?: string | null;
   verified: boolean;
   status: CompanyStatus;
+  /** Current caller's role, returned only for their own company. */
+  membershipRole?: MembershipRole;
   createdAt: Date;
   updatedAt: Date;
 }

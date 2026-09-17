@@ -1,5 +1,6 @@
 import { useListMyNotifications, useMarkNotificationRead, getListMyNotificationsQueryKey } from "@workspace/api-client-react";
 import { useQueryClient } from "@tanstack/react-query";
+import { Link } from "wouter";
 import { Card, CardContent } from "@/components/ui/primitives";
 import { Bell, CheckCircle2 } from "lucide-react";
 import { formatDateTime } from "@/lib/utils";
@@ -49,6 +50,11 @@ export default function Notifications() {
                   <div className="text-xs text-muted-foreground mt-2">
                     {formatDateTime(notif.createdAt)}
                   </div>
+                  {notif.relatedConversationId ? (
+                    <Link className="text-sm text-primary underline" href={`/messages/${notif.relatedConversationId}`}>Open conversation</Link>
+                  ) : notif.relatedMatchId ? (
+                    <Link className="text-sm text-primary underline" href={`${notif.relatedMatchDomain === "LINER" ? "/liner/matches" : "/matches"}/${notif.relatedMatchId}`}>View match</Link>
+                  ) : null}
                 </div>
                 {!notif.readAt && (
                   <Button variant="ghost" size="sm" onClick={() => handleMarkRead(notif.id)} className="text-muted-foreground hover:text-primary shrink-0">

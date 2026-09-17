@@ -29,7 +29,12 @@ router.get("/company", async (req, res) => {
     error(res, 404, "Company not found");
     return;
   }
-  res.json(GetMyCompanyResponse.parse(companyResponse(current.company)));
+  // This endpoint returns only the caller's own company. The UI needs their
+  // actual role; counterpart serializers deliberately do not include it.
+  res.json(GetMyCompanyResponse.parse({
+    ...companyResponse(current.company),
+    membershipRole: current.membership.role,
+  }));
 });
 
 router.post("/company", async (req, res) => {

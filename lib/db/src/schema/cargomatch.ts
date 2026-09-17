@@ -69,6 +69,19 @@ export const availabilityConfidenceEnum = pgEnum("availability_confidence", [
   "EXPECTED",
   "CONFIRMED",
 ]);
+export const linerStowageEnum = pgEnum("liner_stowage", [
+  "DECK",
+  "HOLD",
+  "EITHER",
+]);
+export const linerCargoTypeEnum = pgEnum("liner_cargo_type", [
+  "BREAKBULK",
+  "PROJECT_CARGO",
+  "HEAVY_LIFT",
+  "STEEL",
+  "MACHINERY",
+  "RORO",
+]);
 export const locationTypeEnum = pgEnum("location_type", [
   "PORT",
   "TERMINAL_AREA",
@@ -560,16 +573,46 @@ export const deepseaCapacityExtensionsTable = pgTable(
   },
 );
 
+/**
+ * Conventional liner is deliberately independent from vessel positions and
+ * inland/deepsea vessel profiles. A sailing must name one registered, actual
+ * vessel; nothing in this model manufactures a vessel from a service.
+ */
+export const linerVesselsTable = pgTable(
+  "liner_vessels",
+  {
+    id: uuid("id").defaultRandom().primaryKey(),
+    companyId: uuid("company_id")
+      .notNull()
+      .references(() => companiesTable.id, { onDelete: "cascade" }),
+    vesselName: varchar("vessel_name", { length: 200 }).notNull(),
+    imoNumber: varchar("imo_number", { length: 7 }).notNull(),
+    active: boolean("active").notNull().default(true),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+    updatedAt: timestamp("updated_at", { withTimezone: true })
+      .notNull()
+      .defaultNow()
+      .$onUpdate(() => new Date()),
+  },
+  (table) => [
+    uniqueIndex("liner_vessels_company_imo_idx").on(table.companyId, table.imoNumber),
+    index("liner_vessels_company_active_idx").on(table.companyId, table.active),
+  ],
+);
 export const matchesTable = pgTable(
   "matches",
   {
     id: uuid("id").defaultRandom().primaryKey(),
     cargoListingId: uuid("cargo_listing_id")
-      .notNull()
       .references(() => cargoListingsTable.id, { onDelete: "cascade" }),
     capacityOfferId: uuid("capacity_offer_id")
-      .notNull()
       .references(() => capacityOffersTable.id, { onDelete: "cascade" }),
+    linerCargoId: uuid("liner_cargo_id").references(() => linerCargoTable.id, {
+      onDelete: "cascade",
+    }),
+    linerSailingId: uuid("liner_sailing_id").references(() => linerSailingsTable.id, {
+      onDelete: "cascade",
+    }),
     status: matchStatusEnum("status").notNull().default("NEW"),
     totalScore: doublePrecision("total_score").notNull(),
     distanceScore: doublePrecision("distance_score").notNull(),
@@ -606,6 +649,17 @@ export const matchesTable = pgTable(
     uniqueIndex("matches_cargo_capacity_idx").on(
       table.cargoListingId,
       table.capacityOfferId,
+    ),
+    uniqueIndex("matches_liner_cargo_sailing_idx")
+      .on(table.linerCargoId, table.linerSailingId)
+      .where(sql`${table.linerCargoId} IS NOT NULL AND ${table.linerSailingId} IS NOT NULL`),
+    check(
+      "matches_exactly_one_domain_pair_check",
+      sql`(
+        (${table.cargoListingId} IS NOT NULL AND ${table.capacityOfferId} IS NOT NULL AND ${table.linerCargoId} IS NULL AND ${table.linerSailingId} IS NULL)
+        OR
+        (${table.cargoListingId} IS NULL AND ${table.capacityOfferId} IS NULL AND ${table.linerCargoId} IS NOT NULL AND ${table.linerSailingId} IS NOT NULL)
+      )`,
     ),
     index("matches_status_idx").on(table.status),
     index("matches_cargo_idx").on(table.cargoListingId),
@@ -715,6 +769,9 @@ export const notificationsTable = pgTable(
     relatedMatchId: uuid("related_match_id").references(() => matchesTable.id, {
       onDelete: "set null",
     }),
+    relatedMatchDomain: varchar("related_match_domain", { length: 20 })
+      .notNull()
+      .default("MARKETPLACE"),
     relatedConversationId: uuid("related_conversation_id").references(
       () => conversationsTable.id,
       { onDelete: "set null" },
@@ -773,4 +830,121 @@ export const companyMembersRelations = relations(
       references: [usersTable.id],
     }),
   }),
+);
+
+export const linerCargoTable = pgTable(
+  "liner_cargo",
+  {
+    id: uuid("id").defaultRandom().primaryKey(),
+    companyId: uuid("company_id").notNull().references(() => companiesTable.id, { onDelete: "cascade" }),
+    cargoName: varchar("cargo_name", { length: 200 }).notNull(),
+    cargoType: linerCargoTypeEnum("cargo_type").notNull(),
+    pieceCount: integer("piece_count").notNull(),
+    totalWeightTonnes: doublePrecision("total_weight_tonnes").notNull(),
+    pieceWeightTonnes: doublePrecision("piece_weight_tonnes").notNull(),
+    pieceLengthMetres: doublePrecision("piece_length_metres").notNull(),
+    pieceWidthMetres: doublePrecision("piece_width_metres").notNull(),
+    pieceHeightMetres: doublePrecision("piece_height_metres").notNull(),
+    requiredLiftingTonnes: doublePrecision("required_lifting_tonnes"),
+    requiredStowage: linerStowageEnum("required_stowage").notNull(),
+    originLocationId: uuid("origin_location_id").notNull().references(() => locationsTable.id),
+    destinationLocationId: uuid("destination_location_id").notNull().references(() => locationsTable.id),
+    readyAt: timestamp("ready_at", { withTimezone: true }).notNull(),
+    visibility: visibilityEnum("visibility").notNull(),
+    listingStatus: listingStatusEnum("listing_status").notNull().default("DRAFT"),
+    notes: text("notes"),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+    updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow().$onUpdate(() => new Date()),
+  },
+  (table) => [
+    index("liner_cargo_company_idx").on(table.companyId),
+    index("liner_cargo_marketplace_idx").on(table.listingStatus, table.visibility, table.readyAt),
+  ],
+);
+
+export const linerSailingsTable = pgTable(
+  "liner_sailings",
+  {
+    id: uuid("id").defaultRandom().primaryKey(),
+    serviceId: uuid("service_id")
+      .notNull()
+      .references(() => linerServicesTable.id, { onDelete: "cascade" }),
+    linerVesselId: uuid("liner_vessel_id")
+      .notNull()
+      .references(() => linerVesselsTable.id),
+    voyageReference: varchar("voyage_reference", { length: 100 }).notNull(),
+    departureAt: timestamp("departure_at", { withTimezone: true }).notNull(),
+    cargoCutoffAt: timestamp("cargo_cutoff_at", { withTimezone: true }).notNull(),
+    visibility: visibilityEnum("visibility").notNull(),
+    listingStatus: listingStatusEnum("listing_status").notNull().default("DRAFT"),
+    notes: text("notes"),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+    updatedAt: timestamp("updated_at", { withTimezone: true })
+      .notNull()
+      .defaultNow()
+      .$onUpdate(() => new Date()),
+  },
+  (table) => [
+    uniqueIndex("liner_sailings_service_voyage_idx").on(table.serviceId, table.voyageReference),
+    index("liner_sailings_marketplace_idx").on(table.listingStatus, table.visibility, table.departureAt),
+  ],
+);
+
+export const linerSailingCapacitiesTable = pgTable(
+  "liner_sailing_capacities",
+  {
+    sailingId: uuid("sailing_id").primaryKey().references(() => linerSailingsTable.id, { onDelete: "cascade" }),
+    availableCommercialTonnes: doublePrecision("available_commercial_tonnes").notNull(),
+    maximumPieceWeightTonnes: doublePrecision("maximum_piece_weight_tonnes").notNull(),
+    maximumPieceLengthMetres: doublePrecision("maximum_piece_length_metres").notNull(),
+    maximumPieceWidthMetres: doublePrecision("maximum_piece_width_metres").notNull(),
+    maximumPieceHeightMetres: doublePrecision("maximum_piece_height_metres").notNull(),
+    liftingCapacityTonnes: doublePrecision("lifting_capacity_tonnes").notNull(),
+    stowage: linerStowageEnum("stowage").notNull(),
+    acceptedCargoTypes: linerCargoTypeEnum("accepted_cargo_types").array().notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+    updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow().$onUpdate(() => new Date()),
+  },
+);
+
+export const linerPortRotationsTable = pgTable(
+  "liner_port_rotations",
+  {
+    id: uuid("id").defaultRandom().primaryKey(),
+    sailingId: uuid("sailing_id")
+      .notNull()
+      .references(() => linerSailingsTable.id, { onDelete: "cascade" }),
+    locationId: uuid("location_id").notNull().references(() => locationsTable.id),
+    sequence: integer("sequence").notNull(),
+    estimatedArrival: timestamp("estimated_arrival", { withTimezone: true }).notNull(),
+    estimatedDeparture: timestamp("estimated_departure", { withTimezone: true }).notNull(),
+  },
+  (table) => [
+    uniqueIndex("liner_port_rotations_sailing_sequence_idx").on(table.sailingId, table.sequence),
+    index("liner_port_rotations_location_idx").on(table.locationId),
+  ],
+);
+
+export const linerServicesTable = pgTable(
+  "liner_services",
+  {
+    id: uuid("id").defaultRandom().primaryKey(),
+    companyId: uuid("company_id")
+      .notNull()
+      .references(() => companiesTable.id, { onDelete: "cascade" }),
+    serviceName: varchar("service_name", { length: 200 }).notNull(),
+    tradeLane: varchar("trade_lane", { length: 300 }).notNull(),
+    visibility: visibilityEnum("visibility").notNull(),
+    listingStatus: listingStatusEnum("listing_status").notNull().default("DRAFT"),
+    notes: text("notes"),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+    updatedAt: timestamp("updated_at", { withTimezone: true })
+      .notNull()
+      .defaultNow()
+      .$onUpdate(() => new Date()),
+  },
+  (table) => [
+    index("liner_services_company_idx").on(table.companyId),
+    index("liner_services_marketplace_idx").on(table.listingStatus, table.visibility),
+  ],
 );

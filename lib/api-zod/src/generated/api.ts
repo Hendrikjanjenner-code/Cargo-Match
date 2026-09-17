@@ -81,6 +81,11 @@ export const LogoutBrowserSessionResponse = zod.void()
  */
 
 
+
+
+
+
+
 export const ExchangeMobileAuthorizationCodeBody = zod.object({
   "code": zod.string().min(1),
   "code_verifier": zod.string().min(1),
@@ -112,6 +117,8 @@ export const LogoutMobileSessionResponse = zod.object({
  */
 
 
+
+
 export const GetMyCompanyResponse = zod.object({
   "id": zod.string().uuid(),
   "name": zod.string().min(1),
@@ -123,6 +130,7 @@ export const GetMyCompanyResponse = zod.object({
   "vatRegistrationNumber": zod.string().nullish(),
   "verified": zod.boolean(),
   "status": zod.enum(['ACTIVE', 'SUSPENDED', 'CLOSED']),
+  "membershipRole": zod.enum(['OWNER', 'ADMIN', 'MEMBER']).optional().describe('Current caller\'s role, returned only for their own company.'),
   "createdAt": zod.coerce.date(),
   "updatedAt": zod.coerce.date()
 })
@@ -134,6 +142,10 @@ export const GetMyCompanyResponse = zod.object({
  */
 
 export const createMyCompanyBodyCountryMin = 2;
+
+
+
+
 
 
 export const CreateMyCompanyBody = zod.object({
@@ -149,6 +161,9 @@ export const CreateMyCompanyBody = zod.object({
 })
 
 
+
+
+
 export const CreateMyCompanyResponse = zod.object({
   "id": zod.string().uuid(),
   "name": zod.string().min(1),
@@ -160,6 +175,7 @@ export const CreateMyCompanyResponse = zod.object({
   "vatRegistrationNumber": zod.string().nullish(),
   "verified": zod.boolean(),
   "status": zod.enum(['ACTIVE', 'SUSPENDED', 'CLOSED']),
+  "membershipRole": zod.enum(['OWNER', 'ADMIN', 'MEMBER']).optional().describe('Current caller\'s role, returned only for their own company.'),
   "createdAt": zod.coerce.date(),
   "updatedAt": zod.coerce.date()
 })
@@ -170,6 +186,10 @@ export const CreateMyCompanyResponse = zod.object({
  */
 
 export const updateMyCompanyBodyCountryMin = 2;
+
+
+
+
 
 
 export const UpdateMyCompanyBody = zod.object({
@@ -183,6 +203,9 @@ export const UpdateMyCompanyBody = zod.object({
 })
 
 
+
+
+
 export const UpdateMyCompanyResponse = zod.object({
   "id": zod.string().uuid(),
   "name": zod.string().min(1),
@@ -194,6 +217,7 @@ export const UpdateMyCompanyResponse = zod.object({
   "vatRegistrationNumber": zod.string().nullish(),
   "verified": zod.boolean(),
   "status": zod.enum(['ACTIVE', 'SUSPENDED', 'CLOSED']),
+  "membershipRole": zod.enum(['OWNER', 'ADMIN', 'MEMBER']).optional().describe('Current caller\'s role, returned only for their own company.'),
   "createdAt": zod.coerce.date(),
   "updatedAt": zod.coerce.date()
 })
@@ -231,6 +255,7 @@ export const listMyVesselsResponseItemsItemDeepseaProfileOneDwtTonnesExclusiveMi
 export const listMyVesselsResponseItemsItemDeepseaProfileOneSummerDraftMetresExclusiveMin = 0;
 
 export const listMyVesselsResponseItemsItemDeepseaProfileOneGearConfigurationMax = 120;
+
 
 
 export const ListMyVesselsResponse = zod.object({
@@ -323,6 +348,7 @@ export const createMyVesselResponseDeepseaProfileOneSummerDraftMetresExclusiveMi
 export const createMyVesselResponseDeepseaProfileOneGearConfigurationMax = 120;
 
 
+
 export const CreateMyVesselResponse = zod.object({
   "id": zod.string().uuid(),
   "companyId": zod.string().uuid(),
@@ -371,6 +397,7 @@ export const getMyVesselResponseDeepseaProfileOneDwtTonnesExclusiveMin = 0;
 export const getMyVesselResponseDeepseaProfileOneSummerDraftMetresExclusiveMin = 0;
 
 export const getMyVesselResponseDeepseaProfileOneGearConfigurationMax = 120;
+
 
 
 export const GetMyVesselResponse = zod.object({
@@ -423,6 +450,7 @@ export const updateMyVesselBodyDeepseaProfileOneSummerDraftMetresExclusiveMin = 
 export const updateMyVesselBodyDeepseaProfileOneGearConfigurationMax = 120;
 
 
+
 export const UpdateMyVesselBody = zod.object({
   "transportMode": zod.enum(['INLAND_WATERWAY', 'DEEPSEA_BULK']).optional().describe('Transport mode. Omitted request values default to INLAND_WATERWAY.'),
   "vesselName": zod.string().min(1).optional(),
@@ -459,6 +487,7 @@ export const updateMyVesselResponseDeepseaProfileOneDwtTonnesExclusiveMin = 0;
 export const updateMyVesselResponseDeepseaProfileOneSummerDraftMetresExclusiveMin = 0;
 
 export const updateMyVesselResponseDeepseaProfileOneGearConfigurationMax = 120;
+
 
 
 export const UpdateMyVesselResponse = zod.object({
@@ -510,6 +539,7 @@ export const deactivateMyVesselResponseDeepseaProfileOneDwtTonnesExclusiveMin = 
 export const deactivateMyVesselResponseDeepseaProfileOneSummerDraftMetresExclusiveMin = 0;
 
 export const deactivateMyVesselResponseDeepseaProfileOneGearConfigurationMax = 120;
+
 
 
 export const DeactivateMyVesselResponse = zod.object({
@@ -565,6 +595,9 @@ export const getMyVesselAisResponseTelemetryOneHeadingDegreesExclusiveMax = 360;
 export const getMyVesselAisResponseTelemetryOneReportedDraughtMetersMin = 0;
 
 
+
+
+
 export const GetMyVesselAisResponse = zod.object({
   "vesselId": zod.string().uuid(),
   "status": zod.enum(['NOT_CONFIGURED', 'AVAILABLE', 'UNAVAILABLE']),
@@ -617,6 +650,7 @@ export const listMyVesselAisIdentitiesResponseItemsItemEvidenceOneSourceMax = 20
 export const listMyVesselAisIdentitiesResponseItemsItemEvidenceOneReferenceMax = 1000;
 
 export const listMyVesselAisIdentitiesResponseItemsItemEvidenceOneNotesMax = 2000;
+
 
 
 export const ListMyVesselAisIdentitiesResponse = zod.object({
@@ -676,6 +710,7 @@ export const registerMyVesselAisIdentityBodyEvidenceOneReferenceMax = 1000;
 export const registerMyVesselAisIdentityBodyEvidenceOneNotesMax = 2000;
 
 
+
 export const RegisterMyVesselAisIdentityBody = zod.object({
   "identifierType": zod.enum(['ENI', 'MMSI', 'IMO', 'VESSELFINDER_ID', 'MARINETRAFFIC_ID', 'OTHER']),
   "identifierValue": zod.string().min(1).max(registerMyVesselAisIdentityBodyIdentifierValueMax).describe('Stable ENI, MMSI, IMO, or provider identifier; never a vessel name.'),
@@ -694,6 +729,7 @@ export const registerMyVesselAisIdentityResponseEvidenceOneSourceMax = 200;
 export const registerMyVesselAisIdentityResponseEvidenceOneReferenceMax = 1000;
 
 export const registerMyVesselAisIdentityResponseEvidenceOneNotesMax = 2000;
+
 
 
 export const RegisterMyVesselAisIdentityResponse = zod.object({
@@ -738,6 +774,7 @@ export const updateMyVesselAisIdentityBodyEvidenceOneReferenceMax = 1000;
 export const updateMyVesselAisIdentityBodyEvidenceOneNotesMax = 2000;
 
 
+
 export const UpdateMyVesselAisIdentityBody = zod.object({
   "identifierType": zod.enum(['ENI', 'MMSI', 'IMO', 'VESSELFINDER_ID', 'MARINETRAFFIC_ID', 'OTHER']).optional(),
   "identifierValue": zod.string().min(1).max(updateMyVesselAisIdentityBodyIdentifierValueMax).optional().describe('Stable ENI, MMSI, IMO, or provider identifier; never a vessel name.'),
@@ -756,6 +793,7 @@ export const updateMyVesselAisIdentityResponseEvidenceOneSourceMax = 200;
 export const updateMyVesselAisIdentityResponseEvidenceOneReferenceMax = 1000;
 
 export const updateMyVesselAisIdentityResponseEvidenceOneNotesMax = 2000;
+
 
 
 export const UpdateMyVesselAisIdentityResponse = zod.object({
@@ -800,6 +838,7 @@ export const listLocationsQueryPageSizeDefault = 25;
 export const listLocationsQueryPageSizeMax = 100;
 
 
+
 export const ListLocationsQueryParams = zod.object({
   "search": zod.coerce.string().optional(),
   "country": zod.coerce.string().optional(),
@@ -832,12 +871,14 @@ export const listMyCargoQueryPageSizeDefault = 25;
 export const listMyCargoQueryPageSizeMax = 100;
 
 
+
 export const ListMyCargoQueryParams = zod.object({
   "listingStatus": zod.enum(['DRAFT', 'ACTIVE', 'WITHDRAWN', 'EXPIRED', 'CLOSED']).optional(),
   "transportMode": zod.enum(['INLAND_WATERWAY', 'DEEPSEA_BULK']).optional(),
   "page": zod.coerce.number().int().min(1).default(listMyCargoQueryPageDefault),
   "pageSize": zod.coerce.number().int().min(1).max(listMyCargoQueryPageSizeMax).default(listMyCargoQueryPageSizeDefault)
 })
+
 
 
 export const listMyCargoResponseItemsItemWeightTonnesExclusiveMin = 0;
@@ -853,6 +894,7 @@ export const listMyCargoResponseItemsItemDeepseaRequirementOneMaximumVesselDwtTo
 export const listMyCargoResponseItemsItemDeepseaRequirementOneMaximumDraftMetresExclusiveMin = 0;
 
 export const listMyCargoResponseItemsItemDeepseaRequirementOneRequiredGearMax = 120;
+
 
 
 export const ListMyCargoResponse = zod.object({
@@ -911,6 +953,7 @@ export const createMyCargoBodyDeepseaRequirementMaximumDraftMetresExclusiveMin =
 export const createMyCargoBodyDeepseaRequirementRequiredGearMax = 120;
 
 
+
 export const CreateMyCargoBody = zod.object({
   "transportMode": zod.enum(['INLAND_WATERWAY', 'DEEPSEA_BULK']).default(createMyCargoBodyTransportModeDefault).describe('Transport mode. Omitted request values default to INLAND_WATERWAY.'),
   "cargoName": zod.string().min(1),
@@ -937,6 +980,7 @@ export const CreateMyCargoBody = zod.object({
 })
 
 
+
 export const createMyCargoResponseWeightTonnesExclusiveMin = 0;
 
 export const createMyCargoResponseDeepseaRequirementOneQuantityTolerancePercentDefault = 0;
@@ -950,6 +994,7 @@ export const createMyCargoResponseDeepseaRequirementOneMaximumVesselDwtTonnesExc
 export const createMyCargoResponseDeepseaRequirementOneMaximumDraftMetresExclusiveMin = 0;
 
 export const createMyCargoResponseDeepseaRequirementOneRequiredGearMax = 120;
+
 
 
 export const CreateMyCargoResponse = zod.object({
@@ -990,6 +1035,7 @@ export const GetMyCargoParams = zod.object({
 })
 
 
+
 export const getMyCargoResponseWeightTonnesExclusiveMin = 0;
 
 export const getMyCargoResponseDeepseaRequirementOneQuantityTolerancePercentDefault = 0;
@@ -1003,6 +1049,7 @@ export const getMyCargoResponseDeepseaRequirementOneMaximumVesselDwtTonnesExclus
 export const getMyCargoResponseDeepseaRequirementOneMaximumDraftMetresExclusiveMin = 0;
 
 export const getMyCargoResponseDeepseaRequirementOneRequiredGearMax = 120;
+
 
 
 export const GetMyCargoResponse = zod.object({
@@ -1043,6 +1090,7 @@ export const UpdateMyCargoParams = zod.object({
 })
 
 
+
 export const updateMyCargoBodyWeightTonnesExclusiveMin = 0;
 
 export const updateMyCargoBodyDeepseaRequirementOneQuantityTolerancePercentDefault = 0;
@@ -1056,6 +1104,7 @@ export const updateMyCargoBodyDeepseaRequirementOneMaximumVesselDwtTonnesExclusi
 export const updateMyCargoBodyDeepseaRequirementOneMaximumDraftMetresExclusiveMin = 0;
 
 export const updateMyCargoBodyDeepseaRequirementOneRequiredGearMax = 120;
+
 
 
 export const UpdateMyCargoBody = zod.object({
@@ -1084,6 +1133,7 @@ export const UpdateMyCargoBody = zod.object({
 })
 
 
+
 export const updateMyCargoResponseWeightTonnesExclusiveMin = 0;
 
 export const updateMyCargoResponseDeepseaRequirementOneQuantityTolerancePercentDefault = 0;
@@ -1097,6 +1147,7 @@ export const updateMyCargoResponseDeepseaRequirementOneMaximumVesselDwtTonnesExc
 export const updateMyCargoResponseDeepseaRequirementOneMaximumDraftMetresExclusiveMin = 0;
 
 export const updateMyCargoResponseDeepseaRequirementOneRequiredGearMax = 120;
+
 
 
 export const UpdateMyCargoResponse = zod.object({
@@ -1137,6 +1188,7 @@ export const WithdrawMyCargoParams = zod.object({
 })
 
 
+
 export const withdrawMyCargoResponseWeightTonnesExclusiveMin = 0;
 
 export const withdrawMyCargoResponseDeepseaRequirementOneQuantityTolerancePercentDefault = 0;
@@ -1150,6 +1202,7 @@ export const withdrawMyCargoResponseDeepseaRequirementOneMaximumVesselDwtTonnesE
 export const withdrawMyCargoResponseDeepseaRequirementOneMaximumDraftMetresExclusiveMin = 0;
 
 export const withdrawMyCargoResponseDeepseaRequirementOneRequiredGearMax = 120;
+
 
 
 export const WithdrawMyCargoResponse = zod.object({
@@ -1190,6 +1243,7 @@ export const CloseMyCargoParams = zod.object({
 })
 
 
+
 export const closeMyCargoResponseWeightTonnesExclusiveMin = 0;
 
 export const closeMyCargoResponseDeepseaRequirementOneQuantityTolerancePercentDefault = 0;
@@ -1203,6 +1257,7 @@ export const closeMyCargoResponseDeepseaRequirementOneMaximumVesselDwtTonnesExcl
 export const closeMyCargoResponseDeepseaRequirementOneMaximumDraftMetresExclusiveMin = 0;
 
 export const closeMyCargoResponseDeepseaRequirementOneRequiredGearMax = 120;
+
 
 
 export const CloseMyCargoResponse = zod.object({
@@ -1244,6 +1299,7 @@ export const listMyCapacityQueryPageSizeDefault = 25;
 export const listMyCapacityQueryPageSizeMax = 100;
 
 
+
 export const ListMyCapacityQueryParams = zod.object({
   "listingStatus": zod.enum(['DRAFT', 'ACTIVE', 'WITHDRAWN', 'EXPIRED', 'CLOSED']).optional(),
   "transportMode": zod.enum(['INLAND_WATERWAY', 'DEEPSEA_BULK']).optional(),
@@ -1252,6 +1308,7 @@ export const ListMyCapacityQueryParams = zod.object({
 })
 
 export const listMyCapacityResponseItemsItemAvailableCapacityTonnesExclusiveMin = 0;
+
 
 
 export const listMyCapacityResponseItemsItemMaximumPositioningDistanceKmExclusiveMin = 0;
@@ -1271,6 +1328,7 @@ export const listMyCapacityResponseItemsItemDeepseaExtensionOnePositioningBuffer
 export const listMyCapacityResponseItemsItemDeepseaExtensionOneApproximateMaxDistanceKmExclusiveMin = 0;
 
 export const listMyCapacityResponseItemsItemDeepseaExtensionOnePreviousVoyageContextMax = 4000;
+
 
 
 export const ListMyCapacityResponse = zod.object({
@@ -1316,6 +1374,7 @@ export const createMyCapacityBodyTransportModeDefault = `INLAND_WATERWAY`;
 export const createMyCapacityBodyAvailableCapacityTonnesExclusiveMin = 0;
 
 
+
 export const createMyCapacityBodyMaximumPositioningDistanceKmExclusiveMin = 0;
 
 export const createMyCapacityBodyListingStatusDefault = `DRAFT`;
@@ -1335,6 +1394,7 @@ export const createMyCapacityBodyDeepseaExtensionPositioningBufferDaysMax = 365;
 export const createMyCapacityBodyDeepseaExtensionApproximateMaxDistanceKmExclusiveMin = 0;
 
 export const createMyCapacityBodyDeepseaExtensionPreviousVoyageContextMax = 4000;
+
 
 
 export const CreateMyCapacityBody = zod.object({
@@ -1368,6 +1428,7 @@ export const CreateMyCapacityBody = zod.object({
 export const createMyCapacityResponseAvailableCapacityTonnesExclusiveMin = 0;
 
 
+
 export const createMyCapacityResponseMaximumPositioningDistanceKmExclusiveMin = 0;
 
 export const createMyCapacityResponseDeepseaExtensionOneManualPositioningDaysMin = 0;
@@ -1385,6 +1446,7 @@ export const createMyCapacityResponseDeepseaExtensionOnePositioningBufferDaysMax
 export const createMyCapacityResponseDeepseaExtensionOneApproximateMaxDistanceKmExclusiveMin = 0;
 
 export const createMyCapacityResponseDeepseaExtensionOnePreviousVoyageContextMax = 4000;
+
 
 
 export const CreateMyCapacityResponse = zod.object({
@@ -1417,6 +1479,7 @@ export const CreateMyCapacityResponse = zod.object({
 }),zod.null()]).optional()
 })
 
+
 /**
  * Lists only suggestions owned by the current company. Suggestions are
  * operational manual plans, not telemetry or ETA predictions. Statuses
@@ -1424,6 +1487,120 @@ export const CreateMyCapacityResponse = zod.object({
  * @summary List private availability suggestions
  */
 export const listMyAvailabilitySuggestionsQueryPageDefault = 1;
+
+export const listMyAvailabilitySuggestionsQueryPageSizeDefault = 25;
+export const listMyAvailabilitySuggestionsQueryPageSizeMax = 100;
+
+
+
+export const ListMyAvailabilitySuggestionsQueryParams = zod.object({
+  "page": zod.coerce.number().int().min(1).default(listMyAvailabilitySuggestionsQueryPageDefault),
+  "pageSize": zod.coerce.number().int().min(1).max(listMyAvailabilitySuggestionsQueryPageSizeMax).default(listMyAvailabilitySuggestionsQueryPageSizeDefault)
+})
+
+export const listMyAvailabilitySuggestionsResponseItemsItemSourceReferenceMax = 300;
+
+
+
+export const ListMyAvailabilitySuggestionsResponse = zod.object({
+  "items": zod.array(zod.object({
+  "id": zod.string().uuid(),
+  "vesselId": zod.string().uuid(),
+  "locationId": zod.string().uuid(),
+  "expectedAvailableFrom": zod.coerce.date(),
+  "expectedAvailableUntil": zod.coerce.date(),
+  "sourceReference": zod.string().max(listMyAvailabilitySuggestionsResponseItemsItemSourceReferenceMax),
+  "sourceObservedAt": zod.coerce.date(),
+  "createdAt": zod.coerce.date(),
+  "expiresAt": zod.coerce.date(),
+  "status": zod.enum(['PENDING', 'DISMISSED', 'CONVERTED', 'EXPIRED', 'INVALIDATED']),
+  "uncertainty": zod.literal("UNCERTAIN"),
+  "explanation": zod.string(),
+  "unknowns": zod.array(zod.string()),
+  "capacityOfferId": zod.string().uuid().nullable(),
+  "canConfirm": zod.boolean()
+})),
+  "page": zod.number().int(),
+  "pageSize": zod.number().int(),
+  "total": zod.number().int()
+})
+
+
+/**
+ * OWNER and ADMIN only. Requires an independently operator-reviewed
+ * active AIS identity at submission. No provider request or telemetry is
+ * made or stored. Dates remain explicitly uncertain.
+ * @summary Submit a manually observed availability suggestion
+ */
+export const createAvailabilitySuggestionBodySourceReferenceMax = 300;
+
+
+
+export const CreateAvailabilitySuggestionBody = zod.object({
+  "vesselId": zod.string().uuid(),
+  "locationId": zod.string().uuid(),
+  "expectedAvailableFrom": zod.coerce.date(),
+  "expectedAvailableUntil": zod.coerce.date(),
+  "sourceReference": zod.string().min(1).max(createAvailabilitySuggestionBodySourceReferenceMax),
+  "sourceObservedAt": zod.coerce.date(),
+  "participationConfirmed": zod.literal(true),
+  "sourceUseConfirmed": zod.literal(true),
+  "uncertaintyAcknowledged": zod.literal(true)
+})
+
+export const createAvailabilitySuggestionResponseSourceReferenceMax = 300;
+
+
+
+export const CreateAvailabilitySuggestionResponse = zod.object({
+  "id": zod.string().uuid(),
+  "vesselId": zod.string().uuid(),
+  "locationId": zod.string().uuid(),
+  "expectedAvailableFrom": zod.coerce.date(),
+  "expectedAvailableUntil": zod.coerce.date(),
+  "sourceReference": zod.string().max(createAvailabilitySuggestionResponseSourceReferenceMax),
+  "sourceObservedAt": zod.coerce.date(),
+  "createdAt": zod.coerce.date(),
+  "expiresAt": zod.coerce.date(),
+  "status": zod.enum(['PENDING', 'DISMISSED', 'CONVERTED', 'EXPIRED', 'INVALIDATED']),
+  "uncertainty": zod.literal("UNCERTAIN"),
+  "explanation": zod.string(),
+  "unknowns": zod.array(zod.string()),
+  "capacityOfferId": zod.string().uuid().nullable(),
+  "canConfirm": zod.boolean()
+})
+
+
+/**
+ * @summary Dismiss an availability suggestion
+ */
+export const DismissAvailabilitySuggestionParams = zod.object({
+  "suggestionId": zod.coerce.string().uuid()
+})
+
+export const dismissAvailabilitySuggestionResponseSourceReferenceMax = 300;
+
+
+
+export const DismissAvailabilitySuggestionResponse = zod.object({
+  "id": zod.string().uuid(),
+  "vesselId": zod.string().uuid(),
+  "locationId": zod.string().uuid(),
+  "expectedAvailableFrom": zod.coerce.date(),
+  "expectedAvailableUntil": zod.coerce.date(),
+  "sourceReference": zod.string().max(dismissAvailabilitySuggestionResponseSourceReferenceMax),
+  "sourceObservedAt": zod.coerce.date(),
+  "createdAt": zod.coerce.date(),
+  "expiresAt": zod.coerce.date(),
+  "status": zod.enum(['PENDING', 'DISMISSED', 'CONVERTED', 'EXPIRED', 'INVALIDATED']),
+  "uncertainty": zod.literal("UNCERTAIN"),
+  "explanation": zod.string(),
+  "unknowns": zod.array(zod.string()),
+  "capacityOfferId": zod.string().uuid().nullable(),
+  "canConfirm": zod.boolean()
+})
+
+
 /**
  * @summary Get one of the current company's capacity offers
  */
@@ -1432,6 +1609,7 @@ export const GetMyCapacityParams = zod.object({
 })
 
 export const getMyCapacityResponseAvailableCapacityTonnesExclusiveMin = 0;
+
 
 
 export const getMyCapacityResponseMaximumPositioningDistanceKmExclusiveMin = 0;
@@ -1451,6 +1629,7 @@ export const getMyCapacityResponseDeepseaExtensionOnePositioningBufferDaysMax = 
 export const getMyCapacityResponseDeepseaExtensionOneApproximateMaxDistanceKmExclusiveMin = 0;
 
 export const getMyCapacityResponseDeepseaExtensionOnePreviousVoyageContextMax = 4000;
+
 
 
 export const GetMyCapacityResponse = zod.object({
@@ -1494,6 +1673,7 @@ export const UpdateMyCapacityParams = zod.object({
 export const updateMyCapacityBodyAvailableCapacityTonnesExclusiveMin = 0;
 
 
+
 export const updateMyCapacityBodyMaximumPositioningDistanceKmExclusiveMin = 0;
 
 export const updateMyCapacityBodyDeepseaExtensionOneManualPositioningDaysMin = 0;
@@ -1511,6 +1691,7 @@ export const updateMyCapacityBodyDeepseaExtensionOnePositioningBufferDaysMax = 3
 export const updateMyCapacityBodyDeepseaExtensionOneApproximateMaxDistanceKmExclusiveMin = 0;
 
 export const updateMyCapacityBodyDeepseaExtensionOnePreviousVoyageContextMax = 4000;
+
 
 
 export const UpdateMyCapacityBody = zod.object({
@@ -1542,6 +1723,7 @@ export const UpdateMyCapacityBody = zod.object({
 export const updateMyCapacityResponseAvailableCapacityTonnesExclusiveMin = 0;
 
 
+
 export const updateMyCapacityResponseMaximumPositioningDistanceKmExclusiveMin = 0;
 
 export const updateMyCapacityResponseDeepseaExtensionOneManualPositioningDaysMin = 0;
@@ -1559,6 +1741,7 @@ export const updateMyCapacityResponseDeepseaExtensionOnePositioningBufferDaysMax
 export const updateMyCapacityResponseDeepseaExtensionOneApproximateMaxDistanceKmExclusiveMin = 0;
 
 export const updateMyCapacityResponseDeepseaExtensionOnePreviousVoyageContextMax = 4000;
+
 
 
 export const UpdateMyCapacityResponse = zod.object({
@@ -1602,6 +1785,7 @@ export const WithdrawMyCapacityParams = zod.object({
 export const withdrawMyCapacityResponseAvailableCapacityTonnesExclusiveMin = 0;
 
 
+
 export const withdrawMyCapacityResponseMaximumPositioningDistanceKmExclusiveMin = 0;
 
 export const withdrawMyCapacityResponseDeepseaExtensionOneManualPositioningDaysMin = 0;
@@ -1619,6 +1803,7 @@ export const withdrawMyCapacityResponseDeepseaExtensionOnePositioningBufferDaysM
 export const withdrawMyCapacityResponseDeepseaExtensionOneApproximateMaxDistanceKmExclusiveMin = 0;
 
 export const withdrawMyCapacityResponseDeepseaExtensionOnePreviousVoyageContextMax = 4000;
+
 
 
 export const WithdrawMyCapacityResponse = zod.object({
@@ -1662,6 +1847,7 @@ export const CloseMyCapacityParams = zod.object({
 export const closeMyCapacityResponseAvailableCapacityTonnesExclusiveMin = 0;
 
 
+
 export const closeMyCapacityResponseMaximumPositioningDistanceKmExclusiveMin = 0;
 
 export const closeMyCapacityResponseDeepseaExtensionOneManualPositioningDaysMin = 0;
@@ -1679,6 +1865,7 @@ export const closeMyCapacityResponseDeepseaExtensionOnePositioningBufferDaysMax 
 export const closeMyCapacityResponseDeepseaExtensionOneApproximateMaxDistanceKmExclusiveMin = 0;
 
 export const closeMyCapacityResponseDeepseaExtensionOnePreviousVoyageContextMax = 4000;
+
 
 
 export const CloseMyCapacityResponse = zod.object({
@@ -1713,6 +1900,1673 @@ export const CloseMyCapacityResponse = zod.object({
 
 
 /**
+ * @summary List actual liner vessels owned by the current carrier
+ */
+export const listMyLinerVesselsQueryPageDefault = 1;
+
+export const listMyLinerVesselsQueryPageSizeDefault = 25;
+export const listMyLinerVesselsQueryPageSizeMax = 100;
+
+
+
+export const ListMyLinerVesselsQueryParams = zod.object({
+  "page": zod.coerce.number().int().min(1).default(listMyLinerVesselsQueryPageDefault),
+  "pageSize": zod.coerce.number().int().min(1).max(listMyLinerVesselsQueryPageSizeMax).default(listMyLinerVesselsQueryPageSizeDefault)
+})
+
+export const listMyLinerVesselsResponseItemsItemImoNumberRegExp = new RegExp('^[0-9]{7}$');
+
+
+export const ListMyLinerVesselsResponse = zod.object({
+  "items": zod.array(zod.object({
+  "id": zod.string().uuid(),
+  "companyId": zod.string().uuid(),
+  "vesselName": zod.string(),
+  "imoNumber": zod.string().regex(listMyLinerVesselsResponseItemsItemImoNumberRegExp).describe('Actual IMO identifier; no placeholder vessels are supported.'),
+  "active": zod.boolean(),
+  "createdAt": zod.coerce.date(),
+  "updatedAt": zod.coerce.date()
+})),
+  "page": zod.number().int(),
+  "pageSize": zod.number().int(),
+  "total": zod.number().int()
+})
+
+
+/**
+ * This vertical never creates a vessel implicitly from a service or sailing.
+ * @summary Register an actual vessel before it can be assigned to a sailing
+ */
+export const createMyLinerVesselBodyVesselNameMax = 200;
+
+export const createMyLinerVesselBodyImoNumberRegExp = new RegExp('^[0-9]{7}$');
+
+
+export const CreateMyLinerVesselBody = zod.object({
+  "vesselName": zod.string().min(1).max(createMyLinerVesselBodyVesselNameMax),
+  "imoNumber": zod.string().regex(createMyLinerVesselBodyImoNumberRegExp)
+})
+
+export const createMyLinerVesselResponseImoNumberRegExp = new RegExp('^[0-9]{7}$');
+
+
+export const CreateMyLinerVesselResponse = zod.object({
+  "id": zod.string().uuid(),
+  "companyId": zod.string().uuid(),
+  "vesselName": zod.string(),
+  "imoNumber": zod.string().regex(createMyLinerVesselResponseImoNumberRegExp).describe('Actual IMO identifier; no placeholder vessels are supported.'),
+  "active": zod.boolean(),
+  "createdAt": zod.coerce.date(),
+  "updatedAt": zod.coerce.date()
+})
+
+
+/**
+ * @summary Get an owned liner vessel
+ */
+export const GetMyLinerVesselParams = zod.object({
+  "linerVesselId": zod.coerce.string().uuid()
+})
+
+export const getMyLinerVesselResponseImoNumberRegExp = new RegExp('^[0-9]{7}$');
+
+
+export const GetMyLinerVesselResponse = zod.object({
+  "id": zod.string().uuid(),
+  "companyId": zod.string().uuid(),
+  "vesselName": zod.string(),
+  "imoNumber": zod.string().regex(getMyLinerVesselResponseImoNumberRegExp).describe('Actual IMO identifier; no placeholder vessels are supported.'),
+  "active": zod.boolean(),
+  "createdAt": zod.coerce.date(),
+  "updatedAt": zod.coerce.date()
+})
+
+
+/**
+ * @summary Update an owned liner vessel
+ */
+export const UpdateMyLinerVesselParams = zod.object({
+  "linerVesselId": zod.coerce.string().uuid()
+})
+
+export const updateMyLinerVesselBodyVesselNameMax = 200;
+
+
+
+export const UpdateMyLinerVesselBody = zod.object({
+  "vesselName": zod.string().min(1).max(updateMyLinerVesselBodyVesselNameMax).optional(),
+  "active": zod.boolean().optional()
+})
+
+export const updateMyLinerVesselResponseImoNumberRegExp = new RegExp('^[0-9]{7}$');
+
+
+export const UpdateMyLinerVesselResponse = zod.object({
+  "id": zod.string().uuid(),
+  "companyId": zod.string().uuid(),
+  "vesselName": zod.string(),
+  "imoNumber": zod.string().regex(updateMyLinerVesselResponseImoNumberRegExp).describe('Actual IMO identifier; no placeholder vessels are supported.'),
+  "active": zod.boolean(),
+  "createdAt": zod.coerce.date(),
+  "updatedAt": zod.coerce.date()
+})
+
+
+/**
+ * @summary List owned liner services
+ */
+export const listMyLinerServicesQueryPageDefault = 1;
+
+export const listMyLinerServicesQueryPageSizeDefault = 25;
+export const listMyLinerServicesQueryPageSizeMax = 100;
+
+
+
+export const ListMyLinerServicesQueryParams = zod.object({
+  "listingStatus": zod.enum(['DRAFT', 'ACTIVE', 'WITHDRAWN', 'EXPIRED', 'CLOSED']).optional(),
+  "page": zod.coerce.number().int().min(1).default(listMyLinerServicesQueryPageDefault),
+  "pageSize": zod.coerce.number().int().min(1).max(listMyLinerServicesQueryPageSizeMax).default(listMyLinerServicesQueryPageSizeDefault)
+})
+
+export const ListMyLinerServicesResponse = zod.object({
+  "items": zod.array(zod.object({
+  "id": zod.string().uuid(),
+  "companyId": zod.string().uuid(),
+  "serviceName": zod.string(),
+  "tradeLane": zod.string(),
+  "visibility": zod.enum(['PRIVATE', 'OPEN_NETWORK']).describe('Pilot visibility is intentionally limited to private and open discovery.'),
+  "listingStatus": zod.enum(['DRAFT', 'ACTIVE', 'WITHDRAWN', 'EXPIRED', 'CLOSED']),
+  "notes": zod.string().nullish(),
+  "createdAt": zod.coerce.date(),
+  "updatedAt": zod.coerce.date()
+})),
+  "page": zod.number().int(),
+  "pageSize": zod.number().int(),
+  "total": zod.number().int()
+})
+
+
+/**
+ * @summary Publish a named liner service
+ */
+export const createMyLinerServiceBodyServiceNameMax = 200;
+
+export const createMyLinerServiceBodyTradeLaneMax = 300;
+
+export const createMyLinerServiceBodyListingStatusDefault = `DRAFT`;
+export const createMyLinerServiceBodyNotesMax = 4000;
+
+
+
+export const CreateMyLinerServiceBody = zod.object({
+  "serviceName": zod.string().min(1).max(createMyLinerServiceBodyServiceNameMax),
+  "tradeLane": zod.string().min(1).max(createMyLinerServiceBodyTradeLaneMax),
+  "visibility": zod.enum(['PRIVATE', 'OPEN_NETWORK']).describe('Pilot visibility is intentionally limited to private and open discovery.'),
+  "listingStatus": zod.enum(['DRAFT', 'ACTIVE', 'WITHDRAWN', 'EXPIRED', 'CLOSED']).default(createMyLinerServiceBodyListingStatusDefault),
+  "notes": zod.string().max(createMyLinerServiceBodyNotesMax).optional()
+})
+
+export const CreateMyLinerServiceResponse = zod.object({
+  "id": zod.string().uuid(),
+  "companyId": zod.string().uuid(),
+  "serviceName": zod.string(),
+  "tradeLane": zod.string(),
+  "visibility": zod.enum(['PRIVATE', 'OPEN_NETWORK']).describe('Pilot visibility is intentionally limited to private and open discovery.'),
+  "listingStatus": zod.enum(['DRAFT', 'ACTIVE', 'WITHDRAWN', 'EXPIRED', 'CLOSED']),
+  "notes": zod.string().nullish(),
+  "createdAt": zod.coerce.date(),
+  "updatedAt": zod.coerce.date()
+})
+
+
+/**
+ * @summary Get an owned liner service
+ */
+export const GetMyLinerServiceParams = zod.object({
+  "linerServiceId": zod.coerce.string().uuid()
+})
+
+export const GetMyLinerServiceResponse = zod.object({
+  "id": zod.string().uuid(),
+  "companyId": zod.string().uuid(),
+  "serviceName": zod.string(),
+  "tradeLane": zod.string(),
+  "visibility": zod.enum(['PRIVATE', 'OPEN_NETWORK']).describe('Pilot visibility is intentionally limited to private and open discovery.'),
+  "listingStatus": zod.enum(['DRAFT', 'ACTIVE', 'WITHDRAWN', 'EXPIRED', 'CLOSED']),
+  "notes": zod.string().nullish(),
+  "createdAt": zod.coerce.date(),
+  "updatedAt": zod.coerce.date()
+})
+
+
+/**
+ * @summary Update an owned liner service
+ */
+export const UpdateMyLinerServiceParams = zod.object({
+  "linerServiceId": zod.coerce.string().uuid()
+})
+
+export const updateMyLinerServiceBodyServiceNameMax = 200;
+
+export const updateMyLinerServiceBodyTradeLaneMax = 300;
+
+export const updateMyLinerServiceBodyNotesMax = 4000;
+
+
+
+export const UpdateMyLinerServiceBody = zod.object({
+  "serviceName": zod.string().min(1).max(updateMyLinerServiceBodyServiceNameMax).optional(),
+  "tradeLane": zod.string().min(1).max(updateMyLinerServiceBodyTradeLaneMax).optional(),
+  "visibility": zod.enum(['PRIVATE', 'OPEN_NETWORK']).optional().describe('Pilot visibility is intentionally limited to private and open discovery.'),
+  "listingStatus": zod.enum(['DRAFT', 'ACTIVE', 'WITHDRAWN', 'EXPIRED', 'CLOSED']).optional(),
+  "notes": zod.string().max(updateMyLinerServiceBodyNotesMax).nullish()
+})
+
+export const UpdateMyLinerServiceResponse = zod.object({
+  "id": zod.string().uuid(),
+  "companyId": zod.string().uuid(),
+  "serviceName": zod.string(),
+  "tradeLane": zod.string(),
+  "visibility": zod.enum(['PRIVATE', 'OPEN_NETWORK']).describe('Pilot visibility is intentionally limited to private and open discovery.'),
+  "listingStatus": zod.enum(['DRAFT', 'ACTIVE', 'WITHDRAWN', 'EXPIRED', 'CLOSED']),
+  "notes": zod.string().nullish(),
+  "createdAt": zod.coerce.date(),
+  "updatedAt": zod.coerce.date()
+})
+
+
+/**
+ * @summary Withdraw an owned liner service and its discoverable sailings
+ */
+export const WithdrawMyLinerServiceParams = zod.object({
+  "linerServiceId": zod.coerce.string().uuid()
+})
+
+export const WithdrawMyLinerServiceResponse = zod.object({
+  "id": zod.string().uuid(),
+  "companyId": zod.string().uuid(),
+  "serviceName": zod.string(),
+  "tradeLane": zod.string(),
+  "visibility": zod.enum(['PRIVATE', 'OPEN_NETWORK']).describe('Pilot visibility is intentionally limited to private and open discovery.'),
+  "listingStatus": zod.enum(['DRAFT', 'ACTIVE', 'WITHDRAWN', 'EXPIRED', 'CLOSED']),
+  "notes": zod.string().nullish(),
+  "createdAt": zod.coerce.date(),
+  "updatedAt": zod.coerce.date()
+})
+
+
+/**
+ * @summary List sailings for an owned liner service
+ */
+export const ListMyLinerSailingsParams = zod.object({
+  "linerServiceId": zod.coerce.string().uuid()
+})
+
+
+export const listMyLinerSailingsResponseItemsItemPortRotationMin = 2;
+
+export const listMyLinerSailingsResponseItemsItemCommercialCapacityAvailableCommercialTonnesExclusiveMin = 0;
+
+export const listMyLinerSailingsResponseItemsItemCommercialCapacityMaximumPieceWeightTonnesExclusiveMin = 0;
+
+export const listMyLinerSailingsResponseItemsItemCommercialCapacityMaximumPieceLengthMetresExclusiveMin = 0;
+
+export const listMyLinerSailingsResponseItemsItemCommercialCapacityMaximumPieceWidthMetresExclusiveMin = 0;
+
+export const listMyLinerSailingsResponseItemsItemCommercialCapacityMaximumPieceHeightMetresExclusiveMin = 0;
+
+export const listMyLinerSailingsResponseItemsItemCommercialCapacityLiftingCapacityTonnesExclusiveMin = 0;
+
+
+
+
+export const ListMyLinerSailingsResponse = zod.object({
+  "items": zod.array(zod.object({
+  "id": zod.string().uuid(),
+  "serviceId": zod.string().uuid(),
+  "linerVesselId": zod.string().uuid(),
+  "voyageReference": zod.string(),
+  "departureAt": zod.coerce.date(),
+  "cargoCutoffAt": zod.coerce.date(),
+  "visibility": zod.enum(['PRIVATE', 'OPEN_NETWORK']).describe('Pilot visibility is intentionally limited to private and open discovery.'),
+  "listingStatus": zod.enum(['DRAFT', 'ACTIVE', 'WITHDRAWN', 'EXPIRED', 'CLOSED']),
+  "portRotation": zod.array(zod.object({
+  "locationId": zod.string().uuid(),
+  "sequence": zod.number().int().min(1),
+  "estimatedArrival": zod.coerce.date(),
+  "estimatedDeparture": zod.coerce.date()
+})).min(listMyLinerSailingsResponseItemsItemPortRotationMin),
+  "commercialCapacity": zod.object({
+  "availableCommercialTonnes": zod.number().gt(listMyLinerSailingsResponseItemsItemCommercialCapacityAvailableCommercialTonnesExclusiveMin),
+  "maximumPieceWeightTonnes": zod.number().gt(listMyLinerSailingsResponseItemsItemCommercialCapacityMaximumPieceWeightTonnesExclusiveMin),
+  "maximumPieceLengthMetres": zod.number().gt(listMyLinerSailingsResponseItemsItemCommercialCapacityMaximumPieceLengthMetresExclusiveMin),
+  "maximumPieceWidthMetres": zod.number().gt(listMyLinerSailingsResponseItemsItemCommercialCapacityMaximumPieceWidthMetresExclusiveMin),
+  "maximumPieceHeightMetres": zod.number().gt(listMyLinerSailingsResponseItemsItemCommercialCapacityMaximumPieceHeightMetresExclusiveMin),
+  "liftingCapacityTonnes": zod.number().gt(listMyLinerSailingsResponseItemsItemCommercialCapacityLiftingCapacityTonnesExclusiveMin),
+  "stowage": zod.enum(['DECK', 'HOLD', 'EITHER']),
+  "acceptedCargoTypes": zod.array(zod.enum(['BREAKBULK', 'PROJECT_CARGO', 'HEAVY_LIFT', 'STEEL', 'MACHINERY', 'RORO'])).min(1)
+}),
+  "notes": zod.string().nullish(),
+  "createdAt": zod.coerce.date(),
+  "updatedAt": zod.coerce.date()
+})),
+  "page": zod.number().int(),
+  "pageSize": zod.number().int(),
+  "total": zod.number().int()
+})
+
+
+/**
+ * @summary Publish an actual-vessel sailing, ordered port rotation, and commercial capacity
+ */
+export const CreateMyLinerSailingParams = zod.object({
+  "linerServiceId": zod.coerce.string().uuid()
+})
+
+export const createMyLinerSailingBodyVoyageReferenceMax = 100;
+
+export const createMyLinerSailingBodyListingStatusDefault = `DRAFT`;
+export const createMyLinerSailingBodyPortRotationMin = 2;
+
+export const createMyLinerSailingBodyCommercialCapacityAvailableCommercialTonnesExclusiveMin = 0;
+
+export const createMyLinerSailingBodyCommercialCapacityMaximumPieceWeightTonnesExclusiveMin = 0;
+
+export const createMyLinerSailingBodyCommercialCapacityMaximumPieceLengthMetresExclusiveMin = 0;
+
+export const createMyLinerSailingBodyCommercialCapacityMaximumPieceWidthMetresExclusiveMin = 0;
+
+export const createMyLinerSailingBodyCommercialCapacityMaximumPieceHeightMetresExclusiveMin = 0;
+
+export const createMyLinerSailingBodyCommercialCapacityLiftingCapacityTonnesExclusiveMin = 0;
+
+
+export const createMyLinerSailingBodyNotesMax = 4000;
+
+
+
+export const CreateMyLinerSailingBody = zod.object({
+  "linerVesselId": zod.string().uuid(),
+  "voyageReference": zod.string().min(1).max(createMyLinerSailingBodyVoyageReferenceMax),
+  "departureAt": zod.coerce.date(),
+  "cargoCutoffAt": zod.coerce.date(),
+  "visibility": zod.enum(['PRIVATE', 'OPEN_NETWORK']).describe('Pilot visibility is intentionally limited to private and open discovery.'),
+  "listingStatus": zod.enum(['DRAFT', 'ACTIVE', 'WITHDRAWN', 'EXPIRED', 'CLOSED']).default(createMyLinerSailingBodyListingStatusDefault),
+  "portRotation": zod.array(zod.object({
+  "locationId": zod.string().uuid(),
+  "sequence": zod.number().int().min(1),
+  "estimatedArrival": zod.coerce.date(),
+  "estimatedDeparture": zod.coerce.date()
+})).min(createMyLinerSailingBodyPortRotationMin),
+  "commercialCapacity": zod.object({
+  "availableCommercialTonnes": zod.number().gt(createMyLinerSailingBodyCommercialCapacityAvailableCommercialTonnesExclusiveMin),
+  "maximumPieceWeightTonnes": zod.number().gt(createMyLinerSailingBodyCommercialCapacityMaximumPieceWeightTonnesExclusiveMin),
+  "maximumPieceLengthMetres": zod.number().gt(createMyLinerSailingBodyCommercialCapacityMaximumPieceLengthMetresExclusiveMin),
+  "maximumPieceWidthMetres": zod.number().gt(createMyLinerSailingBodyCommercialCapacityMaximumPieceWidthMetresExclusiveMin),
+  "maximumPieceHeightMetres": zod.number().gt(createMyLinerSailingBodyCommercialCapacityMaximumPieceHeightMetresExclusiveMin),
+  "liftingCapacityTonnes": zod.number().gt(createMyLinerSailingBodyCommercialCapacityLiftingCapacityTonnesExclusiveMin),
+  "stowage": zod.enum(['DECK', 'HOLD', 'EITHER']),
+  "acceptedCargoTypes": zod.array(zod.enum(['BREAKBULK', 'PROJECT_CARGO', 'HEAVY_LIFT', 'STEEL', 'MACHINERY', 'RORO'])).min(1)
+}),
+  "notes": zod.string().max(createMyLinerSailingBodyNotesMax).optional()
+})
+
+
+export const createMyLinerSailingResponsePortRotationMin = 2;
+
+export const createMyLinerSailingResponseCommercialCapacityAvailableCommercialTonnesExclusiveMin = 0;
+
+export const createMyLinerSailingResponseCommercialCapacityMaximumPieceWeightTonnesExclusiveMin = 0;
+
+export const createMyLinerSailingResponseCommercialCapacityMaximumPieceLengthMetresExclusiveMin = 0;
+
+export const createMyLinerSailingResponseCommercialCapacityMaximumPieceWidthMetresExclusiveMin = 0;
+
+export const createMyLinerSailingResponseCommercialCapacityMaximumPieceHeightMetresExclusiveMin = 0;
+
+export const createMyLinerSailingResponseCommercialCapacityLiftingCapacityTonnesExclusiveMin = 0;
+
+
+
+
+export const CreateMyLinerSailingResponse = zod.object({
+  "id": zod.string().uuid(),
+  "serviceId": zod.string().uuid(),
+  "linerVesselId": zod.string().uuid(),
+  "voyageReference": zod.string(),
+  "departureAt": zod.coerce.date(),
+  "cargoCutoffAt": zod.coerce.date(),
+  "visibility": zod.enum(['PRIVATE', 'OPEN_NETWORK']).describe('Pilot visibility is intentionally limited to private and open discovery.'),
+  "listingStatus": zod.enum(['DRAFT', 'ACTIVE', 'WITHDRAWN', 'EXPIRED', 'CLOSED']),
+  "portRotation": zod.array(zod.object({
+  "locationId": zod.string().uuid(),
+  "sequence": zod.number().int().min(1),
+  "estimatedArrival": zod.coerce.date(),
+  "estimatedDeparture": zod.coerce.date()
+})).min(createMyLinerSailingResponsePortRotationMin),
+  "commercialCapacity": zod.object({
+  "availableCommercialTonnes": zod.number().gt(createMyLinerSailingResponseCommercialCapacityAvailableCommercialTonnesExclusiveMin),
+  "maximumPieceWeightTonnes": zod.number().gt(createMyLinerSailingResponseCommercialCapacityMaximumPieceWeightTonnesExclusiveMin),
+  "maximumPieceLengthMetres": zod.number().gt(createMyLinerSailingResponseCommercialCapacityMaximumPieceLengthMetresExclusiveMin),
+  "maximumPieceWidthMetres": zod.number().gt(createMyLinerSailingResponseCommercialCapacityMaximumPieceWidthMetresExclusiveMin),
+  "maximumPieceHeightMetres": zod.number().gt(createMyLinerSailingResponseCommercialCapacityMaximumPieceHeightMetresExclusiveMin),
+  "liftingCapacityTonnes": zod.number().gt(createMyLinerSailingResponseCommercialCapacityLiftingCapacityTonnesExclusiveMin),
+  "stowage": zod.enum(['DECK', 'HOLD', 'EITHER']),
+  "acceptedCargoTypes": zod.array(zod.enum(['BREAKBULK', 'PROJECT_CARGO', 'HEAVY_LIFT', 'STEEL', 'MACHINERY', 'RORO'])).min(1)
+}),
+  "notes": zod.string().nullish(),
+  "createdAt": zod.coerce.date(),
+  "updatedAt": zod.coerce.date()
+})
+
+
+/**
+ * @summary Get an owned liner sailing
+ */
+export const GetMyLinerSailingParams = zod.object({
+  "linerSailingId": zod.coerce.string().uuid()
+})
+
+
+export const getMyLinerSailingResponsePortRotationMin = 2;
+
+export const getMyLinerSailingResponseCommercialCapacityAvailableCommercialTonnesExclusiveMin = 0;
+
+export const getMyLinerSailingResponseCommercialCapacityMaximumPieceWeightTonnesExclusiveMin = 0;
+
+export const getMyLinerSailingResponseCommercialCapacityMaximumPieceLengthMetresExclusiveMin = 0;
+
+export const getMyLinerSailingResponseCommercialCapacityMaximumPieceWidthMetresExclusiveMin = 0;
+
+export const getMyLinerSailingResponseCommercialCapacityMaximumPieceHeightMetresExclusiveMin = 0;
+
+export const getMyLinerSailingResponseCommercialCapacityLiftingCapacityTonnesExclusiveMin = 0;
+
+
+
+
+export const GetMyLinerSailingResponse = zod.object({
+  "id": zod.string().uuid(),
+  "serviceId": zod.string().uuid(),
+  "linerVesselId": zod.string().uuid(),
+  "voyageReference": zod.string(),
+  "departureAt": zod.coerce.date(),
+  "cargoCutoffAt": zod.coerce.date(),
+  "visibility": zod.enum(['PRIVATE', 'OPEN_NETWORK']).describe('Pilot visibility is intentionally limited to private and open discovery.'),
+  "listingStatus": zod.enum(['DRAFT', 'ACTIVE', 'WITHDRAWN', 'EXPIRED', 'CLOSED']),
+  "portRotation": zod.array(zod.object({
+  "locationId": zod.string().uuid(),
+  "sequence": zod.number().int().min(1),
+  "estimatedArrival": zod.coerce.date(),
+  "estimatedDeparture": zod.coerce.date()
+})).min(getMyLinerSailingResponsePortRotationMin),
+  "commercialCapacity": zod.object({
+  "availableCommercialTonnes": zod.number().gt(getMyLinerSailingResponseCommercialCapacityAvailableCommercialTonnesExclusiveMin),
+  "maximumPieceWeightTonnes": zod.number().gt(getMyLinerSailingResponseCommercialCapacityMaximumPieceWeightTonnesExclusiveMin),
+  "maximumPieceLengthMetres": zod.number().gt(getMyLinerSailingResponseCommercialCapacityMaximumPieceLengthMetresExclusiveMin),
+  "maximumPieceWidthMetres": zod.number().gt(getMyLinerSailingResponseCommercialCapacityMaximumPieceWidthMetresExclusiveMin),
+  "maximumPieceHeightMetres": zod.number().gt(getMyLinerSailingResponseCommercialCapacityMaximumPieceHeightMetresExclusiveMin),
+  "liftingCapacityTonnes": zod.number().gt(getMyLinerSailingResponseCommercialCapacityLiftingCapacityTonnesExclusiveMin),
+  "stowage": zod.enum(['DECK', 'HOLD', 'EITHER']),
+  "acceptedCargoTypes": zod.array(zod.enum(['BREAKBULK', 'PROJECT_CARGO', 'HEAVY_LIFT', 'STEEL', 'MACHINERY', 'RORO'])).min(1)
+}),
+  "notes": zod.string().nullish(),
+  "createdAt": zod.coerce.date(),
+  "updatedAt": zod.coerce.date()
+})
+
+
+/**
+ * @summary Update sailing, ordered rotation, or commercial capacity
+ */
+export const UpdateMyLinerSailingParams = zod.object({
+  "linerSailingId": zod.coerce.string().uuid()
+})
+
+export const updateMyLinerSailingBodyVoyageReferenceMax = 100;
+
+
+export const updateMyLinerSailingBodyPortRotationMin = 2;
+
+export const updateMyLinerSailingBodyCommercialCapacityAvailableCommercialTonnesExclusiveMin = 0;
+
+export const updateMyLinerSailingBodyCommercialCapacityMaximumPieceWeightTonnesExclusiveMin = 0;
+
+export const updateMyLinerSailingBodyCommercialCapacityMaximumPieceLengthMetresExclusiveMin = 0;
+
+export const updateMyLinerSailingBodyCommercialCapacityMaximumPieceWidthMetresExclusiveMin = 0;
+
+export const updateMyLinerSailingBodyCommercialCapacityMaximumPieceHeightMetresExclusiveMin = 0;
+
+export const updateMyLinerSailingBodyCommercialCapacityLiftingCapacityTonnesExclusiveMin = 0;
+
+
+export const updateMyLinerSailingBodyNotesMax = 4000;
+
+
+
+export const UpdateMyLinerSailingBody = zod.object({
+  "linerVesselId": zod.string().uuid().optional(),
+  "voyageReference": zod.string().min(1).max(updateMyLinerSailingBodyVoyageReferenceMax).optional(),
+  "departureAt": zod.coerce.date().optional(),
+  "cargoCutoffAt": zod.coerce.date().optional(),
+  "visibility": zod.enum(['PRIVATE', 'OPEN_NETWORK']).optional().describe('Pilot visibility is intentionally limited to private and open discovery.'),
+  "listingStatus": zod.enum(['DRAFT', 'ACTIVE', 'WITHDRAWN', 'EXPIRED', 'CLOSED']).optional(),
+  "portRotation": zod.array(zod.object({
+  "locationId": zod.string().uuid(),
+  "sequence": zod.number().int().min(1),
+  "estimatedArrival": zod.coerce.date(),
+  "estimatedDeparture": zod.coerce.date()
+})).min(updateMyLinerSailingBodyPortRotationMin).optional(),
+  "commercialCapacity": zod.object({
+  "availableCommercialTonnes": zod.number().gt(updateMyLinerSailingBodyCommercialCapacityAvailableCommercialTonnesExclusiveMin),
+  "maximumPieceWeightTonnes": zod.number().gt(updateMyLinerSailingBodyCommercialCapacityMaximumPieceWeightTonnesExclusiveMin),
+  "maximumPieceLengthMetres": zod.number().gt(updateMyLinerSailingBodyCommercialCapacityMaximumPieceLengthMetresExclusiveMin),
+  "maximumPieceWidthMetres": zod.number().gt(updateMyLinerSailingBodyCommercialCapacityMaximumPieceWidthMetresExclusiveMin),
+  "maximumPieceHeightMetres": zod.number().gt(updateMyLinerSailingBodyCommercialCapacityMaximumPieceHeightMetresExclusiveMin),
+  "liftingCapacityTonnes": zod.number().gt(updateMyLinerSailingBodyCommercialCapacityLiftingCapacityTonnesExclusiveMin),
+  "stowage": zod.enum(['DECK', 'HOLD', 'EITHER']),
+  "acceptedCargoTypes": zod.array(zod.enum(['BREAKBULK', 'PROJECT_CARGO', 'HEAVY_LIFT', 'STEEL', 'MACHINERY', 'RORO'])).min(1)
+}).optional(),
+  "notes": zod.string().max(updateMyLinerSailingBodyNotesMax).nullish()
+})
+
+
+export const updateMyLinerSailingResponsePortRotationMin = 2;
+
+export const updateMyLinerSailingResponseCommercialCapacityAvailableCommercialTonnesExclusiveMin = 0;
+
+export const updateMyLinerSailingResponseCommercialCapacityMaximumPieceWeightTonnesExclusiveMin = 0;
+
+export const updateMyLinerSailingResponseCommercialCapacityMaximumPieceLengthMetresExclusiveMin = 0;
+
+export const updateMyLinerSailingResponseCommercialCapacityMaximumPieceWidthMetresExclusiveMin = 0;
+
+export const updateMyLinerSailingResponseCommercialCapacityMaximumPieceHeightMetresExclusiveMin = 0;
+
+export const updateMyLinerSailingResponseCommercialCapacityLiftingCapacityTonnesExclusiveMin = 0;
+
+
+
+
+export const UpdateMyLinerSailingResponse = zod.object({
+  "id": zod.string().uuid(),
+  "serviceId": zod.string().uuid(),
+  "linerVesselId": zod.string().uuid(),
+  "voyageReference": zod.string(),
+  "departureAt": zod.coerce.date(),
+  "cargoCutoffAt": zod.coerce.date(),
+  "visibility": zod.enum(['PRIVATE', 'OPEN_NETWORK']).describe('Pilot visibility is intentionally limited to private and open discovery.'),
+  "listingStatus": zod.enum(['DRAFT', 'ACTIVE', 'WITHDRAWN', 'EXPIRED', 'CLOSED']),
+  "portRotation": zod.array(zod.object({
+  "locationId": zod.string().uuid(),
+  "sequence": zod.number().int().min(1),
+  "estimatedArrival": zod.coerce.date(),
+  "estimatedDeparture": zod.coerce.date()
+})).min(updateMyLinerSailingResponsePortRotationMin),
+  "commercialCapacity": zod.object({
+  "availableCommercialTonnes": zod.number().gt(updateMyLinerSailingResponseCommercialCapacityAvailableCommercialTonnesExclusiveMin),
+  "maximumPieceWeightTonnes": zod.number().gt(updateMyLinerSailingResponseCommercialCapacityMaximumPieceWeightTonnesExclusiveMin),
+  "maximumPieceLengthMetres": zod.number().gt(updateMyLinerSailingResponseCommercialCapacityMaximumPieceLengthMetresExclusiveMin),
+  "maximumPieceWidthMetres": zod.number().gt(updateMyLinerSailingResponseCommercialCapacityMaximumPieceWidthMetresExclusiveMin),
+  "maximumPieceHeightMetres": zod.number().gt(updateMyLinerSailingResponseCommercialCapacityMaximumPieceHeightMetresExclusiveMin),
+  "liftingCapacityTonnes": zod.number().gt(updateMyLinerSailingResponseCommercialCapacityLiftingCapacityTonnesExclusiveMin),
+  "stowage": zod.enum(['DECK', 'HOLD', 'EITHER']),
+  "acceptedCargoTypes": zod.array(zod.enum(['BREAKBULK', 'PROJECT_CARGO', 'HEAVY_LIFT', 'STEEL', 'MACHINERY', 'RORO'])).min(1)
+}),
+  "notes": zod.string().nullish(),
+  "createdAt": zod.coerce.date(),
+  "updatedAt": zod.coerce.date()
+})
+
+
+/**
+ * @summary Withdraw an owned sailing
+ */
+export const WithdrawMyLinerSailingParams = zod.object({
+  "linerSailingId": zod.coerce.string().uuid()
+})
+
+
+export const withdrawMyLinerSailingResponsePortRotationMin = 2;
+
+export const withdrawMyLinerSailingResponseCommercialCapacityAvailableCommercialTonnesExclusiveMin = 0;
+
+export const withdrawMyLinerSailingResponseCommercialCapacityMaximumPieceWeightTonnesExclusiveMin = 0;
+
+export const withdrawMyLinerSailingResponseCommercialCapacityMaximumPieceLengthMetresExclusiveMin = 0;
+
+export const withdrawMyLinerSailingResponseCommercialCapacityMaximumPieceWidthMetresExclusiveMin = 0;
+
+export const withdrawMyLinerSailingResponseCommercialCapacityMaximumPieceHeightMetresExclusiveMin = 0;
+
+export const withdrawMyLinerSailingResponseCommercialCapacityLiftingCapacityTonnesExclusiveMin = 0;
+
+
+
+
+export const WithdrawMyLinerSailingResponse = zod.object({
+  "id": zod.string().uuid(),
+  "serviceId": zod.string().uuid(),
+  "linerVesselId": zod.string().uuid(),
+  "voyageReference": zod.string(),
+  "departureAt": zod.coerce.date(),
+  "cargoCutoffAt": zod.coerce.date(),
+  "visibility": zod.enum(['PRIVATE', 'OPEN_NETWORK']).describe('Pilot visibility is intentionally limited to private and open discovery.'),
+  "listingStatus": zod.enum(['DRAFT', 'ACTIVE', 'WITHDRAWN', 'EXPIRED', 'CLOSED']),
+  "portRotation": zod.array(zod.object({
+  "locationId": zod.string().uuid(),
+  "sequence": zod.number().int().min(1),
+  "estimatedArrival": zod.coerce.date(),
+  "estimatedDeparture": zod.coerce.date()
+})).min(withdrawMyLinerSailingResponsePortRotationMin),
+  "commercialCapacity": zod.object({
+  "availableCommercialTonnes": zod.number().gt(withdrawMyLinerSailingResponseCommercialCapacityAvailableCommercialTonnesExclusiveMin),
+  "maximumPieceWeightTonnes": zod.number().gt(withdrawMyLinerSailingResponseCommercialCapacityMaximumPieceWeightTonnesExclusiveMin),
+  "maximumPieceLengthMetres": zod.number().gt(withdrawMyLinerSailingResponseCommercialCapacityMaximumPieceLengthMetresExclusiveMin),
+  "maximumPieceWidthMetres": zod.number().gt(withdrawMyLinerSailingResponseCommercialCapacityMaximumPieceWidthMetresExclusiveMin),
+  "maximumPieceHeightMetres": zod.number().gt(withdrawMyLinerSailingResponseCommercialCapacityMaximumPieceHeightMetresExclusiveMin),
+  "liftingCapacityTonnes": zod.number().gt(withdrawMyLinerSailingResponseCommercialCapacityLiftingCapacityTonnesExclusiveMin),
+  "stowage": zod.enum(['DECK', 'HOLD', 'EITHER']),
+  "acceptedCargoTypes": zod.array(zod.enum(['BREAKBULK', 'PROJECT_CARGO', 'HEAVY_LIFT', 'STEEL', 'MACHINERY', 'RORO'])).min(1)
+}),
+  "notes": zod.string().nullish(),
+  "createdAt": zod.coerce.date(),
+  "updatedAt": zod.coerce.date()
+})
+
+
+/**
+ * @summary List owned breakbulk or project-cargo listings
+ */
+export const listMyLinerCargoQueryPageDefault = 1;
+
+export const listMyLinerCargoQueryPageSizeDefault = 25;
+export const listMyLinerCargoQueryPageSizeMax = 100;
+
+
+
+export const ListMyLinerCargoQueryParams = zod.object({
+  "listingStatus": zod.enum(['DRAFT', 'ACTIVE', 'WITHDRAWN', 'EXPIRED', 'CLOSED']).optional(),
+  "page": zod.coerce.number().int().min(1).default(listMyLinerCargoQueryPageDefault),
+  "pageSize": zod.coerce.number().int().min(1).max(listMyLinerCargoQueryPageSizeMax).default(listMyLinerCargoQueryPageSizeDefault)
+})
+
+
+export const listMyLinerCargoResponseItemsItemTotalWeightTonnesExclusiveMin = 0;
+
+export const listMyLinerCargoResponseItemsItemPieceWeightTonnesExclusiveMin = 0;
+
+export const listMyLinerCargoResponseItemsItemPieceLengthMetresExclusiveMin = 0;
+
+export const listMyLinerCargoResponseItemsItemPieceWidthMetresExclusiveMin = 0;
+
+export const listMyLinerCargoResponseItemsItemPieceHeightMetresExclusiveMin = 0;
+
+export const listMyLinerCargoResponseItemsItemRequiredLiftingTonnesExclusiveMin = 0;
+
+
+
+export const ListMyLinerCargoResponse = zod.object({
+  "items": zod.array(zod.object({
+  "id": zod.string().uuid(),
+  "companyId": zod.string().uuid(),
+  "cargoName": zod.string(),
+  "cargoType": zod.enum(['BREAKBULK', 'PROJECT_CARGO', 'HEAVY_LIFT', 'STEEL', 'MACHINERY', 'RORO']),
+  "pieceCount": zod.number().int().min(1),
+  "totalWeightTonnes": zod.number().gt(listMyLinerCargoResponseItemsItemTotalWeightTonnesExclusiveMin),
+  "pieceWeightTonnes": zod.number().gt(listMyLinerCargoResponseItemsItemPieceWeightTonnesExclusiveMin),
+  "pieceLengthMetres": zod.number().gt(listMyLinerCargoResponseItemsItemPieceLengthMetresExclusiveMin),
+  "pieceWidthMetres": zod.number().gt(listMyLinerCargoResponseItemsItemPieceWidthMetresExclusiveMin),
+  "pieceHeightMetres": zod.number().gt(listMyLinerCargoResponseItemsItemPieceHeightMetresExclusiveMin),
+  "requiredLiftingTonnes": zod.number().gt(listMyLinerCargoResponseItemsItemRequiredLiftingTonnesExclusiveMin).nullish(),
+  "requiredStowage": zod.enum(['DECK', 'HOLD', 'EITHER']),
+  "originLocationId": zod.string().uuid(),
+  "destinationLocationId": zod.string().uuid(),
+  "readyAt": zod.coerce.date(),
+  "visibility": zod.enum(['PRIVATE', 'OPEN_NETWORK']).describe('Pilot visibility is intentionally limited to private and open discovery.'),
+  "listingStatus": zod.enum(['DRAFT', 'ACTIVE', 'WITHDRAWN', 'EXPIRED', 'CLOSED']),
+  "notes": zod.string().nullish(),
+  "createdAt": zod.coerce.date(),
+  "updatedAt": zod.coerce.date()
+})),
+  "page": zod.number().int(),
+  "pageSize": zod.number().int(),
+  "total": zod.number().int()
+})
+
+
+/**
+ * @summary Create a breakbulk or project-cargo opportunity
+ */
+export const createMyLinerCargoBodyCargoNameMax = 200;
+
+
+export const createMyLinerCargoBodyTotalWeightTonnesExclusiveMin = 0;
+
+export const createMyLinerCargoBodyPieceWeightTonnesExclusiveMin = 0;
+
+export const createMyLinerCargoBodyPieceLengthMetresExclusiveMin = 0;
+
+export const createMyLinerCargoBodyPieceWidthMetresExclusiveMin = 0;
+
+export const createMyLinerCargoBodyPieceHeightMetresExclusiveMin = 0;
+
+export const createMyLinerCargoBodyRequiredLiftingTonnesExclusiveMin = 0;
+
+export const createMyLinerCargoBodyListingStatusDefault = `DRAFT`;
+export const createMyLinerCargoBodyNotesMax = 4000;
+
+
+
+export const CreateMyLinerCargoBody = zod.object({
+  "cargoName": zod.string().min(1).max(createMyLinerCargoBodyCargoNameMax),
+  "cargoType": zod.enum(['BREAKBULK', 'PROJECT_CARGO', 'HEAVY_LIFT', 'STEEL', 'MACHINERY', 'RORO']),
+  "pieceCount": zod.number().int().min(1),
+  "totalWeightTonnes": zod.number().gt(createMyLinerCargoBodyTotalWeightTonnesExclusiveMin),
+  "pieceWeightTonnes": zod.number().gt(createMyLinerCargoBodyPieceWeightTonnesExclusiveMin),
+  "pieceLengthMetres": zod.number().gt(createMyLinerCargoBodyPieceLengthMetresExclusiveMin),
+  "pieceWidthMetres": zod.number().gt(createMyLinerCargoBodyPieceWidthMetresExclusiveMin),
+  "pieceHeightMetres": zod.number().gt(createMyLinerCargoBodyPieceHeightMetresExclusiveMin),
+  "requiredLiftingTonnes": zod.number().gt(createMyLinerCargoBodyRequiredLiftingTonnesExclusiveMin).nullish(),
+  "requiredStowage": zod.enum(['DECK', 'HOLD', 'EITHER']),
+  "originLocationId": zod.string().uuid(),
+  "destinationLocationId": zod.string().uuid(),
+  "readyAt": zod.coerce.date(),
+  "visibility": zod.enum(['PRIVATE', 'OPEN_NETWORK']).describe('Pilot visibility is intentionally limited to private and open discovery.'),
+  "listingStatus": zod.enum(['DRAFT', 'ACTIVE', 'WITHDRAWN', 'EXPIRED', 'CLOSED']).default(createMyLinerCargoBodyListingStatusDefault),
+  "notes": zod.string().max(createMyLinerCargoBodyNotesMax).optional()
+})
+
+
+export const createMyLinerCargoResponseTotalWeightTonnesExclusiveMin = 0;
+
+export const createMyLinerCargoResponsePieceWeightTonnesExclusiveMin = 0;
+
+export const createMyLinerCargoResponsePieceLengthMetresExclusiveMin = 0;
+
+export const createMyLinerCargoResponsePieceWidthMetresExclusiveMin = 0;
+
+export const createMyLinerCargoResponsePieceHeightMetresExclusiveMin = 0;
+
+export const createMyLinerCargoResponseRequiredLiftingTonnesExclusiveMin = 0;
+
+
+
+export const CreateMyLinerCargoResponse = zod.object({
+  "id": zod.string().uuid(),
+  "companyId": zod.string().uuid(),
+  "cargoName": zod.string(),
+  "cargoType": zod.enum(['BREAKBULK', 'PROJECT_CARGO', 'HEAVY_LIFT', 'STEEL', 'MACHINERY', 'RORO']),
+  "pieceCount": zod.number().int().min(1),
+  "totalWeightTonnes": zod.number().gt(createMyLinerCargoResponseTotalWeightTonnesExclusiveMin),
+  "pieceWeightTonnes": zod.number().gt(createMyLinerCargoResponsePieceWeightTonnesExclusiveMin),
+  "pieceLengthMetres": zod.number().gt(createMyLinerCargoResponsePieceLengthMetresExclusiveMin),
+  "pieceWidthMetres": zod.number().gt(createMyLinerCargoResponsePieceWidthMetresExclusiveMin),
+  "pieceHeightMetres": zod.number().gt(createMyLinerCargoResponsePieceHeightMetresExclusiveMin),
+  "requiredLiftingTonnes": zod.number().gt(createMyLinerCargoResponseRequiredLiftingTonnesExclusiveMin).nullish(),
+  "requiredStowage": zod.enum(['DECK', 'HOLD', 'EITHER']),
+  "originLocationId": zod.string().uuid(),
+  "destinationLocationId": zod.string().uuid(),
+  "readyAt": zod.coerce.date(),
+  "visibility": zod.enum(['PRIVATE', 'OPEN_NETWORK']).describe('Pilot visibility is intentionally limited to private and open discovery.'),
+  "listingStatus": zod.enum(['DRAFT', 'ACTIVE', 'WITHDRAWN', 'EXPIRED', 'CLOSED']),
+  "notes": zod.string().nullish(),
+  "createdAt": zod.coerce.date(),
+  "updatedAt": zod.coerce.date()
+})
+
+
+/**
+ * @summary Get owned liner cargo
+ */
+export const GetMyLinerCargoParams = zod.object({
+  "linerCargoId": zod.coerce.string().uuid()
+})
+
+
+export const getMyLinerCargoResponseTotalWeightTonnesExclusiveMin = 0;
+
+export const getMyLinerCargoResponsePieceWeightTonnesExclusiveMin = 0;
+
+export const getMyLinerCargoResponsePieceLengthMetresExclusiveMin = 0;
+
+export const getMyLinerCargoResponsePieceWidthMetresExclusiveMin = 0;
+
+export const getMyLinerCargoResponsePieceHeightMetresExclusiveMin = 0;
+
+export const getMyLinerCargoResponseRequiredLiftingTonnesExclusiveMin = 0;
+
+
+
+export const GetMyLinerCargoResponse = zod.object({
+  "id": zod.string().uuid(),
+  "companyId": zod.string().uuid(),
+  "cargoName": zod.string(),
+  "cargoType": zod.enum(['BREAKBULK', 'PROJECT_CARGO', 'HEAVY_LIFT', 'STEEL', 'MACHINERY', 'RORO']),
+  "pieceCount": zod.number().int().min(1),
+  "totalWeightTonnes": zod.number().gt(getMyLinerCargoResponseTotalWeightTonnesExclusiveMin),
+  "pieceWeightTonnes": zod.number().gt(getMyLinerCargoResponsePieceWeightTonnesExclusiveMin),
+  "pieceLengthMetres": zod.number().gt(getMyLinerCargoResponsePieceLengthMetresExclusiveMin),
+  "pieceWidthMetres": zod.number().gt(getMyLinerCargoResponsePieceWidthMetresExclusiveMin),
+  "pieceHeightMetres": zod.number().gt(getMyLinerCargoResponsePieceHeightMetresExclusiveMin),
+  "requiredLiftingTonnes": zod.number().gt(getMyLinerCargoResponseRequiredLiftingTonnesExclusiveMin).nullish(),
+  "requiredStowage": zod.enum(['DECK', 'HOLD', 'EITHER']),
+  "originLocationId": zod.string().uuid(),
+  "destinationLocationId": zod.string().uuid(),
+  "readyAt": zod.coerce.date(),
+  "visibility": zod.enum(['PRIVATE', 'OPEN_NETWORK']).describe('Pilot visibility is intentionally limited to private and open discovery.'),
+  "listingStatus": zod.enum(['DRAFT', 'ACTIVE', 'WITHDRAWN', 'EXPIRED', 'CLOSED']),
+  "notes": zod.string().nullish(),
+  "createdAt": zod.coerce.date(),
+  "updatedAt": zod.coerce.date()
+})
+
+
+/**
+ * @summary Update owned liner cargo
+ */
+export const UpdateMyLinerCargoParams = zod.object({
+  "linerCargoId": zod.coerce.string().uuid()
+})
+
+export const updateMyLinerCargoBodyCargoNameMax = 200;
+
+
+export const updateMyLinerCargoBodyTotalWeightTonnesExclusiveMin = 0;
+
+export const updateMyLinerCargoBodyPieceWeightTonnesExclusiveMin = 0;
+
+export const updateMyLinerCargoBodyPieceLengthMetresExclusiveMin = 0;
+
+export const updateMyLinerCargoBodyPieceWidthMetresExclusiveMin = 0;
+
+export const updateMyLinerCargoBodyPieceHeightMetresExclusiveMin = 0;
+
+export const updateMyLinerCargoBodyRequiredLiftingTonnesExclusiveMin = 0;
+
+export const updateMyLinerCargoBodyNotesMax = 4000;
+
+
+
+export const UpdateMyLinerCargoBody = zod.object({
+  "cargoName": zod.string().min(1).max(updateMyLinerCargoBodyCargoNameMax).optional(),
+  "cargoType": zod.enum(['BREAKBULK', 'PROJECT_CARGO', 'HEAVY_LIFT', 'STEEL', 'MACHINERY', 'RORO']).optional(),
+  "pieceCount": zod.number().int().min(1).optional(),
+  "totalWeightTonnes": zod.number().gt(updateMyLinerCargoBodyTotalWeightTonnesExclusiveMin).optional(),
+  "pieceWeightTonnes": zod.number().gt(updateMyLinerCargoBodyPieceWeightTonnesExclusiveMin).optional(),
+  "pieceLengthMetres": zod.number().gt(updateMyLinerCargoBodyPieceLengthMetresExclusiveMin).optional(),
+  "pieceWidthMetres": zod.number().gt(updateMyLinerCargoBodyPieceWidthMetresExclusiveMin).optional(),
+  "pieceHeightMetres": zod.number().gt(updateMyLinerCargoBodyPieceHeightMetresExclusiveMin).optional(),
+  "requiredLiftingTonnes": zod.number().gt(updateMyLinerCargoBodyRequiredLiftingTonnesExclusiveMin).nullish(),
+  "requiredStowage": zod.enum(['DECK', 'HOLD', 'EITHER']).optional(),
+  "originLocationId": zod.string().uuid().optional(),
+  "destinationLocationId": zod.string().uuid().optional(),
+  "readyAt": zod.coerce.date().optional(),
+  "visibility": zod.enum(['PRIVATE', 'OPEN_NETWORK']).optional().describe('Pilot visibility is intentionally limited to private and open discovery.'),
+  "listingStatus": zod.enum(['DRAFT', 'ACTIVE', 'WITHDRAWN', 'EXPIRED', 'CLOSED']).optional(),
+  "notes": zod.string().max(updateMyLinerCargoBodyNotesMax).nullish()
+})
+
+
+export const updateMyLinerCargoResponseTotalWeightTonnesExclusiveMin = 0;
+
+export const updateMyLinerCargoResponsePieceWeightTonnesExclusiveMin = 0;
+
+export const updateMyLinerCargoResponsePieceLengthMetresExclusiveMin = 0;
+
+export const updateMyLinerCargoResponsePieceWidthMetresExclusiveMin = 0;
+
+export const updateMyLinerCargoResponsePieceHeightMetresExclusiveMin = 0;
+
+export const updateMyLinerCargoResponseRequiredLiftingTonnesExclusiveMin = 0;
+
+
+
+export const UpdateMyLinerCargoResponse = zod.object({
+  "id": zod.string().uuid(),
+  "companyId": zod.string().uuid(),
+  "cargoName": zod.string(),
+  "cargoType": zod.enum(['BREAKBULK', 'PROJECT_CARGO', 'HEAVY_LIFT', 'STEEL', 'MACHINERY', 'RORO']),
+  "pieceCount": zod.number().int().min(1),
+  "totalWeightTonnes": zod.number().gt(updateMyLinerCargoResponseTotalWeightTonnesExclusiveMin),
+  "pieceWeightTonnes": zod.number().gt(updateMyLinerCargoResponsePieceWeightTonnesExclusiveMin),
+  "pieceLengthMetres": zod.number().gt(updateMyLinerCargoResponsePieceLengthMetresExclusiveMin),
+  "pieceWidthMetres": zod.number().gt(updateMyLinerCargoResponsePieceWidthMetresExclusiveMin),
+  "pieceHeightMetres": zod.number().gt(updateMyLinerCargoResponsePieceHeightMetresExclusiveMin),
+  "requiredLiftingTonnes": zod.number().gt(updateMyLinerCargoResponseRequiredLiftingTonnesExclusiveMin).nullish(),
+  "requiredStowage": zod.enum(['DECK', 'HOLD', 'EITHER']),
+  "originLocationId": zod.string().uuid(),
+  "destinationLocationId": zod.string().uuid(),
+  "readyAt": zod.coerce.date(),
+  "visibility": zod.enum(['PRIVATE', 'OPEN_NETWORK']).describe('Pilot visibility is intentionally limited to private and open discovery.'),
+  "listingStatus": zod.enum(['DRAFT', 'ACTIVE', 'WITHDRAWN', 'EXPIRED', 'CLOSED']),
+  "notes": zod.string().nullish(),
+  "createdAt": zod.coerce.date(),
+  "updatedAt": zod.coerce.date()
+})
+
+
+/**
+ * @summary Withdraw owned liner cargo
+ */
+export const WithdrawMyLinerCargoParams = zod.object({
+  "linerCargoId": zod.coerce.string().uuid()
+})
+
+
+export const withdrawMyLinerCargoResponseTotalWeightTonnesExclusiveMin = 0;
+
+export const withdrawMyLinerCargoResponsePieceWeightTonnesExclusiveMin = 0;
+
+export const withdrawMyLinerCargoResponsePieceLengthMetresExclusiveMin = 0;
+
+export const withdrawMyLinerCargoResponsePieceWidthMetresExclusiveMin = 0;
+
+export const withdrawMyLinerCargoResponsePieceHeightMetresExclusiveMin = 0;
+
+export const withdrawMyLinerCargoResponseRequiredLiftingTonnesExclusiveMin = 0;
+
+
+
+export const WithdrawMyLinerCargoResponse = zod.object({
+  "id": zod.string().uuid(),
+  "companyId": zod.string().uuid(),
+  "cargoName": zod.string(),
+  "cargoType": zod.enum(['BREAKBULK', 'PROJECT_CARGO', 'HEAVY_LIFT', 'STEEL', 'MACHINERY', 'RORO']),
+  "pieceCount": zod.number().int().min(1),
+  "totalWeightTonnes": zod.number().gt(withdrawMyLinerCargoResponseTotalWeightTonnesExclusiveMin),
+  "pieceWeightTonnes": zod.number().gt(withdrawMyLinerCargoResponsePieceWeightTonnesExclusiveMin),
+  "pieceLengthMetres": zod.number().gt(withdrawMyLinerCargoResponsePieceLengthMetresExclusiveMin),
+  "pieceWidthMetres": zod.number().gt(withdrawMyLinerCargoResponsePieceWidthMetresExclusiveMin),
+  "pieceHeightMetres": zod.number().gt(withdrawMyLinerCargoResponsePieceHeightMetresExclusiveMin),
+  "requiredLiftingTonnes": zod.number().gt(withdrawMyLinerCargoResponseRequiredLiftingTonnesExclusiveMin).nullish(),
+  "requiredStowage": zod.enum(['DECK', 'HOLD', 'EITHER']),
+  "originLocationId": zod.string().uuid(),
+  "destinationLocationId": zod.string().uuid(),
+  "readyAt": zod.coerce.date(),
+  "visibility": zod.enum(['PRIVATE', 'OPEN_NETWORK']).describe('Pilot visibility is intentionally limited to private and open discovery.'),
+  "listingStatus": zod.enum(['DRAFT', 'ACTIVE', 'WITHDRAWN', 'EXPIRED', 'CLOSED']),
+  "notes": zod.string().nullish(),
+  "createdAt": zod.coerce.date(),
+  "updatedAt": zod.coerce.date()
+})
+
+
+/**
+ * @summary List privacy-safe breakbulk cargo and liner sailing opportunities
+ */
+export const listLinerMarketplaceQueryPageDefault = 1;
+
+export const listLinerMarketplaceQueryPageSizeDefault = 25;
+export const listLinerMarketplaceQueryPageSizeMax = 100;
+
+
+
+export const ListLinerMarketplaceQueryParams = zod.object({
+  "listingType": zod.enum(['CARGO', 'SAILING']).optional(),
+  "page": zod.coerce.number().int().min(1).default(listLinerMarketplaceQueryPageDefault),
+  "pageSize": zod.coerce.number().int().min(1).max(listLinerMarketplaceQueryPageSizeMax).default(listLinerMarketplaceQueryPageSizeDefault)
+})
+
+export const ListLinerMarketplaceResponse = zod.object({
+  "items": zod.array(zod.union([zod.object({
+  "id": zod.string().uuid(),
+  "listingType": zod.enum(['CARGO']),
+  "cargoType": zod.enum(['BREAKBULK', 'PROJECT_CARGO', 'HEAVY_LIFT', 'STEEL', 'MACHINERY', 'RORO']),
+  "originRegion": zod.string(),
+  "destinationRegion": zod.string(),
+  "totalWeightBand": zod.string(),
+  "pieceDimensionBand": zod.string(),
+  "liftingBand": zod.string(),
+  "stowage": zod.enum(['DECK', 'HOLD', 'EITHER']),
+  "readyBand": zod.string()
+}),zod.object({
+  "id": zod.string().uuid(),
+  "listingType": zod.enum(['SAILING']),
+  "tradeLaneBand": zod.string(),
+  "departureBand": zod.string(),
+  "cutoffBand": zod.string(),
+  "capacityBand": zod.string(),
+  "cargoTypes": zod.array(zod.enum(['BREAKBULK', 'PROJECT_CARGO', 'HEAVY_LIFT', 'STEEL', 'MACHINERY', 'RORO'])),
+  "stowage": zod.enum(['DECK', 'HOLD', 'EITHER'])
+})])),
+  "page": zod.number().int(),
+  "pageSize": zod.number().int(),
+  "total": zod.number().int()
+})
+
+
+/**
+ * @summary List liner matches using the shared consent workflow
+ */
+export const listMyLinerMatchesQueryPageDefault = 1;
+
+export const listMyLinerMatchesQueryPageSizeDefault = 25;
+export const listMyLinerMatchesQueryPageSizeMax = 100;
+
+
+
+export const ListMyLinerMatchesQueryParams = zod.object({
+  "status": zod.enum(['NEW', 'INTEREST_SENT', 'CONNECTED', 'DECLINED', 'EXPIRED']).optional(),
+  "page": zod.coerce.number().int().min(1).default(listMyLinerMatchesQueryPageDefault),
+  "pageSize": zod.coerce.number().int().min(1).max(listMyLinerMatchesQueryPageSizeMax).default(listMyLinerMatchesQueryPageSizeDefault)
+})
+
+export const listMyLinerMatchesResponseItemsItemScoreTotalScoreMin = 0;
+export const listMyLinerMatchesResponseItemsItemScoreTotalScoreMax = 100;
+
+export const listMyLinerMatchesResponseItemsItemScoreDimensionsFitMin = 0;
+export const listMyLinerMatchesResponseItemsItemScoreDimensionsFitMax = 100;
+
+export const listMyLinerMatchesResponseItemsItemScoreWeightFitMin = 0;
+export const listMyLinerMatchesResponseItemsItemScoreWeightFitMax = 100;
+
+export const listMyLinerMatchesResponseItemsItemScoreLiftingFitMin = 0;
+export const listMyLinerMatchesResponseItemsItemScoreLiftingFitMax = 100;
+
+export const listMyLinerMatchesResponseItemsItemScoreStowageFitMin = 0;
+export const listMyLinerMatchesResponseItemsItemScoreStowageFitMax = 100;
+
+export const listMyLinerMatchesResponseItemsItemScoreRotationFitMin = 0;
+export const listMyLinerMatchesResponseItemsItemScoreRotationFitMax = 100;
+
+export const listMyLinerMatchesResponseItemsItemScoreTimingFitMin = 0;
+export const listMyLinerMatchesResponseItemsItemScoreTimingFitMax = 100;
+
+
+
+export const ListMyLinerMatchesResponse = zod.object({
+  "items": zod.array(zod.object({
+  "id": zod.string().uuid(),
+  "linerCargoId": zod.string().uuid(),
+  "linerSailingId": zod.string().uuid(),
+  "status": zod.enum(['NEW', 'INTEREST_SENT', 'CONNECTED', 'DECLINED', 'EXPIRED']),
+  "cargo": zod.object({
+  "id": zod.string().uuid(),
+  "listingType": zod.enum(['CARGO']),
+  "cargoType": zod.enum(['BREAKBULK', 'PROJECT_CARGO', 'HEAVY_LIFT', 'STEEL', 'MACHINERY', 'RORO']),
+  "originRegion": zod.string(),
+  "destinationRegion": zod.string(),
+  "totalWeightBand": zod.string(),
+  "pieceDimensionBand": zod.string(),
+  "liftingBand": zod.string(),
+  "stowage": zod.enum(['DECK', 'HOLD', 'EITHER']),
+  "readyBand": zod.string()
+}),
+  "sailing": zod.object({
+  "id": zod.string().uuid(),
+  "listingType": zod.enum(['SAILING']),
+  "tradeLaneBand": zod.string(),
+  "departureBand": zod.string(),
+  "cutoffBand": zod.string(),
+  "capacityBand": zod.string(),
+  "cargoTypes": zod.array(zod.enum(['BREAKBULK', 'PROJECT_CARGO', 'HEAVY_LIFT', 'STEEL', 'MACHINERY', 'RORO'])),
+  "stowage": zod.enum(['DECK', 'HOLD', 'EITHER'])
+}),
+  "score": zod.object({
+  "totalScore": zod.number().int().min(listMyLinerMatchesResponseItemsItemScoreTotalScoreMin).max(listMyLinerMatchesResponseItemsItemScoreTotalScoreMax),
+  "dimensionsFit": zod.number().int().min(listMyLinerMatchesResponseItemsItemScoreDimensionsFitMin).max(listMyLinerMatchesResponseItemsItemScoreDimensionsFitMax),
+  "weightFit": zod.number().int().min(listMyLinerMatchesResponseItemsItemScoreWeightFitMin).max(listMyLinerMatchesResponseItemsItemScoreWeightFitMax),
+  "liftingFit": zod.number().int().min(listMyLinerMatchesResponseItemsItemScoreLiftingFitMin).max(listMyLinerMatchesResponseItemsItemScoreLiftingFitMax),
+  "stowageFit": zod.number().int().min(listMyLinerMatchesResponseItemsItemScoreStowageFitMin).max(listMyLinerMatchesResponseItemsItemScoreStowageFitMax),
+  "rotationFit": zod.number().int().min(listMyLinerMatchesResponseItemsItemScoreRotationFitMin).max(listMyLinerMatchesResponseItemsItemScoreRotationFitMax),
+  "timingFit": zod.number().int().min(listMyLinerMatchesResponseItemsItemScoreTimingFitMin).max(listMyLinerMatchesResponseItemsItemScoreTimingFitMax),
+  "explanation": zod.string(),
+  "calculatedAt": zod.coerce.date()
+}),
+  "initiatedByMe": zod.boolean(),
+  "canAccept": zod.boolean(),
+  "createdAt": zod.coerce.date(),
+  "updatedAt": zod.coerce.date()
+})),
+  "page": zod.number().int(),
+  "pageSize": zod.number().int(),
+  "total": zod.number().int()
+})
+
+
+/**
+ * @summary Get a liner match with disclosure based on consent
+ */
+export const GetMyLinerMatchParams = zod.object({
+  "matchId": zod.coerce.string().uuid()
+})
+
+export const getMyLinerMatchResponseOneScoreTotalScoreMin = 0;
+export const getMyLinerMatchResponseOneScoreTotalScoreMax = 100;
+
+export const getMyLinerMatchResponseOneScoreDimensionsFitMin = 0;
+export const getMyLinerMatchResponseOneScoreDimensionsFitMax = 100;
+
+export const getMyLinerMatchResponseOneScoreWeightFitMin = 0;
+export const getMyLinerMatchResponseOneScoreWeightFitMax = 100;
+
+export const getMyLinerMatchResponseOneScoreLiftingFitMin = 0;
+export const getMyLinerMatchResponseOneScoreLiftingFitMax = 100;
+
+export const getMyLinerMatchResponseOneScoreStowageFitMin = 0;
+export const getMyLinerMatchResponseOneScoreStowageFitMax = 100;
+
+export const getMyLinerMatchResponseOneScoreRotationFitMin = 0;
+export const getMyLinerMatchResponseOneScoreRotationFitMax = 100;
+
+export const getMyLinerMatchResponseOneScoreTimingFitMin = 0;
+export const getMyLinerMatchResponseOneScoreTimingFitMax = 100;
+
+
+export const getMyLinerMatchResponseTwoOwnedCargoOneTotalWeightTonnesExclusiveMin = 0;
+
+export const getMyLinerMatchResponseTwoOwnedCargoOnePieceWeightTonnesExclusiveMin = 0;
+
+export const getMyLinerMatchResponseTwoOwnedCargoOnePieceLengthMetresExclusiveMin = 0;
+
+export const getMyLinerMatchResponseTwoOwnedCargoOnePieceWidthMetresExclusiveMin = 0;
+
+export const getMyLinerMatchResponseTwoOwnedCargoOnePieceHeightMetresExclusiveMin = 0;
+
+export const getMyLinerMatchResponseTwoOwnedCargoOneRequiredLiftingTonnesExclusiveMin = 0;
+
+
+export const getMyLinerMatchResponseTwoOwnedSailingOnePortRotationMin = 2;
+
+export const getMyLinerMatchResponseTwoOwnedSailingOneCommercialCapacityAvailableCommercialTonnesExclusiveMin = 0;
+
+export const getMyLinerMatchResponseTwoOwnedSailingOneCommercialCapacityMaximumPieceWeightTonnesExclusiveMin = 0;
+
+export const getMyLinerMatchResponseTwoOwnedSailingOneCommercialCapacityMaximumPieceLengthMetresExclusiveMin = 0;
+
+export const getMyLinerMatchResponseTwoOwnedSailingOneCommercialCapacityMaximumPieceWidthMetresExclusiveMin = 0;
+
+export const getMyLinerMatchResponseTwoOwnedSailingOneCommercialCapacityMaximumPieceHeightMetresExclusiveMin = 0;
+
+export const getMyLinerMatchResponseTwoOwnedSailingOneCommercialCapacityLiftingCapacityTonnesExclusiveMin = 0;
+
+
+export const getMyLinerMatchResponseTwoOwnedVesselOneImoNumberRegExp = new RegExp('^[0-9]{7}$');
+
+export const getMyLinerMatchResponseTwoConnectedCargoOneTotalWeightTonnesExclusiveMin = 0;
+
+export const getMyLinerMatchResponseTwoConnectedCargoOnePieceWeightTonnesExclusiveMin = 0;
+
+export const getMyLinerMatchResponseTwoConnectedCargoOnePieceLengthMetresExclusiveMin = 0;
+
+export const getMyLinerMatchResponseTwoConnectedCargoOnePieceWidthMetresExclusiveMin = 0;
+
+export const getMyLinerMatchResponseTwoConnectedCargoOnePieceHeightMetresExclusiveMin = 0;
+
+export const getMyLinerMatchResponseTwoConnectedCargoOneRequiredLiftingTonnesExclusiveMin = 0;
+
+
+export const getMyLinerMatchResponseTwoConnectedSailingOnePortRotationMin = 2;
+
+export const getMyLinerMatchResponseTwoConnectedSailingOneCommercialCapacityAvailableCommercialTonnesExclusiveMin = 0;
+
+export const getMyLinerMatchResponseTwoConnectedSailingOneCommercialCapacityMaximumPieceWeightTonnesExclusiveMin = 0;
+
+export const getMyLinerMatchResponseTwoConnectedSailingOneCommercialCapacityMaximumPieceLengthMetresExclusiveMin = 0;
+
+export const getMyLinerMatchResponseTwoConnectedSailingOneCommercialCapacityMaximumPieceWidthMetresExclusiveMin = 0;
+
+export const getMyLinerMatchResponseTwoConnectedSailingOneCommercialCapacityMaximumPieceHeightMetresExclusiveMin = 0;
+
+export const getMyLinerMatchResponseTwoConnectedSailingOneCommercialCapacityLiftingCapacityTonnesExclusiveMin = 0;
+
+
+export const getMyLinerMatchResponseTwoConnectedVesselOneImoNumberRegExp = new RegExp('^[0-9]{7}$');
+
+
+export const GetMyLinerMatchResponse = zod.object({
+  "id": zod.string().uuid(),
+  "linerCargoId": zod.string().uuid(),
+  "linerSailingId": zod.string().uuid(),
+  "status": zod.enum(['NEW', 'INTEREST_SENT', 'CONNECTED', 'DECLINED', 'EXPIRED']),
+  "cargo": zod.object({
+  "id": zod.string().uuid(),
+  "listingType": zod.enum(['CARGO']),
+  "cargoType": zod.enum(['BREAKBULK', 'PROJECT_CARGO', 'HEAVY_LIFT', 'STEEL', 'MACHINERY', 'RORO']),
+  "originRegion": zod.string(),
+  "destinationRegion": zod.string(),
+  "totalWeightBand": zod.string(),
+  "pieceDimensionBand": zod.string(),
+  "liftingBand": zod.string(),
+  "stowage": zod.enum(['DECK', 'HOLD', 'EITHER']),
+  "readyBand": zod.string()
+}),
+  "sailing": zod.object({
+  "id": zod.string().uuid(),
+  "listingType": zod.enum(['SAILING']),
+  "tradeLaneBand": zod.string(),
+  "departureBand": zod.string(),
+  "cutoffBand": zod.string(),
+  "capacityBand": zod.string(),
+  "cargoTypes": zod.array(zod.enum(['BREAKBULK', 'PROJECT_CARGO', 'HEAVY_LIFT', 'STEEL', 'MACHINERY', 'RORO'])),
+  "stowage": zod.enum(['DECK', 'HOLD', 'EITHER'])
+}),
+  "score": zod.object({
+  "totalScore": zod.number().int().min(getMyLinerMatchResponseOneScoreTotalScoreMin).max(getMyLinerMatchResponseOneScoreTotalScoreMax),
+  "dimensionsFit": zod.number().int().min(getMyLinerMatchResponseOneScoreDimensionsFitMin).max(getMyLinerMatchResponseOneScoreDimensionsFitMax),
+  "weightFit": zod.number().int().min(getMyLinerMatchResponseOneScoreWeightFitMin).max(getMyLinerMatchResponseOneScoreWeightFitMax),
+  "liftingFit": zod.number().int().min(getMyLinerMatchResponseOneScoreLiftingFitMin).max(getMyLinerMatchResponseOneScoreLiftingFitMax),
+  "stowageFit": zod.number().int().min(getMyLinerMatchResponseOneScoreStowageFitMin).max(getMyLinerMatchResponseOneScoreStowageFitMax),
+  "rotationFit": zod.number().int().min(getMyLinerMatchResponseOneScoreRotationFitMin).max(getMyLinerMatchResponseOneScoreRotationFitMax),
+  "timingFit": zod.number().int().min(getMyLinerMatchResponseOneScoreTimingFitMin).max(getMyLinerMatchResponseOneScoreTimingFitMax),
+  "explanation": zod.string(),
+  "calculatedAt": zod.coerce.date()
+}),
+  "initiatedByMe": zod.boolean(),
+  "canAccept": zod.boolean(),
+  "createdAt": zod.coerce.date(),
+  "updatedAt": zod.coerce.date()
+}).and(zod.object({
+  "disclosureState": zod.enum(['ANONYMOUS', 'OWNER', 'CONNECTED']),
+  "ownedCargo": zod.union([zod.object({
+  "id": zod.string().uuid(),
+  "companyId": zod.string().uuid(),
+  "cargoName": zod.string(),
+  "cargoType": zod.enum(['BREAKBULK', 'PROJECT_CARGO', 'HEAVY_LIFT', 'STEEL', 'MACHINERY', 'RORO']),
+  "pieceCount": zod.number().int().min(1),
+  "totalWeightTonnes": zod.number().gt(getMyLinerMatchResponseTwoOwnedCargoOneTotalWeightTonnesExclusiveMin),
+  "pieceWeightTonnes": zod.number().gt(getMyLinerMatchResponseTwoOwnedCargoOnePieceWeightTonnesExclusiveMin),
+  "pieceLengthMetres": zod.number().gt(getMyLinerMatchResponseTwoOwnedCargoOnePieceLengthMetresExclusiveMin),
+  "pieceWidthMetres": zod.number().gt(getMyLinerMatchResponseTwoOwnedCargoOnePieceWidthMetresExclusiveMin),
+  "pieceHeightMetres": zod.number().gt(getMyLinerMatchResponseTwoOwnedCargoOnePieceHeightMetresExclusiveMin),
+  "requiredLiftingTonnes": zod.number().gt(getMyLinerMatchResponseTwoOwnedCargoOneRequiredLiftingTonnesExclusiveMin).nullish(),
+  "requiredStowage": zod.enum(['DECK', 'HOLD', 'EITHER']),
+  "originLocationId": zod.string().uuid(),
+  "destinationLocationId": zod.string().uuid(),
+  "readyAt": zod.coerce.date(),
+  "visibility": zod.enum(['PRIVATE', 'OPEN_NETWORK']).describe('Pilot visibility is intentionally limited to private and open discovery.'),
+  "listingStatus": zod.enum(['DRAFT', 'ACTIVE', 'WITHDRAWN', 'EXPIRED', 'CLOSED']),
+  "notes": zod.string().nullish(),
+  "createdAt": zod.coerce.date(),
+  "updatedAt": zod.coerce.date()
+}),zod.null()]),
+  "ownedSailing": zod.union([zod.object({
+  "id": zod.string().uuid(),
+  "serviceId": zod.string().uuid(),
+  "linerVesselId": zod.string().uuid(),
+  "voyageReference": zod.string(),
+  "departureAt": zod.coerce.date(),
+  "cargoCutoffAt": zod.coerce.date(),
+  "visibility": zod.enum(['PRIVATE', 'OPEN_NETWORK']).describe('Pilot visibility is intentionally limited to private and open discovery.'),
+  "listingStatus": zod.enum(['DRAFT', 'ACTIVE', 'WITHDRAWN', 'EXPIRED', 'CLOSED']),
+  "portRotation": zod.array(zod.object({
+  "locationId": zod.string().uuid(),
+  "sequence": zod.number().int().min(1),
+  "estimatedArrival": zod.coerce.date(),
+  "estimatedDeparture": zod.coerce.date()
+})).min(getMyLinerMatchResponseTwoOwnedSailingOnePortRotationMin),
+  "commercialCapacity": zod.object({
+  "availableCommercialTonnes": zod.number().gt(getMyLinerMatchResponseTwoOwnedSailingOneCommercialCapacityAvailableCommercialTonnesExclusiveMin),
+  "maximumPieceWeightTonnes": zod.number().gt(getMyLinerMatchResponseTwoOwnedSailingOneCommercialCapacityMaximumPieceWeightTonnesExclusiveMin),
+  "maximumPieceLengthMetres": zod.number().gt(getMyLinerMatchResponseTwoOwnedSailingOneCommercialCapacityMaximumPieceLengthMetresExclusiveMin),
+  "maximumPieceWidthMetres": zod.number().gt(getMyLinerMatchResponseTwoOwnedSailingOneCommercialCapacityMaximumPieceWidthMetresExclusiveMin),
+  "maximumPieceHeightMetres": zod.number().gt(getMyLinerMatchResponseTwoOwnedSailingOneCommercialCapacityMaximumPieceHeightMetresExclusiveMin),
+  "liftingCapacityTonnes": zod.number().gt(getMyLinerMatchResponseTwoOwnedSailingOneCommercialCapacityLiftingCapacityTonnesExclusiveMin),
+  "stowage": zod.enum(['DECK', 'HOLD', 'EITHER']),
+  "acceptedCargoTypes": zod.array(zod.enum(['BREAKBULK', 'PROJECT_CARGO', 'HEAVY_LIFT', 'STEEL', 'MACHINERY', 'RORO'])).min(1)
+}),
+  "notes": zod.string().nullish(),
+  "createdAt": zod.coerce.date(),
+  "updatedAt": zod.coerce.date()
+}),zod.null()]),
+  "ownedService": zod.union([zod.object({
+  "id": zod.string().uuid(),
+  "companyId": zod.string().uuid(),
+  "serviceName": zod.string(),
+  "tradeLane": zod.string(),
+  "visibility": zod.enum(['PRIVATE', 'OPEN_NETWORK']).describe('Pilot visibility is intentionally limited to private and open discovery.'),
+  "listingStatus": zod.enum(['DRAFT', 'ACTIVE', 'WITHDRAWN', 'EXPIRED', 'CLOSED']),
+  "notes": zod.string().nullish(),
+  "createdAt": zod.coerce.date(),
+  "updatedAt": zod.coerce.date()
+}),zod.null()]),
+  "ownedVessel": zod.union([zod.object({
+  "id": zod.string().uuid(),
+  "companyId": zod.string().uuid(),
+  "vesselName": zod.string(),
+  "imoNumber": zod.string().regex(getMyLinerMatchResponseTwoOwnedVesselOneImoNumberRegExp).describe('Actual IMO identifier; no placeholder vessels are supported.'),
+  "active": zod.boolean(),
+  "createdAt": zod.coerce.date(),
+  "updatedAt": zod.coerce.date()
+}),zod.null()]),
+  "connectedCargo": zod.union([zod.object({
+  "id": zod.string().uuid(),
+  "companyId": zod.string().uuid(),
+  "cargoName": zod.string(),
+  "cargoType": zod.enum(['BREAKBULK', 'PROJECT_CARGO', 'HEAVY_LIFT', 'STEEL', 'MACHINERY', 'RORO']),
+  "pieceCount": zod.number().int().min(1),
+  "totalWeightTonnes": zod.number().gt(getMyLinerMatchResponseTwoConnectedCargoOneTotalWeightTonnesExclusiveMin),
+  "pieceWeightTonnes": zod.number().gt(getMyLinerMatchResponseTwoConnectedCargoOnePieceWeightTonnesExclusiveMin),
+  "pieceLengthMetres": zod.number().gt(getMyLinerMatchResponseTwoConnectedCargoOnePieceLengthMetresExclusiveMin),
+  "pieceWidthMetres": zod.number().gt(getMyLinerMatchResponseTwoConnectedCargoOnePieceWidthMetresExclusiveMin),
+  "pieceHeightMetres": zod.number().gt(getMyLinerMatchResponseTwoConnectedCargoOnePieceHeightMetresExclusiveMin),
+  "requiredLiftingTonnes": zod.number().gt(getMyLinerMatchResponseTwoConnectedCargoOneRequiredLiftingTonnesExclusiveMin).nullish(),
+  "requiredStowage": zod.enum(['DECK', 'HOLD', 'EITHER']),
+  "originLocationId": zod.string().uuid(),
+  "destinationLocationId": zod.string().uuid(),
+  "readyAt": zod.coerce.date(),
+  "visibility": zod.enum(['PRIVATE', 'OPEN_NETWORK']).describe('Pilot visibility is intentionally limited to private and open discovery.'),
+  "listingStatus": zod.enum(['DRAFT', 'ACTIVE', 'WITHDRAWN', 'EXPIRED', 'CLOSED']),
+  "notes": zod.string().nullish(),
+  "createdAt": zod.coerce.date(),
+  "updatedAt": zod.coerce.date()
+}),zod.null()]),
+  "connectedSailing": zod.union([zod.object({
+  "id": zod.string().uuid(),
+  "serviceId": zod.string().uuid(),
+  "linerVesselId": zod.string().uuid(),
+  "voyageReference": zod.string(),
+  "departureAt": zod.coerce.date(),
+  "cargoCutoffAt": zod.coerce.date(),
+  "visibility": zod.enum(['PRIVATE', 'OPEN_NETWORK']).describe('Pilot visibility is intentionally limited to private and open discovery.'),
+  "listingStatus": zod.enum(['DRAFT', 'ACTIVE', 'WITHDRAWN', 'EXPIRED', 'CLOSED']),
+  "portRotation": zod.array(zod.object({
+  "locationId": zod.string().uuid(),
+  "sequence": zod.number().int().min(1),
+  "estimatedArrival": zod.coerce.date(),
+  "estimatedDeparture": zod.coerce.date()
+})).min(getMyLinerMatchResponseTwoConnectedSailingOnePortRotationMin),
+  "commercialCapacity": zod.object({
+  "availableCommercialTonnes": zod.number().gt(getMyLinerMatchResponseTwoConnectedSailingOneCommercialCapacityAvailableCommercialTonnesExclusiveMin),
+  "maximumPieceWeightTonnes": zod.number().gt(getMyLinerMatchResponseTwoConnectedSailingOneCommercialCapacityMaximumPieceWeightTonnesExclusiveMin),
+  "maximumPieceLengthMetres": zod.number().gt(getMyLinerMatchResponseTwoConnectedSailingOneCommercialCapacityMaximumPieceLengthMetresExclusiveMin),
+  "maximumPieceWidthMetres": zod.number().gt(getMyLinerMatchResponseTwoConnectedSailingOneCommercialCapacityMaximumPieceWidthMetresExclusiveMin),
+  "maximumPieceHeightMetres": zod.number().gt(getMyLinerMatchResponseTwoConnectedSailingOneCommercialCapacityMaximumPieceHeightMetresExclusiveMin),
+  "liftingCapacityTonnes": zod.number().gt(getMyLinerMatchResponseTwoConnectedSailingOneCommercialCapacityLiftingCapacityTonnesExclusiveMin),
+  "stowage": zod.enum(['DECK', 'HOLD', 'EITHER']),
+  "acceptedCargoTypes": zod.array(zod.enum(['BREAKBULK', 'PROJECT_CARGO', 'HEAVY_LIFT', 'STEEL', 'MACHINERY', 'RORO'])).min(1)
+}),
+  "notes": zod.string().nullish(),
+  "createdAt": zod.coerce.date(),
+  "updatedAt": zod.coerce.date()
+}),zod.null()]),
+  "connectedService": zod.union([zod.object({
+  "id": zod.string().uuid(),
+  "companyId": zod.string().uuid(),
+  "serviceName": zod.string(),
+  "tradeLane": zod.string(),
+  "visibility": zod.enum(['PRIVATE', 'OPEN_NETWORK']).describe('Pilot visibility is intentionally limited to private and open discovery.'),
+  "listingStatus": zod.enum(['DRAFT', 'ACTIVE', 'WITHDRAWN', 'EXPIRED', 'CLOSED']),
+  "notes": zod.string().nullish(),
+  "createdAt": zod.coerce.date(),
+  "updatedAt": zod.coerce.date()
+}),zod.null()]),
+  "connectedVessel": zod.union([zod.object({
+  "id": zod.string().uuid(),
+  "companyId": zod.string().uuid(),
+  "vesselName": zod.string(),
+  "imoNumber": zod.string().regex(getMyLinerMatchResponseTwoConnectedVesselOneImoNumberRegExp).describe('Actual IMO identifier; no placeholder vessels are supported.'),
+  "active": zod.boolean(),
+  "createdAt": zod.coerce.date(),
+  "updatedAt": zod.coerce.date()
+}),zod.null()]),
+  "connectedCompanies": zod.array(zod.object({
+  "id": zod.string().uuid(),
+  "name": zod.string(),
+  "country": zod.string(),
+  "activities": zod.array(zod.enum(['SHIPPER', 'CARRIER', 'CHARTERER'])),
+  "primaryContactName": zod.string(),
+  "email": zod.string().email(),
+  "phone": zod.string()
+}))
+}))
+
+
+/**
+ * @summary Show interest, accept, or decline using shared consent
+ */
+export const ActOnLinerMatchParams = zod.object({
+  "matchId": zod.coerce.string().uuid()
+})
+
+export const ActOnLinerMatchBody = zod.object({
+  "action": zod.enum(['INTEREST', 'ACCEPT', 'DECLINE'])
+})
+
+export const actOnLinerMatchResponseOneScoreTotalScoreMin = 0;
+export const actOnLinerMatchResponseOneScoreTotalScoreMax = 100;
+
+export const actOnLinerMatchResponseOneScoreDimensionsFitMin = 0;
+export const actOnLinerMatchResponseOneScoreDimensionsFitMax = 100;
+
+export const actOnLinerMatchResponseOneScoreWeightFitMin = 0;
+export const actOnLinerMatchResponseOneScoreWeightFitMax = 100;
+
+export const actOnLinerMatchResponseOneScoreLiftingFitMin = 0;
+export const actOnLinerMatchResponseOneScoreLiftingFitMax = 100;
+
+export const actOnLinerMatchResponseOneScoreStowageFitMin = 0;
+export const actOnLinerMatchResponseOneScoreStowageFitMax = 100;
+
+export const actOnLinerMatchResponseOneScoreRotationFitMin = 0;
+export const actOnLinerMatchResponseOneScoreRotationFitMax = 100;
+
+export const actOnLinerMatchResponseOneScoreTimingFitMin = 0;
+export const actOnLinerMatchResponseOneScoreTimingFitMax = 100;
+
+
+export const actOnLinerMatchResponseTwoOwnedCargoOneTotalWeightTonnesExclusiveMin = 0;
+
+export const actOnLinerMatchResponseTwoOwnedCargoOnePieceWeightTonnesExclusiveMin = 0;
+
+export const actOnLinerMatchResponseTwoOwnedCargoOnePieceLengthMetresExclusiveMin = 0;
+
+export const actOnLinerMatchResponseTwoOwnedCargoOnePieceWidthMetresExclusiveMin = 0;
+
+export const actOnLinerMatchResponseTwoOwnedCargoOnePieceHeightMetresExclusiveMin = 0;
+
+export const actOnLinerMatchResponseTwoOwnedCargoOneRequiredLiftingTonnesExclusiveMin = 0;
+
+
+export const actOnLinerMatchResponseTwoOwnedSailingOnePortRotationMin = 2;
+
+export const actOnLinerMatchResponseTwoOwnedSailingOneCommercialCapacityAvailableCommercialTonnesExclusiveMin = 0;
+
+export const actOnLinerMatchResponseTwoOwnedSailingOneCommercialCapacityMaximumPieceWeightTonnesExclusiveMin = 0;
+
+export const actOnLinerMatchResponseTwoOwnedSailingOneCommercialCapacityMaximumPieceLengthMetresExclusiveMin = 0;
+
+export const actOnLinerMatchResponseTwoOwnedSailingOneCommercialCapacityMaximumPieceWidthMetresExclusiveMin = 0;
+
+export const actOnLinerMatchResponseTwoOwnedSailingOneCommercialCapacityMaximumPieceHeightMetresExclusiveMin = 0;
+
+export const actOnLinerMatchResponseTwoOwnedSailingOneCommercialCapacityLiftingCapacityTonnesExclusiveMin = 0;
+
+
+export const actOnLinerMatchResponseTwoOwnedVesselOneImoNumberRegExp = new RegExp('^[0-9]{7}$');
+
+export const actOnLinerMatchResponseTwoConnectedCargoOneTotalWeightTonnesExclusiveMin = 0;
+
+export const actOnLinerMatchResponseTwoConnectedCargoOnePieceWeightTonnesExclusiveMin = 0;
+
+export const actOnLinerMatchResponseTwoConnectedCargoOnePieceLengthMetresExclusiveMin = 0;
+
+export const actOnLinerMatchResponseTwoConnectedCargoOnePieceWidthMetresExclusiveMin = 0;
+
+export const actOnLinerMatchResponseTwoConnectedCargoOnePieceHeightMetresExclusiveMin = 0;
+
+export const actOnLinerMatchResponseTwoConnectedCargoOneRequiredLiftingTonnesExclusiveMin = 0;
+
+
+export const actOnLinerMatchResponseTwoConnectedSailingOnePortRotationMin = 2;
+
+export const actOnLinerMatchResponseTwoConnectedSailingOneCommercialCapacityAvailableCommercialTonnesExclusiveMin = 0;
+
+export const actOnLinerMatchResponseTwoConnectedSailingOneCommercialCapacityMaximumPieceWeightTonnesExclusiveMin = 0;
+
+export const actOnLinerMatchResponseTwoConnectedSailingOneCommercialCapacityMaximumPieceLengthMetresExclusiveMin = 0;
+
+export const actOnLinerMatchResponseTwoConnectedSailingOneCommercialCapacityMaximumPieceWidthMetresExclusiveMin = 0;
+
+export const actOnLinerMatchResponseTwoConnectedSailingOneCommercialCapacityMaximumPieceHeightMetresExclusiveMin = 0;
+
+export const actOnLinerMatchResponseTwoConnectedSailingOneCommercialCapacityLiftingCapacityTonnesExclusiveMin = 0;
+
+
+export const actOnLinerMatchResponseTwoConnectedVesselOneImoNumberRegExp = new RegExp('^[0-9]{7}$');
+
+
+export const ActOnLinerMatchResponse = zod.object({
+  "id": zod.string().uuid(),
+  "linerCargoId": zod.string().uuid(),
+  "linerSailingId": zod.string().uuid(),
+  "status": zod.enum(['NEW', 'INTEREST_SENT', 'CONNECTED', 'DECLINED', 'EXPIRED']),
+  "cargo": zod.object({
+  "id": zod.string().uuid(),
+  "listingType": zod.enum(['CARGO']),
+  "cargoType": zod.enum(['BREAKBULK', 'PROJECT_CARGO', 'HEAVY_LIFT', 'STEEL', 'MACHINERY', 'RORO']),
+  "originRegion": zod.string(),
+  "destinationRegion": zod.string(),
+  "totalWeightBand": zod.string(),
+  "pieceDimensionBand": zod.string(),
+  "liftingBand": zod.string(),
+  "stowage": zod.enum(['DECK', 'HOLD', 'EITHER']),
+  "readyBand": zod.string()
+}),
+  "sailing": zod.object({
+  "id": zod.string().uuid(),
+  "listingType": zod.enum(['SAILING']),
+  "tradeLaneBand": zod.string(),
+  "departureBand": zod.string(),
+  "cutoffBand": zod.string(),
+  "capacityBand": zod.string(),
+  "cargoTypes": zod.array(zod.enum(['BREAKBULK', 'PROJECT_CARGO', 'HEAVY_LIFT', 'STEEL', 'MACHINERY', 'RORO'])),
+  "stowage": zod.enum(['DECK', 'HOLD', 'EITHER'])
+}),
+  "score": zod.object({
+  "totalScore": zod.number().int().min(actOnLinerMatchResponseOneScoreTotalScoreMin).max(actOnLinerMatchResponseOneScoreTotalScoreMax),
+  "dimensionsFit": zod.number().int().min(actOnLinerMatchResponseOneScoreDimensionsFitMin).max(actOnLinerMatchResponseOneScoreDimensionsFitMax),
+  "weightFit": zod.number().int().min(actOnLinerMatchResponseOneScoreWeightFitMin).max(actOnLinerMatchResponseOneScoreWeightFitMax),
+  "liftingFit": zod.number().int().min(actOnLinerMatchResponseOneScoreLiftingFitMin).max(actOnLinerMatchResponseOneScoreLiftingFitMax),
+  "stowageFit": zod.number().int().min(actOnLinerMatchResponseOneScoreStowageFitMin).max(actOnLinerMatchResponseOneScoreStowageFitMax),
+  "rotationFit": zod.number().int().min(actOnLinerMatchResponseOneScoreRotationFitMin).max(actOnLinerMatchResponseOneScoreRotationFitMax),
+  "timingFit": zod.number().int().min(actOnLinerMatchResponseOneScoreTimingFitMin).max(actOnLinerMatchResponseOneScoreTimingFitMax),
+  "explanation": zod.string(),
+  "calculatedAt": zod.coerce.date()
+}),
+  "initiatedByMe": zod.boolean(),
+  "canAccept": zod.boolean(),
+  "createdAt": zod.coerce.date(),
+  "updatedAt": zod.coerce.date()
+}).and(zod.object({
+  "disclosureState": zod.enum(['ANONYMOUS', 'OWNER', 'CONNECTED']),
+  "ownedCargo": zod.union([zod.object({
+  "id": zod.string().uuid(),
+  "companyId": zod.string().uuid(),
+  "cargoName": zod.string(),
+  "cargoType": zod.enum(['BREAKBULK', 'PROJECT_CARGO', 'HEAVY_LIFT', 'STEEL', 'MACHINERY', 'RORO']),
+  "pieceCount": zod.number().int().min(1),
+  "totalWeightTonnes": zod.number().gt(actOnLinerMatchResponseTwoOwnedCargoOneTotalWeightTonnesExclusiveMin),
+  "pieceWeightTonnes": zod.number().gt(actOnLinerMatchResponseTwoOwnedCargoOnePieceWeightTonnesExclusiveMin),
+  "pieceLengthMetres": zod.number().gt(actOnLinerMatchResponseTwoOwnedCargoOnePieceLengthMetresExclusiveMin),
+  "pieceWidthMetres": zod.number().gt(actOnLinerMatchResponseTwoOwnedCargoOnePieceWidthMetresExclusiveMin),
+  "pieceHeightMetres": zod.number().gt(actOnLinerMatchResponseTwoOwnedCargoOnePieceHeightMetresExclusiveMin),
+  "requiredLiftingTonnes": zod.number().gt(actOnLinerMatchResponseTwoOwnedCargoOneRequiredLiftingTonnesExclusiveMin).nullish(),
+  "requiredStowage": zod.enum(['DECK', 'HOLD', 'EITHER']),
+  "originLocationId": zod.string().uuid(),
+  "destinationLocationId": zod.string().uuid(),
+  "readyAt": zod.coerce.date(),
+  "visibility": zod.enum(['PRIVATE', 'OPEN_NETWORK']).describe('Pilot visibility is intentionally limited to private and open discovery.'),
+  "listingStatus": zod.enum(['DRAFT', 'ACTIVE', 'WITHDRAWN', 'EXPIRED', 'CLOSED']),
+  "notes": zod.string().nullish(),
+  "createdAt": zod.coerce.date(),
+  "updatedAt": zod.coerce.date()
+}),zod.null()]),
+  "ownedSailing": zod.union([zod.object({
+  "id": zod.string().uuid(),
+  "serviceId": zod.string().uuid(),
+  "linerVesselId": zod.string().uuid(),
+  "voyageReference": zod.string(),
+  "departureAt": zod.coerce.date(),
+  "cargoCutoffAt": zod.coerce.date(),
+  "visibility": zod.enum(['PRIVATE', 'OPEN_NETWORK']).describe('Pilot visibility is intentionally limited to private and open discovery.'),
+  "listingStatus": zod.enum(['DRAFT', 'ACTIVE', 'WITHDRAWN', 'EXPIRED', 'CLOSED']),
+  "portRotation": zod.array(zod.object({
+  "locationId": zod.string().uuid(),
+  "sequence": zod.number().int().min(1),
+  "estimatedArrival": zod.coerce.date(),
+  "estimatedDeparture": zod.coerce.date()
+})).min(actOnLinerMatchResponseTwoOwnedSailingOnePortRotationMin),
+  "commercialCapacity": zod.object({
+  "availableCommercialTonnes": zod.number().gt(actOnLinerMatchResponseTwoOwnedSailingOneCommercialCapacityAvailableCommercialTonnesExclusiveMin),
+  "maximumPieceWeightTonnes": zod.number().gt(actOnLinerMatchResponseTwoOwnedSailingOneCommercialCapacityMaximumPieceWeightTonnesExclusiveMin),
+  "maximumPieceLengthMetres": zod.number().gt(actOnLinerMatchResponseTwoOwnedSailingOneCommercialCapacityMaximumPieceLengthMetresExclusiveMin),
+  "maximumPieceWidthMetres": zod.number().gt(actOnLinerMatchResponseTwoOwnedSailingOneCommercialCapacityMaximumPieceWidthMetresExclusiveMin),
+  "maximumPieceHeightMetres": zod.number().gt(actOnLinerMatchResponseTwoOwnedSailingOneCommercialCapacityMaximumPieceHeightMetresExclusiveMin),
+  "liftingCapacityTonnes": zod.number().gt(actOnLinerMatchResponseTwoOwnedSailingOneCommercialCapacityLiftingCapacityTonnesExclusiveMin),
+  "stowage": zod.enum(['DECK', 'HOLD', 'EITHER']),
+  "acceptedCargoTypes": zod.array(zod.enum(['BREAKBULK', 'PROJECT_CARGO', 'HEAVY_LIFT', 'STEEL', 'MACHINERY', 'RORO'])).min(1)
+}),
+  "notes": zod.string().nullish(),
+  "createdAt": zod.coerce.date(),
+  "updatedAt": zod.coerce.date()
+}),zod.null()]),
+  "ownedService": zod.union([zod.object({
+  "id": zod.string().uuid(),
+  "companyId": zod.string().uuid(),
+  "serviceName": zod.string(),
+  "tradeLane": zod.string(),
+  "visibility": zod.enum(['PRIVATE', 'OPEN_NETWORK']).describe('Pilot visibility is intentionally limited to private and open discovery.'),
+  "listingStatus": zod.enum(['DRAFT', 'ACTIVE', 'WITHDRAWN', 'EXPIRED', 'CLOSED']),
+  "notes": zod.string().nullish(),
+  "createdAt": zod.coerce.date(),
+  "updatedAt": zod.coerce.date()
+}),zod.null()]),
+  "ownedVessel": zod.union([zod.object({
+  "id": zod.string().uuid(),
+  "companyId": zod.string().uuid(),
+  "vesselName": zod.string(),
+  "imoNumber": zod.string().regex(actOnLinerMatchResponseTwoOwnedVesselOneImoNumberRegExp).describe('Actual IMO identifier; no placeholder vessels are supported.'),
+  "active": zod.boolean(),
+  "createdAt": zod.coerce.date(),
+  "updatedAt": zod.coerce.date()
+}),zod.null()]),
+  "connectedCargo": zod.union([zod.object({
+  "id": zod.string().uuid(),
+  "companyId": zod.string().uuid(),
+  "cargoName": zod.string(),
+  "cargoType": zod.enum(['BREAKBULK', 'PROJECT_CARGO', 'HEAVY_LIFT', 'STEEL', 'MACHINERY', 'RORO']),
+  "pieceCount": zod.number().int().min(1),
+  "totalWeightTonnes": zod.number().gt(actOnLinerMatchResponseTwoConnectedCargoOneTotalWeightTonnesExclusiveMin),
+  "pieceWeightTonnes": zod.number().gt(actOnLinerMatchResponseTwoConnectedCargoOnePieceWeightTonnesExclusiveMin),
+  "pieceLengthMetres": zod.number().gt(actOnLinerMatchResponseTwoConnectedCargoOnePieceLengthMetresExclusiveMin),
+  "pieceWidthMetres": zod.number().gt(actOnLinerMatchResponseTwoConnectedCargoOnePieceWidthMetresExclusiveMin),
+  "pieceHeightMetres": zod.number().gt(actOnLinerMatchResponseTwoConnectedCargoOnePieceHeightMetresExclusiveMin),
+  "requiredLiftingTonnes": zod.number().gt(actOnLinerMatchResponseTwoConnectedCargoOneRequiredLiftingTonnesExclusiveMin).nullish(),
+  "requiredStowage": zod.enum(['DECK', 'HOLD', 'EITHER']),
+  "originLocationId": zod.string().uuid(),
+  "destinationLocationId": zod.string().uuid(),
+  "readyAt": zod.coerce.date(),
+  "visibility": zod.enum(['PRIVATE', 'OPEN_NETWORK']).describe('Pilot visibility is intentionally limited to private and open discovery.'),
+  "listingStatus": zod.enum(['DRAFT', 'ACTIVE', 'WITHDRAWN', 'EXPIRED', 'CLOSED']),
+  "notes": zod.string().nullish(),
+  "createdAt": zod.coerce.date(),
+  "updatedAt": zod.coerce.date()
+}),zod.null()]),
+  "connectedSailing": zod.union([zod.object({
+  "id": zod.string().uuid(),
+  "serviceId": zod.string().uuid(),
+  "linerVesselId": zod.string().uuid(),
+  "voyageReference": zod.string(),
+  "departureAt": zod.coerce.date(),
+  "cargoCutoffAt": zod.coerce.date(),
+  "visibility": zod.enum(['PRIVATE', 'OPEN_NETWORK']).describe('Pilot visibility is intentionally limited to private and open discovery.'),
+  "listingStatus": zod.enum(['DRAFT', 'ACTIVE', 'WITHDRAWN', 'EXPIRED', 'CLOSED']),
+  "portRotation": zod.array(zod.object({
+  "locationId": zod.string().uuid(),
+  "sequence": zod.number().int().min(1),
+  "estimatedArrival": zod.coerce.date(),
+  "estimatedDeparture": zod.coerce.date()
+})).min(actOnLinerMatchResponseTwoConnectedSailingOnePortRotationMin),
+  "commercialCapacity": zod.object({
+  "availableCommercialTonnes": zod.number().gt(actOnLinerMatchResponseTwoConnectedSailingOneCommercialCapacityAvailableCommercialTonnesExclusiveMin),
+  "maximumPieceWeightTonnes": zod.number().gt(actOnLinerMatchResponseTwoConnectedSailingOneCommercialCapacityMaximumPieceWeightTonnesExclusiveMin),
+  "maximumPieceLengthMetres": zod.number().gt(actOnLinerMatchResponseTwoConnectedSailingOneCommercialCapacityMaximumPieceLengthMetresExclusiveMin),
+  "maximumPieceWidthMetres": zod.number().gt(actOnLinerMatchResponseTwoConnectedSailingOneCommercialCapacityMaximumPieceWidthMetresExclusiveMin),
+  "maximumPieceHeightMetres": zod.number().gt(actOnLinerMatchResponseTwoConnectedSailingOneCommercialCapacityMaximumPieceHeightMetresExclusiveMin),
+  "liftingCapacityTonnes": zod.number().gt(actOnLinerMatchResponseTwoConnectedSailingOneCommercialCapacityLiftingCapacityTonnesExclusiveMin),
+  "stowage": zod.enum(['DECK', 'HOLD', 'EITHER']),
+  "acceptedCargoTypes": zod.array(zod.enum(['BREAKBULK', 'PROJECT_CARGO', 'HEAVY_LIFT', 'STEEL', 'MACHINERY', 'RORO'])).min(1)
+}),
+  "notes": zod.string().nullish(),
+  "createdAt": zod.coerce.date(),
+  "updatedAt": zod.coerce.date()
+}),zod.null()]),
+  "connectedService": zod.union([zod.object({
+  "id": zod.string().uuid(),
+  "companyId": zod.string().uuid(),
+  "serviceName": zod.string(),
+  "tradeLane": zod.string(),
+  "visibility": zod.enum(['PRIVATE', 'OPEN_NETWORK']).describe('Pilot visibility is intentionally limited to private and open discovery.'),
+  "listingStatus": zod.enum(['DRAFT', 'ACTIVE', 'WITHDRAWN', 'EXPIRED', 'CLOSED']),
+  "notes": zod.string().nullish(),
+  "createdAt": zod.coerce.date(),
+  "updatedAt": zod.coerce.date()
+}),zod.null()]),
+  "connectedVessel": zod.union([zod.object({
+  "id": zod.string().uuid(),
+  "companyId": zod.string().uuid(),
+  "vesselName": zod.string(),
+  "imoNumber": zod.string().regex(actOnLinerMatchResponseTwoConnectedVesselOneImoNumberRegExp).describe('Actual IMO identifier; no placeholder vessels are supported.'),
+  "active": zod.boolean(),
+  "createdAt": zod.coerce.date(),
+  "updatedAt": zod.coerce.date()
+}),zod.null()]),
+  "connectedCompanies": zod.array(zod.object({
+  "id": zod.string().uuid(),
+  "name": zod.string(),
+  "country": zod.string(),
+  "activities": zod.array(zod.enum(['SHIPPER', 'CARRIER', 'CHARTERER'])),
+  "primaryContactName": zod.string(),
+  "email": zod.string().email(),
+  "phone": zod.string()
+}))
+}))
+
+
+/**
  * Returns only ACTIVE OPEN_NETWORK opportunities for an authenticated
  * active company using anonymous listing representations. Exact tonnage,
  * timestamps, coordinates, company, vessel, notes, and contact fields
@@ -1723,6 +3577,7 @@ export const listMarketplaceQueryPageDefault = 1;
 
 export const listMarketplaceQueryPageSizeDefault = 25;
 export const listMarketplaceQueryPageSizeMax = 100;
+
 
 
 export const ListMarketplaceQueryParams = zod.object({
@@ -1786,6 +3641,7 @@ export const listMyMatchesQueryPageSizeDefault = 25;
 export const listMyMatchesQueryPageSizeMax = 100;
 
 
+
 export const ListMyMatchesQueryParams = zod.object({
   "status": zod.enum(['NEW', 'INTEREST_SENT', 'CONNECTED', 'DECLINED', 'EXPIRED']).optional(),
   "transportMode": zod.enum(['INLAND_WATERWAY', 'DEEPSEA_BULK']).optional(),
@@ -1813,6 +3669,7 @@ export const listMyMatchesResponseItemsItemScoreComponentsDirectionScoreMax = 10
 
 export const listMyMatchesResponseItemsItemScoreComponentsCargoCompatibilityScoreMin = 0;
 export const listMyMatchesResponseItemsItemScoreComponentsCargoCompatibilityScoreMax = 100;
+
 
 
 export const ListMyMatchesResponse = zod.object({
@@ -1935,6 +3792,7 @@ export const getMyMatchResponseOneScoreComponentsCargoCompatibilityScoreMin = 0;
 export const getMyMatchResponseOneScoreComponentsCargoCompatibilityScoreMax = 100;
 
 
+
 export const getMyMatchResponseTwoOwnedCargoOneWeightTonnesExclusiveMin = 0;
 
 export const getMyMatchResponseTwoOwnedCargoOneDeepseaRequirementOneQuantityTolerancePercentDefault = 0;
@@ -1950,6 +3808,7 @@ export const getMyMatchResponseTwoOwnedCargoOneDeepseaRequirementOneMaximumDraft
 export const getMyMatchResponseTwoOwnedCargoOneDeepseaRequirementOneRequiredGearMax = 120;
 
 export const getMyMatchResponseTwoOwnedCapacityOneAvailableCapacityTonnesExclusiveMin = 0;
+
 
 
 export const getMyMatchResponseTwoOwnedCapacityOneMaximumPositioningDistanceKmExclusiveMin = 0;
@@ -1997,6 +3856,7 @@ export const getMyMatchResponseTwoConnectedCapacityOneDeepseaExtensionOnePositio
 export const getMyMatchResponseTwoConnectedCapacityOneDeepseaExtensionOneApproximateMaxDistanceKmExclusiveMin = 0;
 
 export const getMyMatchResponseTwoConnectedCapacityOneDeepseaExtensionOnePreviousVoyageContextMax = 4000;
+
 
 
 export const GetMyMatchResponse = zod.object({
@@ -2244,6 +4104,7 @@ export const actOnMatchResponseOneScoreComponentsCargoCompatibilityScoreMin = 0;
 export const actOnMatchResponseOneScoreComponentsCargoCompatibilityScoreMax = 100;
 
 
+
 export const actOnMatchResponseTwoOwnedCargoOneWeightTonnesExclusiveMin = 0;
 
 export const actOnMatchResponseTwoOwnedCargoOneDeepseaRequirementOneQuantityTolerancePercentDefault = 0;
@@ -2259,6 +4120,7 @@ export const actOnMatchResponseTwoOwnedCargoOneDeepseaRequirementOneMaximumDraft
 export const actOnMatchResponseTwoOwnedCargoOneDeepseaRequirementOneRequiredGearMax = 120;
 
 export const actOnMatchResponseTwoOwnedCapacityOneAvailableCapacityTonnesExclusiveMin = 0;
+
 
 
 export const actOnMatchResponseTwoOwnedCapacityOneMaximumPositioningDistanceKmExclusiveMin = 0;
@@ -2306,6 +4168,7 @@ export const actOnMatchResponseTwoConnectedCapacityOneDeepseaExtensionOnePositio
 export const actOnMatchResponseTwoConnectedCapacityOneDeepseaExtensionOneApproximateMaxDistanceKmExclusiveMin = 0;
 
 export const actOnMatchResponseTwoConnectedCapacityOneDeepseaExtensionOnePreviousVoyageContextMax = 4000;
+
 
 
 export const ActOnMatchResponse = zod.object({
@@ -2525,6 +4388,7 @@ export const listMyConversationsQueryPageSizeDefault = 25;
 export const listMyConversationsQueryPageSizeMax = 100;
 
 
+
 export const ListMyConversationsQueryParams = zod.object({
   "page": zod.coerce.number().int().min(1).default(listMyConversationsQueryPageDefault),
   "pageSize": zod.coerce.number().int().min(1).max(listMyConversationsQueryPageSizeMax).default(listMyConversationsQueryPageSizeDefault)
@@ -2536,6 +4400,7 @@ export const listMyConversationsResponseItemsItemParticipantCompaniesMax = 2;
 export const listMyConversationsResponseItemsItemLastMessageOneBodyMax = 10000;
 
 export const listMyConversationsResponseItemsItemUnreadCountMin = 0;
+
 
 
 export const ListMyConversationsResponse = zod.object({
@@ -2586,6 +4451,7 @@ export const getMyConversationResponseLastMessageOneBodyMax = 10000;
 export const getMyConversationResponseUnreadCountMin = 0;
 
 
+
 export const GetMyConversationResponse = zod.object({
   "id": zod.string().uuid(),
   "matchId": zod.string().uuid(),
@@ -2623,6 +4489,7 @@ export const ListConversationMessagesParams = zod.object({
 export const listConversationMessagesResponseItemsItemBodyMax = 10000;
 
 
+
 export const ListConversationMessagesResponse = zod.object({
   "items": zod.array(zod.object({
   "id": zod.string().uuid(),
@@ -2649,11 +4516,13 @@ export const SendConversationMessageParams = zod.object({
 export const sendConversationMessageBodyBodyMax = 10000;
 
 
+
 export const SendConversationMessageBody = zod.object({
   "body": zod.string().min(1).max(sendConversationMessageBodyBodyMax)
 })
 
 export const sendConversationMessageResponseBodyMax = 10000;
+
 
 
 export const SendConversationMessageResponse = zod.object({
@@ -2676,6 +4545,8 @@ export const MarkConversationMessagesReadParams = zod.object({
 })
 
 
+
+
 export const MarkConversationMessagesReadBody = zod.object({
   "messageIds": zod.array(zod.string().uuid()).min(1)
 })
@@ -2696,6 +4567,7 @@ export const listMyNotificationsQueryPageSizeDefault = 25;
 export const listMyNotificationsQueryPageSizeMax = 100;
 
 
+
 export const ListMyNotificationsQueryParams = zod.object({
   "unreadOnly": zod.coerce.boolean().default(listMyNotificationsQueryUnreadOnlyDefault),
   "page": zod.coerce.number().int().min(1).default(listMyNotificationsQueryPageDefault),
@@ -2705,6 +4577,7 @@ export const ListMyNotificationsQueryParams = zod.object({
 export const listMyNotificationsResponseUnreadCountMin = 0;
 
 
+
 export const ListMyNotificationsResponse = zod.object({
   "items": zod.array(zod.object({
   "id": zod.string().uuid(),
@@ -2712,6 +4585,7 @@ export const ListMyNotificationsResponse = zod.object({
   "title": zod.string(),
   "message": zod.string(),
   "relatedMatchId": zod.string().uuid().nullish(),
+  "relatedMatchDomain": zod.enum(['MARKETPLACE', 'LINER']),
   "relatedConversationId": zod.string().uuid().nullish(),
   "readAt": zod.coerce.date().nullable(),
   "createdAt": zod.coerce.date()
@@ -2736,109 +4610,10 @@ export const MarkNotificationReadResponse = zod.object({
   "title": zod.string(),
   "message": zod.string(),
   "relatedMatchId": zod.string().uuid().nullish(),
+  "relatedMatchDomain": zod.enum(['MARKETPLACE', 'LINER']),
   "relatedConversationId": zod.string().uuid().nullish(),
   "readAt": zod.coerce.date().nullable(),
   "createdAt": zod.coerce.date()
 })
 
 
-export const CreateAvailabilitySuggestionBody = zod.object({
-  "vesselId": zod.string().uuid(),
-  "locationId": zod.string().uuid(),
-  "expectedAvailableFrom": zod.coerce.date(),
-  "expectedAvailableUntil": zod.coerce.date(),
-  "sourceReference": zod.string().min(1).max(createAvailabilitySuggestionBodySourceReferenceMax),
-  "sourceObservedAt": zod.coerce.date(),
-  "participationConfirmed": zod.literal(true),
-  "sourceUseConfirmed": zod.literal(true),
-  "uncertaintyAcknowledged": zod.literal(true)
-})
-
-export const listMyAvailabilitySuggestionsQueryPageSizeMax = 100;
-
-export const dismissAvailabilitySuggestionResponseSourceReferenceMax = 300;
-
-export const listMyAvailabilitySuggestionsQueryPageSizeDefault = 25;
-
-export const ListMyAvailabilitySuggestionsQueryParams = zod.object({
-  "page": zod.coerce.number().int().min(1).default(listMyAvailabilitySuggestionsQueryPageDefault),
-  "pageSize": zod.coerce.number().int().min(1).max(listMyAvailabilitySuggestionsQueryPageSizeMax).default(listMyAvailabilitySuggestionsQueryPageSizeDefault)
-})
-
-export const ListMyAvailabilitySuggestionsResponse = zod.object({
-  "items": zod.array(zod.object({
-  "id": zod.string().uuid(),
-  "vesselId": zod.string().uuid(),
-  "locationId": zod.string().uuid(),
-  "expectedAvailableFrom": zod.coerce.date(),
-  "expectedAvailableUntil": zod.coerce.date(),
-  "sourceReference": zod.string().max(listMyAvailabilitySuggestionsResponseItemsItemSourceReferenceMax),
-  "sourceObservedAt": zod.coerce.date(),
-  "createdAt": zod.coerce.date(),
-  "expiresAt": zod.coerce.date(),
-  "status": zod.enum(['PENDING', 'DISMISSED', 'CONVERTED', 'EXPIRED', 'INVALIDATED']),
-  "uncertainty": zod.literal("UNCERTAIN"),
-  "explanation": zod.string(),
-  "unknowns": zod.array(zod.string()),
-  "capacityOfferId": zod.string().uuid().nullable(),
-  "canConfirm": zod.boolean()
-})),
-  "page": zod.number().int(),
-  "pageSize": zod.number().int(),
-  "total": zod.number().int()
-})
-
-export const CreateAvailabilitySuggestionResponse = zod.object({
-  "id": zod.string().uuid(),
-  "vesselId": zod.string().uuid(),
-  "locationId": zod.string().uuid(),
-  "expectedAvailableFrom": zod.coerce.date(),
-  "expectedAvailableUntil": zod.coerce.date(),
-  "sourceReference": zod.string().max(createAvailabilitySuggestionResponseSourceReferenceMax),
-  "sourceObservedAt": zod.coerce.date(),
-  "createdAt": zod.coerce.date(),
-  "expiresAt": zod.coerce.date(),
-  "status": zod.enum(['PENDING', 'DISMISSED', 'CONVERTED', 'EXPIRED', 'INVALIDATED']),
-  "uncertainty": zod.literal("UNCERTAIN"),
-  "explanation": zod.string(),
-  "unknowns": zod.array(zod.string()),
-  "capacityOfferId": zod.string().uuid().nullable(),
-  "canConfirm": zod.boolean()
-})
-
-export const listMyAvailabilitySuggestionsResponseItemsItemSourceReferenceMax = 300;
-
-export const DismissAvailabilitySuggestionResponse = zod.object({
-  "id": zod.string().uuid(),
-  "vesselId": zod.string().uuid(),
-  "locationId": zod.string().uuid(),
-  "expectedAvailableFrom": zod.coerce.date(),
-  "expectedAvailableUntil": zod.coerce.date(),
-  "sourceReference": zod.string().max(dismissAvailabilitySuggestionResponseSourceReferenceMax),
-  "sourceObservedAt": zod.coerce.date(),
-  "createdAt": zod.coerce.date(),
-  "expiresAt": zod.coerce.date(),
-  "status": zod.enum(['PENDING', 'DISMISSED', 'CONVERTED', 'EXPIRED', 'INVALIDATED']),
-  "uncertainty": zod.literal("UNCERTAIN"),
-  "explanation": zod.string(),
-  "unknowns": zod.array(zod.string()),
-  "capacityOfferId": zod.string().uuid().nullable(),
-  "canConfirm": zod.boolean()
-})
-
-export const createAvailabilitySuggestionResponseSourceReferenceMax = 300;
-
-/**
- * OWNER and ADMIN only. Requires an independently operator-reviewed
- * active AIS identity at submission. No provider request or telemetry is
- * made or stored. Dates remain explicitly uncertain.
- * @summary Submit a manually observed availability suggestion
- */
-export const createAvailabilitySuggestionBodySourceReferenceMax = 300;
-
-/**
- * @summary Dismiss an availability suggestion
- */
-export const DismissAvailabilitySuggestionParams = zod.object({
-  "suggestionId": zod.coerce.string().uuid()
-})

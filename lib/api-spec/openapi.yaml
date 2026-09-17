@@ -25,6 +25,8 @@ tags:
     description: Curated inland-shipping location catalogue.
   - name: Listings
     description: Owned cargo and capacity listings.
+  - name: Liner
+    description: Liner services, sailings, breakbulk cargo, and shared-consent matches.
   - name: Availability suggestions
     description: Private, manually submitted operational availability plans.
   - name: Marketplace
@@ -970,6 +972,336 @@ paths:
         "404":
           $ref: "#/components/responses/NotFound"
 
+  /liner/vessels:
+    get:
+      tags: [Liner]
+      operationId: listMyLinerVessels
+      summary: List actual liner vessels owned by the current carrier
+      security: [{ sessionCookie: [] }, { bearerAuth: [] }]
+      parameters: [{ $ref: "#/components/parameters/Page" }, { $ref: "#/components/parameters/PageSize" }]
+      responses:
+        "200":
+          description: Owned liner vessels.
+          content: { application/json: { schema: { $ref: "#/components/schemas/LinerVesselListResponse" } } }
+    post:
+      tags: [Liner]
+      operationId: createMyLinerVessel
+      summary: Register an actual vessel before it can be assigned to a sailing
+      description: This vertical never creates a vessel implicitly from a service or sailing.
+      security: [{ sessionCookie: [] }, { bearerAuth: [] }]
+      requestBody:
+        required: true
+        content: { application/json: { schema: { $ref: "#/components/schemas/LinerVesselInput" } } }
+      responses:
+        "201":
+          description: Vessel registered.
+          content: { application/json: { schema: { $ref: "#/components/schemas/LinerVessel" } } }
+        "400": { $ref: "#/components/responses/BadRequest" }
+        "403": { $ref: "#/components/responses/Forbidden" }
+  /liner/vessels/{linerVesselId}:
+    parameters: [{ $ref: "#/components/parameters/LinerVesselId" }]
+    get:
+      tags: [Liner]
+      operationId: getMyLinerVessel
+      summary: Get an owned liner vessel
+      security: [{ sessionCookie: [] }, { bearerAuth: [] }]
+      responses:
+        "200":
+          description: Vessel.
+          content: { application/json: { schema: { $ref: "#/components/schemas/LinerVessel" } } }
+        "404": { $ref: "#/components/responses/NotFound" }
+    patch:
+      tags: [Liner]
+      operationId: updateMyLinerVessel
+      summary: Update an owned liner vessel
+      security: [{ sessionCookie: [] }, { bearerAuth: [] }]
+      requestBody:
+        required: true
+        content: { application/json: { schema: { $ref: "#/components/schemas/LinerVesselUpdate" } } }
+      responses:
+        "200":
+          description: Vessel updated.
+          content: { application/json: { schema: { $ref: "#/components/schemas/LinerVessel" } } }
+        "400": { $ref: "#/components/responses/BadRequest" }
+        "403": { $ref: "#/components/responses/Forbidden" }
+        "404": { $ref: "#/components/responses/NotFound" }
+
+  /liner/services:
+    get:
+      tags: [Liner]
+      operationId: listMyLinerServices
+      summary: List owned liner services
+      security: [{ sessionCookie: [] }, { bearerAuth: [] }]
+      parameters:
+        - name: listingStatus
+          in: query
+          required: false
+          schema: { $ref: "#/components/schemas/ListingStatus" }
+        - $ref: "#/components/parameters/Page"
+        - $ref: "#/components/parameters/PageSize"
+      responses:
+        "200":
+          description: Owned services.
+          content: { application/json: { schema: { $ref: "#/components/schemas/LinerServiceListResponse" } } }
+    post:
+      tags: [Liner]
+      operationId: createMyLinerService
+      summary: Publish a named liner service
+      security: [{ sessionCookie: [] }, { bearerAuth: [] }]
+      requestBody:
+        required: true
+        content: { application/json: { schema: { $ref: "#/components/schemas/LinerServiceInput" } } }
+      responses:
+        "201":
+          description: Service created.
+          content: { application/json: { schema: { $ref: "#/components/schemas/LinerService" } } }
+        "400": { $ref: "#/components/responses/BadRequest" }
+        "403": { $ref: "#/components/responses/Forbidden" }
+  /liner/services/{linerServiceId}:
+    parameters: [{ $ref: "#/components/parameters/LinerServiceId" }]
+    get:
+      tags: [Liner]
+      operationId: getMyLinerService
+      summary: Get an owned liner service
+      security: [{ sessionCookie: [] }, { bearerAuth: [] }]
+      responses:
+        "200":
+          description: Service.
+          content: { application/json: { schema: { $ref: "#/components/schemas/LinerService" } } }
+        "404": { $ref: "#/components/responses/NotFound" }
+    patch:
+      tags: [Liner]
+      operationId: updateMyLinerService
+      summary: Update an owned liner service
+      security: [{ sessionCookie: [] }, { bearerAuth: [] }]
+      requestBody:
+        required: true
+        content: { application/json: { schema: { $ref: "#/components/schemas/LinerServiceUpdate" } } }
+      responses:
+        "200":
+          description: Service updated.
+          content: { application/json: { schema: { $ref: "#/components/schemas/LinerService" } } }
+        "400": { $ref: "#/components/responses/BadRequest" }
+        "403": { $ref: "#/components/responses/Forbidden" }
+        "404": { $ref: "#/components/responses/NotFound" }
+  /liner/services/{linerServiceId}/withdraw:
+    post:
+      tags: [Liner]
+      operationId: withdrawMyLinerService
+      summary: Withdraw an owned liner service and its discoverable sailings
+      security: [{ sessionCookie: [] }, { bearerAuth: [] }]
+      parameters: [{ $ref: "#/components/parameters/LinerServiceId" }]
+      responses:
+        "200":
+          description: Service withdrawn.
+          content: { application/json: { schema: { $ref: "#/components/schemas/LinerService" } } }
+        "403": { $ref: "#/components/responses/Forbidden" }
+        "404": { $ref: "#/components/responses/NotFound" }
+
+  /liner/services/{linerServiceId}/sailings:
+    parameters: [{ $ref: "#/components/parameters/LinerServiceId" }]
+    get:
+      tags: [Liner]
+      operationId: listMyLinerSailings
+      summary: List sailings for an owned liner service
+      security: [{ sessionCookie: [] }, { bearerAuth: [] }]
+      responses:
+        "200":
+          description: Owned sailings.
+          content: { application/json: { schema: { $ref: "#/components/schemas/LinerSailingListResponse" } } }
+    post:
+      tags: [Liner]
+      operationId: createMyLinerSailing
+      summary: Publish an actual-vessel sailing, ordered port rotation, and commercial capacity
+      security: [{ sessionCookie: [] }, { bearerAuth: [] }]
+      requestBody:
+        required: true
+        content: { application/json: { schema: { $ref: "#/components/schemas/LinerSailingInput" } } }
+      responses:
+        "201":
+          description: Sailing created.
+          content: { application/json: { schema: { $ref: "#/components/schemas/LinerSailing" } } }
+        "400": { $ref: "#/components/responses/BadRequest" }
+        "403": { $ref: "#/components/responses/Forbidden" }
+        "404": { $ref: "#/components/responses/NotFound" }
+  /liner/sailings/{linerSailingId}:
+    parameters: [{ $ref: "#/components/parameters/LinerSailingId" }]
+    get:
+      tags: [Liner]
+      operationId: getMyLinerSailing
+      summary: Get an owned liner sailing
+      security: [{ sessionCookie: [] }, { bearerAuth: [] }]
+      responses:
+        "200":
+          description: Sailing.
+          content: { application/json: { schema: { $ref: "#/components/schemas/LinerSailing" } } }
+        "404": { $ref: "#/components/responses/NotFound" }
+    patch:
+      tags: [Liner]
+      operationId: updateMyLinerSailing
+      summary: Update sailing, ordered rotation, or commercial capacity
+      security: [{ sessionCookie: [] }, { bearerAuth: [] }]
+      requestBody:
+        required: true
+        content: { application/json: { schema: { $ref: "#/components/schemas/LinerSailingUpdate" } } }
+      responses:
+        "200":
+          description: Sailing updated.
+          content: { application/json: { schema: { $ref: "#/components/schemas/LinerSailing" } } }
+        "400": { $ref: "#/components/responses/BadRequest" }
+        "403": { $ref: "#/components/responses/Forbidden" }
+        "404": { $ref: "#/components/responses/NotFound" }
+  /liner/sailings/{linerSailingId}/withdraw:
+    post:
+      tags: [Liner]
+      operationId: withdrawMyLinerSailing
+      summary: Withdraw an owned sailing
+      security: [{ sessionCookie: [] }, { bearerAuth: [] }]
+      parameters: [{ $ref: "#/components/parameters/LinerSailingId" }]
+      responses:
+        "200":
+          description: Sailing withdrawn.
+          content: { application/json: { schema: { $ref: "#/components/schemas/LinerSailing" } } }
+        "403": { $ref: "#/components/responses/Forbidden" }
+        "404": { $ref: "#/components/responses/NotFound" }
+
+  /liner/cargo:
+    get:
+      tags: [Liner]
+      operationId: listMyLinerCargo
+      summary: List owned breakbulk or project-cargo listings
+      security: [{ sessionCookie: [] }, { bearerAuth: [] }]
+      parameters:
+        - name: listingStatus
+          in: query
+          required: false
+          schema: { $ref: "#/components/schemas/ListingStatus" }
+        - $ref: "#/components/parameters/Page"
+        - $ref: "#/components/parameters/PageSize"
+      responses:
+        "200":
+          description: Owned liner cargo.
+          content: { application/json: { schema: { $ref: "#/components/schemas/LinerCargoListResponse" } } }
+    post:
+      tags: [Liner]
+      operationId: createMyLinerCargo
+      summary: Create a breakbulk or project-cargo opportunity
+      security: [{ sessionCookie: [] }, { bearerAuth: [] }]
+      requestBody:
+        required: true
+        content: { application/json: { schema: { $ref: "#/components/schemas/LinerCargoInput" } } }
+      responses:
+        "201":
+          description: Liner cargo created.
+          content: { application/json: { schema: { $ref: "#/components/schemas/LinerCargo" } } }
+        "400": { $ref: "#/components/responses/BadRequest" }
+        "403": { $ref: "#/components/responses/Forbidden" }
+  /liner/cargo/{linerCargoId}:
+    parameters: [{ $ref: "#/components/parameters/LinerCargoId" }]
+    get:
+      tags: [Liner]
+      operationId: getMyLinerCargo
+      summary: Get owned liner cargo
+      security: [{ sessionCookie: [] }, { bearerAuth: [] }]
+      responses:
+        "200":
+          description: Liner cargo.
+          content: { application/json: { schema: { $ref: "#/components/schemas/LinerCargo" } } }
+        "404": { $ref: "#/components/responses/NotFound" }
+    patch:
+      tags: [Liner]
+      operationId: updateMyLinerCargo
+      summary: Update owned liner cargo
+      security: [{ sessionCookie: [] }, { bearerAuth: [] }]
+      requestBody:
+        required: true
+        content: { application/json: { schema: { $ref: "#/components/schemas/LinerCargoUpdate" } } }
+      responses:
+        "200":
+          description: Liner cargo updated.
+          content: { application/json: { schema: { $ref: "#/components/schemas/LinerCargo" } } }
+        "400": { $ref: "#/components/responses/BadRequest" }
+        "403": { $ref: "#/components/responses/Forbidden" }
+        "404": { $ref: "#/components/responses/NotFound" }
+  /liner/cargo/{linerCargoId}/withdraw:
+    post:
+      tags: [Liner]
+      operationId: withdrawMyLinerCargo
+      summary: Withdraw owned liner cargo
+      security: [{ sessionCookie: [] }, { bearerAuth: [] }]
+      parameters: [{ $ref: "#/components/parameters/LinerCargoId" }]
+      responses:
+        "200":
+          description: Liner cargo withdrawn.
+          content: { application/json: { schema: { $ref: "#/components/schemas/LinerCargo" } } }
+        "403": { $ref: "#/components/responses/Forbidden" }
+        "404": { $ref: "#/components/responses/NotFound" }
+
+  /liner/marketplace:
+    get:
+      tags: [Liner]
+      operationId: listLinerMarketplace
+      summary: List privacy-safe breakbulk cargo and liner sailing opportunities
+      security: [{ sessionCookie: [] }, { bearerAuth: [] }]
+      parameters:
+        - name: listingType
+          in: query
+          required: false
+          schema: { $ref: "#/components/schemas/LinerMarketplaceListingType" }
+        - $ref: "#/components/parameters/Page"
+        - $ref: "#/components/parameters/PageSize"
+      responses:
+        "200":
+          description: Anonymous active liner opportunities.
+          content: { application/json: { schema: { $ref: "#/components/schemas/LinerMarketplaceListResponse" } } }
+  /liner/matches:
+    get:
+      tags: [Liner]
+      operationId: listMyLinerMatches
+      summary: List liner matches using the shared consent workflow
+      security: [{ sessionCookie: [] }, { bearerAuth: [] }]
+      parameters:
+        - name: status
+          in: query
+          required: false
+          schema: { $ref: "#/components/schemas/MatchStatus" }
+        - $ref: "#/components/parameters/Page"
+        - $ref: "#/components/parameters/PageSize"
+      responses:
+        "200":
+          description: Liner matches.
+          content: { application/json: { schema: { $ref: "#/components/schemas/LinerMatchListResponse" } } }
+  /liner/matches/{matchId}:
+    parameters: [{ $ref: "#/components/parameters/MatchId" }]
+    get:
+      tags: [Liner]
+      operationId: getMyLinerMatch
+      summary: Get a liner match with disclosure based on consent
+      security: [{ sessionCookie: [] }, { bearerAuth: [] }]
+      responses:
+        "200":
+          description: Liner match.
+          content: { application/json: { schema: { $ref: "#/components/schemas/LinerMatchDetail" } } }
+        "404": { $ref: "#/components/responses/NotFound" }
+  /liner/matches/{matchId}/actions:
+    post:
+      tags: [Liner]
+      operationId: actOnLinerMatch
+      summary: Show interest, accept, or decline using shared consent
+      security: [{ sessionCookie: [] }, { bearerAuth: [] }]
+      parameters: [{ $ref: "#/components/parameters/MatchId" }]
+      requestBody:
+        required: true
+        content: { application/json: { schema: { $ref: "#/components/schemas/MatchActionRequest" } } }
+      responses:
+        "200":
+          description: Action applied.
+          content: { application/json: { schema: { $ref: "#/components/schemas/LinerMatchDetail" } } }
+        "400": { $ref: "#/components/responses/BadRequest" }
+        "403": { $ref: "#/components/responses/Forbidden" }
+        "404": { $ref: "#/components/responses/NotFound" }
+        "409": { $ref: "#/components/responses/BadRequest" }
+
   /marketplace:
     get:
       tags: [Marketplace]
@@ -1372,6 +1704,26 @@ components:
       schema:
         type: string
         format: uuid
+    LinerVesselId:
+      name: linerVesselId
+      in: path
+      required: true
+      schema: { type: string, format: uuid }
+    LinerServiceId:
+      name: linerServiceId
+      in: path
+      required: true
+      schema: { type: string, format: uuid }
+    LinerSailingId:
+      name: linerSailingId
+      in: path
+      required: true
+      schema: { type: string, format: uuid }
+    LinerCargoId:
+      name: linerCargoId
+      in: path
+      required: true
+      schema: { type: string, format: uuid }
     AvailabilitySuggestionId:
       name: suggestionId
       in: path
@@ -1904,6 +2256,9 @@ components:
           type: boolean
         status:
           $ref: "#/components/schemas/CompanyStatus"
+        membershipRole:
+          description: Current caller's role, returned only for their own company.
+          $ref: "#/components/schemas/MembershipRole"
         createdAt:
           type: string
           format: date-time
@@ -2714,6 +3069,357 @@ components:
         total:
           type: integer
 
+    LinerCargoType:
+      type: string
+      enum: [BREAKBULK, PROJECT_CARGO, HEAVY_LIFT, STEEL, MACHINERY, RORO]
+    LinerStowage:
+      type: string
+      enum: [DECK, HOLD, EITHER]
+    LinerVessel:
+      type: object
+      required: [id, companyId, vesselName, imoNumber, active, createdAt, updatedAt]
+      properties:
+        id: { type: string, format: uuid }
+        companyId: { type: string, format: uuid }
+        vesselName: { type: string }
+        imoNumber:
+          type: string
+          pattern: '^[0-9]{7}$'
+          description: Actual IMO identifier; no placeholder vessels are supported.
+        active: { type: boolean }
+        createdAt: { type: string, format: date-time }
+        updatedAt: { type: string, format: date-time }
+    LinerVesselInput:
+      type: object
+      additionalProperties: false
+      required: [vesselName, imoNumber]
+      properties:
+        vesselName: { type: string, minLength: 1, maxLength: 200 }
+        imoNumber: { type: string, pattern: '^[0-9]{7}$' }
+    LinerVesselUpdate:
+      type: object
+      additionalProperties: false
+      minProperties: 1
+      properties:
+        vesselName: { type: string, minLength: 1, maxLength: 200 }
+        active: { type: boolean }
+    LinerService:
+      type: object
+      required: [id, companyId, serviceName, tradeLane, visibility, listingStatus, createdAt, updatedAt]
+      properties:
+        id: { type: string, format: uuid }
+        companyId: { type: string, format: uuid }
+        serviceName: { type: string }
+        tradeLane: { type: string }
+        visibility: { $ref: "#/components/schemas/Visibility" }
+        listingStatus: { $ref: "#/components/schemas/ListingStatus" }
+        notes: { type: [string, "null"] }
+        createdAt: { type: string, format: date-time }
+        updatedAt: { type: string, format: date-time }
+    LinerServiceInput:
+      type: object
+      additionalProperties: false
+      required: [serviceName, tradeLane, visibility]
+      properties:
+        serviceName: { type: string, minLength: 1, maxLength: 200 }
+        tradeLane: { type: string, minLength: 1, maxLength: 300 }
+        visibility: { $ref: "#/components/schemas/Visibility" }
+        listingStatus: { $ref: "#/components/schemas/ListingStatus", default: DRAFT }
+        notes: { type: string, maxLength: 4000 }
+    LinerServiceUpdate:
+      type: object
+      additionalProperties: false
+      minProperties: 1
+      properties:
+        serviceName: { type: string, minLength: 1, maxLength: 200 }
+        tradeLane: { type: string, minLength: 1, maxLength: 300 }
+        visibility: { $ref: "#/components/schemas/Visibility" }
+        listingStatus: { $ref: "#/components/schemas/ListingStatus" }
+        notes: { type: [string, "null"], maxLength: 4000 }
+    LinerPortRotationCall:
+      type: object
+      additionalProperties: false
+      required: [locationId, sequence, estimatedArrival, estimatedDeparture]
+      properties:
+        locationId: { type: string, format: uuid }
+        sequence: { type: integer, minimum: 1 }
+        estimatedArrival: { type: string, format: date-time }
+        estimatedDeparture: { type: string, format: date-time }
+    LinerCommercialCapacity:
+      type: object
+      additionalProperties: false
+      required: [availableCommercialTonnes, maximumPieceWeightTonnes, maximumPieceLengthMetres, maximumPieceWidthMetres, maximumPieceHeightMetres, liftingCapacityTonnes, stowage, acceptedCargoTypes]
+      properties:
+        availableCommercialTonnes: { type: number, exclusiveMinimum: 0 }
+        maximumPieceWeightTonnes: { type: number, exclusiveMinimum: 0 }
+        maximumPieceLengthMetres: { type: number, exclusiveMinimum: 0 }
+        maximumPieceWidthMetres: { type: number, exclusiveMinimum: 0 }
+        maximumPieceHeightMetres: { type: number, exclusiveMinimum: 0 }
+        liftingCapacityTonnes: { type: number, exclusiveMinimum: 0 }
+        stowage: { $ref: "#/components/schemas/LinerStowage" }
+        acceptedCargoTypes:
+          type: array
+          minItems: 1
+          uniqueItems: true
+          items: { $ref: "#/components/schemas/LinerCargoType" }
+    LinerSailing:
+      type: object
+      required: [id, serviceId, linerVesselId, voyageReference, departureAt, cargoCutoffAt, visibility, listingStatus, portRotation, commercialCapacity, createdAt, updatedAt]
+      properties:
+        id: { type: string, format: uuid }
+        serviceId: { type: string, format: uuid }
+        linerVesselId: { type: string, format: uuid }
+        voyageReference: { type: string }
+        departureAt: { type: string, format: date-time }
+        cargoCutoffAt: { type: string, format: date-time }
+        visibility: { $ref: "#/components/schemas/Visibility" }
+        listingStatus: { $ref: "#/components/schemas/ListingStatus" }
+        portRotation:
+          type: array
+          minItems: 2
+          items: { $ref: "#/components/schemas/LinerPortRotationCall" }
+        commercialCapacity: { $ref: "#/components/schemas/LinerCommercialCapacity" }
+        notes: { type: [string, "null"] }
+        createdAt: { type: string, format: date-time }
+        updatedAt: { type: string, format: date-time }
+    LinerSailingInput:
+      type: object
+      additionalProperties: false
+      required: [linerVesselId, voyageReference, departureAt, cargoCutoffAt, visibility, portRotation, commercialCapacity]
+      properties:
+        linerVesselId: { type: string, format: uuid }
+        voyageReference: { type: string, minLength: 1, maxLength: 100 }
+        departureAt: { type: string, format: date-time }
+        cargoCutoffAt: { type: string, format: date-time }
+        visibility: { $ref: "#/components/schemas/Visibility" }
+        listingStatus: { $ref: "#/components/schemas/ListingStatus", default: DRAFT }
+        portRotation:
+          type: array
+          minItems: 2
+          items: { $ref: "#/components/schemas/LinerPortRotationCall" }
+        commercialCapacity: { $ref: "#/components/schemas/LinerCommercialCapacity" }
+        notes: { type: string, maxLength: 4000 }
+    LinerSailingUpdate:
+      type: object
+      additionalProperties: false
+      minProperties: 1
+      properties:
+        linerVesselId: { type: string, format: uuid }
+        voyageReference: { type: string, minLength: 1, maxLength: 100 }
+        departureAt: { type: string, format: date-time }
+        cargoCutoffAt: { type: string, format: date-time }
+        visibility: { $ref: "#/components/schemas/Visibility" }
+        listingStatus: { $ref: "#/components/schemas/ListingStatus" }
+        portRotation:
+          type: array
+          minItems: 2
+          items: { $ref: "#/components/schemas/LinerPortRotationCall" }
+        commercialCapacity: { $ref: "#/components/schemas/LinerCommercialCapacity" }
+        notes: { type: [string, "null"], maxLength: 4000 }
+    LinerCargo:
+      type: object
+      required: [id, companyId, cargoName, cargoType, pieceCount, totalWeightTonnes, pieceWeightTonnes, pieceLengthMetres, pieceWidthMetres, pieceHeightMetres, originLocationId, destinationLocationId, readyAt, requiredStowage, visibility, listingStatus, createdAt, updatedAt]
+      properties:
+        id: { type: string, format: uuid }
+        companyId: { type: string, format: uuid }
+        cargoName: { type: string }
+        cargoType: { $ref: "#/components/schemas/LinerCargoType" }
+        pieceCount: { type: integer, minimum: 1 }
+        totalWeightTonnes: { type: number, exclusiveMinimum: 0 }
+        pieceWeightTonnes: { type: number, exclusiveMinimum: 0 }
+        pieceLengthMetres: { type: number, exclusiveMinimum: 0 }
+        pieceWidthMetres: { type: number, exclusiveMinimum: 0 }
+        pieceHeightMetres: { type: number, exclusiveMinimum: 0 }
+        requiredLiftingTonnes: { type: [number, "null"], exclusiveMinimum: 0 }
+        requiredStowage: { $ref: "#/components/schemas/LinerStowage" }
+        originLocationId: { type: string, format: uuid }
+        destinationLocationId: { type: string, format: uuid }
+        readyAt: { type: string, format: date-time }
+        visibility: { $ref: "#/components/schemas/Visibility" }
+        listingStatus: { $ref: "#/components/schemas/ListingStatus" }
+        notes: { type: [string, "null"] }
+        createdAt: { type: string, format: date-time }
+        updatedAt: { type: string, format: date-time }
+    LinerCargoInput:
+      type: object
+      additionalProperties: false
+      required: [cargoName, cargoType, pieceCount, totalWeightTonnes, pieceWeightTonnes, pieceLengthMetres, pieceWidthMetres, pieceHeightMetres, originLocationId, destinationLocationId, readyAt, requiredStowage, visibility]
+      properties:
+        cargoName: { type: string, minLength: 1, maxLength: 200 }
+        cargoType: { $ref: "#/components/schemas/LinerCargoType" }
+        pieceCount: { type: integer, minimum: 1 }
+        totalWeightTonnes: { type: number, exclusiveMinimum: 0 }
+        pieceWeightTonnes: { type: number, exclusiveMinimum: 0 }
+        pieceLengthMetres: { type: number, exclusiveMinimum: 0 }
+        pieceWidthMetres: { type: number, exclusiveMinimum: 0 }
+        pieceHeightMetres: { type: number, exclusiveMinimum: 0 }
+        requiredLiftingTonnes: { type: [number, "null"], exclusiveMinimum: 0 }
+        requiredStowage: { $ref: "#/components/schemas/LinerStowage" }
+        originLocationId: { type: string, format: uuid }
+        destinationLocationId: { type: string, format: uuid }
+        readyAt: { type: string, format: date-time }
+        visibility: { $ref: "#/components/schemas/Visibility" }
+        listingStatus: { $ref: "#/components/schemas/ListingStatus", default: DRAFT }
+        notes: { type: string, maxLength: 4000 }
+    LinerCargoUpdate:
+      type: object
+      additionalProperties: false
+      minProperties: 1
+      properties:
+        cargoName: { type: string, minLength: 1, maxLength: 200 }
+        cargoType: { $ref: "#/components/schemas/LinerCargoType" }
+        pieceCount: { type: integer, minimum: 1 }
+        totalWeightTonnes: { type: number, exclusiveMinimum: 0 }
+        pieceWeightTonnes: { type: number, exclusiveMinimum: 0 }
+        pieceLengthMetres: { type: number, exclusiveMinimum: 0 }
+        pieceWidthMetres: { type: number, exclusiveMinimum: 0 }
+        pieceHeightMetres: { type: number, exclusiveMinimum: 0 }
+        requiredLiftingTonnes: { type: [number, "null"], exclusiveMinimum: 0 }
+        requiredStowage: { $ref: "#/components/schemas/LinerStowage" }
+        originLocationId: { type: string, format: uuid }
+        destinationLocationId: { type: string, format: uuid }
+        readyAt: { type: string, format: date-time }
+        visibility: { $ref: "#/components/schemas/Visibility" }
+        listingStatus: { $ref: "#/components/schemas/ListingStatus" }
+        notes: { type: [string, "null"], maxLength: 4000 }
+    LinerVesselListResponse:
+      type: object
+      required: [items, page, pageSize, total]
+      properties:
+        items: { type: array, items: { $ref: "#/components/schemas/LinerVessel" } }
+        page: { type: integer }
+        pageSize: { type: integer }
+        total: { type: integer }
+    LinerServiceListResponse:
+      type: object
+      required: [items, page, pageSize, total]
+      properties:
+        items: { type: array, items: { $ref: "#/components/schemas/LinerService" } }
+        page: { type: integer }
+        pageSize: { type: integer }
+        total: { type: integer }
+    LinerSailingListResponse:
+      type: object
+      required: [items, page, pageSize, total]
+      properties:
+        items: { type: array, items: { $ref: "#/components/schemas/LinerSailing" } }
+        page: { type: integer }
+        pageSize: { type: integer }
+        total: { type: integer }
+    LinerCargoListResponse:
+      type: object
+      required: [items, page, pageSize, total]
+      properties:
+        items: { type: array, items: { $ref: "#/components/schemas/LinerCargo" } }
+        page: { type: integer }
+        pageSize: { type: integer }
+        total: { type: integer }
+    LinerMarketplaceListingType:
+      type: string
+      enum: [CARGO, SAILING]
+    AnonymousLinerCargo:
+      type: object
+      required: [id, listingType, cargoType, originRegion, destinationRegion, totalWeightBand, pieceDimensionBand, liftingBand, stowage, readyBand]
+      properties:
+        id: { type: string, format: uuid }
+        listingType: { type: string, enum: [CARGO] }
+        cargoType: { $ref: "#/components/schemas/LinerCargoType" }
+        originRegion: { type: string }
+        destinationRegion: { type: string }
+        totalWeightBand: { type: string }
+        pieceDimensionBand: { type: string }
+        liftingBand: { type: string }
+        stowage: { $ref: "#/components/schemas/LinerStowage" }
+        readyBand: { type: string }
+    AnonymousLinerSailing:
+      type: object
+      required: [id, listingType, tradeLaneBand, departureBand, cutoffBand, capacityBand, cargoTypes, stowage]
+      properties:
+        id: { type: string, format: uuid }
+        listingType: { type: string, enum: [SAILING] }
+        tradeLaneBand: { type: string }
+        departureBand: { type: string }
+        cutoffBand: { type: string }
+        capacityBand: { type: string }
+        cargoTypes:
+          type: array
+          items: { $ref: "#/components/schemas/LinerCargoType" }
+        stowage: { $ref: "#/components/schemas/LinerStowage" }
+    LinerMarketplaceListing:
+      oneOf:
+        - $ref: "#/components/schemas/AnonymousLinerCargo"
+        - $ref: "#/components/schemas/AnonymousLinerSailing"
+    LinerMarketplaceListResponse:
+      type: object
+      required: [items, page, pageSize, total]
+      properties:
+        items: { type: array, items: { $ref: "#/components/schemas/LinerMarketplaceListing" } }
+        page: { type: integer }
+        pageSize: { type: integer }
+        total: { type: integer }
+    LinerMatchScore:
+      type: object
+      required: [totalScore, dimensionsFit, weightFit, liftingFit, stowageFit, rotationFit, timingFit, explanation, calculatedAt]
+      properties:
+        totalScore: { type: integer, minimum: 0, maximum: 100 }
+        dimensionsFit: { type: integer, minimum: 0, maximum: 100 }
+        weightFit: { type: integer, minimum: 0, maximum: 100 }
+        liftingFit: { type: integer, minimum: 0, maximum: 100 }
+        stowageFit: { type: integer, minimum: 0, maximum: 100 }
+        rotationFit: { type: integer, minimum: 0, maximum: 100 }
+        timingFit: { type: integer, minimum: 0, maximum: 100 }
+        explanation: { type: string }
+        calculatedAt: { type: string, format: date-time }
+    LinerMatchSummary:
+      type: object
+      required: [id, linerCargoId, linerSailingId, status, cargo, sailing, score, initiatedByMe, canAccept, createdAt, updatedAt]
+      properties:
+        id: { type: string, format: uuid }
+        linerCargoId: { type: string, format: uuid }
+        linerSailingId: { type: string, format: uuid }
+        status: { $ref: "#/components/schemas/MatchStatus" }
+        cargo: { $ref: "#/components/schemas/AnonymousLinerCargo" }
+        sailing: { $ref: "#/components/schemas/AnonymousLinerSailing" }
+        score: { $ref: "#/components/schemas/LinerMatchScore" }
+        initiatedByMe: { type: boolean }
+        canAccept: { type: boolean }
+        createdAt: { type: string, format: date-time }
+        updatedAt: { type: string, format: date-time }
+    LinerMatchDetail:
+      allOf:
+        - $ref: "#/components/schemas/LinerMatchSummary"
+        - type: object
+          required: [disclosureState, ownedCargo, ownedSailing, ownedService, ownedVessel, connectedCargo, connectedSailing, connectedService, connectedVessel, connectedCompanies]
+          properties:
+            disclosureState: { type: string, enum: [ANONYMOUS, OWNER, CONNECTED] }
+            ownedCargo:
+              oneOf: [{ $ref: "#/components/schemas/LinerCargo" }, { type: "null" }]
+            ownedSailing:
+              oneOf: [{ $ref: "#/components/schemas/LinerSailing" }, { type: "null" }]
+            ownedService:
+              oneOf: [{ $ref: "#/components/schemas/LinerService" }, { type: "null" }]
+            ownedVessel:
+              oneOf: [{ $ref: "#/components/schemas/LinerVessel" }, { type: "null" }]
+            connectedCargo:
+              oneOf: [{ $ref: "#/components/schemas/LinerCargo" }, { type: "null" }]
+            connectedSailing:
+              oneOf: [{ $ref: "#/components/schemas/LinerSailing" }, { type: "null" }]
+            connectedService:
+              oneOf: [{ $ref: "#/components/schemas/LinerService" }, { type: "null" }]
+            connectedVessel:
+              oneOf: [{ $ref: "#/components/schemas/LinerVessel" }, { type: "null" }]
+            connectedCompanies:
+              type: array
+              items: { $ref: "#/components/schemas/ConnectedCompany" }
+    LinerMatchListResponse:
+      type: object
+      required: [items, page, pageSize, total]
+      properties:
+        items: { type: array, items: { $ref: "#/components/schemas/LinerMatchSummary" } }
+        page: { type: integer }
+        pageSize: { type: integer }
+        total: { type: integer }
+
     MarketplaceListingType:
       type: string
       enum: [CARGO, CAPACITY]
@@ -2858,6 +3564,9 @@ components:
     MatchStatus:
       type: string
       enum: [NEW, INTEREST_SENT, CONNECTED, DECLINED, EXPIRED]
+    MatchDomain:
+      type: string
+      enum: [MARKETPLACE, LINER]
     MatchAction:
       type: string
       enum: [INTEREST, ACCEPT, DECLINE]
@@ -3384,7 +4093,7 @@ components:
         ]
     Notification:
       type: object
-      required: [id, type, title, message, readAt, createdAt]
+      required: [id, type, title, message, relatedMatchDomain, readAt, createdAt]
       properties:
         id:
           type: string
@@ -3398,6 +4107,8 @@ components:
         relatedMatchId:
           type: [string, "null"]
           format: uuid
+        relatedMatchDomain:
+          $ref: "#/components/schemas/MatchDomain"
         relatedConversationId:
           type: [string, "null"]
           format: uuid

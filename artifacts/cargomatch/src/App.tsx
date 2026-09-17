@@ -2,7 +2,6 @@ import { Route, Switch, Redirect, Router } from "wouter";
 import { useState } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useAuth } from "@workspace/replit-auth-web";
-import { useGetMyCompany, getGetMyCompanyQueryKey } from "@workspace/api-client-react";
 
 import Landing from "./pages/public/Landing";
 import Onboarding from "./pages/onboarding/Onboarding";
@@ -29,8 +28,14 @@ import DeepseaMatchDetail from "./pages/deepsea/DeepseaMatchDetail";
 import DemoApp from "./demo/DemoApp";
 import { DemoEntryContext } from "./demo/entry";
 import { t } from "./lib/i18n";
+import { useGetMyCompany, getGetMyCompanyQueryKey, CompanyActivity } from "@workspace/api-client-react";
+import LinerServices from "./pages/liner/LinerServices";
+import LinerCargo from "./pages/liner/LinerCargo";
+import LinerMarketplace from "./pages/liner/LinerMarketplace";
+import LinerMatches from "./pages/liner/LinerMatches";
+import LinerMatchDetail from "./pages/liner/LinerMatchDetail";
 
-function ProtectedRoute({ component: Component, requireCompany = true }: { component: React.ComponentType, requireCompany?: boolean }) {
+function ProtectedRoute({ component: Component, requireCompany = true, allowedActivities = [] }: { component: React.ComponentType, requireCompany?: boolean, allowedActivities?: CompanyActivity[] }) {
   const { isAuthenticated, isLoading: authLoading } = useAuth();
 
   const { data: company, isLoading: companyLoading, error } = useGetMyCompany({
@@ -54,6 +59,20 @@ function ProtectedRoute({ component: Component, requireCompany = true }: { compo
       return <div role="alert" className="p-8">{t("error.load_company")}</div>;
     }
     return <Redirect to="/onboarding" />;
+  }
+
+  if (requireCompany && company && allowedActivities.length > 0) {
+    const hasAllowedActivity = company.activities.some(a => allowedActivities.includes(a));
+    if (!hasAllowedActivity) {
+      return (
+        <Shell>
+          <div className="p-12 text-center">
+            <h2 className="text-xl font-semibold mb-2">Access Denied</h2>
+            <p className="text-muted-foreground">Your company profile does not have the required role to access this section.</p>
+          </div>
+        </Shell>
+      );
+    }
   }
 
   if (!requireCompany && company) {
@@ -107,6 +126,13 @@ function AppRouter() {
       <Route path="/deepsea/marketplace">{() => <ProtectedRoute component={DeepseaMarketplace} />}</Route>
       <Route path="/deepsea/matches">{() => <ProtectedRoute component={DeepseaMatches} />}</Route>
       <Route path="/deepsea/matches/:id">{() => <ProtectedRoute component={DeepseaMatchDetail} />}</Route>
+
+      {/* Liner Routes */}
+      <Route path="/liner/services">{() => <ProtectedRoute component={LinerServices} allowedActivities={[CompanyActivity.CARRIER]} />}</Route>
+      <Route path="/liner/cargo">{() => <ProtectedRoute component={LinerCargo} allowedActivities={[CompanyActivity.SHIPPER, CompanyActivity.CHARTERER]} />}</Route>
+      <Route path="/liner/marketplace">{() => <ProtectedRoute component={LinerMarketplace} />}</Route>
+      <Route path="/liner/matches">{() => <ProtectedRoute component={LinerMatches} />}</Route>
+      <Route path="/liner/matches/:id">{() => <ProtectedRoute component={LinerMatchDetail} />}</Route>
 
       <Route>
         <div className="flex items-center justify-center min-h-screen">{t("not_found.title")}</div>

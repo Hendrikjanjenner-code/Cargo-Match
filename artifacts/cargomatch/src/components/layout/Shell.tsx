@@ -7,7 +7,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/primitives";
 import { t } from "@/lib/i18n";
-import { useGetMyCompany, getGetMyCompanyQueryKey } from "@workspace/api-client-react";
+import { CompanyActivity, useGetMyCompany, getGetMyCompanyQueryKey } from "@workspace/api-client-react";
 
 export default function Shell({ children }: { children: React.ReactNode }) {
   const [location] = useLocation();
@@ -46,6 +46,13 @@ export default function Shell({ children }: { children: React.ReactNode }) {
     { href: "/deepsea/matches", label: t("deepsea.matches.title"), icon: Handshake },
   ];
 
+  const linerNavItems = [
+    ...(company?.activities.includes(CompanyActivity.CARRIER) ? [{ href: "/liner/services", label: "Services & Sailings", icon: Ship }] : []),
+    ...(company?.activities.some(activity => activity === CompanyActivity.SHIPPER || activity === CompanyActivity.CHARTERER) ? [{ href: "/liner/cargo", label: "Breakbulk Cargo", icon: Package }] : []),
+    { href: "/liner/marketplace", label: "Marketplace", icon: Globe },
+    { href: "/liner/matches", label: "Matches", icon: Handshake },
+  ];
+
   return (
     <div className="flex min-h-screen flex-col bg-background">
       <header className="sticky top-0 z-30 flex h-14 items-center gap-4 border-b bg-primary px-4 sm:px-6 shadow-sm">
@@ -74,6 +81,7 @@ export default function Shell({ children }: { children: React.ReactNode }) {
           {[
             { title: t("nav.inland"), items: navItems },
             { title: t("nav.deepsea"), items: deepseaNavItems },
+            { title: "Liner Breakbulk", items: linerNavItems },
           ].map((group) => <section key={group.title} className="mb-3">
             <h2 className="px-2 py-2 text-xs font-semibold uppercase text-muted-foreground">{group.title}</h2>
             <div className="grid grid-cols-2 gap-1">
@@ -130,6 +138,24 @@ export default function Shell({ children }: { children: React.ReactNode }) {
                 {item.label}
               </Link>
             ))}
+
+             <div className="px-3 text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2 mt-6">
+               Liner Breakbulk
+             </div>
+             {linerNavItems.map((item) => (
+               <Link
+                 key={item.href}
+                 href={item.href}
+                 className={`flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors ${
+                   location === item.href || location.startsWith(item.href)
+                     ? "bg-accent/10 text-accent"
+                     : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                 }`}
+               >
+                 <item.icon className="h-4 w-4" />
+                 {item.label}
+               </Link>
+             ))}
           </nav>
         </aside>
 

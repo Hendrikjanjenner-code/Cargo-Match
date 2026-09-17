@@ -69,6 +69,17 @@ manual-day value to support fractional days without discarding old estimates.
 Apply reviewed migrations to each target environment before running the new
 server; do not replace this step with a destructive schema reset.
 
+
+## Separate liner pilot and excluded future modes
+
+Conventional/breakbulk liner opportunities now have a separate service/sailing
+workflow, described in [the liner pilot guide](liner-pilot.md). They are not
+deepsea bulk open positions and never use vessel position as proof of a service.
+
+Road, rail, air cargo, automatic multimodal orchestration, AIS-assisted
+publication, and automatic mode recommendation remain outside this pilot.
+They require their own mode-specific strategies and contracts rather than
+being inferred from the deepsea or inland rules.
 ## Reachability and laycan
 
 The capacity form separates these operator inputs:

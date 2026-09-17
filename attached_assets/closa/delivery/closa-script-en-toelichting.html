@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Closa — script en toelichting</title>
+  <style>
+    :root { --ink:#171717; --muted:#68645d; --line:#d8d2c8; --paper:#fbfaf7; --panel:#f1eee8; }
+    * { box-sizing:border-box; }
+    html { background:#e8e4dd; }
+    body { margin:0; color:var(--ink); background:var(--paper); font:14px/1.48 Arial, Helvetica, sans-serif; }
+    .page { max-width:1120px; margin:0 auto; padding:52px 64px 64px; }
+    .masthead { border-top:5px solid var(--ink); padding-top:22px; display:flex; justify-content:space-between; gap:30px; align-items:flex-start; }
+    .wordmark { font-size:27px; letter-spacing:.13em; font-weight:700; }
+    .kicker, .label { text-transform:uppercase; letter-spacing:.14em; font-size:10px; font-weight:700; color:var(--muted); }
+    h1 { font:700 40px/1.08 Georgia, "Times New Roman", serif; max-width:660px; margin:38px 0 14px; letter-spacing:-.02em; }
+    h2 { font:700 24px/1.15 Georgia, "Times New Roman", serif; margin:42px 0 16px; }
+    h3 { margin:0 0 8px; font-size:15px; }
+    p { margin:0 0 12px; }
+    .dek { max-width:720px; font-size:17px; color:#46433e; }
+    .meta { display:grid; grid-template-columns:repeat(4,1fr); margin:32px 0 25px; border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
+    .meta div { padding:13px 12px 13px 0; }
+    .meta div + div { padding-left:15px; border-left:1px solid var(--line); }
+    .meta strong { display:block; font-size:16px; margin-top:3px; }
+    .notice { background:var(--panel); padding:18px 20px; border-left:3px solid var(--ink); margin:22px 0; }
+    .notice p:last-child { margin-bottom:0; }
+    .small { font-size:12px; color:var(--muted); }
+    table { width:100%; border-collapse:collapse; }
+    th { text-align:left; text-transform:uppercase; letter-spacing:.1em; font-size:10px; color:var(--muted); padding:10px 10px; border-bottom:2px solid var(--ink); }
+    td { vertical-align:top; padding:14px 10px; border-bottom:1px solid var(--line); }
+    .scene-table { table-layout:fixed; }
+    .scene-table .no { width:7%; font:700 18px Georgia,serif; }
+    .scene-table .time { width:12%; color:var(--muted); font-size:12px; }
+    .scene-table .story { width:25%; }
+    .scene-table .lang { width:28%; }
+    .scene-table td.lang { font-size:13px; }
+    .scene-table td.lang + td.lang { border-left:1px solid var(--line); }
+    .scene-table tr { break-inside:avoid; }
+    .scene-table td p { margin:0; }
+    .deliveries td:first-child { font-weight:700; width:31%; }
+    .two-col { display:grid; grid-template-columns:1fr 1fr; gap:24px; }
+    .box { border:1px solid var(--line); padding:18px 20px; }
+    ul, ol { margin:8px 0 0; padding-left:20px; }
+    li { margin:5px 0; }
+    footer { margin-top:48px; padding-top:16px; border-top:1px solid var(--line); color:var(--muted); font-size:11px; display:flex; justify-content:space-between; gap:20px; }
+    @media (max-width:760px) {
+      .page { padding:28px 20px 40px; } h1 { font-size:32px; }
+      .meta, .two-col { grid-template-columns:1fr 1fr; }
+      .scene-table { display:block; overflow-x:auto; min-width:800px; }
+    }
+    @media print {
+      @page { size:A4; margin:14mm 13mm 15mm; }
+      html, body { background:#fff; }
+      .page { max-width:none; padding:0; }
+      h1 { margin-top:27mm; }
+      h2 { break-after:avoid; }
+      .notice, .box { break-inside:avoid; }
+      .scene-table { font-size:11px; }
+      .scene-table td { padding:9px 7px; }
+      .scene-table thead { display:table-header-group; }
+      .scene-table tr { break-inside:avoid; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header class="masthead">
+      <div class="wordmark">CLOSA</div>
+      <div class="kicker">productiedocument · versie 1.0</div>
+    </header>
+
+    <h1>Vastgoed en vertrouwen</h1>
+    <p class="dek">Nederlands en Engels script met beeldrichting voor een korte, fotorealistische vastgoedfilm. Per scène duurt het beeld 7,5 seconden.</p>
+
+    <section class="meta" aria-label="Productiegegevens">
+      <div><span class="label">Duur</span><strong>75 seconden</strong></div>
+      <div><span class="label">Formaat</span><strong>1920 × 1080 · 16:9</strong></div>
+      <div><span class="label">Framerate</span><strong>24 fps</strong></div>
+      <div><span class="label">Talen</span><strong>NL / EN</strong></div>
+    </section>
+
+    <div class="notice">
+      <p><strong>Productienotitie.</strong> De beelden zijn fotorealistisch AI-gegenereerd, met AI-stemmen en AI-muziek. Er zijn geen echte klanten, opgenomen acteurs of medewerkers in beeld. De film heeft een luxe, Europees vastgoedkarakter en is nadrukkelijk niet geanimeerd.</p>
+      <p><strong>Reikwijdte.</strong> De genoemde functies zijn uitsluitend gebaseerd op de gebruikersbeschrijving. De Closa-app is niet onafhankelijk geïnspecteerd of geverifieerd. Er is geen officiële Closa-logo- of websiteverwijzing aangeleverd; “CLOSA” is daarom alleen neutrale platte tekst en geen nieuw of officieel logo. De styling in dit document is neutraal zwart/creme en claimt geen merkkleuren.</p>
+    </div>
+
+    <h2>Scènescript</h2>
+    <p class="small">Beeldbeschrijvingen zijn korte Nederlandse storyboardnotities; de Engelse tekst is de definitieve vertaling naast het Nederlandse eindscript. Begin- en eindtijd zijn indicatief op basis van 10 × 7,5 seconden.</p>
+    <table class="scene-table">
+      <thead><tr><th class="no">#</th><th class="time">Tijd</th><th class="story">Storyboard · NL</th><th class="lang">Narratie · NL</th><th class="lang">Narration · EN</th></tr></thead>
+      <tbody>
+        <tr><td class="no">01</td><td class="time">00:00–00:07,5</td><td class="story">Makelaar in een hoogwaardige Europese kantoorruimte leest een gesloten map; rustige dolly naar voren, bedachtzame onzekerheid.</td><td class="lang">Bij vastgoed draait alles om vertrouwen. Toch kan het delen van informatie voelen als een risico.</td><td class="lang">Real estate depends on trust. Yet sharing information can feel like taking a risk.</td></tr>
+        <tr><td class="no">02</td><td class="time">00:07,5–00:15</td><td class="story">Makelaar aarzelt aan een bureau en legt een neutrale vastgoedmap neer; laptop alleen van achteren zichtbaar.</td><td class="lang">Wat als jouw contact wordt overgenomen? Of jij als verkopende makelaar wordt gepasseerd?</td><td class="lang">What if someone takes over your contact? Or you, as the selling agent, are bypassed?</td></tr>
+        <tr><td class="no">03</td><td class="time">00:15–00:22,5</td><td class="story">Twee professionals in een rustige kantoorruimte zoeken contact en knikken naar elkaar; vertrouwen begint.</td><td class="lang">Die twijfel maakt samenwerken lastig. Closa brengt verkoop- en aankoopmakelaars samen in één platform.</td><td class="lang">That doubt makes collaboration difficult. Closa brings selling and buying agents together on one real estate platform.</td></tr>
+        <tr><td class="no">04</td><td class="time">00:22,5–00:30</td><td class="story">Zelfverzekerde verkoopmakelaar loopt door een lichte, lege designwoning en inspecteert de ruimtes professioneel.</td><td class="lang">Als verkoopmakelaar heb je een eigen profiel met jouw listings. Ook jij bent zichtbaar achter jouw aanbod.</td><td class="lang">As a selling agent, you have your own profile with your listings. You are visible behind your properties.</td></tr>
+        <tr><td class="no">05</td><td class="time">00:30–00:37,5</td><td class="story">Makelaar ordent een neutrale map naast een laptop aan een opgeruimd houten bureau; sfeer van vertrouwelijkheid.</td><td class="lang">Vertrouwelijke informatie krijgt een plek in je persoonlijke, beveiligde kluis.</td><td class="lang">Confidential information has a place in your personal, secure vault.</td></tr>
+        <tr><td class="no">06</td><td class="time">00:37,5–00:45</td><td class="story">Aankoopmakelaar werkt bij een groot raam; een bedachtzame blik verandert in een rustige glimlach.</td><td class="lang">Aankoopmakelaars kunnen connecties leggen met verkoopmakelaars. Zo begint een gesprek over nieuwe mogelijkheden.</td><td class="lang">Buying agents can connect with selling agents. A first conversation can open up new possibilities.</td></tr>
+        <tr><td class="no">07</td><td class="time">00:45–00:52,5</td><td class="story">Langzame architecturale establishing shot van een elegante Europese woonwijk met warm namiddaglicht.</td><td class="lang">Zoek per land en stad en vind je weg naar relevant vastgoedaanbod.</td><td class="lang">Search by country and city to find your way to relevant properties.</td></tr>
+        <tr><td class="no">08</td><td class="time">00:52,5–01:00</td><td class="story">Twee makelaars ontmoeten elkaar in een lege woning, knikken en bekijken samen de ruimte.</td><td class="lang">Niet alleen het vastgoed staat centraal, maar ook de makelaar erachter.</td><td class="lang">The focus is not only on the property, but also on the agent behind it.</td></tr>
+        <tr><td class="no">09</td><td class="time">01:00–01:07,5</td><td class="story">Twee professionals bekijken samen een neutrale vastgoedmap aan een houten tafel; ontspannen samenwerking.</td><td class="lang">Closa is er voor makelaars die informatie willen delen en samenwerken, met vertrouwen als uitgangspunt.</td><td class="lang">Closa is for agents who want to share information and work together, with trust as their starting point.</td></tr>
+        <tr><td class="no">10</td><td class="time">01:07,5–01:15</td><td class="story">Rustig, leeg interieur bij golden hour; donkerder vrije ruimte links voor een latere titelkaart.</td><td class="lang">Ontdek Closa. Plan een demo.</td><td class="lang">Discover Closa. Book a demo.</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Oplevering</h2>
+    <table class="deliveries">
+      <thead><tr><th>Bestand</th><th>Specificatie</th><th>Gebruik</th></tr></thead>
+      <tbody>
+        <tr><td>closa-nl-1080p.mp4</td><td>75 s · 1920 × 1080 · 16:9 · Nederlandse AI-narratie</td><td>Hoofdversie voor Nederlandstalige publicatie.</td></tr>
+        <tr><td>closa-en-1080p.mp4</td><td>75 s · 1920 × 1080 · 16:9 · Engelse AI-narratie</td><td>Hoofdversie voor Engelstalige publicatie.</td></tr>
+        <tr><td>closa-en-nl.srt / closa-en-nl.vtt</td><td>Optionele Nederlandse ondertiteling voor de Engelse versie</td><td>Sidecar-bestand; laad het naast de Engelse MP4 wanneer gewenst.</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Optionele ondertiteling</h2>
+    <div class="two-col">
+      <div class="box">
+        <h3>Nederlands op de Engelse film</h3>
+        <p>De Engelse MP4 kan optioneel een Nederlandse ondertiteltrack bevatten. Die embedded track staat standaard uit. Daarnaast zijn <strong>closa-en-nl.srt</strong> en <strong>closa-en-nl.vtt</strong> als sidecar bedoeld.</p>
+        <p class="small">Ondersteuning voor embedded tracks en sidecar-bestanden verschilt per speler en publicatieplatform. Controleer de trackkeuze na upload.</p>
+      </div>
+      <div class="box">
+        <h3>Praktische controle</h3>
+        <ol>
+          <li>Open <strong>closa-en-1080p.mp4</strong> in een speler.</li>
+          <li>Laad de SRT- of VTT-sidecar als ondertitelbestand, of kies de embedded track indien beschikbaar.</li>
+          <li>Controleer timing, tekens en leesbaarheid op mobiel en desktop.</li>
+        </ol>
+        <p class="small">VLC wordt voorgesteld voor controle van beide varianten; ook daar kan de exacte bediening per versie verschillen.</p>
+      </div>
+    </div>
+
+    <h2>Gebruik en scope</h2>
+    <div class="notice">
+      <p><strong>Gebruik.</strong> Kies de NL- of EN-MP4 als hoofdbestand, voeg alleen indien gewenst de Nederlandse ondertiteling toe aan de Engelse versie en controleer de uiteindelijke publicatie in de doelspeler. Gebruik de storyboardteksten als productie- en reviewreferentie, niet als onafhankelijke productdocumentatie.</p>
+      <p><strong>Beperking.</strong> Dit document doet geen uitspraken over daadwerkelijke app-functionaliteit, beveiligingsniveau, beschikbaarheid, resultaten, klanten of partners. Er zijn geen URL’s, aanvullende claims of niet-aangeleverde merkmiddelen toegevoegd.</p>
+    </div>
+
+    <footer><span>Closa · script en toelichting</span><span>Bron: media/closa/production.json · 10 scènes × 7,5 s</span></footer>
+  </main>
+</body>
+</html>

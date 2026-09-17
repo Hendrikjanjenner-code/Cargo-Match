@@ -47,3 +47,6 @@ Thumbs.db
 # Replit
 .cache/
 .local/
+
+# Reproducible intermediate media renders (delivery/source assets remain tracked)
+/media/closa/build/

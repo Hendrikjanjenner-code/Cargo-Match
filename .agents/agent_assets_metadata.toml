@@ -7,3 +7,220 @@ uri = "file://attached_assets/closa/source/music.mp3"
 type = "audio"
 title = "Closa rustige instrumentale filmmuziek"
 description = "Generated music: 75-second understated cinematic instrumental for a premium real estate collaboration film. Warm felt piano, very subtle sustained strings, soft low ambient texture, restrained organi…"
+logical_id = "6e27bc53-51c5-4de4-9f40-56e15f72779b"
+
+[[outputs]]
+id = "cd4ktcQfnq7JIgdebiKgD"
+uri = "file://attached_assets/closa/source/voice-nl-05.mp3"
+type = "audio"
+title = "Closa nl voice-over 5"
+description = "Text-to-speech audio: Vertrouwelijke informatie krijgt een plek in je persoonlijke, beveiligde kluis."
+logical_id = "dca0d639-7a5d-4dfa-abf5-106e344467a3"
+
+[[outputs]]
+id = "gkQi3V91k44bxziQthvL7"
+uri = "file://attached_assets/closa/source/voice-nl-01.mp3"
+type = "audio"
+title = "Closa nl voice-over 1"
+description = "Text-to-speech audio: Bij vastgoed draait alles om vertrouwen. Toch kan het delen van informatie voelen als een risico."
+logical_id = "7c25cb41-fd24-4bde-9c10-b14d9c90777b"
+
+[[outputs]]
+id = "6PGxigmYB4k05lWDOEAYO"
+uri = "file://attached_assets/closa/source/voice-nl-03.mp3"
+type = "audio"
+title = "Closa nl voice-over 3"
+description = "Text-to-speech audio: Die twijfel maakt samenwerken lastig. Closa brengt verkoop- en aankoopmakelaars samen in één platform."
+logical_id = "c0d0a73b-9039-4708-a7e3-a0083b5ef22a"
+
+[[outputs]]
+id = "S4BbpV3pjRJXVByAeqpwi"
+uri = "file://attached_assets/closa/source/voice-nl-02.mp3"
+type = "audio"
+title = "Closa nl voice-over 2"
+description = "Text-to-speech audio: Wat als jouw contact wordt overgenomen? Of jij als verkopende makelaar wordt gepasseerd?"
+logical_id = "c89a9581-2985-4cb5-839e-7a1836ccf763"
+
+[[outputs]]
+id = "lhFtxg0xrbYxSwzBZEP_I"
+uri = "file://attached_assets/closa/source/voice-nl-10.mp3"
+type = "audio"
+title = "Closa nl voice-over 10"
+description = "Text-to-speech audio: Ontdek Closa. Plan een demo."
+logical_id = "e77fc4fb-c41e-4ef5-9a45-2cb2d9367341"
+
+[[outputs]]
+id = "AWZxwF6e_xcwn7AzjLDNP"
+uri = "file://attached_assets/closa/source/voice-nl-04.mp3"
+type = "audio"
+title = "Closa nl voice-over 4"
+description = "Text-to-speech audio: Als verkoopmakelaar heb je een eigen profiel met jouw listings. Ook jij bent zichtbaar achter jouw aanbod."
+logical_id = "2648e9ba-f334-4e18-baa6-147f2602ffc4"
+
+[[outputs]]
+id = "kzfReDD7dalx0sY-j38TG"
+uri = "file://attached_assets/closa/source/voice-nl-07.mp3"
+type = "audio"
+title = "Closa nl voice-over 7"
+description = "Text-to-speech audio: Zoek per land en stad en vind je weg naar relevant vastgoedaanbod."
+logical_id = "cd53b802-97e6-4111-a57a-328c53f39c13"
+
+[[outputs]]
+id = "R4uTQ_fD1gfOzgDupHhp1"
+uri = "file://attached_assets/closa/source/voice-nl-08.mp3"
+type = "audio"
+title = "Closa nl voice-over 8"
+description = "Text-to-speech audio: Niet alleen het vastgoed staat centraal, maar ook de makelaar erachter."
+logical_id = "99d16842-248c-46f0-94d8-a2cf81d401ae"
+
+[[outputs]]
+id = "G1y9JAm15kmLhlqrrY_ko"
+uri = "file://attached_assets/closa/source/voice-nl-06.mp3"
+type = "audio"
+title = "Closa nl voice-over 6"
+description = "Text-to-speech audio: Aankoopmakelaars kunnen connecties leggen met verkoopmakelaars. Zo begint een gesprek over nieuwe mogelijkheden."
+logical_id = "327a1cfa-47ca-4d0e-9c2f-161e208173ee"
+
+[[outputs]]
+id = "yMoI7Oj-TiLF-mLQpN_gh"
+uri = "file://attached_assets/closa/source/voice-en-02.mp3"
+type = "audio"
+title = "Closa en voice-over 2"
+description = "Text-to-speech audio: What if someone takes over your contact? Or you, as the selling agent, are bypassed?"
+logical_id = "4a3e45d6-071a-4be3-919a-c974173da153"
+
+[[outputs]]
+id = "ZdwbgDDOkyH_yh0w8ANVp"
+uri = "file://attached_assets/closa/source/voice-nl-09.mp3"
+type = "audio"
+title = "Closa nl voice-over 9"
+description = "Text-to-speech audio: Closa is er voor makelaars die informatie willen delen en samenwerken, met vertrouwen als uitgangspunt."
+logical_id = "ef3e1b26-9c6c-4571-9f61-7b413c1be4bb"
+
+[[outputs]]
+id = "w9JRrnjAApxvxQNMv39ZL"
+uri = "file://attached_assets/closa/source/voice-en-01.mp3"
+type = "audio"
+title = "Closa en voice-over 1"
+description = "Text-to-speech audio: Real estate depends on trust. Yet sharing information can feel like taking a risk."
+logical_id = "64e89888-188f-4c11-804a-c020df2d58b9"
+
+[[outputs]]
+id = "GdYEsghCPVHPyhD3mHZmu"
+uri = "file://attached_assets/closa/source/voice-en-05.mp3"
+type = "audio"
+title = "Closa en voice-over 5"
+description = "Text-to-speech audio: Confidential information has a place in your personal, secure vault."
+logical_id = "369dda2f-b63b-4735-879a-6d919bf1880c"
+
+[[outputs]]
+id = "NZe9Q4NK39Brh7eRi8y3B"
+uri = "file://attached_assets/closa/source/voice-en-07.mp3"
+type = "audio"
+title = "Closa en voice-over 7"
+description = "Text-to-speech audio: Search by country and city to find your way to relevant properties."
+logical_id = "0f89f0a7-0443-4851-8e16-df6ca0665107"
+
+[[outputs]]
+id = "c2ecM2UK1rVJeqY0s4G6m"
+uri = "file://attached_assets/closa/source/voice-en-06.mp3"
+type = "audio"
+title = "Closa en voice-over 6"
+description = "Text-to-speech audio: Buying agents can connect with selling agents. A first conversation can open up new possibilities."
+logical_id = "ee9dcf22-0dc6-4854-9937-3c70d7b65a5b"
+
+[[outputs]]
+id = "yFAdJkb73T4B7PbL1t6Es"
+uri = "file://attached_assets/closa/source/voice-en-03.mp3"
+type = "audio"
+title = "Closa en voice-over 3"
+description = "Text-to-speech audio: That doubt makes collaboration difficult. Closa brings selling and buying agents together on one real estate platform."
+logical_id = "6054b31a-f7e6-4359-9182-636a22677ca6"
+
+[[outputs]]
+id = "EDGaYKaGFK9ieAXlYdmSf"
+uri = "file://attached_assets/closa/source/voice-en-04.mp3"
+type = "audio"
+title = "Closa en voice-over 4"
+description = "Text-to-speech audio: As a selling agent, you have your own profile with your listings. You are visible behind your properties."
+logical_id = "3d329372-f7f5-4a4b-8f45-7616d4bbd96d"
+
+[[outputs]]
+id = "b-pBD7NncLS2cK1VPxwIt"
+uri = "file://attached_assets/closa/source/voice-en-08.mp3"
+type = "audio"
+title = "Closa en voice-over 8"
+description = "Text-to-speech audio: The focus is not only on the property, but also on the agent behind it."
+logical_id = "28b725ad-d684-4ebd-99b3-e257f8238e40"
+
+[[outputs]]
+id = "-PKCECgcgAvl5XbI9kg09"
+uri = "file://attached_assets/closa/source/voice-en-10.mp3"
+type = "audio"
+title = "Closa Engelse voice-over 10"
+description = "Text-to-speech audio: Discover Closa. Book a demo."
+logical_id = "5103e285-d346-4ea1-a9c5-6a50de78284c"
+
+[[outputs]]
+id = "hwb0a1GOZlDmp4N4zcbOz"
+uri = "file://attached_assets/closa/source/voice-en-09.mp3"
+type = "audio"
+title = "Closa Engelse voice-over 9"
+description = "Text-to-speech audio: Closa is for agents who want to share information and work together, with trust as their starting point."
+logical_id = "1d9db1dc-258b-44f7-b8ac-158fbd89a781"
+
+[[outputs]]
+id = "og36UUE6fUd0rI1lVxu6p"
+uri = "file://attached_assets/closa/delivery/closa-nl-1080p.mp4"
+type = "video"
+title = "Closa — Nederlandse voice-over"
+description = "75 seconden · 1920×1080 · 16:9. Fotorealistische AI-filmbeelden van makelaars en luxe vastgoed, geen animatielook. Voorlopige merkafwerking: alleen de naam Closa, zonder officieel logo."
+logical_id = "7c851a4e-98db-439a-9e42-c1a27fc54043"
+content_hash = "sha256:5fc3148e771ea9e282647e382f4fe7f2c8bb98c83e33dbaf85d04b1345f7a38d"
+size = 100652227
+mtime_ms = 1789673959077
+storage_uri = "gcs://replit-rams-assets-worf/rams/assets/repl:929794db-e72d-4439-9aa2-c5d927c149ce/7c851a4e-98db-439a-9e42-c1a27fc54043/184964c8-98cc-40e8-a21e-06bd2d913f25"
+storage_version_token = "1789674183447579"
+content_type = "video/mp4"
+
+[[outputs]]
+id = "n_-EhpQ9EC4eNtmazk9TX"
+uri = "file://attached_assets/closa/delivery/closa-en-1080p.mp4"
+type = "video"
+title = "Closa — English voice-over"
+description = "Dezelfde 75 seconden beeldmontage, 1080p breedbeeld, met Engelse voice-over. Bevat een optioneel Nederlands ondertitelspoor, standaard uit. MP4-ondertitelondersteuning verschilt per speler; losse SRT/VTT-bestanden zijn ook bijgevoegd."
+logical_id = "770249d7-f497-4e54-8a24-04211990226a"
+content_hash = "sha256:26a01beca2678e21251223515fa77f66b32bef55165fdf6606af44887c320008"
+size = 100655925
+mtime_ms = 1789674136113
+storage_uri = "gcs://replit-rams-assets-worf/rams/assets/repl:929794db-e72d-4439-9aa2-c5d927c149ce/770249d7-f497-4e54-8a24-04211990226a/a223b912-f1ae-4f16-b197-e4617ae12055"
+storage_version_token = "1789674185564874"
+content_type = "video/mp4"
+
+[[outputs]]
+id = "f3nZx2WKZwn_aPYzyU0N_"
+uri = "file://attached_assets/closa/delivery/closa-ondertitels-en-script.zip"
+type = "unspecified"
+title = "Closa — ondertitels en tweetalig script"
+description = "Downloadpakket met Nederlandse SRT- en VTT-ondertiteling voor de Engelse film en het tweetalige script in PDF en HTML, inclusief storyboard, gebruiksinstructies en bronvermelding."
+logical_id = "5f6da4d7-1ea9-4ebd-8625-45183cc412f0"
+content_hash = "sha256:795d863d5504b30f79f1f1f5a0919d45fc4e4274e51a0065be2415e4068b30ea"
+size = 72559
+mtime_ms = 1789674143973
+storage_uri = "gcs://replit-rams-assets-worf/rams/assets/repl:929794db-e72d-4439-9aa2-c5d927c149ce/5f6da4d7-1ea9-4ebd-8625-45183cc412f0/3afdd5a5-f06f-48b3-955b-a7057ac165d6"
+storage_version_token = "1789674186042178"
+content_type = "application/octet-stream"
+
+[[outputs]]
+id = "ePFAb6_cv940q80rt1X30"
+uri = "file://attached_assets/closa/delivery/closa-script-en-toelichting.pdf"
+type = "pdf"
+title = "Closa — script en toelichting"
+description = "Nederlands en Engels script, storyboard en leveringstoelichting. Productfuncties zijn gebaseerd op jouw beschrijving; de Closa-app en officiële huisstijl zijn nog niet gecontroleerd."
+logical_id = "0d4ac927-4215-49fc-837c-d0caf85c885f"
+content_hash = "sha256:a6ecd90bd6f12361063009817074e997e758b87ef6a3d2e334c2b531b603a569"
+size = 101603
+mtime_ms = 1789673311800
+storage_uri = "gcs://replit-rams-assets-worf/rams/assets/repl:929794db-e72d-4439-9aa2-c5d927c149ce/0d4ac927-4215-49fc-837c-d0caf85c885f/98ed201f-5401-446e-885a-b2e178e0590d"
+storage_version_token = "1789674186547984"
+content_type = "application/pdf"

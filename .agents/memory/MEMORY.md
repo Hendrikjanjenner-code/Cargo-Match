@@ -6,3 +6,4 @@
 - [Discovery versus matching](discovery-vs-matching.md) — independent discovery still needs every publication guard; do not expose a pair merely because it was loaded.
 - [Road operational authority](road-authority-boundary.md) — driver evidence can improve an estimate without authorizing capacity publication, disclosure, or consent.
 - [Form contract verification](form-contract-verification.md) — test actual form serialization; valid hand-written API fixtures can miss broken create/edit payloads.
+- [Media dispatch limits](media-generation-limits.md) — bound audio-generation batches and retain successful jobs when retrying transient failures.

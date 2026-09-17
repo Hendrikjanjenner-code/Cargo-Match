@@ -50,3 +50,4 @@ Thumbs.db
 
 # Reproducible intermediate media renders (delivery/source assets remain tracked)
 /media/closa/build/
+/media/closa/build-screens/

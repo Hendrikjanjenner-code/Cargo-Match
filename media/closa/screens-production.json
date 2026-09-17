@@ -1,0 +1,130 @@
+{
+  "title": "Closa — vastgoed en vertrouwen",
+  "version": "screens",
+  "duration": 75,
+  "width": 1920,
+  "height": 1080,
+  "fps": 24,
+  "shotDuration": 7.5,
+  "sourceStatus": "The application screenshots and logo are user-supplied. They have not been independently verified as the current application or as evidence of actual application behavior. Presentation copies obscure signed-in account identity/contact; the dashboard copy also obscures its greeting, metric values and recent activity. Screenshot originals remain intact. People and property footage are AI-generated; narration and music are AI-generated.",
+  "audio": {
+    "directory": "attached_assets/closa/screens-source/audio",
+    "music": "music.mp3",
+    "reused": {
+      "01": "Original narration 01",
+      "06": "Original narration 05, remapped to Secure Data Room",
+      "09": "Original narration 09",
+      "10": "Original narration 10"
+    },
+    "generatedVoiceIds": {
+      "nl": "dLPO5AsXc3FZDbTh1IKa",
+      "en": "onwK4e9ZLuTAKqWW03F9"
+    },
+    "generatedSlots": ["02", "03", "04", "05", "07", "08"],
+    "correctedAndRegeneratedSlots": ["02", "03", "07"]
+  },
+  "narration": [
+    {
+      "nl": "Bij vastgoed draait alles om vertrouwen. Toch kan het delen van informatie voelen als een risico.",
+      "en": "Real estate depends on trust. Yet sharing information can feel like taking a risk."
+    },
+    {
+      "nl": "Closa brengt jouw vastgoedwerk samen. Van het startscherm naar je eigen dashboard.",
+      "en": "Closa brings your real estate work together. From the homepage to your own dashboard."
+    },
+    {
+      "nl": "Met je profiel ben je zichtbaar. In Professionals vind je makelaars en hun expertise.",
+      "en": "Your profile makes you visible. In Professionals, find agents and their expertise."
+    },
+    {
+      "nl": "In de Deal Directory zoek je listings per land en stad, en vind je relevant aanbod.",
+      "en": "In the Deal Directory, search listings by country and city to find relevant opportunities."
+    },
+    {
+      "nl": "Op een dealpagina blijft vertrouwelijke informatie afgeschermd tot toegang is verleend.",
+      "en": "On a deal page, confidential information stays protected until access is granted."
+    },
+    {
+      "nl": "Vertrouwelijke informatie krijgt een plek in je persoonlijke, beveiligde kluis.",
+      "en": "Confidential information has a place in your personal, secure vault."
+    },
+    {
+      "nl": "Bekijk je documenten in AI Document Intelligence, met opties voor beoordeling door professionals.",
+      "en": "View your documents in AI Document Intelligence, with options for review by professionals."
+    },
+    {
+      "nl": "Met Acquisition Mandates leg je zoekvereisten vast voor een gerichte kopersmatch.",
+      "en": "Acquisition Mandates capture search requirements for a more focused buyer match."
+    },
+    {
+      "nl": "Closa is er voor makelaars die informatie willen delen en samenwerken, met vertrouwen als uitgangspunt.",
+      "en": "Closa is for agents who want to share information and work together, with trust as their starting point."
+    },
+    {
+      "nl": "Ontdek Closa. Plan een demo.",
+      "en": "Discover Closa. Book a demo."
+    }
+  ],
+  "scenes": [
+    {
+      "scene": 1,
+      "time": "00:00.0–00:07.5",
+      "visual": "Original film shot 01: an AI-generated professional considers trust and information risk.",
+      "sources": ["attached_assets/closa/source/shot-01.mp4"]
+    },
+    {
+      "scene": 2,
+      "time": "00:07.5–00:15.0",
+      "visual": "A professional at a laptop; the camera approaches the real screen. User-supplied homepage for 3.5 seconds, followed by the dashboard for 4 seconds, both composited within the laptop display.",
+      "sources": ["attached_assets/closa/screens-source/screens/08.png", "attached_assets/closa/screens-source/screens/05.png"]
+    },
+    {
+      "scene": 3,
+      "time": "00:15.0–00:22.5",
+      "visual": "AI-generated professional followed by a physical camera approach to the laptop and a readable Professionals directory OVERVIEW. No individual profile or My Profile screen is opened.",
+      "sources": ["attached_assets/closa/screens-source/screens/04.png"]
+    },
+    {
+      "scene": 4,
+      "time": "00:22.5–00:30.0",
+      "visual": "AI-generated broker followed by a physical camera approach to the laptop and a readable Deal Directory/listings overview.",
+      "sources": ["attached_assets/closa/screens-source/screens/01.png"]
+    },
+    {
+      "scene": 5,
+      "time": "00:30.0–00:37.5",
+      "visual": "Confidential deal detail and access state.",
+      "sources": ["attached_assets/closa/screens-source/screens/02.png"]
+    },
+    {
+      "scene": 6,
+      "time": "00:37.5–00:45.0",
+      "visual": "AI-generated adviser followed by a physical camera approach to the laptop and a readable Secure Data Room/kluis with its visible access state.",
+      "sources": ["attached_assets/closa/screens-source/screens/06.png"]
+    },
+    {
+      "scene": 7,
+      "time": "00:45.0–00:52.5",
+      "visual": "AI Document Intelligence with empty findings, showing documents and options for review by professionals; no assertion that findings already exist and no automatic legal-advice claim.",
+      "sources": ["attached_assets/closa/screens-source/screens/07.png"]
+    },
+    {
+      "scene": 8,
+      "time": "00:52.5–01:00.0",
+      "visual": "Acquisition Mandates and buyer search requirements.",
+      "sources": ["attached_assets/closa/screens-source/screens/03.png"]
+    },
+    {
+      "scene": 9,
+      "time": "01:00.0–01:07.5",
+      "visual": "Retained original film shot 08: two AI-generated professionals together in a luxury apartment.",
+      "sources": ["attached_assets/closa/source/shot-08.mp4"]
+    },
+    {
+      "scene": 10,
+      "time": "01:07.5–01:15.0",
+      "visual": "User-supplied Explore Closa screen for 4 seconds, followed by an AI-generated luxury apartment and the supplied logo for 3.5 seconds.",
+      "sources": ["attached_assets/closa/screens-source/screens/09.png", "attached_assets/closa/screens-source/logo.png"]
+    }
+  ]
+}

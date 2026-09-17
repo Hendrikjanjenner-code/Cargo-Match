@@ -1,0 +1,216 @@
+{
+  "source": "Nine screenshots supplied by the user; no live application inspection",
+  "palette": {
+    "background": "#0B0D0E",
+    "accent": "#16A883",
+    "text": "#F5F5F1"
+  },
+  "logo": "Original raster crop from screenshot 08, not a redrawn logo",
+  "screens": [
+    {
+      "id": 1,
+      "title": "Deal Directory",
+      "archive": "WhatsApp_Unknown_2026-09-17_at_21.49.55_1789674629714.zip",
+      "member": "WhatsApp Image 2026-09-17 at 20.56.51.jpeg",
+      "original": "attached_assets/closa/screens-source/originals/01.jpg",
+      "presentation": "attached_assets/closa/screens-source/screens/01.png",
+      "width": 1600,
+      "height": 792,
+      "originalSha256": "d4d183fb0a6b064308f394e6600796a7467590089f878848ae673fbd6c4d8605",
+      "redactions": [
+        {
+          "box": [
+            0,
+            618,
+            267,
+            792
+          ],
+          "reason": "Signed-in account identity/contact"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "title": "Confidential Opportunity",
+      "archive": "WhatsApp_Unknown_2026-09-17_at_21.49.55_1789674629714.zip",
+      "member": "WhatsApp Image 2026-09-17 at 20.56.52.jpeg",
+      "original": "attached_assets/closa/screens-source/originals/02.jpg",
+      "presentation": "attached_assets/closa/screens-source/screens/02.png",
+      "width": 1600,
+      "height": 839,
+      "originalSha256": "06f7fa97d20f735ad251608bae3a9d65c948f2e1a41cf05c69aba7699ceb5fff",
+      "redactions": [
+        {
+          "box": [
+            0,
+            654,
+            267,
+            839
+          ],
+          "reason": "Signed-in account identity/contact"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "title": "Acquisition Mandates",
+      "archive": "WhatsApp_Unknown_2026-09-17_at_21.49.55_1789674629714.zip",
+      "member": "WhatsApp Image 2026-09-17 at 20.56.53.jpeg",
+      "original": "attached_assets/closa/screens-source/originals/03.jpg",
+      "presentation": "attached_assets/closa/screens-source/screens/03.png",
+      "width": 1600,
+      "height": 825,
+      "originalSha256": "481ef4e1e70878aa5e0ac9fb45e49ee0eaeba1fe31bc7cecd4a4c31a0b09d2e0",
+      "redactions": [
+        {
+          "box": [
+            0,
+            644,
+            267,
+            825
+          ],
+          "reason": "Signed-in account identity/contact"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "title": "Professionals",
+      "archive": "WhatsApp_Unknown_2026-09-17_at_21.49.55_1789674629714.zip",
+      "member": "WhatsApp Image 2026-09-17 at 20.56.53 (1).jpeg",
+      "original": "attached_assets/closa/screens-source/originals/04.jpg",
+      "presentation": "attached_assets/closa/screens-source/screens/04.png",
+      "width": 1600,
+      "height": 788,
+      "originalSha256": "e2caba76d2c1f8b05099ddb2861e8176fb9a2a229f066c56d1212f30352c987f",
+      "redactions": [
+        {
+          "box": [
+            0,
+            615,
+            267,
+            788
+          ],
+          "reason": "Signed-in account identity/contact"
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "title": "Dashboard",
+      "archive": "WhatsApp_Unknown_2026-09-17_at_21.49.55_1789674629714.zip",
+      "member": "WhatsApp Image 2026-09-17 at 20.56.54.jpeg",
+      "original": "attached_assets/closa/screens-source/originals/05.jpg",
+      "presentation": "attached_assets/closa/screens-source/screens/05.png",
+      "width": 1600,
+      "height": 834,
+      "originalSha256": "27032ccfd5a8cfe5e267bb31e7b913533e0d4a9d86b5c04a2d992d764c6edece",
+      "redactions": [
+        {
+          "box": [
+            0,
+            651,
+            267,
+            834
+          ],
+          "reason": "Signed-in account identity/contact"
+        },
+        {
+          "box": [
+            294,
+            92,
+            624,
+            125
+          ],
+          "reason": "Personal dashboard greeting"
+        },
+        {
+          "box": [
+            302,
+            208,
+            1584,
+            252
+          ],
+          "reason": "Private account metric values"
+        },
+        {
+          "box": [
+            1205,
+            510,
+            1589,
+            834
+          ],
+          "reason": "Named recent account activity"
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "title": "Secure Data Room",
+      "archive": "WhatsApp_Unknown_2026-09-17_at_21.49.58_1789674629713.zip",
+      "member": "WhatsApp Image 2026-09-17 at 20.56.55.jpeg",
+      "original": "attached_assets/closa/screens-source/originals/06.jpg",
+      "presentation": "attached_assets/closa/screens-source/screens/06.png",
+      "width": 1600,
+      "height": 831,
+      "originalSha256": "a72741fe4ad308bca178012a240a03e5c597364bb9d9c61f442b93659a19df3f",
+      "redactions": [
+        {
+          "box": [
+            0,
+            648,
+            267,
+            831
+          ],
+          "reason": "Signed-in account identity/contact"
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "title": "AI Document Intelligence",
+      "archive": "WhatsApp_Unknown_2026-09-17_at_21.49.58_1789674629713.zip",
+      "member": "WhatsApp Image 2026-09-17 at 20.56.55 (1).jpeg",
+      "original": "attached_assets/closa/screens-source/originals/07.jpg",
+      "presentation": "attached_assets/closa/screens-source/screens/07.png",
+      "width": 1600,
+      "height": 841,
+      "originalSha256": "ed120e3bcbe6ddc04e05d13487c8b472a8895b6e9e24044ecac3f4307dbd93d1",
+      "redactions": [
+        {
+          "box": [
+            0,
+            656,
+            267,
+            841
+          ],
+          "reason": "Signed-in account identity/contact"
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "title": "Homepage",
+      "archive": "WhatsApp_Unknown_2026-09-17_at_21.49.58_1789674629713.zip",
+      "member": "WhatsApp Image 2026-09-17 at 20.56.56.jpeg",
+      "original": "attached_assets/closa/screens-source/originals/08.jpg",
+      "presentation": "attached_assets/closa/screens-source/screens/08.png",
+      "width": 1600,
+      "height": 808,
+      "originalSha256": "882c9ba052e287ceb3865293384678eec2e053d7dcb77664489f25c55aeae51a",
+      "redactions": []
+    },
+    {
+      "id": 9,
+      "title": "Explore Closa",
+      "archive": "WhatsApp_Unknown_2026-09-17_at_21.49.58_1789674629713.zip",
+      "member": "WhatsApp Image 2026-09-17 at 20.56.56 (1).jpeg",
+      "original": "attached_assets/closa/screens-source/originals/09.jpg",
+      "presentation": "attached_assets/closa/screens-source/screens/09.png",
+      "width": 1600,
+      "height": 798,
+      "originalSha256": "d759932d97ec604b15943da98db95cf1c6b4c5c38046f700d3818ecfad998891",
+      "redactions": []
+    }
+  ]
+}

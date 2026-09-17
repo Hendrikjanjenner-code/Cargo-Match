@@ -224,3 +224,203 @@ mtime_ms = 1789673311800
 storage_uri = "gcs://replit-rams-assets-worf/rams/assets/repl:929794db-e72d-4439-9aa2-c5d927c149ce/0d4ac927-4215-49fc-837c-d0caf85c885f/98ed201f-5401-446e-885a-b2e178e0590d"
 storage_version_token = "1789674186547984"
 content_type = "application/pdf"
+
+[[outputs]]
+id = "90mNnyJU8GBpJVzmCqtXc"
+uri = "file://attached_assets/closa/screens-source/audio/voice-nl-04.mp3"
+type = "audio"
+title = "Closa NL scene 4"
+description = "Text-to-speech audio: In de Deal Directory zoek je listings per land en stad, en vind je relevant aanbod."
+logical_id = "9ac621cb-fbbc-4a0c-a65c-a6a89e5a8396"
+
+[[outputs]]
+id = "Ey8j7HEPViN66dB_s6pt4"
+uri = "file://attached_assets/closa/screens-source/audio/voice-nl-05.mp3"
+type = "audio"
+title = "Closa NL scene 5"
+description = "Text-to-speech audio: Op een dealpagina blijft vertrouwelijke informatie afgeschermd tot toegang is verleend."
+logical_id = "404ea171-fcc4-448a-b425-36856e2c197b"
+
+[[outputs]]
+id = "N8TTnroRZ1ZiEfU6ZoN3-"
+uri = "file://attached_assets/closa/screens-source/audio/voice-nl-03.mp3"
+type = "audio"
+title = "Closa NL scene 3"
+description = "Text-to-speech audio: Op het Professionals-profiel zie je in één overzicht wie er achter het aanbod staat."
+logical_id = "fcf84483-3860-4888-b86a-f220718d4c18"
+
+[[outputs]]
+id = "CvxT8Q4ltKb0FXzl4yXrR"
+uri = "file://attached_assets/closa/screens-source/audio/voice-nl-02.mp3"
+type = "audio"
+title = "Closa NL scene 2"
+description = "Text-to-speech audio: Vanuit het overzicht ga je rechtstreeks naar je dashboard, met je vastgoedwerk op één plek."
+logical_id = "a6977572-1b9e-4176-8f3f-8c56422592ec"
+
+[[outputs]]
+id = "t3hgH_VquYBvnmNsBoM75"
+uri = "file://attached_assets/closa/screens-source/audio/voice-nl-08.mp3"
+type = "audio"
+title = "Closa NL scene 8"
+description = "Text-to-speech audio: Met Acquisition Mandates leg je zoekvereisten vast voor een gerichte kopersmatch."
+logical_id = "64d3f53f-7f0b-4fc1-b7b6-f63f614d9680"
+
+[[outputs]]
+id = "Kr_LkylYyfeAMXiWVVDYZ"
+uri = "file://attached_assets/closa/screens-source/audio/voice-en-03.mp3"
+type = "audio"
+title = "Closa EN scene 3"
+description = "Text-to-speech audio: A Professionals profile shows, at a glance, who stands behind each opportunity."
+logical_id = "f8273f98-5752-4ca7-b353-0d91e1601b6c"
+
+[[outputs]]
+id = "IlmEvPWSWVoB0uBXZb2M5"
+uri = "file://attached_assets/closa/screens-source/audio/voice-en-02.mp3"
+type = "audio"
+title = "Closa EN scene 2"
+description = "Text-to-speech audio: From the homepage, move straight to your dashboard, with your real estate work in one place."
+logical_id = "d4fcf609-024f-4a3b-8ed9-ac815fd0c6be"
+
+[[outputs]]
+id = "ujI554ZJnbU01f7h_jMYE"
+uri = "file://attached_assets/closa/screens-source/audio/voice-nl-07.mp3"
+type = "audio"
+title = "Closa NL scene 7"
+description = "Text-to-speech audio: AI Document Intelligence ordent documentbevindingen voor overzicht en professionele beoordeling."
+logical_id = "f280ea7a-5e8d-46be-bdd0-266715afbe92"
+
+[[outputs]]
+id = "hNQ6-NrXxNUdm_cO8XzEZ"
+uri = "file://attached_assets/closa/screens-source/audio/voice-en-05.mp3"
+type = "audio"
+title = "Closa EN scene 5"
+description = "Text-to-speech audio: On a deal page, confidential information stays protected until access is granted."
+logical_id = "7dd64c4e-0b0f-4f40-9785-a1f54501b5ab"
+
+[[outputs]]
+id = "DYbyWvvvh5HZ9b9Hkaff2"
+uri = "file://attached_assets/closa/screens-source/audio/voice-en-04.mp3"
+type = "audio"
+title = "Closa EN scene 4"
+description = "Text-to-speech audio: In the Deal Directory, search listings by country and city to find relevant opportunities."
+logical_id = "90fd6af6-8c1a-4084-93b0-327b3724203d"
+
+[[outputs]]
+id = "XVeTzJjGkk8frNo6BtekT"
+uri = "file://attached_assets/closa/screens-source/audio/voice-en-07.mp3"
+type = "audio"
+title = "Closa EN scene 7"
+description = "Text-to-speech audio: AI Document Intelligence organizes document findings for overview and professional review."
+logical_id = "2d6997e0-6343-4962-9596-b13595f44404"
+
+[[outputs]]
+id = "U-oEqOBqAF-KDcfX3DbGs"
+uri = "file://attached_assets/closa/screens-source/audio/voice-en-08.mp3"
+type = "audio"
+title = "Closa EN scene 8"
+description = "Text-to-speech audio: Acquisition Mandates capture search requirements for a more focused buyer match."
+logical_id = "3914db4f-f496-447f-be78-900045dd4e14"
+
+[[outputs]]
+id = "wH4oWqO21AfB8yXd8HcIn"
+uri = "file://attached_assets/closa/screens-source/audio/voice-nl-07_2.mp3"
+type = "audio"
+title = "Closa NL scene 7 corrected"
+description = "Text-to-speech audio: Bekijk je documenten in AI Document Intelligence, met opties voor beoordeling door professionals."
+logical_id = "693f3e5c-bc66-4b26-8289-8d0859fdd2e1"
+
+[[outputs]]
+id = "5gRoJmCvdWpgYLA4Rngi0"
+uri = "file://attached_assets/closa/screens-source/audio/voice-nl-03_2.mp3"
+type = "audio"
+title = "Closa NL scene 3 corrected"
+description = "Text-to-speech audio: Met je profiel ben je zichtbaar. In Professionals vind je makelaars en hun expertise."
+logical_id = "d0aaa3cf-36fd-45f0-bfac-7dc778166f12"
+
+[[outputs]]
+id = "173Sp196KVl5kWoAtIH8Y"
+uri = "file://attached_assets/closa/screens-source/audio/voice-en-03_2.mp3"
+type = "audio"
+title = "Closa EN scene 3 corrected"
+description = "Text-to-speech audio: Your profile makes you visible. In Professionals, find agents and their expertise."
+logical_id = "ab142a3b-5dc4-4db5-b8c7-38ed4838cf2a"
+
+[[outputs]]
+id = "xvcx4rdGzKh65lF2q1by8"
+uri = "file://attached_assets/closa/screens-source/audio/voice-en-07_2.mp3"
+type = "audio"
+title = "Closa EN scene 7 corrected"
+description = "Text-to-speech audio: View your documents in AI Document Intelligence, with options for review by professionals."
+logical_id = "38c076ea-c0ce-4124-a61c-b7578ce1f972"
+
+[[outputs]]
+id = "YCvTAorMDMowlQPn_9aEv"
+uri = "file://attached_assets/closa/screens-source/audio/voice-nl-02_2.mp3"
+type = "audio"
+title = "Closa NL scene 2 refined"
+description = "Text-to-speech audio: Closa brengt jouw vastgoedwerk samen. Van het startscherm naar je eigen dashboard."
+logical_id = "59fadb80-1cc8-4433-a197-0c5cdd7cf396"
+
+[[outputs]]
+id = "hGLjx4STVAd4ir_6iOFuw"
+uri = "file://attached_assets/closa/screens-source/audio/voice-en-02_2.mp3"
+type = "audio"
+title = "Closa EN scene 2 refined"
+description = "Text-to-speech audio: Closa brings your real estate work together. From the homepage to your own dashboard."
+logical_id = "f8ae53c6-9df7-423e-8545-8164bb3e2b31"
+
+[[outputs]]
+id = "rXx3dgybhkmv78RZCHTbt"
+uri = "file://attached_assets/closa/delivery/screens/closa-nl-1080p.mp4"
+type = "video"
+title = "Closa — Nederlandse film"
+description = "Vernieuwde film met alle negen Closa-schermen en het aangeleverde logo. 75 seconden, 1920×1080."
+logical_id = "064f10eb-ee03-485f-841a-062a9af38bae"
+content_hash = "sha256:6eba138d985cdb59ec37f453fa5208b7a9dec28a58a955972da3fdcd3cf5774e"
+size = 61699914
+mtime_ms = 1789676029513
+storage_uri = "gcs://replit-rams-assets-worf/rams/assets/repl:929794db-e72d-4439-9aa2-c5d927c149ce/064f10eb-ee03-485f-841a-062a9af38bae/e5e0b0dc-15f6-4312-aa06-78592a49644c"
+storage_version_token = "1789676381983186"
+content_type = "video/mp4"
+
+[[outputs]]
+id = "hBALzca5IQQxRMMeVJsEW"
+uri = "file://attached_assets/closa/delivery/screens/closa-en-1080p.mp4"
+type = "video"
+title = "Closa — English film"
+description = "Dezelfde nieuwe beeldmontage met Engelse voice-over en optionele Nederlandse ondertiteling. 75 seconden, 1920×1080."
+logical_id = "892025ea-6700-4387-b645-6ed4bd4bd359"
+content_hash = "sha256:96c10de4ebe9abbfc5969983a84d49dba80668d797af70f9764f9fbac713e8bf"
+size = 61705663
+mtime_ms = 1789676035401
+storage_uri = "gcs://replit-rams-assets-worf/rams/assets/repl:929794db-e72d-4439-9aa2-c5d927c149ce/892025ea-6700-4387-b645-6ed4bd4bd359/f41974ae-3b28-4e37-840d-876d1952c00a"
+storage_version_token = "1789676389233782"
+content_type = "video/mp4"
+
+[[outputs]]
+id = "7_HJxIW4BoKA6EqIw2GCD"
+uri = "file://attached_assets/closa/delivery/screens/closa-script-en-toelichting.pdf"
+type = "pdf"
+title = "Closa — tweetalig script en storyboard"
+description = "Scène-indeling, Nederlandse en Engelse teksten, alle negen schermen en toelichting op de bronbeelden."
+logical_id = "0ba9f1a6-c22d-47cd-a0c8-36ec497a5fa2"
+content_hash = "sha256:9357df36701b5fc124d1e9aa0f67691d27f5764c175d75644cd63703181d3dcf"
+size = 4437280
+mtime_ms = 1789676324905
+storage_uri = "gcs://replit-rams-assets-worf/rams/assets/repl:929794db-e72d-4439-9aa2-c5d927c149ce/0ba9f1a6-c22d-47cd-a0c8-36ec497a5fa2/60158f20-35d9-4680-801e-148032d0d3f3"
+storage_version_token = "1789676390369274"
+content_type = "application/pdf"
+
+[[outputs]]
+id = "pwAfAO8komukTXqM4zfiV"
+uri = "file://attached_assets/closa/delivery/screens/closa-ondertitels-en-script.zip"
+type = "unspecified"
+title = "Closa — ondertitels en script downloaden"
+description = "ZIP met Nederlandse SRT- en WebVTT-ondertitels plus het tweetalige script/storyboard als PDF en HTML."
+logical_id = "a0b8d600-6fa2-4bdd-8f7f-5ad5ed818eae"
+content_hash = "sha256:c772ef497cba3f471416dfe0632abada8a3e451327522c2cbc7c3db987f3ced3"
+size = 8338296
+mtime_ms = 1789676325529
+storage_uri = "gcs://replit-rams-assets-worf/rams/assets/repl:929794db-e72d-4439-9aa2-c5d927c149ce/a0b8d600-6fa2-4bdd-8f7f-5ad5ed818eae/b076ad9f-5b8d-4323-a877-87e10f71097b"
+storage_version_token = "1789676391722347"
+content_type = "application/octet-stream"

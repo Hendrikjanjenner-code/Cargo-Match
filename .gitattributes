@@ -1,2 +1,4 @@
 attached_assets/closa/delivery/closa-en-1080p.mp4 filter=lfs diff=lfs merge=lfs -text
 attached_assets/closa/delivery/closa-nl-1080p.mp4 filter=lfs diff=lfs merge=lfs -text
+attached_assets/closa/delivery/screens/closa-en-1080p.mp4 filter=lfs diff=lfs merge=lfs -text
+attached_assets/closa/delivery/screens/closa-nl-1080p.mp4 filter=lfs diff=lfs merge=lfs -text

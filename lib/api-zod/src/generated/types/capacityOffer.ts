@@ -19,7 +19,7 @@ export interface CapacityOffer {
   id: string;
   companyId: string;
   transportMode: TransportMode;
-  vesselId: string;
+  vesselId: string | null;
   locationId: string;
   availableFrom: Date;
   availableUntil: Date;

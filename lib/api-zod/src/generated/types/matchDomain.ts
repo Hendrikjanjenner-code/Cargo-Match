@@ -15,4 +15,5 @@ export type MatchDomain = typeof MatchDomain[keyof typeof MatchDomain];
 export const MatchDomain = {
   MARKETPLACE: 'MARKETPLACE',
   LINER: 'LINER',
+  ROAD: 'ROAD',
 } as const;

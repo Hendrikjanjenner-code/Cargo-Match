@@ -224,6 +224,1350 @@ export const UpdateMyCompanyResponse = zod.object({
 
 
 /**
+ * @summary List road assets owned by the current company
+ */
+export const listRoadAssetsQueryPageDefault = 1;
+
+export const listRoadAssetsQueryPageSizeDefault = 25;
+export const listRoadAssetsQueryPageSizeMax = 100;
+
+export const listRoadAssetsQueryActiveOnlyDefault = false;
+
+export const ListRoadAssetsQueryParams = zod.object({
+  "page": zod.coerce.number().int().min(1).default(listRoadAssetsQueryPageDefault),
+  "pageSize": zod.coerce.number().int().min(1).max(listRoadAssetsQueryPageSizeMax).default(listRoadAssetsQueryPageSizeDefault),
+  "activeOnly": zod.coerce.boolean().default(listRoadAssetsQueryActiveOnlyDefault)
+})
+
+
+export const listRoadAssetsResponseItemsItemPayloadTonnesExclusiveMin = 0;
+
+export const listRoadAssetsResponseItemsItemVolumeCubicMetresExclusiveMin = 0;
+
+export const listRoadAssetsResponseItemsItemLoadingMetresExclusiveMin = 0;
+
+export const listRoadAssetsResponseItemsItemPalletPositionsExclusiveMin = 0;
+
+
+
+export const ListRoadAssetsResponse = zod.object({
+  "items": zod.array(zod.object({
+  "id": zod.string().uuid(),
+  "companyId": zod.string().uuid(),
+  "assetType": zod.enum(['TRUCK', 'TRACTOR', 'TRAILER', 'TRUCK_TRAILER_COMBINATION']),
+  "assetName": zod.string().min(1),
+  "registrationReference": zod.string().nullish(),
+  "payloadTonnes": zod.number().gt(listRoadAssetsResponseItemsItemPayloadTonnesExclusiveMin),
+  "volumeCubicMetres": zod.number().gt(listRoadAssetsResponseItemsItemVolumeCubicMetresExclusiveMin),
+  "loadingMetres": zod.number().gt(listRoadAssetsResponseItemsItemLoadingMetresExclusiveMin),
+  "palletPositions": zod.number().int().gt(listRoadAssetsResponseItemsItemPalletPositionsExclusiveMin),
+  "trailerType": zod.string().nullish(),
+  "equipment": zod.array(zod.string()),
+  "temperatureMinCelsius": zod.number().nullish(),
+  "temperatureMaxCelsius": zod.number().nullish(),
+  "adrClasses": zod.array(zod.string()),
+  "notes": zod.string().nullish(),
+  "active": zod.boolean(),
+  "createdAt": zod.coerce.date(),
+  "updatedAt": zod.coerce.date()
+})),
+  "page": zod.number().int(),
+  "pageSize": zod.number().int(),
+  "total": zod.number().int()
+})
+
+
+/**
+ * @summary Register a real road asset
+ */
+
+export const createRoadAssetBodyPayloadTonnesExclusiveMin = 0;
+
+export const createRoadAssetBodyVolumeCubicMetresExclusiveMin = 0;
+
+export const createRoadAssetBodyLoadingMetresExclusiveMin = 0;
+
+export const createRoadAssetBodyPalletPositionsExclusiveMin = 0;
+
+export const createRoadAssetBodyActiveDefault = true;
+
+export const CreateRoadAssetBody = zod.object({
+  "assetType": zod.enum(['TRUCK', 'TRACTOR', 'TRAILER', 'TRUCK_TRAILER_COMBINATION']),
+  "assetName": zod.string().min(1),
+  "registrationReference": zod.string().optional(),
+  "payloadTonnes": zod.number().gt(createRoadAssetBodyPayloadTonnesExclusiveMin),
+  "volumeCubicMetres": zod.number().gt(createRoadAssetBodyVolumeCubicMetresExclusiveMin),
+  "loadingMetres": zod.number().gt(createRoadAssetBodyLoadingMetresExclusiveMin),
+  "palletPositions": zod.number().int().gt(createRoadAssetBodyPalletPositionsExclusiveMin),
+  "trailerType": zod.string().optional(),
+  "equipment": zod.array(zod.string()).optional(),
+  "temperatureMinCelsius": zod.number().optional(),
+  "temperatureMaxCelsius": zod.number().optional(),
+  "adrClasses": zod.array(zod.string()).optional(),
+  "notes": zod.string().optional(),
+  "active": zod.boolean().default(createRoadAssetBodyActiveDefault)
+})
+
+
+export const createRoadAssetResponsePayloadTonnesExclusiveMin = 0;
+
+export const createRoadAssetResponseVolumeCubicMetresExclusiveMin = 0;
+
+export const createRoadAssetResponseLoadingMetresExclusiveMin = 0;
+
+export const createRoadAssetResponsePalletPositionsExclusiveMin = 0;
+
+
+
+export const CreateRoadAssetResponse = zod.object({
+  "id": zod.string().uuid(),
+  "companyId": zod.string().uuid(),
+  "assetType": zod.enum(['TRUCK', 'TRACTOR', 'TRAILER', 'TRUCK_TRAILER_COMBINATION']),
+  "assetName": zod.string().min(1),
+  "registrationReference": zod.string().nullish(),
+  "payloadTonnes": zod.number().gt(createRoadAssetResponsePayloadTonnesExclusiveMin),
+  "volumeCubicMetres": zod.number().gt(createRoadAssetResponseVolumeCubicMetresExclusiveMin),
+  "loadingMetres": zod.number().gt(createRoadAssetResponseLoadingMetresExclusiveMin),
+  "palletPositions": zod.number().int().gt(createRoadAssetResponsePalletPositionsExclusiveMin),
+  "trailerType": zod.string().nullish(),
+  "equipment": zod.array(zod.string()),
+  "temperatureMinCelsius": zod.number().nullish(),
+  "temperatureMaxCelsius": zod.number().nullish(),
+  "adrClasses": zod.array(zod.string()),
+  "notes": zod.string().nullish(),
+  "active": zod.boolean(),
+  "createdAt": zod.coerce.date(),
+  "updatedAt": zod.coerce.date()
+})
+
+
+/**
+ * @summary Get a road asset
+ */
+export const GetRoadAssetParams = zod.object({
+  "roadAssetId": zod.coerce.string().uuid()
+})
+
+
+export const getRoadAssetResponsePayloadTonnesExclusiveMin = 0;
+
+export const getRoadAssetResponseVolumeCubicMetresExclusiveMin = 0;
+
+export const getRoadAssetResponseLoadingMetresExclusiveMin = 0;
+
+export const getRoadAssetResponsePalletPositionsExclusiveMin = 0;
+
+
+
+export const GetRoadAssetResponse = zod.object({
+  "id": zod.string().uuid(),
+  "companyId": zod.string().uuid(),
+  "assetType": zod.enum(['TRUCK', 'TRACTOR', 'TRAILER', 'TRUCK_TRAILER_COMBINATION']),
+  "assetName": zod.string().min(1),
+  "registrationReference": zod.string().nullish(),
+  "payloadTonnes": zod.number().gt(getRoadAssetResponsePayloadTonnesExclusiveMin),
+  "volumeCubicMetres": zod.number().gt(getRoadAssetResponseVolumeCubicMetresExclusiveMin),
+  "loadingMetres": zod.number().gt(getRoadAssetResponseLoadingMetresExclusiveMin),
+  "palletPositions": zod.number().int().gt(getRoadAssetResponsePalletPositionsExclusiveMin),
+  "trailerType": zod.string().nullish(),
+  "equipment": zod.array(zod.string()),
+  "temperatureMinCelsius": zod.number().nullish(),
+  "temperatureMaxCelsius": zod.number().nullish(),
+  "adrClasses": zod.array(zod.string()),
+  "notes": zod.string().nullish(),
+  "active": zod.boolean(),
+  "createdAt": zod.coerce.date(),
+  "updatedAt": zod.coerce.date()
+})
+
+
+/**
+ * @summary Update a road asset
+ */
+export const UpdateRoadAssetParams = zod.object({
+  "roadAssetId": zod.coerce.string().uuid()
+})
+
+
+export const updateRoadAssetBodyPayloadTonnesExclusiveMin = 0;
+
+export const updateRoadAssetBodyVolumeCubicMetresExclusiveMin = 0;
+
+export const updateRoadAssetBodyLoadingMetresExclusiveMin = 0;
+
+export const updateRoadAssetBodyPalletPositionsExclusiveMin = 0;
+
+
+
+export const UpdateRoadAssetBody = zod.object({
+  "assetType": zod.enum(['TRUCK', 'TRACTOR', 'TRAILER', 'TRUCK_TRAILER_COMBINATION']).optional(),
+  "assetName": zod.string().min(1).optional(),
+  "registrationReference": zod.string().nullish(),
+  "payloadTonnes": zod.number().gt(updateRoadAssetBodyPayloadTonnesExclusiveMin).optional(),
+  "volumeCubicMetres": zod.number().gt(updateRoadAssetBodyVolumeCubicMetresExclusiveMin).optional(),
+  "loadingMetres": zod.number().gt(updateRoadAssetBodyLoadingMetresExclusiveMin).optional(),
+  "palletPositions": zod.number().int().gt(updateRoadAssetBodyPalletPositionsExclusiveMin).optional(),
+  "trailerType": zod.string().nullish(),
+  "equipment": zod.array(zod.string()).optional(),
+  "temperatureMinCelsius": zod.number().nullish(),
+  "temperatureMaxCelsius": zod.number().nullish(),
+  "adrClasses": zod.array(zod.string()).optional(),
+  "notes": zod.string().nullish(),
+  "active": zod.boolean().optional()
+}).describe('Partial road asset update; omitted properties are retained.')
+
+
+export const updateRoadAssetResponsePayloadTonnesExclusiveMin = 0;
+
+export const updateRoadAssetResponseVolumeCubicMetresExclusiveMin = 0;
+
+export const updateRoadAssetResponseLoadingMetresExclusiveMin = 0;
+
+export const updateRoadAssetResponsePalletPositionsExclusiveMin = 0;
+
+
+
+export const UpdateRoadAssetResponse = zod.object({
+  "id": zod.string().uuid(),
+  "companyId": zod.string().uuid(),
+  "assetType": zod.enum(['TRUCK', 'TRACTOR', 'TRAILER', 'TRUCK_TRAILER_COMBINATION']),
+  "assetName": zod.string().min(1),
+  "registrationReference": zod.string().nullish(),
+  "payloadTonnes": zod.number().gt(updateRoadAssetResponsePayloadTonnesExclusiveMin),
+  "volumeCubicMetres": zod.number().gt(updateRoadAssetResponseVolumeCubicMetresExclusiveMin),
+  "loadingMetres": zod.number().gt(updateRoadAssetResponseLoadingMetresExclusiveMin),
+  "palletPositions": zod.number().int().gt(updateRoadAssetResponsePalletPositionsExclusiveMin),
+  "trailerType": zod.string().nullish(),
+  "equipment": zod.array(zod.string()),
+  "temperatureMinCelsius": zod.number().nullish(),
+  "temperatureMaxCelsius": zod.number().nullish(),
+  "adrClasses": zod.array(zod.string()),
+  "notes": zod.string().nullish(),
+  "active": zod.boolean(),
+  "createdAt": zod.coerce.date(),
+  "updatedAt": zod.coerce.date()
+})
+
+
+/**
+ * @summary Deactivate a road asset
+ */
+export const DeactivateRoadAssetParams = zod.object({
+  "roadAssetId": zod.coerce.string().uuid()
+})
+
+
+export const deactivateRoadAssetResponsePayloadTonnesExclusiveMin = 0;
+
+export const deactivateRoadAssetResponseVolumeCubicMetresExclusiveMin = 0;
+
+export const deactivateRoadAssetResponseLoadingMetresExclusiveMin = 0;
+
+export const deactivateRoadAssetResponsePalletPositionsExclusiveMin = 0;
+
+
+
+export const DeactivateRoadAssetResponse = zod.object({
+  "id": zod.string().uuid(),
+  "companyId": zod.string().uuid(),
+  "assetType": zod.enum(['TRUCK', 'TRACTOR', 'TRAILER', 'TRUCK_TRAILER_COMBINATION']),
+  "assetName": zod.string().min(1),
+  "registrationReference": zod.string().nullish(),
+  "payloadTonnes": zod.number().gt(deactivateRoadAssetResponsePayloadTonnesExclusiveMin),
+  "volumeCubicMetres": zod.number().gt(deactivateRoadAssetResponseVolumeCubicMetresExclusiveMin),
+  "loadingMetres": zod.number().gt(deactivateRoadAssetResponseLoadingMetresExclusiveMin),
+  "palletPositions": zod.number().int().gt(deactivateRoadAssetResponsePalletPositionsExclusiveMin),
+  "trailerType": zod.string().nullish(),
+  "equipment": zod.array(zod.string()),
+  "temperatureMinCelsius": zod.number().nullish(),
+  "temperatureMaxCelsius": zod.number().nullish(),
+  "adrClasses": zod.array(zod.string()),
+  "notes": zod.string().nullish(),
+  "active": zod.boolean(),
+  "createdAt": zod.coerce.date(),
+  "updatedAt": zod.coerce.date()
+})
+
+
+/**
+ * @summary List road cargo owned by the current company
+ */
+export const listRoadCargoQueryPageDefault = 1;
+
+export const listRoadCargoQueryPageSizeDefault = 25;
+export const listRoadCargoQueryPageSizeMax = 100;
+
+
+
+export const ListRoadCargoQueryParams = zod.object({
+  "page": zod.coerce.number().int().min(1).default(listRoadCargoQueryPageDefault),
+  "pageSize": zod.coerce.number().int().min(1).max(listRoadCargoQueryPageSizeMax).default(listRoadCargoQueryPageSizeDefault),
+  "listingStatus": zod.enum(['DRAFT', 'ACTIVE', 'WITHDRAWN', 'EXPIRED', 'CLOSED']).optional()
+})
+
+export const listRoadCargoResponseItemsItemWeightTonnesExclusiveMin = 0;
+
+export const listRoadCargoResponseItemsItemRoadRequirementsVolumeCubicMetresExclusiveMin = 0;
+
+export const listRoadCargoResponseItemsItemRoadRequirementsLoadingMetresExclusiveMin = 0;
+
+export const listRoadCargoResponseItemsItemRoadRequirementsPalletPositionsExclusiveMin = 0;
+
+
+
+export const ListRoadCargoResponse = zod.object({
+  "items": zod.array(zod.object({
+  "id": zod.string().uuid(),
+  "companyId": zod.string().uuid(),
+  "transportMode": zod.literal("ROAD"),
+  "cargoName": zod.string(),
+  "cargoType": zod.string(),
+  "weightTonnes": zod.number().gt(listRoadCargoResponseItemsItemWeightTonnesExclusiveMin),
+  "loadingLocationId": zod.string().uuid(),
+  "destinationLocationId": zod.string().uuid(),
+  "loadingFrom": zod.coerce.date(),
+  "loadingUntil": zod.coerce.date(),
+  "visibility": zod.enum(['PRIVATE', 'OPEN_NETWORK']).describe('Pilot visibility is intentionally limited to private and open discovery.'),
+  "notes": zod.string().nullish(),
+  "listingStatus": zod.enum(['DRAFT', 'ACTIVE', 'WITHDRAWN', 'EXPIRED', 'CLOSED']),
+  "roadRequirements": zod.object({
+  "volumeCubicMetres": zod.number().gt(listRoadCargoResponseItemsItemRoadRequirementsVolumeCubicMetresExclusiveMin).nullish(),
+  "loadingMetres": zod.number().gt(listRoadCargoResponseItemsItemRoadRequirementsLoadingMetresExclusiveMin).nullish(),
+  "palletPositions": zod.number().int().gt(listRoadCargoResponseItemsItemRoadRequirementsPalletPositionsExclusiveMin).nullish(),
+  "requiredTrailerType": zod.string().nullish(),
+  "requiredEquipment": zod.array(zod.string()).optional(),
+  "temperatureMinCelsius": zod.number().nullish(),
+  "temperatureMaxCelsius": zod.number().nullish(),
+  "adrClasses": zod.array(zod.string()).optional(),
+  "direction": zod.string().nullish(),
+  "notes": zod.string().nullish()
+}),
+  "createdAt": zod.coerce.date(),
+  "updatedAt": zod.coerce.date()
+})),
+  "page": zod.number().int(),
+  "pageSize": zod.number().int(),
+  "total": zod.number().int()
+})
+
+
+/**
+ * @summary Publish or draft road cargo
+ */
+
+
+export const createRoadCargoBodyWeightTonnesExclusiveMin = 0;
+
+export const createRoadCargoBodyRoadRequirementsVolumeCubicMetresExclusiveMin = 0;
+
+export const createRoadCargoBodyRoadRequirementsLoadingMetresExclusiveMin = 0;
+
+export const createRoadCargoBodyRoadRequirementsPalletPositionsExclusiveMin = 0;
+
+
+
+export const CreateRoadCargoBody = zod.object({
+  "cargoName": zod.string().min(1),
+  "cargoType": zod.string().min(1),
+  "weightTonnes": zod.number().gt(createRoadCargoBodyWeightTonnesExclusiveMin),
+  "loadingLocationId": zod.string().uuid(),
+  "destinationLocationId": zod.string().uuid(),
+  "loadingFrom": zod.coerce.date(),
+  "loadingUntil": zod.coerce.date(),
+  "visibility": zod.enum(['PRIVATE', 'OPEN_NETWORK']).describe('Pilot visibility is intentionally limited to private and open discovery.'),
+  "listingStatus": zod.enum(['DRAFT', 'ACTIVE', 'WITHDRAWN', 'EXPIRED', 'CLOSED']).optional(),
+  "notes": zod.string().optional(),
+  "roadRequirements": zod.object({
+  "volumeCubicMetres": zod.number().gt(createRoadCargoBodyRoadRequirementsVolumeCubicMetresExclusiveMin).nullish(),
+  "loadingMetres": zod.number().gt(createRoadCargoBodyRoadRequirementsLoadingMetresExclusiveMin).nullish(),
+  "palletPositions": zod.number().int().gt(createRoadCargoBodyRoadRequirementsPalletPositionsExclusiveMin).nullish(),
+  "requiredTrailerType": zod.string().nullish(),
+  "requiredEquipment": zod.array(zod.string()).optional(),
+  "temperatureMinCelsius": zod.number().nullish(),
+  "temperatureMaxCelsius": zod.number().nullish(),
+  "adrClasses": zod.array(zod.string()).optional(),
+  "direction": zod.string().nullish(),
+  "notes": zod.string().nullish()
+}).optional()
+})
+
+export const createRoadCargoResponseWeightTonnesExclusiveMin = 0;
+
+export const createRoadCargoResponseRoadRequirementsVolumeCubicMetresExclusiveMin = 0;
+
+export const createRoadCargoResponseRoadRequirementsLoadingMetresExclusiveMin = 0;
+
+export const createRoadCargoResponseRoadRequirementsPalletPositionsExclusiveMin = 0;
+
+
+
+export const CreateRoadCargoResponse = zod.object({
+  "id": zod.string().uuid(),
+  "companyId": zod.string().uuid(),
+  "transportMode": zod.literal("ROAD"),
+  "cargoName": zod.string(),
+  "cargoType": zod.string(),
+  "weightTonnes": zod.number().gt(createRoadCargoResponseWeightTonnesExclusiveMin),
+  "loadingLocationId": zod.string().uuid(),
+  "destinationLocationId": zod.string().uuid(),
+  "loadingFrom": zod.coerce.date(),
+  "loadingUntil": zod.coerce.date(),
+  "visibility": zod.enum(['PRIVATE', 'OPEN_NETWORK']).describe('Pilot visibility is intentionally limited to private and open discovery.'),
+  "notes": zod.string().nullish(),
+  "listingStatus": zod.enum(['DRAFT', 'ACTIVE', 'WITHDRAWN', 'EXPIRED', 'CLOSED']),
+  "roadRequirements": zod.object({
+  "volumeCubicMetres": zod.number().gt(createRoadCargoResponseRoadRequirementsVolumeCubicMetresExclusiveMin).nullish(),
+  "loadingMetres": zod.number().gt(createRoadCargoResponseRoadRequirementsLoadingMetresExclusiveMin).nullish(),
+  "palletPositions": zod.number().int().gt(createRoadCargoResponseRoadRequirementsPalletPositionsExclusiveMin).nullish(),
+  "requiredTrailerType": zod.string().nullish(),
+  "requiredEquipment": zod.array(zod.string()).optional(),
+  "temperatureMinCelsius": zod.number().nullish(),
+  "temperatureMaxCelsius": zod.number().nullish(),
+  "adrClasses": zod.array(zod.string()).optional(),
+  "direction": zod.string().nullish(),
+  "notes": zod.string().nullish()
+}),
+  "createdAt": zod.coerce.date(),
+  "updatedAt": zod.coerce.date()
+})
+
+
+/**
+ * @summary Get road cargo
+ */
+export const GetRoadCargoParams = zod.object({
+  "cargoId": zod.coerce.string().uuid()
+})
+
+export const getRoadCargoResponseWeightTonnesExclusiveMin = 0;
+
+export const getRoadCargoResponseRoadRequirementsVolumeCubicMetresExclusiveMin = 0;
+
+export const getRoadCargoResponseRoadRequirementsLoadingMetresExclusiveMin = 0;
+
+export const getRoadCargoResponseRoadRequirementsPalletPositionsExclusiveMin = 0;
+
+
+
+export const GetRoadCargoResponse = zod.object({
+  "id": zod.string().uuid(),
+  "companyId": zod.string().uuid(),
+  "transportMode": zod.literal("ROAD"),
+  "cargoName": zod.string(),
+  "cargoType": zod.string(),
+  "weightTonnes": zod.number().gt(getRoadCargoResponseWeightTonnesExclusiveMin),
+  "loadingLocationId": zod.string().uuid(),
+  "destinationLocationId": zod.string().uuid(),
+  "loadingFrom": zod.coerce.date(),
+  "loadingUntil": zod.coerce.date(),
+  "visibility": zod.enum(['PRIVATE', 'OPEN_NETWORK']).describe('Pilot visibility is intentionally limited to private and open discovery.'),
+  "notes": zod.string().nullish(),
+  "listingStatus": zod.enum(['DRAFT', 'ACTIVE', 'WITHDRAWN', 'EXPIRED', 'CLOSED']),
+  "roadRequirements": zod.object({
+  "volumeCubicMetres": zod.number().gt(getRoadCargoResponseRoadRequirementsVolumeCubicMetresExclusiveMin).nullish(),
+  "loadingMetres": zod.number().gt(getRoadCargoResponseRoadRequirementsLoadingMetresExclusiveMin).nullish(),
+  "palletPositions": zod.number().int().gt(getRoadCargoResponseRoadRequirementsPalletPositionsExclusiveMin).nullish(),
+  "requiredTrailerType": zod.string().nullish(),
+  "requiredEquipment": zod.array(zod.string()).optional(),
+  "temperatureMinCelsius": zod.number().nullish(),
+  "temperatureMaxCelsius": zod.number().nullish(),
+  "adrClasses": zod.array(zod.string()).optional(),
+  "direction": zod.string().nullish(),
+  "notes": zod.string().nullish()
+}),
+  "createdAt": zod.coerce.date(),
+  "updatedAt": zod.coerce.date()
+})
+
+
+/**
+ * @summary Update road cargo
+ */
+export const UpdateRoadCargoParams = zod.object({
+  "cargoId": zod.coerce.string().uuid()
+})
+
+
+
+export const updateRoadCargoBodyWeightTonnesExclusiveMin = 0;
+
+export const updateRoadCargoBodyRoadRequirementsVolumeCubicMetresExclusiveMin = 0;
+
+export const updateRoadCargoBodyRoadRequirementsLoadingMetresExclusiveMin = 0;
+
+export const updateRoadCargoBodyRoadRequirementsPalletPositionsExclusiveMin = 0;
+
+
+
+export const UpdateRoadCargoBody = zod.object({
+  "cargoName": zod.string().min(1).optional(),
+  "cargoType": zod.string().min(1).optional(),
+  "weightTonnes": zod.number().gt(updateRoadCargoBodyWeightTonnesExclusiveMin).optional(),
+  "loadingLocationId": zod.string().uuid().optional(),
+  "destinationLocationId": zod.string().uuid().optional(),
+  "loadingFrom": zod.coerce.date().optional(),
+  "loadingUntil": zod.coerce.date().optional(),
+  "visibility": zod.enum(['PRIVATE', 'OPEN_NETWORK']).optional().describe('Pilot visibility is intentionally limited to private and open discovery.'),
+  "listingStatus": zod.enum(['DRAFT', 'ACTIVE', 'WITHDRAWN', 'EXPIRED', 'CLOSED']).optional(),
+  "notes": zod.string().nullish(),
+  "roadRequirements": zod.object({
+  "volumeCubicMetres": zod.number().gt(updateRoadCargoBodyRoadRequirementsVolumeCubicMetresExclusiveMin).nullish(),
+  "loadingMetres": zod.number().gt(updateRoadCargoBodyRoadRequirementsLoadingMetresExclusiveMin).nullish(),
+  "palletPositions": zod.number().int().gt(updateRoadCargoBodyRoadRequirementsPalletPositionsExclusiveMin).nullish(),
+  "requiredTrailerType": zod.string().nullish(),
+  "requiredEquipment": zod.array(zod.string()).optional(),
+  "temperatureMinCelsius": zod.number().nullish(),
+  "temperatureMaxCelsius": zod.number().nullish(),
+  "adrClasses": zod.array(zod.string()).optional(),
+  "direction": zod.string().nullish(),
+  "notes": zod.string().nullish()
+}).optional()
+}).describe('Partial road cargo update; omitted properties are retained.')
+
+export const updateRoadCargoResponseWeightTonnesExclusiveMin = 0;
+
+export const updateRoadCargoResponseRoadRequirementsVolumeCubicMetresExclusiveMin = 0;
+
+export const updateRoadCargoResponseRoadRequirementsLoadingMetresExclusiveMin = 0;
+
+export const updateRoadCargoResponseRoadRequirementsPalletPositionsExclusiveMin = 0;
+
+
+
+export const UpdateRoadCargoResponse = zod.object({
+  "id": zod.string().uuid(),
+  "companyId": zod.string().uuid(),
+  "transportMode": zod.literal("ROAD"),
+  "cargoName": zod.string(),
+  "cargoType": zod.string(),
+  "weightTonnes": zod.number().gt(updateRoadCargoResponseWeightTonnesExclusiveMin),
+  "loadingLocationId": zod.string().uuid(),
+  "destinationLocationId": zod.string().uuid(),
+  "loadingFrom": zod.coerce.date(),
+  "loadingUntil": zod.coerce.date(),
+  "visibility": zod.enum(['PRIVATE', 'OPEN_NETWORK']).describe('Pilot visibility is intentionally limited to private and open discovery.'),
+  "notes": zod.string().nullish(),
+  "listingStatus": zod.enum(['DRAFT', 'ACTIVE', 'WITHDRAWN', 'EXPIRED', 'CLOSED']),
+  "roadRequirements": zod.object({
+  "volumeCubicMetres": zod.number().gt(updateRoadCargoResponseRoadRequirementsVolumeCubicMetresExclusiveMin).nullish(),
+  "loadingMetres": zod.number().gt(updateRoadCargoResponseRoadRequirementsLoadingMetresExclusiveMin).nullish(),
+  "palletPositions": zod.number().int().gt(updateRoadCargoResponseRoadRequirementsPalletPositionsExclusiveMin).nullish(),
+  "requiredTrailerType": zod.string().nullish(),
+  "requiredEquipment": zod.array(zod.string()).optional(),
+  "temperatureMinCelsius": zod.number().nullish(),
+  "temperatureMaxCelsius": zod.number().nullish(),
+  "adrClasses": zod.array(zod.string()).optional(),
+  "direction": zod.string().nullish(),
+  "notes": zod.string().nullish()
+}),
+  "createdAt": zod.coerce.date(),
+  "updatedAt": zod.coerce.date()
+})
+
+
+export const WithdrawRoadCargoParams = zod.object({
+  "cargoId": zod.coerce.string().uuid()
+})
+
+export const withdrawRoadCargoResponseWeightTonnesExclusiveMin = 0;
+
+export const withdrawRoadCargoResponseRoadRequirementsVolumeCubicMetresExclusiveMin = 0;
+
+export const withdrawRoadCargoResponseRoadRequirementsLoadingMetresExclusiveMin = 0;
+
+export const withdrawRoadCargoResponseRoadRequirementsPalletPositionsExclusiveMin = 0;
+
+
+
+export const WithdrawRoadCargoResponse = zod.object({
+  "id": zod.string().uuid(),
+  "companyId": zod.string().uuid(),
+  "transportMode": zod.literal("ROAD"),
+  "cargoName": zod.string(),
+  "cargoType": zod.string(),
+  "weightTonnes": zod.number().gt(withdrawRoadCargoResponseWeightTonnesExclusiveMin),
+  "loadingLocationId": zod.string().uuid(),
+  "destinationLocationId": zod.string().uuid(),
+  "loadingFrom": zod.coerce.date(),
+  "loadingUntil": zod.coerce.date(),
+  "visibility": zod.enum(['PRIVATE', 'OPEN_NETWORK']).describe('Pilot visibility is intentionally limited to private and open discovery.'),
+  "notes": zod.string().nullish(),
+  "listingStatus": zod.enum(['DRAFT', 'ACTIVE', 'WITHDRAWN', 'EXPIRED', 'CLOSED']),
+  "roadRequirements": zod.object({
+  "volumeCubicMetres": zod.number().gt(withdrawRoadCargoResponseRoadRequirementsVolumeCubicMetresExclusiveMin).nullish(),
+  "loadingMetres": zod.number().gt(withdrawRoadCargoResponseRoadRequirementsLoadingMetresExclusiveMin).nullish(),
+  "palletPositions": zod.number().int().gt(withdrawRoadCargoResponseRoadRequirementsPalletPositionsExclusiveMin).nullish(),
+  "requiredTrailerType": zod.string().nullish(),
+  "requiredEquipment": zod.array(zod.string()).optional(),
+  "temperatureMinCelsius": zod.number().nullish(),
+  "temperatureMaxCelsius": zod.number().nullish(),
+  "adrClasses": zod.array(zod.string()).optional(),
+  "direction": zod.string().nullish(),
+  "notes": zod.string().nullish()
+}),
+  "createdAt": zod.coerce.date(),
+  "updatedAt": zod.coerce.date()
+})
+
+
+export const CloseRoadCargoParams = zod.object({
+  "cargoId": zod.coerce.string().uuid()
+})
+
+export const closeRoadCargoResponseWeightTonnesExclusiveMin = 0;
+
+export const closeRoadCargoResponseRoadRequirementsVolumeCubicMetresExclusiveMin = 0;
+
+export const closeRoadCargoResponseRoadRequirementsLoadingMetresExclusiveMin = 0;
+
+export const closeRoadCargoResponseRoadRequirementsPalletPositionsExclusiveMin = 0;
+
+
+
+export const CloseRoadCargoResponse = zod.object({
+  "id": zod.string().uuid(),
+  "companyId": zod.string().uuid(),
+  "transportMode": zod.literal("ROAD"),
+  "cargoName": zod.string(),
+  "cargoType": zod.string(),
+  "weightTonnes": zod.number().gt(closeRoadCargoResponseWeightTonnesExclusiveMin),
+  "loadingLocationId": zod.string().uuid(),
+  "destinationLocationId": zod.string().uuid(),
+  "loadingFrom": zod.coerce.date(),
+  "loadingUntil": zod.coerce.date(),
+  "visibility": zod.enum(['PRIVATE', 'OPEN_NETWORK']).describe('Pilot visibility is intentionally limited to private and open discovery.'),
+  "notes": zod.string().nullish(),
+  "listingStatus": zod.enum(['DRAFT', 'ACTIVE', 'WITHDRAWN', 'EXPIRED', 'CLOSED']),
+  "roadRequirements": zod.object({
+  "volumeCubicMetres": zod.number().gt(closeRoadCargoResponseRoadRequirementsVolumeCubicMetresExclusiveMin).nullish(),
+  "loadingMetres": zod.number().gt(closeRoadCargoResponseRoadRequirementsLoadingMetresExclusiveMin).nullish(),
+  "palletPositions": zod.number().int().gt(closeRoadCargoResponseRoadRequirementsPalletPositionsExclusiveMin).nullish(),
+  "requiredTrailerType": zod.string().nullish(),
+  "requiredEquipment": zod.array(zod.string()).optional(),
+  "temperatureMinCelsius": zod.number().nullish(),
+  "temperatureMaxCelsius": zod.number().nullish(),
+  "adrClasses": zod.array(zod.string()).optional(),
+  "direction": zod.string().nullish(),
+  "notes": zod.string().nullish()
+}),
+  "createdAt": zod.coerce.date(),
+  "updatedAt": zod.coerce.date()
+})
+
+
+/**
+ * @summary List road capacity offers owned by the current company
+ */
+export const listRoadCapacityQueryPageDefault = 1;
+
+export const listRoadCapacityQueryPageSizeDefault = 25;
+export const listRoadCapacityQueryPageSizeMax = 100;
+
+
+
+export const ListRoadCapacityQueryParams = zod.object({
+  "page": zod.coerce.number().int().min(1).default(listRoadCapacityQueryPageDefault),
+  "pageSize": zod.coerce.number().int().min(1).max(listRoadCapacityQueryPageSizeMax).default(listRoadCapacityQueryPageSizeDefault),
+  "listingStatus": zod.enum(['DRAFT', 'ACTIVE', 'WITHDRAWN', 'EXPIRED', 'CLOSED']).optional()
+})
+
+export const listRoadCapacityResponseItemsItemAvailableCapacityTonnesExclusiveMin = 0;
+
+export const listRoadCapacityResponseItemsItemMaximumPositioningDistanceKmExclusiveMin = 0;
+
+export const listRoadCapacityResponseItemsItemRoadExtensionAvailabilityUncertaintyMinutesMin = 0;
+
+export const listRoadCapacityResponseItemsItemRoadExtensionAvailableVolumeCubicMetresExclusiveMin = 0;
+
+export const listRoadCapacityResponseItemsItemRoadExtensionAvailableLoadingMetresExclusiveMin = 0;
+
+export const listRoadCapacityResponseItemsItemRoadExtensionAvailablePalletPositionsExclusiveMin = 0;
+
+
+
+export const ListRoadCapacityResponse = zod.object({
+  "items": zod.array(zod.object({
+  "id": zod.string().uuid(),
+  "companyId": zod.string().uuid(),
+  "transportMode": zod.literal("ROAD"),
+  "locationId": zod.string().uuid(),
+  "availableFrom": zod.coerce.date(),
+  "availableUntil": zod.coerce.date(),
+  "availabilityType": zod.enum(['FULLY_EMPTY', 'PARTIALLY_AVAILABLE']).optional(),
+  "availableCapacityTonnes": zod.number().gt(listRoadCapacityResponseItemsItemAvailableCapacityTonnesExclusiveMin),
+  "cargoCompatibility": zod.array(zod.string()).optional(),
+  "preferredDirection": zod.string().optional(),
+  "maximumPositioningDistanceKm": zod.number().gt(listRoadCapacityResponseItemsItemMaximumPositioningDistanceKmExclusiveMin).optional(),
+  "visibility": zod.enum(['PRIVATE', 'OPEN_NETWORK']).describe('Pilot visibility is intentionally limited to private and open discovery.'),
+  "availabilityConfidence": zod.enum(['EXPECTED', 'CONFIRMED']).optional(),
+  "notes": zod.string().nullish(),
+  "listingStatus": zod.enum(['DRAFT', 'ACTIVE', 'WITHDRAWN', 'EXPIRED', 'CLOSED']),
+  "roadExtension": zod.object({
+  "roadAssetId": zod.string().uuid(),
+  "currentDeliveryLocationId": zod.string().uuid(),
+  "currentDeliveryExpectedAt": zod.coerce.date(),
+  "expectedAvailabilityLocationId": zod.string().uuid(),
+  "expectedAvailabilityAt": zod.coerce.date(),
+  "availabilityUncertaintyMinutes": zod.number().int().min(listRoadCapacityResponseItemsItemRoadExtensionAvailabilityUncertaintyMinutesMin),
+  "availabilitySource": zod.enum(['MANUAL', 'DRIVER_INPUT', 'TMS', 'TELEMATICS']),
+  "availableVolumeCubicMetres": zod.number().gt(listRoadCapacityResponseItemsItemRoadExtensionAvailableVolumeCubicMetresExclusiveMin),
+  "availableLoadingMetres": zod.number().gt(listRoadCapacityResponseItemsItemRoadExtensionAvailableLoadingMetresExclusiveMin),
+  "availablePalletPositions": zod.number().int().gt(listRoadCapacityResponseItemsItemRoadExtensionAvailablePalletPositionsExclusiveMin),
+  "trailerType": zod.string().nullish(),
+  "equipment": zod.array(zod.string()),
+  "temperatureMinCelsius": zod.number().nullish(),
+  "temperatureMaxCelsius": zod.number().nullish(),
+  "adrClasses": zod.array(zod.string()),
+  "preferredDirection": zod.string().nullish(),
+  "notes": zod.string().nullish()
+}),
+  "assignments": zod.array(zod.object({
+  "id": zod.string().uuid(),
+  "capacityOfferId": zod.string().uuid(),
+  "companyId": zod.string().uuid(),
+  "driverUserId": zod.string(),
+  "assignedByUserId": zod.string(),
+  "status": zod.enum(['ASSIGNED', 'CONFIRMED', 'FLAGGED']),
+  "operationalNote": zod.string().nullish(),
+  "flaggedReason": zod.string().nullish(),
+  "flaggedMatchId": zod.string().uuid().nullish(),
+  "confirmedAt": zod.coerce.date().nullish(),
+  "createdAt": zod.coerce.date(),
+  "updatedAt": zod.coerce.date()
+})),
+  "createdAt": zod.coerce.date(),
+  "updatedAt": zod.coerce.date()
+})),
+  "page": zod.number().int(),
+  "pageSize": zod.number().int(),
+  "total": zod.number().int()
+})
+
+
+/**
+ * @summary Declare manually derived future road capacity
+ */
+export const createRoadCapacityBodyAvailabilityUncertaintyMinutesDefault = 0;
+export const createRoadCapacityBodyAvailabilityUncertaintyMinutesMin = 0;
+
+export const createRoadCapacityBodyAvailableCapacityTonnesExclusiveMin = 0;
+
+export const createRoadCapacityBodyAvailableVolumeCubicMetresExclusiveMin = 0;
+
+export const createRoadCapacityBodyAvailableLoadingMetresExclusiveMin = 0;
+
+export const createRoadCapacityBodyAvailablePalletPositionsExclusiveMin = 0;
+
+export const createRoadCapacityBodyMaximumPositioningDistanceKmDefault = 100;
+export const createRoadCapacityBodyMaximumPositioningDistanceKmExclusiveMin = 0;
+
+
+
+export const CreateRoadCapacityBody = zod.object({
+  "roadAssetId": zod.string().uuid(),
+  "currentDeliveryLocationId": zod.string().uuid(),
+  "currentDeliveryExpectedAt": zod.coerce.date(),
+  "expectedAvailabilityLocationId": zod.string().uuid(),
+  "expectedAvailabilityAt": zod.coerce.date(),
+  "availabilityUncertaintyMinutes": zod.number().int().min(createRoadCapacityBodyAvailabilityUncertaintyMinutesMin).default(createRoadCapacityBodyAvailabilityUncertaintyMinutesDefault),
+  "availabilitySource": zod.enum(['MANUAL', 'DRIVER_INPUT', 'TMS', 'TELEMATICS']).optional(),
+  "availableCapacityTonnes": zod.number().gt(createRoadCapacityBodyAvailableCapacityTonnesExclusiveMin),
+  "availableVolumeCubicMetres": zod.number().gt(createRoadCapacityBodyAvailableVolumeCubicMetresExclusiveMin),
+  "availableLoadingMetres": zod.number().gt(createRoadCapacityBodyAvailableLoadingMetresExclusiveMin),
+  "availablePalletPositions": zod.number().int().gt(createRoadCapacityBodyAvailablePalletPositionsExclusiveMin),
+  "trailerType": zod.string().optional(),
+  "equipment": zod.array(zod.string()).optional(),
+  "temperatureMinCelsius": zod.number().optional(),
+  "temperatureMaxCelsius": zod.number().optional(),
+  "adrClasses": zod.array(zod.string()).optional(),
+  "preferredDirection": zod.string().optional(),
+  "maximumPositioningDistanceKm": zod.number().gt(createRoadCapacityBodyMaximumPositioningDistanceKmExclusiveMin).default(createRoadCapacityBodyMaximumPositioningDistanceKmDefault),
+  "cargoCompatibility": zod.array(zod.string()).optional(),
+  "visibility": zod.enum(['PRIVATE', 'OPEN_NETWORK']).describe('Pilot visibility is intentionally limited to private and open discovery.'),
+  "listingStatus": zod.enum(['DRAFT', 'ACTIVE', 'WITHDRAWN', 'EXPIRED', 'CLOSED']).optional(),
+  "notes": zod.string().optional()
+})
+
+export const createRoadCapacityResponseAvailableCapacityTonnesExclusiveMin = 0;
+
+export const createRoadCapacityResponseMaximumPositioningDistanceKmExclusiveMin = 0;
+
+export const createRoadCapacityResponseRoadExtensionAvailabilityUncertaintyMinutesMin = 0;
+
+export const createRoadCapacityResponseRoadExtensionAvailableVolumeCubicMetresExclusiveMin = 0;
+
+export const createRoadCapacityResponseRoadExtensionAvailableLoadingMetresExclusiveMin = 0;
+
+export const createRoadCapacityResponseRoadExtensionAvailablePalletPositionsExclusiveMin = 0;
+
+
+
+export const CreateRoadCapacityResponse = zod.object({
+  "id": zod.string().uuid(),
+  "companyId": zod.string().uuid(),
+  "transportMode": zod.literal("ROAD"),
+  "locationId": zod.string().uuid(),
+  "availableFrom": zod.coerce.date(),
+  "availableUntil": zod.coerce.date(),
+  "availabilityType": zod.enum(['FULLY_EMPTY', 'PARTIALLY_AVAILABLE']).optional(),
+  "availableCapacityTonnes": zod.number().gt(createRoadCapacityResponseAvailableCapacityTonnesExclusiveMin),
+  "cargoCompatibility": zod.array(zod.string()).optional(),
+  "preferredDirection": zod.string().optional(),
+  "maximumPositioningDistanceKm": zod.number().gt(createRoadCapacityResponseMaximumPositioningDistanceKmExclusiveMin).optional(),
+  "visibility": zod.enum(['PRIVATE', 'OPEN_NETWORK']).describe('Pilot visibility is intentionally limited to private and open discovery.'),
+  "availabilityConfidence": zod.enum(['EXPECTED', 'CONFIRMED']).optional(),
+  "notes": zod.string().nullish(),
+  "listingStatus": zod.enum(['DRAFT', 'ACTIVE', 'WITHDRAWN', 'EXPIRED', 'CLOSED']),
+  "roadExtension": zod.object({
+  "roadAssetId": zod.string().uuid(),
+  "currentDeliveryLocationId": zod.string().uuid(),
+  "currentDeliveryExpectedAt": zod.coerce.date(),
+  "expectedAvailabilityLocationId": zod.string().uuid(),
+  "expectedAvailabilityAt": zod.coerce.date(),
+  "availabilityUncertaintyMinutes": zod.number().int().min(createRoadCapacityResponseRoadExtensionAvailabilityUncertaintyMinutesMin),
+  "availabilitySource": zod.enum(['MANUAL', 'DRIVER_INPUT', 'TMS', 'TELEMATICS']),
+  "availableVolumeCubicMetres": zod.number().gt(createRoadCapacityResponseRoadExtensionAvailableVolumeCubicMetresExclusiveMin),
+  "availableLoadingMetres": zod.number().gt(createRoadCapacityResponseRoadExtensionAvailableLoadingMetresExclusiveMin),
+  "availablePalletPositions": zod.number().int().gt(createRoadCapacityResponseRoadExtensionAvailablePalletPositionsExclusiveMin),
+  "trailerType": zod.string().nullish(),
+  "equipment": zod.array(zod.string()),
+  "temperatureMinCelsius": zod.number().nullish(),
+  "temperatureMaxCelsius": zod.number().nullish(),
+  "adrClasses": zod.array(zod.string()),
+  "preferredDirection": zod.string().nullish(),
+  "notes": zod.string().nullish()
+}),
+  "assignments": zod.array(zod.object({
+  "id": zod.string().uuid(),
+  "capacityOfferId": zod.string().uuid(),
+  "companyId": zod.string().uuid(),
+  "driverUserId": zod.string(),
+  "assignedByUserId": zod.string(),
+  "status": zod.enum(['ASSIGNED', 'CONFIRMED', 'FLAGGED']),
+  "operationalNote": zod.string().nullish(),
+  "flaggedReason": zod.string().nullish(),
+  "flaggedMatchId": zod.string().uuid().nullish(),
+  "confirmedAt": zod.coerce.date().nullish(),
+  "createdAt": zod.coerce.date(),
+  "updatedAt": zod.coerce.date()
+})),
+  "createdAt": zod.coerce.date(),
+  "updatedAt": zod.coerce.date()
+})
+
+
+/**
+ * @summary List active MEMBER drivers available for road assignment
+ */
+export const ListRoadDriversResponse = zod.object({
+  "items": zod.array(zod.object({
+  "userId": zod.string(),
+  "firstName": zod.string().nullable(),
+  "lastName": zod.string().nullable(),
+  "email": zod.string().email().nullable()
+}))
+})
+
+
+/**
+ * @summary Get road capacity
+ */
+export const GetRoadCapacityParams = zod.object({
+  "capacityId": zod.coerce.string().uuid()
+})
+
+export const getRoadCapacityResponseAvailableCapacityTonnesExclusiveMin = 0;
+
+export const getRoadCapacityResponseMaximumPositioningDistanceKmExclusiveMin = 0;
+
+export const getRoadCapacityResponseRoadExtensionAvailabilityUncertaintyMinutesMin = 0;
+
+export const getRoadCapacityResponseRoadExtensionAvailableVolumeCubicMetresExclusiveMin = 0;
+
+export const getRoadCapacityResponseRoadExtensionAvailableLoadingMetresExclusiveMin = 0;
+
+export const getRoadCapacityResponseRoadExtensionAvailablePalletPositionsExclusiveMin = 0;
+
+
+
+export const GetRoadCapacityResponse = zod.object({
+  "id": zod.string().uuid(),
+  "companyId": zod.string().uuid(),
+  "transportMode": zod.literal("ROAD"),
+  "locationId": zod.string().uuid(),
+  "availableFrom": zod.coerce.date(),
+  "availableUntil": zod.coerce.date(),
+  "availabilityType": zod.enum(['FULLY_EMPTY', 'PARTIALLY_AVAILABLE']).optional(),
+  "availableCapacityTonnes": zod.number().gt(getRoadCapacityResponseAvailableCapacityTonnesExclusiveMin),
+  "cargoCompatibility": zod.array(zod.string()).optional(),
+  "preferredDirection": zod.string().optional(),
+  "maximumPositioningDistanceKm": zod.number().gt(getRoadCapacityResponseMaximumPositioningDistanceKmExclusiveMin).optional(),
+  "visibility": zod.enum(['PRIVATE', 'OPEN_NETWORK']).describe('Pilot visibility is intentionally limited to private and open discovery.'),
+  "availabilityConfidence": zod.enum(['EXPECTED', 'CONFIRMED']).optional(),
+  "notes": zod.string().nullish(),
+  "listingStatus": zod.enum(['DRAFT', 'ACTIVE', 'WITHDRAWN', 'EXPIRED', 'CLOSED']),
+  "roadExtension": zod.object({
+  "roadAssetId": zod.string().uuid(),
+  "currentDeliveryLocationId": zod.string().uuid(),
+  "currentDeliveryExpectedAt": zod.coerce.date(),
+  "expectedAvailabilityLocationId": zod.string().uuid(),
+  "expectedAvailabilityAt": zod.coerce.date(),
+  "availabilityUncertaintyMinutes": zod.number().int().min(getRoadCapacityResponseRoadExtensionAvailabilityUncertaintyMinutesMin),
+  "availabilitySource": zod.enum(['MANUAL', 'DRIVER_INPUT', 'TMS', 'TELEMATICS']),
+  "availableVolumeCubicMetres": zod.number().gt(getRoadCapacityResponseRoadExtensionAvailableVolumeCubicMetresExclusiveMin),
+  "availableLoadingMetres": zod.number().gt(getRoadCapacityResponseRoadExtensionAvailableLoadingMetresExclusiveMin),
+  "availablePalletPositions": zod.number().int().gt(getRoadCapacityResponseRoadExtensionAvailablePalletPositionsExclusiveMin),
+  "trailerType": zod.string().nullish(),
+  "equipment": zod.array(zod.string()),
+  "temperatureMinCelsius": zod.number().nullish(),
+  "temperatureMaxCelsius": zod.number().nullish(),
+  "adrClasses": zod.array(zod.string()),
+  "preferredDirection": zod.string().nullish(),
+  "notes": zod.string().nullish()
+}),
+  "assignments": zod.array(zod.object({
+  "id": zod.string().uuid(),
+  "capacityOfferId": zod.string().uuid(),
+  "companyId": zod.string().uuid(),
+  "driverUserId": zod.string(),
+  "assignedByUserId": zod.string(),
+  "status": zod.enum(['ASSIGNED', 'CONFIRMED', 'FLAGGED']),
+  "operationalNote": zod.string().nullish(),
+  "flaggedReason": zod.string().nullish(),
+  "flaggedMatchId": zod.string().uuid().nullish(),
+  "confirmedAt": zod.coerce.date().nullish(),
+  "createdAt": zod.coerce.date(),
+  "updatedAt": zod.coerce.date()
+})),
+  "createdAt": zod.coerce.date(),
+  "updatedAt": zod.coerce.date()
+})
+
+
+/**
+ * @summary Update road capacity
+ */
+export const UpdateRoadCapacityParams = zod.object({
+  "capacityId": zod.coerce.string().uuid()
+})
+
+export const updateRoadCapacityBodyAvailabilityUncertaintyMinutesMin = 0;
+
+export const updateRoadCapacityBodyAvailableCapacityTonnesExclusiveMin = 0;
+
+export const updateRoadCapacityBodyAvailableVolumeCubicMetresExclusiveMin = 0;
+
+export const updateRoadCapacityBodyAvailableLoadingMetresExclusiveMin = 0;
+
+export const updateRoadCapacityBodyAvailablePalletPositionsExclusiveMin = 0;
+
+export const updateRoadCapacityBodyMaximumPositioningDistanceKmExclusiveMin = 0;
+
+
+
+export const UpdateRoadCapacityBody = zod.object({
+  "roadAssetId": zod.string().uuid().optional(),
+  "currentDeliveryLocationId": zod.string().uuid().optional(),
+  "currentDeliveryExpectedAt": zod.coerce.date().optional(),
+  "expectedAvailabilityLocationId": zod.string().uuid().optional(),
+  "expectedAvailabilityAt": zod.coerce.date().optional(),
+  "availabilityUncertaintyMinutes": zod.number().int().min(updateRoadCapacityBodyAvailabilityUncertaintyMinutesMin).optional(),
+  "availabilitySource": zod.enum(['MANUAL', 'DRIVER_INPUT', 'TMS', 'TELEMATICS']).optional(),
+  "availableCapacityTonnes": zod.number().gt(updateRoadCapacityBodyAvailableCapacityTonnesExclusiveMin).optional(),
+  "availableVolumeCubicMetres": zod.number().gt(updateRoadCapacityBodyAvailableVolumeCubicMetresExclusiveMin).optional(),
+  "availableLoadingMetres": zod.number().gt(updateRoadCapacityBodyAvailableLoadingMetresExclusiveMin).optional(),
+  "availablePalletPositions": zod.number().int().gt(updateRoadCapacityBodyAvailablePalletPositionsExclusiveMin).optional(),
+  "trailerType": zod.string().nullish(),
+  "equipment": zod.array(zod.string()).optional(),
+  "temperatureMinCelsius": zod.number().nullish(),
+  "temperatureMaxCelsius": zod.number().nullish(),
+  "adrClasses": zod.array(zod.string()).optional(),
+  "preferredDirection": zod.string().nullish(),
+  "maximumPositioningDistanceKm": zod.number().gt(updateRoadCapacityBodyMaximumPositioningDistanceKmExclusiveMin).optional(),
+  "cargoCompatibility": zod.array(zod.string()).optional(),
+  "visibility": zod.enum(['PRIVATE', 'OPEN_NETWORK']).optional().describe('Pilot visibility is intentionally limited to private and open discovery.'),
+  "listingStatus": zod.enum(['DRAFT', 'ACTIVE', 'WITHDRAWN', 'EXPIRED', 'CLOSED']).optional(),
+  "notes": zod.string().nullish()
+}).describe('Partial road capacity update; omitted properties are retained.')
+
+export const updateRoadCapacityResponseAvailableCapacityTonnesExclusiveMin = 0;
+
+export const updateRoadCapacityResponseMaximumPositioningDistanceKmExclusiveMin = 0;
+
+export const updateRoadCapacityResponseRoadExtensionAvailabilityUncertaintyMinutesMin = 0;
+
+export const updateRoadCapacityResponseRoadExtensionAvailableVolumeCubicMetresExclusiveMin = 0;
+
+export const updateRoadCapacityResponseRoadExtensionAvailableLoadingMetresExclusiveMin = 0;
+
+export const updateRoadCapacityResponseRoadExtensionAvailablePalletPositionsExclusiveMin = 0;
+
+
+
+export const UpdateRoadCapacityResponse = zod.object({
+  "id": zod.string().uuid(),
+  "companyId": zod.string().uuid(),
+  "transportMode": zod.literal("ROAD"),
+  "locationId": zod.string().uuid(),
+  "availableFrom": zod.coerce.date(),
+  "availableUntil": zod.coerce.date(),
+  "availabilityType": zod.enum(['FULLY_EMPTY', 'PARTIALLY_AVAILABLE']).optional(),
+  "availableCapacityTonnes": zod.number().gt(updateRoadCapacityResponseAvailableCapacityTonnesExclusiveMin),
+  "cargoCompatibility": zod.array(zod.string()).optional(),
+  "preferredDirection": zod.string().optional(),
+  "maximumPositioningDistanceKm": zod.number().gt(updateRoadCapacityResponseMaximumPositioningDistanceKmExclusiveMin).optional(),
+  "visibility": zod.enum(['PRIVATE', 'OPEN_NETWORK']).describe('Pilot visibility is intentionally limited to private and open discovery.'),
+  "availabilityConfidence": zod.enum(['EXPECTED', 'CONFIRMED']).optional(),
+  "notes": zod.string().nullish(),
+  "listingStatus": zod.enum(['DRAFT', 'ACTIVE', 'WITHDRAWN', 'EXPIRED', 'CLOSED']),
+  "roadExtension": zod.object({
+  "roadAssetId": zod.string().uuid(),
+  "currentDeliveryLocationId": zod.string().uuid(),
+  "currentDeliveryExpectedAt": zod.coerce.date(),
+  "expectedAvailabilityLocationId": zod.string().uuid(),
+  "expectedAvailabilityAt": zod.coerce.date(),
+  "availabilityUncertaintyMinutes": zod.number().int().min(updateRoadCapacityResponseRoadExtensionAvailabilityUncertaintyMinutesMin),
+  "availabilitySource": zod.enum(['MANUAL', 'DRIVER_INPUT', 'TMS', 'TELEMATICS']),
+  "availableVolumeCubicMetres": zod.number().gt(updateRoadCapacityResponseRoadExtensionAvailableVolumeCubicMetresExclusiveMin),
+  "availableLoadingMetres": zod.number().gt(updateRoadCapacityResponseRoadExtensionAvailableLoadingMetresExclusiveMin),
+  "availablePalletPositions": zod.number().int().gt(updateRoadCapacityResponseRoadExtensionAvailablePalletPositionsExclusiveMin),
+  "trailerType": zod.string().nullish(),
+  "equipment": zod.array(zod.string()),
+  "temperatureMinCelsius": zod.number().nullish(),
+  "temperatureMaxCelsius": zod.number().nullish(),
+  "adrClasses": zod.array(zod.string()),
+  "preferredDirection": zod.string().nullish(),
+  "notes": zod.string().nullish()
+}),
+  "assignments": zod.array(zod.object({
+  "id": zod.string().uuid(),
+  "capacityOfferId": zod.string().uuid(),
+  "companyId": zod.string().uuid(),
+  "driverUserId": zod.string(),
+  "assignedByUserId": zod.string(),
+  "status": zod.enum(['ASSIGNED', 'CONFIRMED', 'FLAGGED']),
+  "operationalNote": zod.string().nullish(),
+  "flaggedReason": zod.string().nullish(),
+  "flaggedMatchId": zod.string().uuid().nullish(),
+  "confirmedAt": zod.coerce.date().nullish(),
+  "createdAt": zod.coerce.date(),
+  "updatedAt": zod.coerce.date()
+})),
+  "createdAt": zod.coerce.date(),
+  "updatedAt": zod.coerce.date()
+})
+
+
+export const WithdrawRoadCapacityParams = zod.object({
+  "capacityId": zod.coerce.string().uuid()
+})
+
+export const withdrawRoadCapacityResponseAvailableCapacityTonnesExclusiveMin = 0;
+
+export const withdrawRoadCapacityResponseMaximumPositioningDistanceKmExclusiveMin = 0;
+
+export const withdrawRoadCapacityResponseRoadExtensionAvailabilityUncertaintyMinutesMin = 0;
+
+export const withdrawRoadCapacityResponseRoadExtensionAvailableVolumeCubicMetresExclusiveMin = 0;
+
+export const withdrawRoadCapacityResponseRoadExtensionAvailableLoadingMetresExclusiveMin = 0;
+
+export const withdrawRoadCapacityResponseRoadExtensionAvailablePalletPositionsExclusiveMin = 0;
+
+
+
+export const WithdrawRoadCapacityResponse = zod.object({
+  "id": zod.string().uuid(),
+  "companyId": zod.string().uuid(),
+  "transportMode": zod.literal("ROAD"),
+  "locationId": zod.string().uuid(),
+  "availableFrom": zod.coerce.date(),
+  "availableUntil": zod.coerce.date(),
+  "availabilityType": zod.enum(['FULLY_EMPTY', 'PARTIALLY_AVAILABLE']).optional(),
+  "availableCapacityTonnes": zod.number().gt(withdrawRoadCapacityResponseAvailableCapacityTonnesExclusiveMin),
+  "cargoCompatibility": zod.array(zod.string()).optional(),
+  "preferredDirection": zod.string().optional(),
+  "maximumPositioningDistanceKm": zod.number().gt(withdrawRoadCapacityResponseMaximumPositioningDistanceKmExclusiveMin).optional(),
+  "visibility": zod.enum(['PRIVATE', 'OPEN_NETWORK']).describe('Pilot visibility is intentionally limited to private and open discovery.'),
+  "availabilityConfidence": zod.enum(['EXPECTED', 'CONFIRMED']).optional(),
+  "notes": zod.string().nullish(),
+  "listingStatus": zod.enum(['DRAFT', 'ACTIVE', 'WITHDRAWN', 'EXPIRED', 'CLOSED']),
+  "roadExtension": zod.object({
+  "roadAssetId": zod.string().uuid(),
+  "currentDeliveryLocationId": zod.string().uuid(),
+  "currentDeliveryExpectedAt": zod.coerce.date(),
+  "expectedAvailabilityLocationId": zod.string().uuid(),
+  "expectedAvailabilityAt": zod.coerce.date(),
+  "availabilityUncertaintyMinutes": zod.number().int().min(withdrawRoadCapacityResponseRoadExtensionAvailabilityUncertaintyMinutesMin),
+  "availabilitySource": zod.enum(['MANUAL', 'DRIVER_INPUT', 'TMS', 'TELEMATICS']),
+  "availableVolumeCubicMetres": zod.number().gt(withdrawRoadCapacityResponseRoadExtensionAvailableVolumeCubicMetresExclusiveMin),
+  "availableLoadingMetres": zod.number().gt(withdrawRoadCapacityResponseRoadExtensionAvailableLoadingMetresExclusiveMin),
+  "availablePalletPositions": zod.number().int().gt(withdrawRoadCapacityResponseRoadExtensionAvailablePalletPositionsExclusiveMin),
+  "trailerType": zod.string().nullish(),
+  "equipment": zod.array(zod.string()),
+  "temperatureMinCelsius": zod.number().nullish(),
+  "temperatureMaxCelsius": zod.number().nullish(),
+  "adrClasses": zod.array(zod.string()),
+  "preferredDirection": zod.string().nullish(),
+  "notes": zod.string().nullish()
+}),
+  "assignments": zod.array(zod.object({
+  "id": zod.string().uuid(),
+  "capacityOfferId": zod.string().uuid(),
+  "companyId": zod.string().uuid(),
+  "driverUserId": zod.string(),
+  "assignedByUserId": zod.string(),
+  "status": zod.enum(['ASSIGNED', 'CONFIRMED', 'FLAGGED']),
+  "operationalNote": zod.string().nullish(),
+  "flaggedReason": zod.string().nullish(),
+  "flaggedMatchId": zod.string().uuid().nullish(),
+  "confirmedAt": zod.coerce.date().nullish(),
+  "createdAt": zod.coerce.date(),
+  "updatedAt": zod.coerce.date()
+})),
+  "createdAt": zod.coerce.date(),
+  "updatedAt": zod.coerce.date()
+})
+
+
+export const CloseRoadCapacityParams = zod.object({
+  "capacityId": zod.coerce.string().uuid()
+})
+
+export const closeRoadCapacityResponseAvailableCapacityTonnesExclusiveMin = 0;
+
+export const closeRoadCapacityResponseMaximumPositioningDistanceKmExclusiveMin = 0;
+
+export const closeRoadCapacityResponseRoadExtensionAvailabilityUncertaintyMinutesMin = 0;
+
+export const closeRoadCapacityResponseRoadExtensionAvailableVolumeCubicMetresExclusiveMin = 0;
+
+export const closeRoadCapacityResponseRoadExtensionAvailableLoadingMetresExclusiveMin = 0;
+
+export const closeRoadCapacityResponseRoadExtensionAvailablePalletPositionsExclusiveMin = 0;
+
+
+
+export const CloseRoadCapacityResponse = zod.object({
+  "id": zod.string().uuid(),
+  "companyId": zod.string().uuid(),
+  "transportMode": zod.literal("ROAD"),
+  "locationId": zod.string().uuid(),
+  "availableFrom": zod.coerce.date(),
+  "availableUntil": zod.coerce.date(),
+  "availabilityType": zod.enum(['FULLY_EMPTY', 'PARTIALLY_AVAILABLE']).optional(),
+  "availableCapacityTonnes": zod.number().gt(closeRoadCapacityResponseAvailableCapacityTonnesExclusiveMin),
+  "cargoCompatibility": zod.array(zod.string()).optional(),
+  "preferredDirection": zod.string().optional(),
+  "maximumPositioningDistanceKm": zod.number().gt(closeRoadCapacityResponseMaximumPositioningDistanceKmExclusiveMin).optional(),
+  "visibility": zod.enum(['PRIVATE', 'OPEN_NETWORK']).describe('Pilot visibility is intentionally limited to private and open discovery.'),
+  "availabilityConfidence": zod.enum(['EXPECTED', 'CONFIRMED']).optional(),
+  "notes": zod.string().nullish(),
+  "listingStatus": zod.enum(['DRAFT', 'ACTIVE', 'WITHDRAWN', 'EXPIRED', 'CLOSED']),
+  "roadExtension": zod.object({
+  "roadAssetId": zod.string().uuid(),
+  "currentDeliveryLocationId": zod.string().uuid(),
+  "currentDeliveryExpectedAt": zod.coerce.date(),
+  "expectedAvailabilityLocationId": zod.string().uuid(),
+  "expectedAvailabilityAt": zod.coerce.date(),
+  "availabilityUncertaintyMinutes": zod.number().int().min(closeRoadCapacityResponseRoadExtensionAvailabilityUncertaintyMinutesMin),
+  "availabilitySource": zod.enum(['MANUAL', 'DRIVER_INPUT', 'TMS', 'TELEMATICS']),
+  "availableVolumeCubicMetres": zod.number().gt(closeRoadCapacityResponseRoadExtensionAvailableVolumeCubicMetresExclusiveMin),
+  "availableLoadingMetres": zod.number().gt(closeRoadCapacityResponseRoadExtensionAvailableLoadingMetresExclusiveMin),
+  "availablePalletPositions": zod.number().int().gt(closeRoadCapacityResponseRoadExtensionAvailablePalletPositionsExclusiveMin),
+  "trailerType": zod.string().nullish(),
+  "equipment": zod.array(zod.string()),
+  "temperatureMinCelsius": zod.number().nullish(),
+  "temperatureMaxCelsius": zod.number().nullish(),
+  "adrClasses": zod.array(zod.string()),
+  "preferredDirection": zod.string().nullish(),
+  "notes": zod.string().nullish()
+}),
+  "assignments": zod.array(zod.object({
+  "id": zod.string().uuid(),
+  "capacityOfferId": zod.string().uuid(),
+  "companyId": zod.string().uuid(),
+  "driverUserId": zod.string(),
+  "assignedByUserId": zod.string(),
+  "status": zod.enum(['ASSIGNED', 'CONFIRMED', 'FLAGGED']),
+  "operationalNote": zod.string().nullish(),
+  "flaggedReason": zod.string().nullish(),
+  "flaggedMatchId": zod.string().uuid().nullish(),
+  "confirmedAt": zod.coerce.date().nullish(),
+  "createdAt": zod.coerce.date(),
+  "updatedAt": zod.coerce.date()
+})),
+  "createdAt": zod.coerce.date(),
+  "updatedAt": zod.coerce.date()
+})
+
+
+export const AssignRoadDriverParams = zod.object({
+  "capacityId": zod.coerce.string().uuid()
+})
+
+
+
+
+export const AssignRoadDriverBody = zod.object({
+  "driverUserId": zod.string().min(1),
+  "operationalNote": zod.string().optional()
+})
+
+export const AssignRoadDriverResponse = zod.object({
+  "id": zod.string().uuid(),
+  "capacityOfferId": zod.string().uuid(),
+  "companyId": zod.string().uuid(),
+  "driverUserId": zod.string(),
+  "assignedByUserId": zod.string(),
+  "status": zod.enum(['ASSIGNED', 'CONFIRMED', 'FLAGGED']),
+  "operationalNote": zod.string().nullish(),
+  "flaggedReason": zod.string().nullish(),
+  "flaggedMatchId": zod.string().uuid().nullish(),
+  "confirmedAt": zod.coerce.date().nullish(),
+  "createdAt": zod.coerce.date(),
+  "updatedAt": zod.coerce.date()
+})
+
+
+export const ConfirmRoadAssignmentParams = zod.object({
+  "assignmentId": zod.coerce.string().uuid()
+})
+
+export const ConfirmRoadAssignmentBody = zod.object({
+  "note": zod.string().optional(),
+  "reason": zod.string().optional(),
+  "matchId": zod.string().uuid().optional().describe('Required for FLAGGED; identifies the specific eligible shared road opportunity.')
+})
+
+export const ConfirmRoadAssignmentResponse = zod.object({
+  "id": zod.string().uuid(),
+  "capacityOfferId": zod.string().uuid(),
+  "companyId": zod.string().uuid(),
+  "driverUserId": zod.string(),
+  "assignedByUserId": zod.string(),
+  "status": zod.enum(['ASSIGNED', 'CONFIRMED', 'FLAGGED']),
+  "operationalNote": zod.string().nullish(),
+  "flaggedReason": zod.string().nullish(),
+  "flaggedMatchId": zod.string().uuid().nullish(),
+  "confirmedAt": zod.coerce.date().nullish(),
+  "createdAt": zod.coerce.date(),
+  "updatedAt": zod.coerce.date()
+})
+
+
+export const FlagRoadAssignmentParams = zod.object({
+  "assignmentId": zod.coerce.string().uuid()
+})
+
+export const FlagRoadAssignmentBody = zod.object({
+  "note": zod.string().optional(),
+  "reason": zod.string().optional(),
+  "matchId": zod.string().uuid().optional().describe('Required for FLAGGED; identifies the specific eligible shared road opportunity.')
+})
+
+export const FlagRoadAssignmentResponse = zod.object({
+  "id": zod.string().uuid(),
+  "capacityOfferId": zod.string().uuid(),
+  "companyId": zod.string().uuid(),
+  "driverUserId": zod.string(),
+  "assignedByUserId": zod.string(),
+  "status": zod.enum(['ASSIGNED', 'CONFIRMED', 'FLAGGED']),
+  "operationalNote": zod.string().nullish(),
+  "flaggedReason": zod.string().nullish(),
+  "flaggedMatchId": zod.string().uuid().nullish(),
+  "confirmedAt": zod.coerce.date().nullish(),
+  "createdAt": zod.coerce.date(),
+  "updatedAt": zod.coerce.date()
+})
+
+
+export const listRoadMatchesQueryPageDefault = 1;
+
+export const listRoadMatchesQueryPageSizeDefault = 25;
+export const listRoadMatchesQueryPageSizeMax = 100;
+
+
+
+export const ListRoadMatchesQueryParams = zod.object({
+  "page": zod.coerce.number().int().min(1).default(listRoadMatchesQueryPageDefault),
+  "pageSize": zod.coerce.number().int().min(1).max(listRoadMatchesQueryPageSizeMax).default(listRoadMatchesQueryPageSizeDefault)
+})
+
+export const ListRoadMatchesResponse = zod.object({
+  "items": zod.array(zod.object({
+  "id": zod.string().uuid(),
+  "status": zod.enum(['NEW', 'INTEREST_SENT', 'CONNECTED', 'DECLINED', 'EXPIRED']),
+  "totalScore": zod.number(),
+  "calculationVersion": zod.literal("road-v1"),
+  "explanation": zod.string(),
+  "cargoListingId": zod.string().uuid(),
+  "capacityOfferId": zod.string().uuid(),
+  "evaluationInputs": zod.record(zod.string(), zod.string()),
+  "projection": zod.object({
+  "cargoTypeBand": zod.string(),
+  "originRegion": zod.string(),
+  "destinationRegion": zod.string(),
+  "loadingDateBand": zod.string(),
+  "loadingTimeWindowBand": zod.string(),
+  "weightBand": zod.string(),
+  "equipmentBand": zod.string(),
+  "temperatureBand": zod.string(),
+  "adrBand": zod.string(),
+  "dimensionalRequirementsBand": zod.string(),
+  "freeAreaBand": zod.string(),
+  "freeTimeBand": zod.string(),
+  "freeCapacityBand": zod.string(),
+  "capacityEquipmentBand": zod.string(),
+  "capacityTemperatureBand": zod.string(),
+  "capacityAdrBand": zod.string()
+}).describe('Privacy-safe planning bands derived from the joined road cargo, capacity, location, and requirement rows.'),
+  "createdAt": zod.coerce.date(),
+  "updatedAt": zod.coerce.date()
+})),
+  "page": zod.number().int(),
+  "pageSize": zod.number().int(),
+  "total": zod.number().int()
+})
+
+
+export const GetRoadMatchParams = zod.object({
+  "matchId": zod.coerce.string().uuid()
+})
+
+export const GetRoadMatchResponse = zod.object({
+  "id": zod.string().uuid(),
+  "status": zod.enum(['NEW', 'INTEREST_SENT', 'CONNECTED', 'DECLINED', 'EXPIRED']),
+  "totalScore": zod.number(),
+  "calculationVersion": zod.literal("road-v1"),
+  "explanation": zod.string(),
+  "cargoListingId": zod.string().uuid(),
+  "capacityOfferId": zod.string().uuid(),
+  "evaluationInputs": zod.record(zod.string(), zod.string()),
+  "projection": zod.object({
+  "cargoTypeBand": zod.string(),
+  "originRegion": zod.string(),
+  "destinationRegion": zod.string(),
+  "loadingDateBand": zod.string(),
+  "loadingTimeWindowBand": zod.string(),
+  "weightBand": zod.string(),
+  "equipmentBand": zod.string(),
+  "temperatureBand": zod.string(),
+  "adrBand": zod.string(),
+  "dimensionalRequirementsBand": zod.string(),
+  "freeAreaBand": zod.string(),
+  "freeTimeBand": zod.string(),
+  "freeCapacityBand": zod.string(),
+  "capacityEquipmentBand": zod.string(),
+  "capacityTemperatureBand": zod.string(),
+  "capacityAdrBand": zod.string()
+}).describe('Privacy-safe planning bands derived from the joined road cargo, capacity, location, and requirement rows.'),
+  "createdAt": zod.coerce.date(),
+  "updatedAt": zod.coerce.date()
+})
+
+
+/**
  * @summary List the current company's vessels
  */
 export const listMyVesselsQueryPageDefault = 1;
@@ -237,7 +1581,7 @@ export const ListMyVesselsQueryParams = zod.object({
   "page": zod.coerce.number().int().min(1).default(listMyVesselsQueryPageDefault),
   "pageSize": zod.coerce.number().int().min(1).max(listMyVesselsQueryPageSizeMax).default(listMyVesselsQueryPageSizeDefault),
   "activeOnly": zod.coerce.boolean().default(listMyVesselsQueryActiveOnlyDefault),
-  "transportMode": zod.enum(['INLAND_WATERWAY', 'DEEPSEA_BULK']).optional()
+  "transportMode": zod.enum(['INLAND_WATERWAY', 'DEEPSEA_BULK', 'ROAD']).optional()
 })
 
 
@@ -262,7 +1606,7 @@ export const ListMyVesselsResponse = zod.object({
   "items": zod.array(zod.object({
   "id": zod.string().uuid(),
   "companyId": zod.string().uuid(),
-  "transportMode": zod.enum(['INLAND_WATERWAY', 'DEEPSEA_BULK']).describe('Transport mode. Omitted request values default to INLAND_WATERWAY.'),
+  "transportMode": zod.enum(['INLAND_WATERWAY', 'DEEPSEA_BULK', 'ROAD']).describe('Transport mode. Omitted request values default to INLAND_WATERWAY.'),
   "vesselName": zod.string().min(1),
   "eniNumber": zod.string().nullish(),
   "vesselType": zod.enum(['DRY_CARGO', 'TANKER', 'CONTAINER', 'PUSH_BARGE', 'OTHER']),
@@ -311,7 +1655,7 @@ export const createMyVesselBodyDeepseaProfileGearConfigurationMax = 120;
 export const createMyVesselBodyActiveDefault = true;
 
 export const CreateMyVesselBody = zod.object({
-  "transportMode": zod.enum(['INLAND_WATERWAY', 'DEEPSEA_BULK']).default(createMyVesselBodyTransportModeDefault).describe('Transport mode. Omitted request values default to INLAND_WATERWAY.'),
+  "transportMode": zod.enum(['INLAND_WATERWAY', 'DEEPSEA_BULK', 'ROAD']).default(createMyVesselBodyTransportModeDefault).describe('Transport mode. Omitted request values default to INLAND_WATERWAY.'),
   "vesselName": zod.string().min(1),
   "eniNumber": zod.string().optional(),
   "vesselType": zod.enum(['DRY_CARGO', 'TANKER', 'CONTAINER', 'PUSH_BARGE', 'OTHER']),
@@ -352,7 +1696,7 @@ export const createMyVesselResponseDeepseaProfileOneGearConfigurationMax = 120;
 export const CreateMyVesselResponse = zod.object({
   "id": zod.string().uuid(),
   "companyId": zod.string().uuid(),
-  "transportMode": zod.enum(['INLAND_WATERWAY', 'DEEPSEA_BULK']).describe('Transport mode. Omitted request values default to INLAND_WATERWAY.'),
+  "transportMode": zod.enum(['INLAND_WATERWAY', 'DEEPSEA_BULK', 'ROAD']).describe('Transport mode. Omitted request values default to INLAND_WATERWAY.'),
   "vesselName": zod.string().min(1),
   "eniNumber": zod.string().nullish(),
   "vesselType": zod.enum(['DRY_CARGO', 'TANKER', 'CONTAINER', 'PUSH_BARGE', 'OTHER']),
@@ -403,7 +1747,7 @@ export const getMyVesselResponseDeepseaProfileOneGearConfigurationMax = 120;
 export const GetMyVesselResponse = zod.object({
   "id": zod.string().uuid(),
   "companyId": zod.string().uuid(),
-  "transportMode": zod.enum(['INLAND_WATERWAY', 'DEEPSEA_BULK']).describe('Transport mode. Omitted request values default to INLAND_WATERWAY.'),
+  "transportMode": zod.enum(['INLAND_WATERWAY', 'DEEPSEA_BULK', 'ROAD']).describe('Transport mode. Omitted request values default to INLAND_WATERWAY.'),
   "vesselName": zod.string().min(1),
   "eniNumber": zod.string().nullish(),
   "vesselType": zod.enum(['DRY_CARGO', 'TANKER', 'CONTAINER', 'PUSH_BARGE', 'OTHER']),
@@ -452,7 +1796,7 @@ export const updateMyVesselBodyDeepseaProfileOneGearConfigurationMax = 120;
 
 
 export const UpdateMyVesselBody = zod.object({
-  "transportMode": zod.enum(['INLAND_WATERWAY', 'DEEPSEA_BULK']).optional().describe('Transport mode. Omitted request values default to INLAND_WATERWAY.'),
+  "transportMode": zod.enum(['INLAND_WATERWAY', 'DEEPSEA_BULK', 'ROAD']).optional().describe('Transport mode. Omitted request values default to INLAND_WATERWAY.'),
   "vesselName": zod.string().min(1).optional(),
   "eniNumber": zod.string().nullish(),
   "vesselType": zod.enum(['DRY_CARGO', 'TANKER', 'CONTAINER', 'PUSH_BARGE', 'OTHER']).optional(),
@@ -493,7 +1837,7 @@ export const updateMyVesselResponseDeepseaProfileOneGearConfigurationMax = 120;
 export const UpdateMyVesselResponse = zod.object({
   "id": zod.string().uuid(),
   "companyId": zod.string().uuid(),
-  "transportMode": zod.enum(['INLAND_WATERWAY', 'DEEPSEA_BULK']).describe('Transport mode. Omitted request values default to INLAND_WATERWAY.'),
+  "transportMode": zod.enum(['INLAND_WATERWAY', 'DEEPSEA_BULK', 'ROAD']).describe('Transport mode. Omitted request values default to INLAND_WATERWAY.'),
   "vesselName": zod.string().min(1),
   "eniNumber": zod.string().nullish(),
   "vesselType": zod.enum(['DRY_CARGO', 'TANKER', 'CONTAINER', 'PUSH_BARGE', 'OTHER']),
@@ -545,7 +1889,7 @@ export const deactivateMyVesselResponseDeepseaProfileOneGearConfigurationMax = 1
 export const DeactivateMyVesselResponse = zod.object({
   "id": zod.string().uuid(),
   "companyId": zod.string().uuid(),
-  "transportMode": zod.enum(['INLAND_WATERWAY', 'DEEPSEA_BULK']).describe('Transport mode. Omitted request values default to INLAND_WATERWAY.'),
+  "transportMode": zod.enum(['INLAND_WATERWAY', 'DEEPSEA_BULK', 'ROAD']).describe('Transport mode. Omitted request values default to INLAND_WATERWAY.'),
   "vesselName": zod.string().min(1),
   "eniNumber": zod.string().nullish(),
   "vesselType": zod.enum(['DRY_CARGO', 'TANKER', 'CONTAINER', 'PUSH_BARGE', 'OTHER']),
@@ -874,7 +2218,7 @@ export const listMyCargoQueryPageSizeMax = 100;
 
 export const ListMyCargoQueryParams = zod.object({
   "listingStatus": zod.enum(['DRAFT', 'ACTIVE', 'WITHDRAWN', 'EXPIRED', 'CLOSED']).optional(),
-  "transportMode": zod.enum(['INLAND_WATERWAY', 'DEEPSEA_BULK']).optional(),
+  "transportMode": zod.enum(['INLAND_WATERWAY', 'DEEPSEA_BULK', 'ROAD']).optional(),
   "page": zod.coerce.number().int().min(1).default(listMyCargoQueryPageDefault),
   "pageSize": zod.coerce.number().int().min(1).max(listMyCargoQueryPageSizeMax).default(listMyCargoQueryPageSizeDefault)
 })
@@ -901,7 +2245,7 @@ export const ListMyCargoResponse = zod.object({
   "items": zod.array(zod.object({
   "id": zod.string().uuid(),
   "companyId": zod.string().uuid(),
-  "transportMode": zod.enum(['INLAND_WATERWAY', 'DEEPSEA_BULK']).describe('Transport mode. Omitted request values default to INLAND_WATERWAY.'),
+  "transportMode": zod.enum(['INLAND_WATERWAY', 'DEEPSEA_BULK', 'ROAD']).describe('Transport mode. Omitted request values default to INLAND_WATERWAY.'),
   "cargoName": zod.string().min(1),
   "cargoType": zod.string().min(1),
   "weightTonnes": zod.number().gt(listMyCargoResponseItemsItemWeightTonnesExclusiveMin),
@@ -910,7 +2254,7 @@ export const ListMyCargoResponse = zod.object({
   "loadingFrom": zod.coerce.date(),
   "loadingUntil": zod.coerce.date(),
   "expectedUnloadingDate": zod.coerce.date().nullish(),
-  "requiredVesselType": zod.enum(['DRY_CARGO', 'TANKER', 'CONTAINER', 'PUSH_BARGE', 'OTHER']),
+  "requiredVesselType": zod.union([zod.enum(['DRY_CARGO', 'TANKER', 'CONTAINER', 'PUSH_BARGE', 'OTHER']),zod.null()]).optional(),
   "specialRequirements": zod.string().nullish(),
   "visibility": zod.enum(['PRIVATE', 'OPEN_NETWORK']).describe('Pilot visibility is intentionally limited to private and open discovery.'),
   "notes": zod.string().nullish(),
@@ -955,7 +2299,7 @@ export const createMyCargoBodyDeepseaRequirementRequiredGearMax = 120;
 
 
 export const CreateMyCargoBody = zod.object({
-  "transportMode": zod.enum(['INLAND_WATERWAY', 'DEEPSEA_BULK']).default(createMyCargoBodyTransportModeDefault).describe('Transport mode. Omitted request values default to INLAND_WATERWAY.'),
+  "transportMode": zod.enum(['INLAND_WATERWAY', 'DEEPSEA_BULK', 'ROAD']).default(createMyCargoBodyTransportModeDefault).describe('Transport mode. Omitted request values default to INLAND_WATERWAY.'),
   "cargoName": zod.string().min(1),
   "cargoType": zod.string().min(1),
   "weightTonnes": zod.number().gt(createMyCargoBodyWeightTonnesExclusiveMin),
@@ -1000,7 +2344,7 @@ export const createMyCargoResponseDeepseaRequirementOneRequiredGearMax = 120;
 export const CreateMyCargoResponse = zod.object({
   "id": zod.string().uuid(),
   "companyId": zod.string().uuid(),
-  "transportMode": zod.enum(['INLAND_WATERWAY', 'DEEPSEA_BULK']).describe('Transport mode. Omitted request values default to INLAND_WATERWAY.'),
+  "transportMode": zod.enum(['INLAND_WATERWAY', 'DEEPSEA_BULK', 'ROAD']).describe('Transport mode. Omitted request values default to INLAND_WATERWAY.'),
   "cargoName": zod.string().min(1),
   "cargoType": zod.string().min(1),
   "weightTonnes": zod.number().gt(createMyCargoResponseWeightTonnesExclusiveMin),
@@ -1009,7 +2353,7 @@ export const CreateMyCargoResponse = zod.object({
   "loadingFrom": zod.coerce.date(),
   "loadingUntil": zod.coerce.date(),
   "expectedUnloadingDate": zod.coerce.date().nullish(),
-  "requiredVesselType": zod.enum(['DRY_CARGO', 'TANKER', 'CONTAINER', 'PUSH_BARGE', 'OTHER']),
+  "requiredVesselType": zod.union([zod.enum(['DRY_CARGO', 'TANKER', 'CONTAINER', 'PUSH_BARGE', 'OTHER']),zod.null()]).optional(),
   "specialRequirements": zod.string().nullish(),
   "visibility": zod.enum(['PRIVATE', 'OPEN_NETWORK']).describe('Pilot visibility is intentionally limited to private and open discovery.'),
   "notes": zod.string().nullish(),
@@ -1055,7 +2399,7 @@ export const getMyCargoResponseDeepseaRequirementOneRequiredGearMax = 120;
 export const GetMyCargoResponse = zod.object({
   "id": zod.string().uuid(),
   "companyId": zod.string().uuid(),
-  "transportMode": zod.enum(['INLAND_WATERWAY', 'DEEPSEA_BULK']).describe('Transport mode. Omitted request values default to INLAND_WATERWAY.'),
+  "transportMode": zod.enum(['INLAND_WATERWAY', 'DEEPSEA_BULK', 'ROAD']).describe('Transport mode. Omitted request values default to INLAND_WATERWAY.'),
   "cargoName": zod.string().min(1),
   "cargoType": zod.string().min(1),
   "weightTonnes": zod.number().gt(getMyCargoResponseWeightTonnesExclusiveMin),
@@ -1064,7 +2408,7 @@ export const GetMyCargoResponse = zod.object({
   "loadingFrom": zod.coerce.date(),
   "loadingUntil": zod.coerce.date(),
   "expectedUnloadingDate": zod.coerce.date().nullish(),
-  "requiredVesselType": zod.enum(['DRY_CARGO', 'TANKER', 'CONTAINER', 'PUSH_BARGE', 'OTHER']),
+  "requiredVesselType": zod.union([zod.enum(['DRY_CARGO', 'TANKER', 'CONTAINER', 'PUSH_BARGE', 'OTHER']),zod.null()]).optional(),
   "specialRequirements": zod.string().nullish(),
   "visibility": zod.enum(['PRIVATE', 'OPEN_NETWORK']).describe('Pilot visibility is intentionally limited to private and open discovery.'),
   "notes": zod.string().nullish(),
@@ -1108,7 +2452,7 @@ export const updateMyCargoBodyDeepseaRequirementOneRequiredGearMax = 120;
 
 
 export const UpdateMyCargoBody = zod.object({
-  "transportMode": zod.enum(['INLAND_WATERWAY', 'DEEPSEA_BULK']).optional().describe('Transport mode. Omitted request values default to INLAND_WATERWAY.'),
+  "transportMode": zod.enum(['INLAND_WATERWAY', 'DEEPSEA_BULK', 'ROAD']).optional().describe('Transport mode. Omitted request values default to INLAND_WATERWAY.'),
   "cargoName": zod.string().min(1).optional(),
   "cargoType": zod.string().min(1).optional(),
   "weightTonnes": zod.number().gt(updateMyCargoBodyWeightTonnesExclusiveMin).optional(),
@@ -1117,7 +2461,7 @@ export const UpdateMyCargoBody = zod.object({
   "loadingFrom": zod.coerce.date().optional(),
   "loadingUntil": zod.coerce.date().optional(),
   "expectedUnloadingDate": zod.coerce.date().nullish(),
-  "requiredVesselType": zod.enum(['DRY_CARGO', 'TANKER', 'CONTAINER', 'PUSH_BARGE', 'OTHER']).optional(),
+  "requiredVesselType": zod.union([zod.enum(['DRY_CARGO', 'TANKER', 'CONTAINER', 'PUSH_BARGE', 'OTHER']),zod.null()]).optional(),
   "specialRequirements": zod.string().nullish(),
   "visibility": zod.enum(['PRIVATE', 'OPEN_NETWORK']).optional().describe('Pilot visibility is intentionally limited to private and open discovery.'),
   "notes": zod.string().nullish(),
@@ -1153,7 +2497,7 @@ export const updateMyCargoResponseDeepseaRequirementOneRequiredGearMax = 120;
 export const UpdateMyCargoResponse = zod.object({
   "id": zod.string().uuid(),
   "companyId": zod.string().uuid(),
-  "transportMode": zod.enum(['INLAND_WATERWAY', 'DEEPSEA_BULK']).describe('Transport mode. Omitted request values default to INLAND_WATERWAY.'),
+  "transportMode": zod.enum(['INLAND_WATERWAY', 'DEEPSEA_BULK', 'ROAD']).describe('Transport mode. Omitted request values default to INLAND_WATERWAY.'),
   "cargoName": zod.string().min(1),
   "cargoType": zod.string().min(1),
   "weightTonnes": zod.number().gt(updateMyCargoResponseWeightTonnesExclusiveMin),
@@ -1162,7 +2506,7 @@ export const UpdateMyCargoResponse = zod.object({
   "loadingFrom": zod.coerce.date(),
   "loadingUntil": zod.coerce.date(),
   "expectedUnloadingDate": zod.coerce.date().nullish(),
-  "requiredVesselType": zod.enum(['DRY_CARGO', 'TANKER', 'CONTAINER', 'PUSH_BARGE', 'OTHER']),
+  "requiredVesselType": zod.union([zod.enum(['DRY_CARGO', 'TANKER', 'CONTAINER', 'PUSH_BARGE', 'OTHER']),zod.null()]).optional(),
   "specialRequirements": zod.string().nullish(),
   "visibility": zod.enum(['PRIVATE', 'OPEN_NETWORK']).describe('Pilot visibility is intentionally limited to private and open discovery.'),
   "notes": zod.string().nullish(),
@@ -1208,7 +2552,7 @@ export const withdrawMyCargoResponseDeepseaRequirementOneRequiredGearMax = 120;
 export const WithdrawMyCargoResponse = zod.object({
   "id": zod.string().uuid(),
   "companyId": zod.string().uuid(),
-  "transportMode": zod.enum(['INLAND_WATERWAY', 'DEEPSEA_BULK']).describe('Transport mode. Omitted request values default to INLAND_WATERWAY.'),
+  "transportMode": zod.enum(['INLAND_WATERWAY', 'DEEPSEA_BULK', 'ROAD']).describe('Transport mode. Omitted request values default to INLAND_WATERWAY.'),
   "cargoName": zod.string().min(1),
   "cargoType": zod.string().min(1),
   "weightTonnes": zod.number().gt(withdrawMyCargoResponseWeightTonnesExclusiveMin),
@@ -1217,7 +2561,7 @@ export const WithdrawMyCargoResponse = zod.object({
   "loadingFrom": zod.coerce.date(),
   "loadingUntil": zod.coerce.date(),
   "expectedUnloadingDate": zod.coerce.date().nullish(),
-  "requiredVesselType": zod.enum(['DRY_CARGO', 'TANKER', 'CONTAINER', 'PUSH_BARGE', 'OTHER']),
+  "requiredVesselType": zod.union([zod.enum(['DRY_CARGO', 'TANKER', 'CONTAINER', 'PUSH_BARGE', 'OTHER']),zod.null()]).optional(),
   "specialRequirements": zod.string().nullish(),
   "visibility": zod.enum(['PRIVATE', 'OPEN_NETWORK']).describe('Pilot visibility is intentionally limited to private and open discovery.'),
   "notes": zod.string().nullish(),
@@ -1263,7 +2607,7 @@ export const closeMyCargoResponseDeepseaRequirementOneRequiredGearMax = 120;
 export const CloseMyCargoResponse = zod.object({
   "id": zod.string().uuid(),
   "companyId": zod.string().uuid(),
-  "transportMode": zod.enum(['INLAND_WATERWAY', 'DEEPSEA_BULK']).describe('Transport mode. Omitted request values default to INLAND_WATERWAY.'),
+  "transportMode": zod.enum(['INLAND_WATERWAY', 'DEEPSEA_BULK', 'ROAD']).describe('Transport mode. Omitted request values default to INLAND_WATERWAY.'),
   "cargoName": zod.string().min(1),
   "cargoType": zod.string().min(1),
   "weightTonnes": zod.number().gt(closeMyCargoResponseWeightTonnesExclusiveMin),
@@ -1272,7 +2616,7 @@ export const CloseMyCargoResponse = zod.object({
   "loadingFrom": zod.coerce.date(),
   "loadingUntil": zod.coerce.date(),
   "expectedUnloadingDate": zod.coerce.date().nullish(),
-  "requiredVesselType": zod.enum(['DRY_CARGO', 'TANKER', 'CONTAINER', 'PUSH_BARGE', 'OTHER']),
+  "requiredVesselType": zod.union([zod.enum(['DRY_CARGO', 'TANKER', 'CONTAINER', 'PUSH_BARGE', 'OTHER']),zod.null()]).optional(),
   "specialRequirements": zod.string().nullish(),
   "visibility": zod.enum(['PRIVATE', 'OPEN_NETWORK']).describe('Pilot visibility is intentionally limited to private and open discovery.'),
   "notes": zod.string().nullish(),
@@ -1302,7 +2646,7 @@ export const listMyCapacityQueryPageSizeMax = 100;
 
 export const ListMyCapacityQueryParams = zod.object({
   "listingStatus": zod.enum(['DRAFT', 'ACTIVE', 'WITHDRAWN', 'EXPIRED', 'CLOSED']).optional(),
-  "transportMode": zod.enum(['INLAND_WATERWAY', 'DEEPSEA_BULK']).optional(),
+  "transportMode": zod.enum(['INLAND_WATERWAY', 'DEEPSEA_BULK', 'ROAD']).optional(),
   "page": zod.coerce.number().int().min(1).default(listMyCapacityQueryPageDefault),
   "pageSize": zod.coerce.number().int().min(1).max(listMyCapacityQueryPageSizeMax).default(listMyCapacityQueryPageSizeDefault)
 })
@@ -1335,8 +2679,8 @@ export const ListMyCapacityResponse = zod.object({
   "items": zod.array(zod.object({
   "id": zod.string().uuid(),
   "companyId": zod.string().uuid(),
-  "transportMode": zod.enum(['INLAND_WATERWAY', 'DEEPSEA_BULK']).describe('Transport mode. Omitted request values default to INLAND_WATERWAY.'),
-  "vesselId": zod.string().uuid(),
+  "transportMode": zod.enum(['INLAND_WATERWAY', 'DEEPSEA_BULK', 'ROAD']).describe('Transport mode. Omitted request values default to INLAND_WATERWAY.'),
+  "vesselId": zod.union([zod.string().uuid(),zod.null()]),
   "locationId": zod.string().uuid(),
   "availableFrom": zod.coerce.date(),
   "availableUntil": zod.coerce.date(),
@@ -1398,7 +2742,7 @@ export const createMyCapacityBodyDeepseaExtensionPreviousVoyageContextMax = 4000
 
 
 export const CreateMyCapacityBody = zod.object({
-  "transportMode": zod.enum(['INLAND_WATERWAY', 'DEEPSEA_BULK']).default(createMyCapacityBodyTransportModeDefault).describe('Transport mode. Omitted request values default to INLAND_WATERWAY.'),
+  "transportMode": zod.enum(['INLAND_WATERWAY', 'DEEPSEA_BULK', 'ROAD']).default(createMyCapacityBodyTransportModeDefault).describe('Transport mode. Omitted request values default to INLAND_WATERWAY.'),
   "vesselId": zod.string().uuid(),
   "locationId": zod.string().uuid(),
   "availableFrom": zod.coerce.date(),
@@ -1452,8 +2796,8 @@ export const createMyCapacityResponseDeepseaExtensionOnePreviousVoyageContextMax
 export const CreateMyCapacityResponse = zod.object({
   "id": zod.string().uuid(),
   "companyId": zod.string().uuid(),
-  "transportMode": zod.enum(['INLAND_WATERWAY', 'DEEPSEA_BULK']).describe('Transport mode. Omitted request values default to INLAND_WATERWAY.'),
-  "vesselId": zod.string().uuid(),
+  "transportMode": zod.enum(['INLAND_WATERWAY', 'DEEPSEA_BULK', 'ROAD']).describe('Transport mode. Omitted request values default to INLAND_WATERWAY.'),
+  "vesselId": zod.union([zod.string().uuid(),zod.null()]),
   "locationId": zod.string().uuid(),
   "availableFrom": zod.coerce.date(),
   "availableUntil": zod.coerce.date(),
@@ -1635,8 +2979,8 @@ export const getMyCapacityResponseDeepseaExtensionOnePreviousVoyageContextMax = 
 export const GetMyCapacityResponse = zod.object({
   "id": zod.string().uuid(),
   "companyId": zod.string().uuid(),
-  "transportMode": zod.enum(['INLAND_WATERWAY', 'DEEPSEA_BULK']).describe('Transport mode. Omitted request values default to INLAND_WATERWAY.'),
-  "vesselId": zod.string().uuid(),
+  "transportMode": zod.enum(['INLAND_WATERWAY', 'DEEPSEA_BULK', 'ROAD']).describe('Transport mode. Omitted request values default to INLAND_WATERWAY.'),
+  "vesselId": zod.union([zod.string().uuid(),zod.null()]),
   "locationId": zod.string().uuid(),
   "availableFrom": zod.coerce.date(),
   "availableUntil": zod.coerce.date(),
@@ -1695,7 +3039,7 @@ export const updateMyCapacityBodyDeepseaExtensionOnePreviousVoyageContextMax = 4
 
 
 export const UpdateMyCapacityBody = zod.object({
-  "transportMode": zod.enum(['INLAND_WATERWAY', 'DEEPSEA_BULK']).optional().describe('Transport mode. Omitted request values default to INLAND_WATERWAY.'),
+  "transportMode": zod.enum(['INLAND_WATERWAY', 'DEEPSEA_BULK', 'ROAD']).optional().describe('Transport mode. Omitted request values default to INLAND_WATERWAY.'),
   "vesselId": zod.string().uuid().optional(),
   "locationId": zod.string().uuid().optional(),
   "availableFrom": zod.coerce.date().optional(),
@@ -1747,8 +3091,8 @@ export const updateMyCapacityResponseDeepseaExtensionOnePreviousVoyageContextMax
 export const UpdateMyCapacityResponse = zod.object({
   "id": zod.string().uuid(),
   "companyId": zod.string().uuid(),
-  "transportMode": zod.enum(['INLAND_WATERWAY', 'DEEPSEA_BULK']).describe('Transport mode. Omitted request values default to INLAND_WATERWAY.'),
-  "vesselId": zod.string().uuid(),
+  "transportMode": zod.enum(['INLAND_WATERWAY', 'DEEPSEA_BULK', 'ROAD']).describe('Transport mode. Omitted request values default to INLAND_WATERWAY.'),
+  "vesselId": zod.union([zod.string().uuid(),zod.null()]),
   "locationId": zod.string().uuid(),
   "availableFrom": zod.coerce.date(),
   "availableUntil": zod.coerce.date(),
@@ -1809,8 +3153,8 @@ export const withdrawMyCapacityResponseDeepseaExtensionOnePreviousVoyageContextM
 export const WithdrawMyCapacityResponse = zod.object({
   "id": zod.string().uuid(),
   "companyId": zod.string().uuid(),
-  "transportMode": zod.enum(['INLAND_WATERWAY', 'DEEPSEA_BULK']).describe('Transport mode. Omitted request values default to INLAND_WATERWAY.'),
-  "vesselId": zod.string().uuid(),
+  "transportMode": zod.enum(['INLAND_WATERWAY', 'DEEPSEA_BULK', 'ROAD']).describe('Transport mode. Omitted request values default to INLAND_WATERWAY.'),
+  "vesselId": zod.union([zod.string().uuid(),zod.null()]),
   "locationId": zod.string().uuid(),
   "availableFrom": zod.coerce.date(),
   "availableUntil": zod.coerce.date(),
@@ -1871,8 +3215,8 @@ export const closeMyCapacityResponseDeepseaExtensionOnePreviousVoyageContextMax 
 export const CloseMyCapacityResponse = zod.object({
   "id": zod.string().uuid(),
   "companyId": zod.string().uuid(),
-  "transportMode": zod.enum(['INLAND_WATERWAY', 'DEEPSEA_BULK']).describe('Transport mode. Omitted request values default to INLAND_WATERWAY.'),
-  "vesselId": zod.string().uuid(),
+  "transportMode": zod.enum(['INLAND_WATERWAY', 'DEEPSEA_BULK', 'ROAD']).describe('Transport mode. Omitted request values default to INLAND_WATERWAY.'),
+  "vesselId": zod.union([zod.string().uuid(),zod.null()]),
   "locationId": zod.string().uuid(),
   "availableFrom": zod.coerce.date(),
   "availableUntil": zod.coerce.date(),
@@ -3582,7 +4926,7 @@ export const listMarketplaceQueryPageSizeMax = 100;
 
 export const ListMarketplaceQueryParams = zod.object({
   "listingType": zod.enum(['CARGO', 'CAPACITY']).optional(),
-  "transportMode": zod.enum(['INLAND_WATERWAY', 'DEEPSEA_BULK']).optional(),
+  "transportMode": zod.enum(['INLAND_WATERWAY', 'DEEPSEA_BULK', 'ROAD']).optional(),
   "vesselType": zod.enum(['DRY_CARGO', 'TANKER', 'CONTAINER', 'PUSH_BARGE', 'OTHER']).optional(),
   "cargoType": zod.coerce.string().optional(),
   "availableFrom": zod.date().optional(),
@@ -3593,12 +4937,12 @@ export const ListMarketplaceQueryParams = zod.object({
 export const ListMarketplaceResponse = zod.object({
   "items": zod.array(zod.union([zod.object({
   "id": zod.string().uuid(),
-  "transportMode": zod.enum(['INLAND_WATERWAY', 'DEEPSEA_BULK']).describe('Transport mode. Omitted request values default to INLAND_WATERWAY.'),
+  "transportMode": zod.enum(['INLAND_WATERWAY', 'DEEPSEA_BULK', 'ROAD']).describe('Transport mode. Omitted request values default to INLAND_WATERWAY.'),
   "listingType": zod.enum(['CARGO']),
   "cargoTypeBand": zod.string(),
   "loadingRegion": zod.string(),
   "destinationRegion": zod.string(),
-  "requiredVesselType": zod.enum(['DRY_CARGO', 'TANKER', 'CONTAINER', 'PUSH_BARGE', 'OTHER']),
+  "requiredVesselType": zod.union([zod.enum(['DRY_CARGO', 'TANKER', 'CONTAINER', 'PUSH_BARGE', 'OTHER']),zod.null()]),
   "tonnageBand": zod.string().describe('Anonymized cargo tonnage band, never an exact weight.'),
   "timeBand": zod.string().describe('Anonymized loading-window band, never exact timestamps.'),
   "distanceBand": zod.string().describe('Broad approximate positioning band, not a route or sailing distance.'),
@@ -3607,9 +4951,9 @@ export const ListMarketplaceResponse = zod.object({
   "deepseaRequirementsBand": zod.string().optional()
 }).describe('Privacy-safe open-network cargo representation. It intentionally\ncontains bands rather than exact tonnage, timestamps, coordinates, or\nowner-entered notes.\n'),zod.object({
   "id": zod.string().uuid(),
-  "transportMode": zod.enum(['INLAND_WATERWAY', 'DEEPSEA_BULK']).describe('Transport mode. Omitted request values default to INLAND_WATERWAY.'),
+  "transportMode": zod.enum(['INLAND_WATERWAY', 'DEEPSEA_BULK', 'ROAD']).describe('Transport mode. Omitted request values default to INLAND_WATERWAY.'),
   "listingType": zod.enum(['CAPACITY']),
-  "vesselType": zod.enum(['DRY_CARGO', 'TANKER', 'CONTAINER', 'PUSH_BARGE', 'OTHER']),
+  "vesselType": zod.union([zod.enum(['DRY_CARGO', 'TANKER', 'CONTAINER', 'PUSH_BARGE', 'OTHER']),zod.null()]),
   "availabilityType": zod.enum(['FULLY_EMPTY', 'PARTIALLY_AVAILABLE']),
   "cargoCompatibilityBand": zod.string(),
   "directionBand": zod.string(),
@@ -3644,7 +4988,7 @@ export const listMyMatchesQueryPageSizeMax = 100;
 
 export const ListMyMatchesQueryParams = zod.object({
   "status": zod.enum(['NEW', 'INTEREST_SENT', 'CONNECTED', 'DECLINED', 'EXPIRED']).optional(),
-  "transportMode": zod.enum(['INLAND_WATERWAY', 'DEEPSEA_BULK']).optional(),
+  "transportMode": zod.enum(['INLAND_WATERWAY', 'DEEPSEA_BULK', 'ROAD']).optional(),
   "page": zod.coerce.number().int().min(1).default(listMyMatchesQueryPageDefault),
   "pageSize": zod.coerce.number().int().min(1).max(listMyMatchesQueryPageSizeMax).default(listMyMatchesQueryPageSizeDefault)
 })
@@ -3681,12 +5025,12 @@ export const ListMyMatchesResponse = zod.object({
   "networkCategory": zod.enum(['OPEN_NETWORK']),
   "cargo": zod.object({
   "id": zod.string().uuid(),
-  "transportMode": zod.enum(['INLAND_WATERWAY', 'DEEPSEA_BULK']).describe('Transport mode. Omitted request values default to INLAND_WATERWAY.'),
+  "transportMode": zod.enum(['INLAND_WATERWAY', 'DEEPSEA_BULK', 'ROAD']).describe('Transport mode. Omitted request values default to INLAND_WATERWAY.'),
   "listingType": zod.enum(['CARGO']),
   "cargoTypeBand": zod.string(),
   "loadingRegion": zod.string(),
   "destinationRegion": zod.string(),
-  "requiredVesselType": zod.enum(['DRY_CARGO', 'TANKER', 'CONTAINER', 'PUSH_BARGE', 'OTHER']),
+  "requiredVesselType": zod.union([zod.enum(['DRY_CARGO', 'TANKER', 'CONTAINER', 'PUSH_BARGE', 'OTHER']),zod.null()]),
   "tonnageBand": zod.string().describe('Anonymized cargo tonnage band, never an exact weight.'),
   "timeBand": zod.string().describe('Anonymized loading-window band, never exact timestamps.'),
   "distanceBand": zod.string().describe('Broad approximate positioning band, not a route or sailing distance.'),
@@ -3696,9 +5040,9 @@ export const ListMyMatchesResponse = zod.object({
 }).describe('Privacy-safe open-network cargo representation. It intentionally\ncontains bands rather than exact tonnage, timestamps, coordinates, or\nowner-entered notes.\n'),
   "capacity": zod.object({
   "id": zod.string().uuid(),
-  "transportMode": zod.enum(['INLAND_WATERWAY', 'DEEPSEA_BULK']).describe('Transport mode. Omitted request values default to INLAND_WATERWAY.'),
+  "transportMode": zod.enum(['INLAND_WATERWAY', 'DEEPSEA_BULK', 'ROAD']).describe('Transport mode. Omitted request values default to INLAND_WATERWAY.'),
   "listingType": zod.enum(['CAPACITY']),
-  "vesselType": zod.enum(['DRY_CARGO', 'TANKER', 'CONTAINER', 'PUSH_BARGE', 'OTHER']),
+  "vesselType": zod.union([zod.enum(['DRY_CARGO', 'TANKER', 'CONTAINER', 'PUSH_BARGE', 'OTHER']),zod.null()]),
   "availabilityType": zod.enum(['FULLY_EMPTY', 'PARTIALLY_AVAILABLE']),
   "cargoCompatibilityBand": zod.string(),
   "directionBand": zod.string(),
@@ -3867,12 +5211,12 @@ export const GetMyMatchResponse = zod.object({
   "networkCategory": zod.enum(['OPEN_NETWORK']),
   "cargo": zod.object({
   "id": zod.string().uuid(),
-  "transportMode": zod.enum(['INLAND_WATERWAY', 'DEEPSEA_BULK']).describe('Transport mode. Omitted request values default to INLAND_WATERWAY.'),
+  "transportMode": zod.enum(['INLAND_WATERWAY', 'DEEPSEA_BULK', 'ROAD']).describe('Transport mode. Omitted request values default to INLAND_WATERWAY.'),
   "listingType": zod.enum(['CARGO']),
   "cargoTypeBand": zod.string(),
   "loadingRegion": zod.string(),
   "destinationRegion": zod.string(),
-  "requiredVesselType": zod.enum(['DRY_CARGO', 'TANKER', 'CONTAINER', 'PUSH_BARGE', 'OTHER']),
+  "requiredVesselType": zod.union([zod.enum(['DRY_CARGO', 'TANKER', 'CONTAINER', 'PUSH_BARGE', 'OTHER']),zod.null()]),
   "tonnageBand": zod.string().describe('Anonymized cargo tonnage band, never an exact weight.'),
   "timeBand": zod.string().describe('Anonymized loading-window band, never exact timestamps.'),
   "distanceBand": zod.string().describe('Broad approximate positioning band, not a route or sailing distance.'),
@@ -3882,9 +5226,9 @@ export const GetMyMatchResponse = zod.object({
 }).describe('Privacy-safe open-network cargo representation. It intentionally\ncontains bands rather than exact tonnage, timestamps, coordinates, or\nowner-entered notes.\n'),
   "capacity": zod.object({
   "id": zod.string().uuid(),
-  "transportMode": zod.enum(['INLAND_WATERWAY', 'DEEPSEA_BULK']).describe('Transport mode. Omitted request values default to INLAND_WATERWAY.'),
+  "transportMode": zod.enum(['INLAND_WATERWAY', 'DEEPSEA_BULK', 'ROAD']).describe('Transport mode. Omitted request values default to INLAND_WATERWAY.'),
   "listingType": zod.enum(['CAPACITY']),
-  "vesselType": zod.enum(['DRY_CARGO', 'TANKER', 'CONTAINER', 'PUSH_BARGE', 'OTHER']),
+  "vesselType": zod.union([zod.enum(['DRY_CARGO', 'TANKER', 'CONTAINER', 'PUSH_BARGE', 'OTHER']),zod.null()]),
   "availabilityType": zod.enum(['FULLY_EMPTY', 'PARTIALLY_AVAILABLE']),
   "cargoCompatibilityBand": zod.string(),
   "directionBand": zod.string(),
@@ -3946,7 +5290,7 @@ export const GetMyMatchResponse = zod.object({
   "ownedCargo": zod.union([zod.object({
   "id": zod.string().uuid(),
   "companyId": zod.string().uuid(),
-  "transportMode": zod.enum(['INLAND_WATERWAY', 'DEEPSEA_BULK']).describe('Transport mode. Omitted request values default to INLAND_WATERWAY.'),
+  "transportMode": zod.enum(['INLAND_WATERWAY', 'DEEPSEA_BULK', 'ROAD']).describe('Transport mode. Omitted request values default to INLAND_WATERWAY.'),
   "cargoName": zod.string().min(1),
   "cargoType": zod.string().min(1),
   "weightTonnes": zod.number().gt(getMyMatchResponseTwoOwnedCargoOneWeightTonnesExclusiveMin),
@@ -3955,7 +5299,7 @@ export const GetMyMatchResponse = zod.object({
   "loadingFrom": zod.coerce.date(),
   "loadingUntil": zod.coerce.date(),
   "expectedUnloadingDate": zod.coerce.date().nullish(),
-  "requiredVesselType": zod.enum(['DRY_CARGO', 'TANKER', 'CONTAINER', 'PUSH_BARGE', 'OTHER']),
+  "requiredVesselType": zod.union([zod.enum(['DRY_CARGO', 'TANKER', 'CONTAINER', 'PUSH_BARGE', 'OTHER']),zod.null()]).optional(),
   "specialRequirements": zod.string().nullish(),
   "visibility": zod.enum(['PRIVATE', 'OPEN_NETWORK']).describe('Pilot visibility is intentionally limited to private and open discovery.'),
   "notes": zod.string().nullish(),
@@ -3974,8 +5318,8 @@ export const GetMyMatchResponse = zod.object({
   "ownedCapacity": zod.union([zod.object({
   "id": zod.string().uuid(),
   "companyId": zod.string().uuid(),
-  "transportMode": zod.enum(['INLAND_WATERWAY', 'DEEPSEA_BULK']).describe('Transport mode. Omitted request values default to INLAND_WATERWAY.'),
-  "vesselId": zod.string().uuid(),
+  "transportMode": zod.enum(['INLAND_WATERWAY', 'DEEPSEA_BULK', 'ROAD']).describe('Transport mode. Omitted request values default to INLAND_WATERWAY.'),
+  "vesselId": zod.union([zod.string().uuid(),zod.null()]),
   "locationId": zod.string().uuid(),
   "availableFrom": zod.coerce.date(),
   "availableUntil": zod.coerce.date(),
@@ -4003,7 +5347,7 @@ export const GetMyMatchResponse = zod.object({
   "connectedCargo": zod.union([zod.object({
   "id": zod.string().uuid(),
   "companyId": zod.string().uuid(),
-  "transportMode": zod.enum(['INLAND_WATERWAY', 'DEEPSEA_BULK']).optional().describe('Transport mode. Omitted request values default to INLAND_WATERWAY.'),
+  "transportMode": zod.enum(['INLAND_WATERWAY', 'DEEPSEA_BULK', 'ROAD']).optional().describe('Transport mode. Omitted request values default to INLAND_WATERWAY.'),
   "cargoName": zod.string(),
   "cargoType": zod.string(),
   "weightTonnes": zod.number(),
@@ -4012,7 +5356,7 @@ export const GetMyMatchResponse = zod.object({
   "loadingFrom": zod.coerce.date(),
   "loadingUntil": zod.coerce.date(),
   "expectedUnloadingDate": zod.coerce.date().nullish(),
-  "requiredVesselType": zod.enum(['DRY_CARGO', 'TANKER', 'CONTAINER', 'PUSH_BARGE', 'OTHER']),
+  "requiredVesselType": zod.union([zod.enum(['DRY_CARGO', 'TANKER', 'CONTAINER', 'PUSH_BARGE', 'OTHER']),zod.null()]),
   "specialRequirements": zod.string().nullish(),
   "visibility": zod.enum(['PRIVATE', 'OPEN_NETWORK']).describe('Pilot visibility is intentionally limited to private and open discovery.'),
   "listingStatus": zod.enum(['DRAFT', 'ACTIVE', 'WITHDRAWN', 'EXPIRED', 'CLOSED']),
@@ -4030,8 +5374,8 @@ export const GetMyMatchResponse = zod.object({
   "connectedCapacity": zod.union([zod.object({
   "id": zod.string().uuid(),
   "companyId": zod.string().uuid(),
-  "transportMode": zod.enum(['INLAND_WATERWAY', 'DEEPSEA_BULK']).optional().describe('Transport mode. Omitted request values default to INLAND_WATERWAY.'),
-  "vesselId": zod.string().uuid(),
+  "transportMode": zod.enum(['INLAND_WATERWAY', 'DEEPSEA_BULK', 'ROAD']).optional().describe('Transport mode. Omitted request values default to INLAND_WATERWAY.'),
+  "vesselId": zod.string().uuid().nullable(),
   "locationId": zod.string().uuid(),
   "availableFrom": zod.coerce.date(),
   "availableUntil": zod.coerce.date(),
@@ -4179,12 +5523,12 @@ export const ActOnMatchResponse = zod.object({
   "networkCategory": zod.enum(['OPEN_NETWORK']),
   "cargo": zod.object({
   "id": zod.string().uuid(),
-  "transportMode": zod.enum(['INLAND_WATERWAY', 'DEEPSEA_BULK']).describe('Transport mode. Omitted request values default to INLAND_WATERWAY.'),
+  "transportMode": zod.enum(['INLAND_WATERWAY', 'DEEPSEA_BULK', 'ROAD']).describe('Transport mode. Omitted request values default to INLAND_WATERWAY.'),
   "listingType": zod.enum(['CARGO']),
   "cargoTypeBand": zod.string(),
   "loadingRegion": zod.string(),
   "destinationRegion": zod.string(),
-  "requiredVesselType": zod.enum(['DRY_CARGO', 'TANKER', 'CONTAINER', 'PUSH_BARGE', 'OTHER']),
+  "requiredVesselType": zod.union([zod.enum(['DRY_CARGO', 'TANKER', 'CONTAINER', 'PUSH_BARGE', 'OTHER']),zod.null()]),
   "tonnageBand": zod.string().describe('Anonymized cargo tonnage band, never an exact weight.'),
   "timeBand": zod.string().describe('Anonymized loading-window band, never exact timestamps.'),
   "distanceBand": zod.string().describe('Broad approximate positioning band, not a route or sailing distance.'),
@@ -4194,9 +5538,9 @@ export const ActOnMatchResponse = zod.object({
 }).describe('Privacy-safe open-network cargo representation. It intentionally\ncontains bands rather than exact tonnage, timestamps, coordinates, or\nowner-entered notes.\n'),
   "capacity": zod.object({
   "id": zod.string().uuid(),
-  "transportMode": zod.enum(['INLAND_WATERWAY', 'DEEPSEA_BULK']).describe('Transport mode. Omitted request values default to INLAND_WATERWAY.'),
+  "transportMode": zod.enum(['INLAND_WATERWAY', 'DEEPSEA_BULK', 'ROAD']).describe('Transport mode. Omitted request values default to INLAND_WATERWAY.'),
   "listingType": zod.enum(['CAPACITY']),
-  "vesselType": zod.enum(['DRY_CARGO', 'TANKER', 'CONTAINER', 'PUSH_BARGE', 'OTHER']),
+  "vesselType": zod.union([zod.enum(['DRY_CARGO', 'TANKER', 'CONTAINER', 'PUSH_BARGE', 'OTHER']),zod.null()]),
   "availabilityType": zod.enum(['FULLY_EMPTY', 'PARTIALLY_AVAILABLE']),
   "cargoCompatibilityBand": zod.string(),
   "directionBand": zod.string(),
@@ -4258,7 +5602,7 @@ export const ActOnMatchResponse = zod.object({
   "ownedCargo": zod.union([zod.object({
   "id": zod.string().uuid(),
   "companyId": zod.string().uuid(),
-  "transportMode": zod.enum(['INLAND_WATERWAY', 'DEEPSEA_BULK']).describe('Transport mode. Omitted request values default to INLAND_WATERWAY.'),
+  "transportMode": zod.enum(['INLAND_WATERWAY', 'DEEPSEA_BULK', 'ROAD']).describe('Transport mode. Omitted request values default to INLAND_WATERWAY.'),
   "cargoName": zod.string().min(1),
   "cargoType": zod.string().min(1),
   "weightTonnes": zod.number().gt(actOnMatchResponseTwoOwnedCargoOneWeightTonnesExclusiveMin),
@@ -4267,7 +5611,7 @@ export const ActOnMatchResponse = zod.object({
   "loadingFrom": zod.coerce.date(),
   "loadingUntil": zod.coerce.date(),
   "expectedUnloadingDate": zod.coerce.date().nullish(),
-  "requiredVesselType": zod.enum(['DRY_CARGO', 'TANKER', 'CONTAINER', 'PUSH_BARGE', 'OTHER']),
+  "requiredVesselType": zod.union([zod.enum(['DRY_CARGO', 'TANKER', 'CONTAINER', 'PUSH_BARGE', 'OTHER']),zod.null()]).optional(),
   "specialRequirements": zod.string().nullish(),
   "visibility": zod.enum(['PRIVATE', 'OPEN_NETWORK']).describe('Pilot visibility is intentionally limited to private and open discovery.'),
   "notes": zod.string().nullish(),
@@ -4286,8 +5630,8 @@ export const ActOnMatchResponse = zod.object({
   "ownedCapacity": zod.union([zod.object({
   "id": zod.string().uuid(),
   "companyId": zod.string().uuid(),
-  "transportMode": zod.enum(['INLAND_WATERWAY', 'DEEPSEA_BULK']).describe('Transport mode. Omitted request values default to INLAND_WATERWAY.'),
-  "vesselId": zod.string().uuid(),
+  "transportMode": zod.enum(['INLAND_WATERWAY', 'DEEPSEA_BULK', 'ROAD']).describe('Transport mode. Omitted request values default to INLAND_WATERWAY.'),
+  "vesselId": zod.union([zod.string().uuid(),zod.null()]),
   "locationId": zod.string().uuid(),
   "availableFrom": zod.coerce.date(),
   "availableUntil": zod.coerce.date(),
@@ -4315,7 +5659,7 @@ export const ActOnMatchResponse = zod.object({
   "connectedCargo": zod.union([zod.object({
   "id": zod.string().uuid(),
   "companyId": zod.string().uuid(),
-  "transportMode": zod.enum(['INLAND_WATERWAY', 'DEEPSEA_BULK']).optional().describe('Transport mode. Omitted request values default to INLAND_WATERWAY.'),
+  "transportMode": zod.enum(['INLAND_WATERWAY', 'DEEPSEA_BULK', 'ROAD']).optional().describe('Transport mode. Omitted request values default to INLAND_WATERWAY.'),
   "cargoName": zod.string(),
   "cargoType": zod.string(),
   "weightTonnes": zod.number(),
@@ -4324,7 +5668,7 @@ export const ActOnMatchResponse = zod.object({
   "loadingFrom": zod.coerce.date(),
   "loadingUntil": zod.coerce.date(),
   "expectedUnloadingDate": zod.coerce.date().nullish(),
-  "requiredVesselType": zod.enum(['DRY_CARGO', 'TANKER', 'CONTAINER', 'PUSH_BARGE', 'OTHER']),
+  "requiredVesselType": zod.union([zod.enum(['DRY_CARGO', 'TANKER', 'CONTAINER', 'PUSH_BARGE', 'OTHER']),zod.null()]),
   "specialRequirements": zod.string().nullish(),
   "visibility": zod.enum(['PRIVATE', 'OPEN_NETWORK']).describe('Pilot visibility is intentionally limited to private and open discovery.'),
   "listingStatus": zod.enum(['DRAFT', 'ACTIVE', 'WITHDRAWN', 'EXPIRED', 'CLOSED']),
@@ -4342,8 +5686,8 @@ export const ActOnMatchResponse = zod.object({
   "connectedCapacity": zod.union([zod.object({
   "id": zod.string().uuid(),
   "companyId": zod.string().uuid(),
-  "transportMode": zod.enum(['INLAND_WATERWAY', 'DEEPSEA_BULK']).optional().describe('Transport mode. Omitted request values default to INLAND_WATERWAY.'),
-  "vesselId": zod.string().uuid(),
+  "transportMode": zod.enum(['INLAND_WATERWAY', 'DEEPSEA_BULK', 'ROAD']).optional().describe('Transport mode. Omitted request values default to INLAND_WATERWAY.'),
+  "vesselId": zod.string().uuid().nullable(),
   "locationId": zod.string().uuid(),
   "availableFrom": zod.coerce.date(),
   "availableUntil": zod.coerce.date(),
@@ -4581,11 +5925,11 @@ export const listMyNotificationsResponseUnreadCountMin = 0;
 export const ListMyNotificationsResponse = zod.object({
   "items": zod.array(zod.object({
   "id": zod.string().uuid(),
-  "type": zod.enum(['NEW_MATCH', 'INTEREST_RECEIVED', 'INTEREST_ACCEPTED', 'INTEREST_DECLINED', 'NEW_MESSAGE', 'LISTING_EXPIRES_SOON']),
+  "type": zod.enum(['NEW_MATCH', 'INTEREST_RECEIVED', 'INTEREST_ACCEPTED', 'INTEREST_DECLINED', 'NEW_MESSAGE', 'LISTING_EXPIRES_SOON', 'ROAD_OPPORTUNITY_FLAGGED']),
   "title": zod.string(),
   "message": zod.string(),
   "relatedMatchId": zod.string().uuid().nullish(),
-  "relatedMatchDomain": zod.enum(['MARKETPLACE', 'LINER']),
+  "relatedMatchDomain": zod.enum(['MARKETPLACE', 'LINER', 'ROAD']),
   "relatedConversationId": zod.string().uuid().nullish(),
   "readAt": zod.coerce.date().nullable(),
   "createdAt": zod.coerce.date()
@@ -4606,11 +5950,11 @@ export const MarkNotificationReadParams = zod.object({
 
 export const MarkNotificationReadResponse = zod.object({
   "id": zod.string().uuid(),
-  "type": zod.enum(['NEW_MATCH', 'INTEREST_RECEIVED', 'INTEREST_ACCEPTED', 'INTEREST_DECLINED', 'NEW_MESSAGE', 'LISTING_EXPIRES_SOON']),
+  "type": zod.enum(['NEW_MATCH', 'INTEREST_RECEIVED', 'INTEREST_ACCEPTED', 'INTEREST_DECLINED', 'NEW_MESSAGE', 'LISTING_EXPIRES_SOON', 'ROAD_OPPORTUNITY_FLAGGED']),
   "title": zod.string(),
   "message": zod.string(),
   "relatedMatchId": zod.string().uuid().nullish(),
-  "relatedMatchDomain": zod.enum(['MARKETPLACE', 'LINER']),
+  "relatedMatchDomain": zod.enum(['MARKETPLACE', 'LINER', 'ROAD']),
   "relatedConversationId": zod.string().uuid().nullish(),
   "readAt": zod.coerce.date().nullable(),
   "createdAt": zod.coerce.date()

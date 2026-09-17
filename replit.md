@@ -56,4 +56,5 @@ Compact, desktop-first European logistics interface; navy, marine blue and teal.
 - Breakbulk / liner service and sailing pilot: `docs/liner-pilot.md`. Commercial capacity is explicitly published per sailing, not inferred from a vessel position.
 
 - AIS foundation and development-only simulated provider setup: `docs/ais-foundation.md`. Production remains not configured; explicit internal-vessel mappings are required before simulated positions can be shown. AIS never changes commercial availability.
+- Road freight manual pilot: `docs/road-pilot.md`. Separate ROAD matching; driver operational confirmation is not planner consent or commercial availability.
 - See the `pnpm-workspace` skill for workspace structure, TypeScript setup, and package details

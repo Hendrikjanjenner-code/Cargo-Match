@@ -24,6 +24,7 @@ export async function applyMatchConsent(
     action: ConsentAction;
     participantCompanyIds: [string, string];
     notificationDomain: "marketplace" | "liner";
+    commercialPlannersOnly?: boolean;
   },
 ) {
   const { match, actorCompanyId, action, participantCompanyIds, notificationDomain } = input;
@@ -31,7 +32,11 @@ export async function applyMatchConsent(
   const [existingInterest] = await tx.select().from(interestsTable).where(and(eq(interestsTable.matchId, match.id), eq(interestsTable.companyId, actorCompanyId)));
   const [pending] = await tx.select().from(interestsTable).where(and(eq(interestsTable.matchId, match.id), eq(interestsTable.status, "PENDING")));
   const notify = async (companyIds: string[], type: "INTEREST_RECEIVED" | "INTEREST_ACCEPTED" | "INTEREST_DECLINED", title: string, message: string, conversationId?: string) => {
-    const recipients = await tx.select({ userId: companyMembersTable.userId }).from(companyMembersTable).where(and(inArray(companyMembersTable.companyId, companyIds), eq(companyMembersTable.active, true)));
+    const recipients = await tx.select({ userId: companyMembersTable.userId }).from(companyMembersTable).where(and(
+      inArray(companyMembersTable.companyId, companyIds),
+      eq(companyMembersTable.active, true),
+      ...(input.commercialPlannersOnly ? [inArray(companyMembersTable.role, ["OWNER", "ADMIN"])] : []),
+    ));
     if (recipients.length) await tx.insert(notificationsTable).values(recipients.map(({ userId }: { userId: string }) => ({ userId, type, title, message, relatedMatchId: match.id, relatedMatchDomain: notificationDomain === "liner" ? "LINER" : "MARKETPLACE", relatedConversationId: conversationId })));
   };
   const noun = notificationDomain === "liner" ? "liner" : "marketplace";

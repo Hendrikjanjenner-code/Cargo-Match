@@ -29,6 +29,8 @@ tags:
     description: Liner services, sailings, breakbulk cargo, and shared-consent matches.
   - name: Availability suggestions
     description: Private, manually submitted operational availability plans.
+  - name: Road
+    description: Road assets, manually derived future capacity, cargo, and operational driver actions.
   - name: Marketplace
     description: Privacy-safe open-network discovery.
   - name: Matches
@@ -258,6 +260,276 @@ paths:
           $ref: "#/components/responses/Forbidden"
         "404":
           $ref: "#/components/responses/NotFound"
+
+  /road/assets:
+    get:
+      tags: [Road]
+      operationId: listRoadAssets
+      summary: List road assets owned by the current company
+      parameters:
+        - $ref: "#/components/parameters/Page"
+        - $ref: "#/components/parameters/PageSize"
+        - name: activeOnly
+          in: query
+          schema: { type: boolean, default: false }
+      responses:
+        "200":
+          description: Road assets.
+          content: { application/json: { schema: { $ref: "#/components/schemas/RoadAssetListResponse" } } }
+    post:
+      tags: [Road]
+      operationId: createRoadAsset
+      summary: Register a real road asset
+      requestBody:
+        required: true
+        content: { application/json: { schema: { $ref: "#/components/schemas/RoadAssetInput" } } }
+      responses:
+        "201":
+          description: Road asset created.
+          content: { application/json: { schema: { $ref: "#/components/schemas/RoadAsset" } } }
+        "400": { $ref: "#/components/responses/BadRequest" }
+  /road/assets/{roadAssetId}:
+    parameters:
+      - name: roadAssetId
+        in: path
+        required: true
+        schema: { type: string, format: uuid }
+    get:
+      tags: [Road]
+      operationId: getRoadAsset
+      summary: Get a road asset
+      responses:
+        "200":
+          description: Road asset.
+          content: { application/json: { schema: { $ref: "#/components/schemas/RoadAsset" } } }
+    patch:
+      tags: [Road]
+      operationId: updateRoadAsset
+      summary: Update a road asset
+      requestBody:
+        required: true
+        content: { application/json: { schema: { $ref: "#/components/schemas/RoadAssetUpdate" } } }
+      responses:
+        "200":
+          description: Road asset updated.
+          content: { application/json: { schema: { $ref: "#/components/schemas/RoadAsset" } } }
+  /road/assets/{roadAssetId}/deactivate:
+    post:
+      tags: [Road]
+      operationId: deactivateRoadAsset
+      summary: Deactivate a road asset
+      parameters:
+        - name: roadAssetId
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        "200":
+          description: Road asset deactivated.
+          content: { application/json: { schema: { $ref: "#/components/schemas/RoadAsset" } } }
+  /road/cargo:
+    get:
+      tags: [Road]
+      operationId: listRoadCargo
+      summary: List road cargo owned by the current company
+      parameters:
+        - $ref: "#/components/parameters/Page"
+        - $ref: "#/components/parameters/PageSize"
+        - name: listingStatus
+          in: query
+          schema: { $ref: "#/components/schemas/ListingStatus" }
+      responses:
+        "200":
+          description: Road cargo.
+          content: { application/json: { schema: { $ref: "#/components/schemas/RoadCargoListResponse" } } }
+    post:
+      tags: [Road]
+      operationId: createRoadCargo
+      summary: Publish or draft road cargo
+      requestBody:
+        required: true
+        content: { application/json: { schema: { $ref: "#/components/schemas/RoadCargoInput" } } }
+      responses:
+        "201":
+          description: Road cargo created.
+          content: { application/json: { schema: { $ref: "#/components/schemas/RoadCargo" } } }
+  /road/cargo/{cargoId}:
+    parameters:
+      - name: cargoId
+        in: path
+        required: true
+        schema: { type: string, format: uuid }
+    get:
+      tags: [Road]
+      operationId: getRoadCargo
+      summary: Get road cargo
+      responses:
+        "200":
+          description: Road cargo.
+          content: { application/json: { schema: { $ref: "#/components/schemas/RoadCargo" } } }
+    patch:
+      tags: [Road]
+      operationId: updateRoadCargo
+      summary: Update road cargo
+      requestBody:
+        required: true
+        content: { application/json: { schema: { $ref: "#/components/schemas/RoadCargoUpdate" } } }
+      responses:
+        "200":
+          description: Road cargo updated.
+          content: { application/json: { schema: { $ref: "#/components/schemas/RoadCargo" } } }
+  /road/cargo/{cargoId}/withdraw:
+    post:
+      tags: [Road]
+      operationId: withdrawRoadCargo
+      parameters: [{ name: cargoId, in: path, required: true, schema: { type: string, format: uuid } }]
+      responses:
+        "200":
+          description: Road cargo withdrawn.
+          content: { application/json: { schema: { $ref: "#/components/schemas/RoadCargo" } } }
+  /road/cargo/{cargoId}/close:
+    post:
+      tags: [Road]
+      operationId: closeRoadCargo
+      parameters: [{ name: cargoId, in: path, required: true, schema: { type: string, format: uuid } }]
+      responses:
+        "200":
+          description: Road cargo closed.
+          content: { application/json: { schema: { $ref: "#/components/schemas/RoadCargo" } } }
+  /road/capacity:
+    get:
+      tags: [Road]
+      operationId: listRoadCapacity
+      summary: List road capacity offers owned by the current company
+      parameters:
+        - $ref: "#/components/parameters/Page"
+        - $ref: "#/components/parameters/PageSize"
+        - name: listingStatus
+          in: query
+          schema: { $ref: "#/components/schemas/ListingStatus" }
+      responses:
+        "200":
+          description: Road capacity.
+          content: { application/json: { schema: { $ref: "#/components/schemas/RoadCapacityListResponse" } } }
+    post:
+      tags: [Road]
+      operationId: createRoadCapacity
+      summary: Declare manually derived future road capacity
+      requestBody:
+        required: true
+        content: { application/json: { schema: { $ref: "#/components/schemas/RoadCapacityInput" } } }
+      responses:
+        "201":
+          description: Road capacity created.
+          content: { application/json: { schema: { $ref: "#/components/schemas/RoadCapacity" } } }
+  /road/drivers:
+    get:
+      tags: [Road]
+      operationId: listRoadDrivers
+      summary: List active MEMBER drivers available for road assignment
+      responses:
+        "200":
+          description: Assignable drivers.
+          content: { application/json: { schema: { $ref: "#/components/schemas/RoadDriverListResponse" } } }
+  /road/capacity/{capacityId}:
+    parameters:
+      - name: capacityId
+        in: path
+        required: true
+        schema: { type: string, format: uuid }
+    get:
+      tags: [Road]
+      operationId: getRoadCapacity
+      summary: Get road capacity
+      responses:
+        "200":
+          description: Road capacity.
+          content: { application/json: { schema: { $ref: "#/components/schemas/RoadCapacity" } } }
+    patch:
+      tags: [Road]
+      operationId: updateRoadCapacity
+      summary: Update road capacity
+      requestBody:
+        required: true
+        content: { application/json: { schema: { $ref: "#/components/schemas/RoadCapacityUpdate" } } }
+      responses:
+        "200":
+          description: Road capacity updated.
+          content: { application/json: { schema: { $ref: "#/components/schemas/RoadCapacity" } } }
+  /road/capacity/{capacityId}/withdraw:
+    post:
+      tags: [Road]
+      operationId: withdrawRoadCapacity
+      parameters: [{ name: capacityId, in: path, required: true, schema: { type: string, format: uuid } }]
+      responses:
+        "200":
+          description: Road capacity withdrawn.
+          content: { application/json: { schema: { $ref: "#/components/schemas/RoadCapacity" } } }
+  /road/capacity/{capacityId}/close:
+    post:
+      tags: [Road]
+      operationId: closeRoadCapacity
+      parameters: [{ name: capacityId, in: path, required: true, schema: { type: string, format: uuid } }]
+      responses:
+        "200":
+          description: Road capacity closed.
+          content: { application/json: { schema: { $ref: "#/components/schemas/RoadCapacity" } } }
+  /road/capacity/{capacityId}/assignments:
+    post:
+      tags: [Road]
+      operationId: assignRoadDriver
+      parameters: [{ name: capacityId, in: path, required: true, schema: { type: string, format: uuid } }]
+      requestBody:
+        required: true
+        content: { application/json: { schema: { $ref: "#/components/schemas/RoadAssignmentInput" } } }
+      responses:
+        "201":
+          description: Driver assignment.
+          content: { application/json: { schema: { $ref: "#/components/schemas/RoadAssignment" } } }
+  /road/assignments/{assignmentId}/confirm:
+    post:
+      tags: [Road]
+      operationId: confirmRoadAssignment
+      parameters: [{ name: assignmentId, in: path, required: true, schema: { type: string, format: uuid } }]
+      requestBody:
+        required: false
+        content: { application/json: { schema: { $ref: "#/components/schemas/RoadOperationalAction" } } }
+      responses:
+        "200":
+          description: Operational confirmation.
+          content: { application/json: { schema: { $ref: "#/components/schemas/RoadAssignment" } } }
+  /road/assignments/{assignmentId}/flag:
+    post:
+      tags: [Road]
+      operationId: flagRoadAssignment
+      parameters: [{ name: assignmentId, in: path, required: true, schema: { type: string, format: uuid } }]
+      requestBody:
+        required: true
+        content: { application/json: { schema: { $ref: "#/components/schemas/RoadOperationalAction" } } }
+      responses:
+        "200":
+          description: Operational flag.
+          content: { application/json: { schema: { $ref: "#/components/schemas/RoadAssignment" } } }
+  /road/matches:
+    get:
+      tags: [Road]
+      operationId: listRoadMatches
+      parameters:
+        - $ref: "#/components/parameters/Page"
+        - $ref: "#/components/parameters/PageSize"
+      responses:
+        "200":
+          description: Privacy-safe road matches.
+          content: { application/json: { schema: { $ref: "#/components/schemas/RoadMatchListResponse" } } }
+  /road/matches/{matchId}:
+    get:
+      tags: [Road]
+      operationId: getRoadMatch
+      parameters: [{ name: matchId, in: path, required: true, schema: { type: string, format: uuid } }]
+      responses:
+        "200":
+          description: Privacy-safe road match.
+          content: { application/json: { schema: { $ref: "#/components/schemas/RoadMatch" } } }
 
   /vessels:
     get:
@@ -2103,7 +2375,7 @@ components:
 
     TransportMode:
       type: string
-      enum: [INLAND_WATERWAY, DEEPSEA_BULK]
+      enum: [INLAND_WATERWAY, DEEPSEA_BULK, ROAD]
       description: Transport mode. Omitted request values default to INLAND_WATERWAY.
     DeepseaVesselClass:
       type: string
@@ -2564,7 +2836,6 @@ components:
         - destinationLocationId
         - loadingFrom
         - loadingUntil
-        - requiredVesselType
         - visibility
         - listingStatus
         - createdAt
@@ -2603,7 +2874,9 @@ components:
           type: [string, "null"]
           format: date
         requiredVesselType:
-          $ref: "#/components/schemas/VesselType"
+          anyOf:
+            - $ref: "#/components/schemas/VesselType"
+            - type: "null"
         specialRequirements:
           type: [string, "null"]
         visibility:
@@ -2706,7 +2979,9 @@ components:
           type: [string, "null"]
           format: date
         requiredVesselType:
-          $ref: "#/components/schemas/VesselType"
+          anyOf:
+            - $ref: "#/components/schemas/VesselType"
+            - type: "null"
         specialRequirements:
           type: [string, "null"]
         visibility:
@@ -2750,8 +3025,10 @@ components:
         transportMode:
           $ref: "#/components/schemas/TransportMode"
         vesselId:
-          type: string
-          format: uuid
+          anyOf:
+            - type: string
+              format: uuid
+            - type: "null"
         locationId:
           type: string
           format: uuid
@@ -3458,7 +3735,9 @@ components:
         destinationRegion:
           type: string
         requiredVesselType:
-          $ref: "#/components/schemas/VesselType"
+          anyOf:
+            - $ref: "#/components/schemas/VesselType"
+            - type: "null"
         tonnageBand:
           type: string
           description: Anonymized cargo tonnage band, never an exact weight.
@@ -3506,7 +3785,9 @@ components:
           type: string
           enum: [CAPACITY]
         vesselType:
-          $ref: "#/components/schemas/VesselType"
+          anyOf:
+            - $ref: "#/components/schemas/VesselType"
+            - type: "null"
         availabilityType:
           $ref: "#/components/schemas/AvailabilityType"
         cargoCompatibilityBand:
@@ -3566,7 +3847,7 @@ components:
       enum: [NEW, INTEREST_SENT, CONNECTED, DECLINED, EXPIRED]
     MatchDomain:
       type: string
-      enum: [MARKETPLACE, LINER]
+      enum: [MARKETPLACE, LINER, ROAD]
     MatchAction:
       type: string
       enum: [INTEREST, ACCEPT, DECLINE]
@@ -3791,7 +4072,9 @@ components:
           type: [string, "null"]
           format: date
         requiredVesselType:
-          $ref: "#/components/schemas/VesselType"
+          anyOf:
+            - $ref: "#/components/schemas/VesselType"
+            - type: "null"
         specialRequirements:
           type: [string, "null"]
         visibility:
@@ -3838,7 +4121,7 @@ components:
         transportMode:
           $ref: "#/components/schemas/TransportMode"
         vesselId:
-          type: string
+          type: [string, "null"]
           format: uuid
         locationId:
           type: string
@@ -4090,6 +4373,7 @@ components:
           INTEREST_DECLINED,
           NEW_MESSAGE,
           LISTING_EXPIRES_SOON,
+          ROAD_OPPORTUNITY_FLAGGED,
         ]
     Notification:
       type: object
@@ -4198,3 +4482,346 @@ components:
       properties:
         error:
           type: string
+
+    RoadAssetType:
+      type: string
+      enum: [TRUCK, TRACTOR, TRAILER, TRUCK_TRAILER_COMBINATION]
+    RoadAvailabilitySource:
+      type: string
+      enum: [MANUAL, DRIVER_INPUT, TMS, TELEMATICS]
+    RoadAssignmentStatus:
+      type: string
+      enum: [ASSIGNED, CONFIRMED, FLAGGED]
+    RoadAsset:
+      type: object
+      required: [id, companyId, assetType, assetName, payloadTonnes, volumeCubicMetres, loadingMetres, palletPositions, equipment, adrClasses, active, createdAt, updatedAt]
+      properties:
+        id: { type: string, format: uuid }
+        companyId: { type: string, format: uuid }
+        assetType: { $ref: "#/components/schemas/RoadAssetType" }
+        assetName: { type: string, minLength: 1 }
+        registrationReference: { type: [string, "null"] }
+        payloadTonnes: { type: number, exclusiveMinimum: 0 }
+        volumeCubicMetres: { type: number, exclusiveMinimum: 0 }
+        loadingMetres: { type: number, exclusiveMinimum: 0 }
+        palletPositions: { type: integer, exclusiveMinimum: 0 }
+        trailerType: { type: [string, "null"] }
+        equipment: { type: array, items: { type: string } }
+        temperatureMinCelsius: { type: [number, "null"] }
+        temperatureMaxCelsius: { type: [number, "null"] }
+        adrClasses: { type: array, items: { type: string } }
+        notes: { type: [string, "null"] }
+        active: { type: boolean }
+        createdAt: { type: string, format: date-time }
+        updatedAt: { type: string, format: date-time }
+    RoadAssetInput:
+      type: object
+      required: [assetType, assetName, payloadTonnes, volumeCubicMetres, loadingMetres, palletPositions]
+      properties:
+        assetType: { $ref: "#/components/schemas/RoadAssetType" }
+        assetName: { type: string, minLength: 1 }
+        registrationReference: { type: string }
+        payloadTonnes: { type: number, exclusiveMinimum: 0 }
+        volumeCubicMetres: { type: number, exclusiveMinimum: 0 }
+        loadingMetres: { type: number, exclusiveMinimum: 0 }
+        palletPositions: { type: integer, exclusiveMinimum: 0 }
+        trailerType: { type: string }
+        equipment: { type: array, items: { type: string } }
+        temperatureMinCelsius: { type: number }
+        temperatureMaxCelsius: { type: number }
+        adrClasses: { type: array, items: { type: string } }
+        notes: { type: string }
+        active: { type: boolean, default: true }
+    RoadAssetUpdate:
+      description: Partial road asset update; omitted properties are retained.
+      type: object
+      minProperties: 1
+      properties:
+        assetType: { $ref: "#/components/schemas/RoadAssetType" }
+        assetName: { type: string, minLength: 1 }
+        registrationReference: { type: [string, "null"] }
+        payloadTonnes: { type: number, exclusiveMinimum: 0 }
+        volumeCubicMetres: { type: number, exclusiveMinimum: 0 }
+        loadingMetres: { type: number, exclusiveMinimum: 0 }
+        palletPositions: { type: integer, exclusiveMinimum: 0 }
+        trailerType: { type: [string, "null"] }
+        equipment: { type: array, items: { type: string } }
+        temperatureMinCelsius: { type: [number, "null"] }
+        temperatureMaxCelsius: { type: [number, "null"] }
+        adrClasses: { type: array, items: { type: string } }
+        notes: { type: [string, "null"] }
+        active: { type: boolean }
+    RoadAssetListResponse:
+      type: object
+      required: [items, page, pageSize, total]
+      properties:
+        items: { type: array, items: { $ref: "#/components/schemas/RoadAsset" } }
+        page: { type: integer }
+        pageSize: { type: integer }
+        total: { type: integer }
+    RoadCargoRequirements:
+      type: object
+      properties:
+        volumeCubicMetres: { type: [number, "null"], exclusiveMinimum: 0 }
+        loadingMetres: { type: [number, "null"], exclusiveMinimum: 0 }
+        palletPositions: { type: [integer, "null"], exclusiveMinimum: 0 }
+        requiredTrailerType: { type: [string, "null"] }
+        requiredEquipment: { type: array, items: { type: string } }
+        temperatureMinCelsius: { type: [number, "null"] }
+        temperatureMaxCelsius: { type: [number, "null"] }
+        adrClasses: { type: array, items: { type: string } }
+        direction: { type: [string, "null"] }
+        notes: { type: [string, "null"] }
+    RoadCargo:
+      type: object
+      required: [id, companyId, transportMode, cargoName, cargoType, weightTonnes, loadingLocationId, destinationLocationId, loadingFrom, loadingUntil, visibility, listingStatus, roadRequirements, createdAt, updatedAt]
+      properties:
+        id: { type: string, format: uuid }
+        companyId: { type: string, format: uuid }
+        transportMode: { type: string, const: ROAD }
+        cargoName: { type: string }
+        cargoType: { type: string }
+        weightTonnes: { type: number, exclusiveMinimum: 0 }
+        loadingLocationId: { type: string, format: uuid }
+        destinationLocationId: { type: string, format: uuid }
+        loadingFrom: { type: string, format: date-time }
+        loadingUntil: { type: string, format: date-time }
+        visibility: { $ref: "#/components/schemas/Visibility" }
+        notes: { type: [string, "null"] }
+        listingStatus: { $ref: "#/components/schemas/ListingStatus" }
+        roadRequirements: { $ref: "#/components/schemas/RoadCargoRequirements" }
+        createdAt: { type: string, format: date-time }
+        updatedAt: { type: string, format: date-time }
+    RoadCargoInput:
+      type: object
+      required: [cargoName, cargoType, weightTonnes, loadingLocationId, destinationLocationId, loadingFrom, loadingUntil, visibility]
+      properties:
+        cargoName: { type: string, minLength: 1 }
+        cargoType: { type: string, minLength: 1 }
+        weightTonnes: { type: number, exclusiveMinimum: 0 }
+        loadingLocationId: { type: string, format: uuid }
+        destinationLocationId: { type: string, format: uuid }
+        loadingFrom: { type: string, format: date-time }
+        loadingUntil: { type: string, format: date-time }
+        visibility: { $ref: "#/components/schemas/Visibility" }
+        listingStatus: { $ref: "#/components/schemas/ListingStatus" }
+        notes: { type: string }
+        roadRequirements: { $ref: "#/components/schemas/RoadCargoRequirements" }
+    RoadCargoUpdate:
+      description: Partial road cargo update; omitted properties are retained.
+      type: object
+      minProperties: 1
+      properties:
+        cargoName: { type: string, minLength: 1 }
+        cargoType: { type: string, minLength: 1 }
+        weightTonnes: { type: number, exclusiveMinimum: 0 }
+        loadingLocationId: { type: string, format: uuid }
+        destinationLocationId: { type: string, format: uuid }
+        loadingFrom: { type: string, format: date-time }
+        loadingUntil: { type: string, format: date-time }
+        visibility: { $ref: "#/components/schemas/Visibility" }
+        listingStatus: { $ref: "#/components/schemas/ListingStatus" }
+        notes: { type: [string, "null"] }
+        roadRequirements: { $ref: "#/components/schemas/RoadCargoRequirements" }
+    RoadCargoListResponse:
+      type: object
+      required: [items, page, pageSize, total]
+      properties:
+        items: { type: array, items: { $ref: "#/components/schemas/RoadCargo" } }
+        page: { type: integer }
+        pageSize: { type: integer }
+        total: { type: integer }
+    RoadCapacity:
+      type: object
+      required: [id, companyId, transportMode, locationId, availableFrom, availableUntil, availableCapacityTonnes, visibility, listingStatus, roadExtension, assignments, createdAt, updatedAt]
+      properties:
+        id: { type: string, format: uuid }
+        companyId: { type: string, format: uuid }
+        transportMode: { type: string, const: ROAD }
+        locationId: { type: string, format: uuid }
+        availableFrom: { type: string, format: date-time }
+        availableUntil: { type: string, format: date-time }
+        availabilityType: { $ref: "#/components/schemas/AvailabilityType" }
+        availableCapacityTonnes: { type: number, exclusiveMinimum: 0 }
+        cargoCompatibility: { type: array, items: { type: string } }
+        preferredDirection: { type: string }
+        maximumPositioningDistanceKm: { type: number, exclusiveMinimum: 0 }
+        visibility: { $ref: "#/components/schemas/Visibility" }
+        availabilityConfidence: { $ref: "#/components/schemas/AvailabilityConfidence" }
+        notes: { type: [string, "null"] }
+        listingStatus: { $ref: "#/components/schemas/ListingStatus" }
+        roadExtension: { $ref: "#/components/schemas/RoadCapacityExtension" }
+        assignments: { type: array, items: { $ref: "#/components/schemas/RoadAssignment" } }
+        createdAt: { type: string, format: date-time }
+        updatedAt: { type: string, format: date-time }
+    RoadCapacityExtension:
+      type: object
+      required: [roadAssetId, currentDeliveryLocationId, currentDeliveryExpectedAt, expectedAvailabilityLocationId, expectedAvailabilityAt, availabilityUncertaintyMinutes, availabilitySource, availableVolumeCubicMetres, availableLoadingMetres, availablePalletPositions, equipment, adrClasses]
+      properties:
+        roadAssetId: { type: string, format: uuid }
+        currentDeliveryLocationId: { type: string, format: uuid }
+        currentDeliveryExpectedAt: { type: string, format: date-time }
+        expectedAvailabilityLocationId: { type: string, format: uuid }
+        expectedAvailabilityAt: { type: string, format: date-time }
+        availabilityUncertaintyMinutes: { type: integer, minimum: 0 }
+        availabilitySource: { $ref: "#/components/schemas/RoadAvailabilitySource" }
+        availableVolumeCubicMetres: { type: number, exclusiveMinimum: 0 }
+        availableLoadingMetres: { type: number, exclusiveMinimum: 0 }
+        availablePalletPositions: { type: integer, exclusiveMinimum: 0 }
+        trailerType: { type: [string, "null"] }
+        equipment: { type: array, items: { type: string } }
+        temperatureMinCelsius: { type: [number, "null"] }
+        temperatureMaxCelsius: { type: [number, "null"] }
+        adrClasses: { type: array, items: { type: string } }
+        preferredDirection: { type: [string, "null"] }
+        notes: { type: [string, "null"] }
+    RoadCapacityInput:
+      type: object
+      required: [roadAssetId, currentDeliveryLocationId, currentDeliveryExpectedAt, expectedAvailabilityLocationId, expectedAvailabilityAt, availableCapacityTonnes, availableVolumeCubicMetres, availableLoadingMetres, availablePalletPositions, visibility]
+      properties:
+        roadAssetId: { type: string, format: uuid }
+        currentDeliveryLocationId: { type: string, format: uuid }
+        currentDeliveryExpectedAt: { type: string, format: date-time }
+        expectedAvailabilityLocationId: { type: string, format: uuid }
+        expectedAvailabilityAt: { type: string, format: date-time }
+        availabilityUncertaintyMinutes: { type: integer, minimum: 0, default: 0 }
+        availabilitySource: { $ref: "#/components/schemas/RoadAvailabilitySource" }
+        availableCapacityTonnes: { type: number, exclusiveMinimum: 0 }
+        availableVolumeCubicMetres: { type: number, exclusiveMinimum: 0 }
+        availableLoadingMetres: { type: number, exclusiveMinimum: 0 }
+        availablePalletPositions: { type: integer, exclusiveMinimum: 0 }
+        trailerType: { type: string }
+        equipment: { type: array, items: { type: string } }
+        temperatureMinCelsius: { type: number }
+        temperatureMaxCelsius: { type: number }
+        adrClasses: { type: array, items: { type: string } }
+        preferredDirection: { type: string }
+        maximumPositioningDistanceKm: { type: number, exclusiveMinimum: 0, default: 100 }
+        cargoCompatibility: { type: array, items: { type: string } }
+        visibility: { $ref: "#/components/schemas/Visibility" }
+        listingStatus: { $ref: "#/components/schemas/ListingStatus" }
+        notes: { type: string }
+    RoadCapacityUpdate:
+      description: Partial road capacity update; omitted properties are retained.
+      type: object
+      minProperties: 1
+      properties:
+        roadAssetId: { type: string, format: uuid }
+        currentDeliveryLocationId: { type: string, format: uuid }
+        currentDeliveryExpectedAt: { type: string, format: date-time }
+        expectedAvailabilityLocationId: { type: string, format: uuid }
+        expectedAvailabilityAt: { type: string, format: date-time }
+        availabilityUncertaintyMinutes: { type: integer, minimum: 0 }
+        availabilitySource: { $ref: "#/components/schemas/RoadAvailabilitySource" }
+        availableCapacityTonnes: { type: number, exclusiveMinimum: 0 }
+        availableVolumeCubicMetres: { type: number, exclusiveMinimum: 0 }
+        availableLoadingMetres: { type: number, exclusiveMinimum: 0 }
+        availablePalletPositions: { type: integer, exclusiveMinimum: 0 }
+        trailerType: { type: [string, "null"] }
+        equipment: { type: array, items: { type: string } }
+        temperatureMinCelsius: { type: [number, "null"] }
+        temperatureMaxCelsius: { type: [number, "null"] }
+        adrClasses: { type: array, items: { type: string } }
+        preferredDirection: { type: [string, "null"] }
+        maximumPositioningDistanceKm: { type: number, exclusiveMinimum: 0 }
+        cargoCompatibility: { type: array, items: { type: string } }
+        visibility: { $ref: "#/components/schemas/Visibility" }
+        listingStatus: { $ref: "#/components/schemas/ListingStatus" }
+        notes: { type: [string, "null"] }
+    RoadCapacityListResponse:
+      type: object
+      required: [items, page, pageSize, total]
+      properties:
+        items: { type: array, items: { $ref: "#/components/schemas/RoadCapacity" } }
+        page: { type: integer }
+        pageSize: { type: integer }
+        total: { type: integer }
+    RoadAssignmentInput:
+      type: object
+      required: [driverUserId]
+      properties:
+        driverUserId: { type: string, minLength: 1 }
+        operationalNote: { type: string }
+    RoadAssignment:
+      type: object
+      required: [id, capacityOfferId, companyId, driverUserId, assignedByUserId, status, createdAt, updatedAt]
+      properties:
+        id: { type: string, format: uuid }
+        capacityOfferId: { type: string, format: uuid }
+        companyId: { type: string, format: uuid }
+        driverUserId: { type: string }
+        assignedByUserId: { type: string }
+        status: { $ref: "#/components/schemas/RoadAssignmentStatus" }
+        operationalNote: { type: [string, "null"] }
+        flaggedReason: { type: [string, "null"] }
+        flaggedMatchId: { type: [string, "null"], format: uuid }
+        confirmedAt: { type: [string, "null"], format: date-time }
+        createdAt: { type: string, format: date-time }
+        updatedAt: { type: string, format: date-time }
+    RoadDriver:
+      type: object
+      required: [userId, firstName, lastName, email]
+      properties:
+        userId: { type: string }
+        firstName: { type: [string, "null"] }
+        lastName: { type: [string, "null"] }
+        email: { type: [string, "null"], format: email }
+    RoadDriverListResponse:
+      type: object
+      required: [items]
+      properties:
+        items: { type: array, items: { $ref: "#/components/schemas/RoadDriver" } }
+    RoadOperationalAction:
+      type: object
+      properties:
+        note: { type: string }
+        reason: { type: string }
+        matchId:
+          type: string
+          format: uuid
+          description: Required for FLAGGED; identifies the specific eligible shared road opportunity.
+    RoadMatch:
+      type: object
+      required: [id, status, totalScore, calculationVersion, explanation, cargoListingId, capacityOfferId, evaluationInputs, projection, createdAt, updatedAt]
+      properties:
+        id: { type: string, format: uuid }
+        status: { $ref: "#/components/schemas/MatchStatus" }
+        totalScore: { type: number }
+        calculationVersion: { type: string, const: road-v1 }
+        explanation: { type: string }
+        cargoListingId: { type: string, format: uuid }
+        capacityOfferId: { type: string, format: uuid }
+        evaluationInputs: { type: object, additionalProperties: { type: string } }
+        projection:
+          $ref: "#/components/schemas/RoadOpportunityProjection"
+        createdAt: { type: string, format: date-time }
+        updatedAt: { type: string, format: date-time }
+    RoadOpportunityProjection:
+      type: object
+      description: Privacy-safe planning bands derived from the joined road cargo, capacity, location, and requirement rows.
+      required: [cargoTypeBand, originRegion, destinationRegion, loadingDateBand, loadingTimeWindowBand, weightBand, equipmentBand, temperatureBand, adrBand, dimensionalRequirementsBand, freeAreaBand, freeTimeBand, freeCapacityBand, capacityEquipmentBand, capacityTemperatureBand, capacityAdrBand]
+      properties:
+        cargoTypeBand: { type: string }
+        originRegion: { type: string }
+        destinationRegion: { type: string }
+        loadingDateBand: { type: string }
+        loadingTimeWindowBand: { type: string }
+        weightBand: { type: string }
+        equipmentBand: { type: string }
+        temperatureBand: { type: string }
+        adrBand: { type: string }
+        dimensionalRequirementsBand: { type: string }
+        freeAreaBand: { type: string }
+        freeTimeBand: { type: string }
+        freeCapacityBand: { type: string }
+        capacityEquipmentBand: { type: string }
+        capacityTemperatureBand: { type: string }
+        capacityAdrBand: { type: string }
+    RoadMatchListResponse:
+      type: object
+      required: [items, page, pageSize, total]
+      properties:
+        items: { type: array, items: { $ref: "#/components/schemas/RoadMatch" } }
+        page: { type: integer }
+        pageSize: { type: integer }
+        total: { type: integer }

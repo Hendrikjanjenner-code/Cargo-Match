@@ -18,4 +18,5 @@ export type TransportMode = typeof TransportMode[keyof typeof TransportMode];
 export const TransportMode = {
   INLAND_WATERWAY: 'INLAND_WATERWAY',
   DEEPSEA_BULK: 'DEEPSEA_BULK',
+  ROAD: 'ROAD',
 } as const;

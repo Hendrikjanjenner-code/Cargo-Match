@@ -97,6 +97,9 @@ export default function MatchDetail() {
   const isWaiting = match.status === MatchStatus.INTEREST_SENT && isInitiator;
 
   // Notifications and conversation links use the shared match URL.
+  if (match.cargo.transportMode === "ROAD") {
+    return <Redirect to={`/road/matches/${id}`} />;
+  }
   if (match.deepseaMatch) {
     return <Redirect to={`/deepsea/matches/${id}`} />;
   }

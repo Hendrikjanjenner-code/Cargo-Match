@@ -83,6 +83,10 @@ import type {
   ListMyMatchesParams,
   ListMyNotificationsParams,
   ListMyVesselsParams,
+  ListRoadAssetsParams,
+  ListRoadCapacityParams,
+  ListRoadCargoParams,
+  ListRoadMatchesParams,
   LocationListResponse,
   LogoutBrowserSessionParams,
   LogoutSuccess,
@@ -99,6 +103,24 @@ import type {
   Notification,
   NotificationListResponse,
   ReadMessagesResponse,
+  RoadAsset,
+  RoadAssetInput,
+  RoadAssetListResponse,
+  RoadAssetUpdate,
+  RoadAssignment,
+  RoadAssignmentInput,
+  RoadCapacity,
+  RoadCapacityInput,
+  RoadCapacityListResponse,
+  RoadCapacityUpdate,
+  RoadCargo,
+  RoadCargoInput,
+  RoadCargoListResponse,
+  RoadCargoUpdate,
+  RoadDriverListResponse,
+  RoadMatch,
+  RoadMatchListResponse,
+  RoadOperationalAction,
   SendMessageRequest,
   UnauthorizedResponse,
   Vessel,
@@ -960,6 +982,1841 @@ export const useUpdateMyCompany = <TError = ErrorType<BadRequestResponse | Unaut
       > => {
       return useMutation(getUpdateMyCompanyMutationOptions(options));
     }
+
+export const getListRoadAssetsUrl = (params?: ListRoadAssetsParams,) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : String(value))
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0 ? `/api/road/assets?${stringifiedParams}` : `/api/road/assets`
+}
+
+/**
+ * @summary List road assets owned by the current company
+ */
+export const listRoadAssets = async (params?: ListRoadAssetsParams, options?: Parameters<typeof customFetch>[1]): Promise<RoadAssetListResponse> => {
+
+  return customFetch<RoadAssetListResponse>(getListRoadAssetsUrl(params),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getListRoadAssetsQueryKey = (params?: ListRoadAssetsParams,) => {
+    return [
+    `/api/road/assets`, ...(params ? [params] : [])
+    ] as const;
+    }
+
+
+export const getListRoadAssetsQueryOptions = <TData = Awaited<ReturnType<typeof listRoadAssets>>, TError = ErrorType<unknown>>(params?: ListRoadAssetsParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof listRoadAssets>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getListRoadAssetsQueryKey(params);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof listRoadAssets>>> = ({ signal }) => listRoadAssets(params, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof listRoadAssets>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type ListRoadAssetsQueryResult = NonNullable<Awaited<ReturnType<typeof listRoadAssets>>>
+export type ListRoadAssetsQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary List road assets owned by the current company
+ */
+
+export function useListRoadAssets<TData = Awaited<ReturnType<typeof listRoadAssets>>, TError = ErrorType<unknown>>(
+ params?: ListRoadAssetsParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof listRoadAssets>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getListRoadAssetsQueryOptions(params,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getCreateRoadAssetUrl = () => {
+
+
+
+
+  return `/api/road/assets`
+}
+
+/**
+ * @summary Register a real road asset
+ */
+export const createRoadAsset = async (roadAssetInput: RoadAssetInput, options?: Parameters<typeof customFetch>[1]): Promise<RoadAsset> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return customFetch<RoadAsset>(getCreateRoadAssetUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(roadAssetInput)
+  }
+);}
+
+
+
+
+
+export const getCreateRoadAssetMutationKey = () => ['createRoadAsset'] as const;
+
+export const getCreateRoadAssetMutationOptions = <TError = ErrorType<BadRequestResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createRoadAsset>>, TError,CreateRoadAssetMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof createRoadAsset>>, TError,CreateRoadAssetMutationVariables, TContext> => {
+
+const mutationKey = getCreateRoadAssetMutationKey();
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof createRoadAsset>>, CreateRoadAssetMutationVariables> = (props) => {
+          const {data} = props ?? {};
+
+          return  createRoadAsset(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type CreateRoadAssetMutationResult = NonNullable<Awaited<ReturnType<typeof createRoadAsset>>>
+    export type CreateRoadAssetMutationBody = BodyType<RoadAssetInput>
+    export type CreateRoadAssetMutationError = ErrorType<BadRequestResponse>
+    export type CreateRoadAssetMutationVariables = {data: BodyType<RoadAssetInput>}
+
+    /**
+ * @summary Register a real road asset
+ */
+export const useCreateRoadAsset = <TError = ErrorType<BadRequestResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createRoadAsset>>, TError,CreateRoadAssetMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof createRoadAsset>>,
+        TError,
+        CreateRoadAssetMutationVariables,
+        TContext
+      > => {
+      return useMutation(getCreateRoadAssetMutationOptions(options));
+    }
+
+export const getGetRoadAssetUrl = (roadAssetId: string,) => {
+
+
+
+
+  return `/api/road/assets/${roadAssetId}`
+}
+
+/**
+ * @summary Get a road asset
+ */
+export const getRoadAsset = async (roadAssetId: string, options?: Parameters<typeof customFetch>[1]): Promise<RoadAsset> => {
+
+  return customFetch<RoadAsset>(getGetRoadAssetUrl(roadAssetId),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetRoadAssetQueryKey = (roadAssetId: string,) => {
+    return [
+    `/api/road/assets/${roadAssetId}`
+    ] as const;
+    }
+
+
+export const getGetRoadAssetQueryOptions = <TData = Awaited<ReturnType<typeof getRoadAsset>>, TError = ErrorType<unknown>>(roadAssetId: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getRoadAsset>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetRoadAssetQueryKey(roadAssetId);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getRoadAsset>>> = ({ signal }) => getRoadAsset(roadAssetId, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: roadAssetId !== null && roadAssetId !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getRoadAsset>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetRoadAssetQueryResult = NonNullable<Awaited<ReturnType<typeof getRoadAsset>>>
+export type GetRoadAssetQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Get a road asset
+ */
+
+export function useGetRoadAsset<TData = Awaited<ReturnType<typeof getRoadAsset>>, TError = ErrorType<unknown>>(
+ roadAssetId: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getRoadAsset>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetRoadAssetQueryOptions(roadAssetId,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getUpdateRoadAssetUrl = (roadAssetId: string,) => {
+
+
+
+
+  return `/api/road/assets/${roadAssetId}`
+}
+
+/**
+ * @summary Update a road asset
+ */
+export const updateRoadAsset = async (roadAssetId: string,
+    roadAssetUpdate: RoadAssetUpdate, options?: Parameters<typeof customFetch>[1]): Promise<RoadAsset> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return customFetch<RoadAsset>(getUpdateRoadAssetUrl(roadAssetId),
+  {
+    ...options,
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(roadAssetUpdate)
+  }
+);}
+
+
+
+
+
+export const getUpdateRoadAssetMutationKey = () => ['updateRoadAsset'] as const;
+
+export const getUpdateRoadAssetMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateRoadAsset>>, TError,UpdateRoadAssetMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof updateRoadAsset>>, TError,UpdateRoadAssetMutationVariables, TContext> => {
+
+const mutationKey = getUpdateRoadAssetMutationKey();
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateRoadAsset>>, UpdateRoadAssetMutationVariables> = (props) => {
+          const {roadAssetId,data} = props ?? {};
+
+          return  updateRoadAsset(roadAssetId,data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type UpdateRoadAssetMutationResult = NonNullable<Awaited<ReturnType<typeof updateRoadAsset>>>
+    export type UpdateRoadAssetMutationBody = BodyType<RoadAssetUpdate>
+    export type UpdateRoadAssetMutationError = ErrorType<unknown>
+    export type UpdateRoadAssetMutationVariables = {roadAssetId: string;data: BodyType<RoadAssetUpdate>}
+
+    /**
+ * @summary Update a road asset
+ */
+export const useUpdateRoadAsset = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateRoadAsset>>, TError,UpdateRoadAssetMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof updateRoadAsset>>,
+        TError,
+        UpdateRoadAssetMutationVariables,
+        TContext
+      > => {
+      return useMutation(getUpdateRoadAssetMutationOptions(options));
+    }
+
+export const getDeactivateRoadAssetUrl = (roadAssetId: string,) => {
+
+
+
+
+  return `/api/road/assets/${roadAssetId}/deactivate`
+}
+
+/**
+ * @summary Deactivate a road asset
+ */
+export const deactivateRoadAsset = async (roadAssetId: string, options?: Parameters<typeof customFetch>[1]): Promise<RoadAsset> => {
+
+  return customFetch<RoadAsset>(getDeactivateRoadAssetUrl(roadAssetId),
+  {
+    ...options,
+    method: 'POST'
+
+
+  }
+);}
+
+
+
+
+
+export const getDeactivateRoadAssetMutationKey = () => ['deactivateRoadAsset'] as const;
+
+export const getDeactivateRoadAssetMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deactivateRoadAsset>>, TError,DeactivateRoadAssetMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof deactivateRoadAsset>>, TError,DeactivateRoadAssetMutationVariables, TContext> => {
+
+const mutationKey = getDeactivateRoadAssetMutationKey();
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof deactivateRoadAsset>>, DeactivateRoadAssetMutationVariables> = (props) => {
+          const {roadAssetId} = props ?? {};
+
+          return  deactivateRoadAsset(roadAssetId,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type DeactivateRoadAssetMutationResult = NonNullable<Awaited<ReturnType<typeof deactivateRoadAsset>>>
+
+    export type DeactivateRoadAssetMutationError = ErrorType<unknown>
+    export type DeactivateRoadAssetMutationVariables = {roadAssetId: string}
+
+    /**
+ * @summary Deactivate a road asset
+ */
+export const useDeactivateRoadAsset = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deactivateRoadAsset>>, TError,DeactivateRoadAssetMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof deactivateRoadAsset>>,
+        TError,
+        DeactivateRoadAssetMutationVariables,
+        TContext
+      > => {
+      return useMutation(getDeactivateRoadAssetMutationOptions(options));
+    }
+
+export const getListRoadCargoUrl = (params?: ListRoadCargoParams,) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : String(value))
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0 ? `/api/road/cargo?${stringifiedParams}` : `/api/road/cargo`
+}
+
+/**
+ * @summary List road cargo owned by the current company
+ */
+export const listRoadCargo = async (params?: ListRoadCargoParams, options?: Parameters<typeof customFetch>[1]): Promise<RoadCargoListResponse> => {
+
+  return customFetch<RoadCargoListResponse>(getListRoadCargoUrl(params),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getListRoadCargoQueryKey = (params?: ListRoadCargoParams,) => {
+    return [
+    `/api/road/cargo`, ...(params ? [params] : [])
+    ] as const;
+    }
+
+
+export const getListRoadCargoQueryOptions = <TData = Awaited<ReturnType<typeof listRoadCargo>>, TError = ErrorType<unknown>>(params?: ListRoadCargoParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof listRoadCargo>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getListRoadCargoQueryKey(params);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof listRoadCargo>>> = ({ signal }) => listRoadCargo(params, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof listRoadCargo>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type ListRoadCargoQueryResult = NonNullable<Awaited<ReturnType<typeof listRoadCargo>>>
+export type ListRoadCargoQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary List road cargo owned by the current company
+ */
+
+export function useListRoadCargo<TData = Awaited<ReturnType<typeof listRoadCargo>>, TError = ErrorType<unknown>>(
+ params?: ListRoadCargoParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof listRoadCargo>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getListRoadCargoQueryOptions(params,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getCreateRoadCargoUrl = () => {
+
+
+
+
+  return `/api/road/cargo`
+}
+
+/**
+ * @summary Publish or draft road cargo
+ */
+export const createRoadCargo = async (roadCargoInput: RoadCargoInput, options?: Parameters<typeof customFetch>[1]): Promise<RoadCargo> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return customFetch<RoadCargo>(getCreateRoadCargoUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(roadCargoInput)
+  }
+);}
+
+
+
+
+
+export const getCreateRoadCargoMutationKey = () => ['createRoadCargo'] as const;
+
+export const getCreateRoadCargoMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createRoadCargo>>, TError,CreateRoadCargoMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof createRoadCargo>>, TError,CreateRoadCargoMutationVariables, TContext> => {
+
+const mutationKey = getCreateRoadCargoMutationKey();
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof createRoadCargo>>, CreateRoadCargoMutationVariables> = (props) => {
+          const {data} = props ?? {};
+
+          return  createRoadCargo(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type CreateRoadCargoMutationResult = NonNullable<Awaited<ReturnType<typeof createRoadCargo>>>
+    export type CreateRoadCargoMutationBody = BodyType<RoadCargoInput>
+    export type CreateRoadCargoMutationError = ErrorType<unknown>
+    export type CreateRoadCargoMutationVariables = {data: BodyType<RoadCargoInput>}
+
+    /**
+ * @summary Publish or draft road cargo
+ */
+export const useCreateRoadCargo = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createRoadCargo>>, TError,CreateRoadCargoMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof createRoadCargo>>,
+        TError,
+        CreateRoadCargoMutationVariables,
+        TContext
+      > => {
+      return useMutation(getCreateRoadCargoMutationOptions(options));
+    }
+
+export const getGetRoadCargoUrl = (cargoId: string,) => {
+
+
+
+
+  return `/api/road/cargo/${cargoId}`
+}
+
+/**
+ * @summary Get road cargo
+ */
+export const getRoadCargo = async (cargoId: string, options?: Parameters<typeof customFetch>[1]): Promise<RoadCargo> => {
+
+  return customFetch<RoadCargo>(getGetRoadCargoUrl(cargoId),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetRoadCargoQueryKey = (cargoId: string,) => {
+    return [
+    `/api/road/cargo/${cargoId}`
+    ] as const;
+    }
+
+
+export const getGetRoadCargoQueryOptions = <TData = Awaited<ReturnType<typeof getRoadCargo>>, TError = ErrorType<unknown>>(cargoId: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getRoadCargo>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetRoadCargoQueryKey(cargoId);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getRoadCargo>>> = ({ signal }) => getRoadCargo(cargoId, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: cargoId !== null && cargoId !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getRoadCargo>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetRoadCargoQueryResult = NonNullable<Awaited<ReturnType<typeof getRoadCargo>>>
+export type GetRoadCargoQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Get road cargo
+ */
+
+export function useGetRoadCargo<TData = Awaited<ReturnType<typeof getRoadCargo>>, TError = ErrorType<unknown>>(
+ cargoId: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getRoadCargo>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetRoadCargoQueryOptions(cargoId,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getUpdateRoadCargoUrl = (cargoId: string,) => {
+
+
+
+
+  return `/api/road/cargo/${cargoId}`
+}
+
+/**
+ * @summary Update road cargo
+ */
+export const updateRoadCargo = async (cargoId: string,
+    roadCargoUpdate: RoadCargoUpdate, options?: Parameters<typeof customFetch>[1]): Promise<RoadCargo> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return customFetch<RoadCargo>(getUpdateRoadCargoUrl(cargoId),
+  {
+    ...options,
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(roadCargoUpdate)
+  }
+);}
+
+
+
+
+
+export const getUpdateRoadCargoMutationKey = () => ['updateRoadCargo'] as const;
+
+export const getUpdateRoadCargoMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateRoadCargo>>, TError,UpdateRoadCargoMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof updateRoadCargo>>, TError,UpdateRoadCargoMutationVariables, TContext> => {
+
+const mutationKey = getUpdateRoadCargoMutationKey();
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateRoadCargo>>, UpdateRoadCargoMutationVariables> = (props) => {
+          const {cargoId,data} = props ?? {};
+
+          return  updateRoadCargo(cargoId,data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type UpdateRoadCargoMutationResult = NonNullable<Awaited<ReturnType<typeof updateRoadCargo>>>
+    export type UpdateRoadCargoMutationBody = BodyType<RoadCargoUpdate>
+    export type UpdateRoadCargoMutationError = ErrorType<unknown>
+    export type UpdateRoadCargoMutationVariables = {cargoId: string;data: BodyType<RoadCargoUpdate>}
+
+    /**
+ * @summary Update road cargo
+ */
+export const useUpdateRoadCargo = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateRoadCargo>>, TError,UpdateRoadCargoMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof updateRoadCargo>>,
+        TError,
+        UpdateRoadCargoMutationVariables,
+        TContext
+      > => {
+      return useMutation(getUpdateRoadCargoMutationOptions(options));
+    }
+
+export const getWithdrawRoadCargoUrl = (cargoId: string,) => {
+
+
+
+
+  return `/api/road/cargo/${cargoId}/withdraw`
+}
+
+export const withdrawRoadCargo = async (cargoId: string, options?: Parameters<typeof customFetch>[1]): Promise<RoadCargo> => {
+
+  return customFetch<RoadCargo>(getWithdrawRoadCargoUrl(cargoId),
+  {
+    ...options,
+    method: 'POST'
+
+
+  }
+);}
+
+
+
+
+
+export const getWithdrawRoadCargoMutationKey = () => ['withdrawRoadCargo'] as const;
+
+export const getWithdrawRoadCargoMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof withdrawRoadCargo>>, TError,WithdrawRoadCargoMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof withdrawRoadCargo>>, TError,WithdrawRoadCargoMutationVariables, TContext> => {
+
+const mutationKey = getWithdrawRoadCargoMutationKey();
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof withdrawRoadCargo>>, WithdrawRoadCargoMutationVariables> = (props) => {
+          const {cargoId} = props ?? {};
+
+          return  withdrawRoadCargo(cargoId,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type WithdrawRoadCargoMutationResult = NonNullable<Awaited<ReturnType<typeof withdrawRoadCargo>>>
+
+    export type WithdrawRoadCargoMutationError = ErrorType<unknown>
+    export type WithdrawRoadCargoMutationVariables = {cargoId: string}
+
+    export const useWithdrawRoadCargo = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof withdrawRoadCargo>>, TError,WithdrawRoadCargoMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof withdrawRoadCargo>>,
+        TError,
+        WithdrawRoadCargoMutationVariables,
+        TContext
+      > => {
+      return useMutation(getWithdrawRoadCargoMutationOptions(options));
+    }
+
+export const getCloseRoadCargoUrl = (cargoId: string,) => {
+
+
+
+
+  return `/api/road/cargo/${cargoId}/close`
+}
+
+export const closeRoadCargo = async (cargoId: string, options?: Parameters<typeof customFetch>[1]): Promise<RoadCargo> => {
+
+  return customFetch<RoadCargo>(getCloseRoadCargoUrl(cargoId),
+  {
+    ...options,
+    method: 'POST'
+
+
+  }
+);}
+
+
+
+
+
+export const getCloseRoadCargoMutationKey = () => ['closeRoadCargo'] as const;
+
+export const getCloseRoadCargoMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof closeRoadCargo>>, TError,CloseRoadCargoMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof closeRoadCargo>>, TError,CloseRoadCargoMutationVariables, TContext> => {
+
+const mutationKey = getCloseRoadCargoMutationKey();
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof closeRoadCargo>>, CloseRoadCargoMutationVariables> = (props) => {
+          const {cargoId} = props ?? {};
+
+          return  closeRoadCargo(cargoId,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type CloseRoadCargoMutationResult = NonNullable<Awaited<ReturnType<typeof closeRoadCargo>>>
+
+    export type CloseRoadCargoMutationError = ErrorType<unknown>
+    export type CloseRoadCargoMutationVariables = {cargoId: string}
+
+    export const useCloseRoadCargo = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof closeRoadCargo>>, TError,CloseRoadCargoMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof closeRoadCargo>>,
+        TError,
+        CloseRoadCargoMutationVariables,
+        TContext
+      > => {
+      return useMutation(getCloseRoadCargoMutationOptions(options));
+    }
+
+export const getListRoadCapacityUrl = (params?: ListRoadCapacityParams,) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : String(value))
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0 ? `/api/road/capacity?${stringifiedParams}` : `/api/road/capacity`
+}
+
+/**
+ * @summary List road capacity offers owned by the current company
+ */
+export const listRoadCapacity = async (params?: ListRoadCapacityParams, options?: Parameters<typeof customFetch>[1]): Promise<RoadCapacityListResponse> => {
+
+  return customFetch<RoadCapacityListResponse>(getListRoadCapacityUrl(params),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getListRoadCapacityQueryKey = (params?: ListRoadCapacityParams,) => {
+    return [
+    `/api/road/capacity`, ...(params ? [params] : [])
+    ] as const;
+    }
+
+
+export const getListRoadCapacityQueryOptions = <TData = Awaited<ReturnType<typeof listRoadCapacity>>, TError = ErrorType<unknown>>(params?: ListRoadCapacityParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof listRoadCapacity>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getListRoadCapacityQueryKey(params);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof listRoadCapacity>>> = ({ signal }) => listRoadCapacity(params, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof listRoadCapacity>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type ListRoadCapacityQueryResult = NonNullable<Awaited<ReturnType<typeof listRoadCapacity>>>
+export type ListRoadCapacityQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary List road capacity offers owned by the current company
+ */
+
+export function useListRoadCapacity<TData = Awaited<ReturnType<typeof listRoadCapacity>>, TError = ErrorType<unknown>>(
+ params?: ListRoadCapacityParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof listRoadCapacity>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getListRoadCapacityQueryOptions(params,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getCreateRoadCapacityUrl = () => {
+
+
+
+
+  return `/api/road/capacity`
+}
+
+/**
+ * @summary Declare manually derived future road capacity
+ */
+export const createRoadCapacity = async (roadCapacityInput: RoadCapacityInput, options?: Parameters<typeof customFetch>[1]): Promise<RoadCapacity> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return customFetch<RoadCapacity>(getCreateRoadCapacityUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(roadCapacityInput)
+  }
+);}
+
+
+
+
+
+export const getCreateRoadCapacityMutationKey = () => ['createRoadCapacity'] as const;
+
+export const getCreateRoadCapacityMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createRoadCapacity>>, TError,CreateRoadCapacityMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof createRoadCapacity>>, TError,CreateRoadCapacityMutationVariables, TContext> => {
+
+const mutationKey = getCreateRoadCapacityMutationKey();
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof createRoadCapacity>>, CreateRoadCapacityMutationVariables> = (props) => {
+          const {data} = props ?? {};
+
+          return  createRoadCapacity(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type CreateRoadCapacityMutationResult = NonNullable<Awaited<ReturnType<typeof createRoadCapacity>>>
+    export type CreateRoadCapacityMutationBody = BodyType<RoadCapacityInput>
+    export type CreateRoadCapacityMutationError = ErrorType<unknown>
+    export type CreateRoadCapacityMutationVariables = {data: BodyType<RoadCapacityInput>}
+
+    /**
+ * @summary Declare manually derived future road capacity
+ */
+export const useCreateRoadCapacity = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createRoadCapacity>>, TError,CreateRoadCapacityMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof createRoadCapacity>>,
+        TError,
+        CreateRoadCapacityMutationVariables,
+        TContext
+      > => {
+      return useMutation(getCreateRoadCapacityMutationOptions(options));
+    }
+
+export const getListRoadDriversUrl = () => {
+
+
+
+
+  return `/api/road/drivers`
+}
+
+/**
+ * @summary List active MEMBER drivers available for road assignment
+ */
+export const listRoadDrivers = async ( options?: Parameters<typeof customFetch>[1]): Promise<RoadDriverListResponse> => {
+
+  return customFetch<RoadDriverListResponse>(getListRoadDriversUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getListRoadDriversQueryKey = () => {
+    return [
+    `/api/road/drivers`
+    ] as const;
+    }
+
+
+export const getListRoadDriversQueryOptions = <TData = Awaited<ReturnType<typeof listRoadDrivers>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof listRoadDrivers>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getListRoadDriversQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof listRoadDrivers>>> = ({ signal }) => listRoadDrivers({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof listRoadDrivers>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type ListRoadDriversQueryResult = NonNullable<Awaited<ReturnType<typeof listRoadDrivers>>>
+export type ListRoadDriversQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary List active MEMBER drivers available for road assignment
+ */
+
+export function useListRoadDrivers<TData = Awaited<ReturnType<typeof listRoadDrivers>>, TError = ErrorType<unknown>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof listRoadDrivers>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getListRoadDriversQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getGetRoadCapacityUrl = (capacityId: string,) => {
+
+
+
+
+  return `/api/road/capacity/${capacityId}`
+}
+
+/**
+ * @summary Get road capacity
+ */
+export const getRoadCapacity = async (capacityId: string, options?: Parameters<typeof customFetch>[1]): Promise<RoadCapacity> => {
+
+  return customFetch<RoadCapacity>(getGetRoadCapacityUrl(capacityId),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetRoadCapacityQueryKey = (capacityId: string,) => {
+    return [
+    `/api/road/capacity/${capacityId}`
+    ] as const;
+    }
+
+
+export const getGetRoadCapacityQueryOptions = <TData = Awaited<ReturnType<typeof getRoadCapacity>>, TError = ErrorType<unknown>>(capacityId: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getRoadCapacity>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetRoadCapacityQueryKey(capacityId);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getRoadCapacity>>> = ({ signal }) => getRoadCapacity(capacityId, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: capacityId !== null && capacityId !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getRoadCapacity>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetRoadCapacityQueryResult = NonNullable<Awaited<ReturnType<typeof getRoadCapacity>>>
+export type GetRoadCapacityQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Get road capacity
+ */
+
+export function useGetRoadCapacity<TData = Awaited<ReturnType<typeof getRoadCapacity>>, TError = ErrorType<unknown>>(
+ capacityId: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getRoadCapacity>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetRoadCapacityQueryOptions(capacityId,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getUpdateRoadCapacityUrl = (capacityId: string,) => {
+
+
+
+
+  return `/api/road/capacity/${capacityId}`
+}
+
+/**
+ * @summary Update road capacity
+ */
+export const updateRoadCapacity = async (capacityId: string,
+    roadCapacityUpdate: RoadCapacityUpdate, options?: Parameters<typeof customFetch>[1]): Promise<RoadCapacity> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return customFetch<RoadCapacity>(getUpdateRoadCapacityUrl(capacityId),
+  {
+    ...options,
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(roadCapacityUpdate)
+  }
+);}
+
+
+
+
+
+export const getUpdateRoadCapacityMutationKey = () => ['updateRoadCapacity'] as const;
+
+export const getUpdateRoadCapacityMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateRoadCapacity>>, TError,UpdateRoadCapacityMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof updateRoadCapacity>>, TError,UpdateRoadCapacityMutationVariables, TContext> => {
+
+const mutationKey = getUpdateRoadCapacityMutationKey();
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateRoadCapacity>>, UpdateRoadCapacityMutationVariables> = (props) => {
+          const {capacityId,data} = props ?? {};
+
+          return  updateRoadCapacity(capacityId,data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type UpdateRoadCapacityMutationResult = NonNullable<Awaited<ReturnType<typeof updateRoadCapacity>>>
+    export type UpdateRoadCapacityMutationBody = BodyType<RoadCapacityUpdate>
+    export type UpdateRoadCapacityMutationError = ErrorType<unknown>
+    export type UpdateRoadCapacityMutationVariables = {capacityId: string;data: BodyType<RoadCapacityUpdate>}
+
+    /**
+ * @summary Update road capacity
+ */
+export const useUpdateRoadCapacity = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateRoadCapacity>>, TError,UpdateRoadCapacityMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof updateRoadCapacity>>,
+        TError,
+        UpdateRoadCapacityMutationVariables,
+        TContext
+      > => {
+      return useMutation(getUpdateRoadCapacityMutationOptions(options));
+    }
+
+export const getWithdrawRoadCapacityUrl = (capacityId: string,) => {
+
+
+
+
+  return `/api/road/capacity/${capacityId}/withdraw`
+}
+
+export const withdrawRoadCapacity = async (capacityId: string, options?: Parameters<typeof customFetch>[1]): Promise<RoadCapacity> => {
+
+  return customFetch<RoadCapacity>(getWithdrawRoadCapacityUrl(capacityId),
+  {
+    ...options,
+    method: 'POST'
+
+
+  }
+);}
+
+
+
+
+
+export const getWithdrawRoadCapacityMutationKey = () => ['withdrawRoadCapacity'] as const;
+
+export const getWithdrawRoadCapacityMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof withdrawRoadCapacity>>, TError,WithdrawRoadCapacityMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof withdrawRoadCapacity>>, TError,WithdrawRoadCapacityMutationVariables, TContext> => {
+
+const mutationKey = getWithdrawRoadCapacityMutationKey();
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof withdrawRoadCapacity>>, WithdrawRoadCapacityMutationVariables> = (props) => {
+          const {capacityId} = props ?? {};
+
+          return  withdrawRoadCapacity(capacityId,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type WithdrawRoadCapacityMutationResult = NonNullable<Awaited<ReturnType<typeof withdrawRoadCapacity>>>
+
+    export type WithdrawRoadCapacityMutationError = ErrorType<unknown>
+    export type WithdrawRoadCapacityMutationVariables = {capacityId: string}
+
+    export const useWithdrawRoadCapacity = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof withdrawRoadCapacity>>, TError,WithdrawRoadCapacityMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof withdrawRoadCapacity>>,
+        TError,
+        WithdrawRoadCapacityMutationVariables,
+        TContext
+      > => {
+      return useMutation(getWithdrawRoadCapacityMutationOptions(options));
+    }
+
+export const getCloseRoadCapacityUrl = (capacityId: string,) => {
+
+
+
+
+  return `/api/road/capacity/${capacityId}/close`
+}
+
+export const closeRoadCapacity = async (capacityId: string, options?: Parameters<typeof customFetch>[1]): Promise<RoadCapacity> => {
+
+  return customFetch<RoadCapacity>(getCloseRoadCapacityUrl(capacityId),
+  {
+    ...options,
+    method: 'POST'
+
+
+  }
+);}
+
+
+
+
+
+export const getCloseRoadCapacityMutationKey = () => ['closeRoadCapacity'] as const;
+
+export const getCloseRoadCapacityMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof closeRoadCapacity>>, TError,CloseRoadCapacityMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof closeRoadCapacity>>, TError,CloseRoadCapacityMutationVariables, TContext> => {
+
+const mutationKey = getCloseRoadCapacityMutationKey();
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof closeRoadCapacity>>, CloseRoadCapacityMutationVariables> = (props) => {
+          const {capacityId} = props ?? {};
+
+          return  closeRoadCapacity(capacityId,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type CloseRoadCapacityMutationResult = NonNullable<Awaited<ReturnType<typeof closeRoadCapacity>>>
+
+    export type CloseRoadCapacityMutationError = ErrorType<unknown>
+    export type CloseRoadCapacityMutationVariables = {capacityId: string}
+
+    export const useCloseRoadCapacity = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof closeRoadCapacity>>, TError,CloseRoadCapacityMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof closeRoadCapacity>>,
+        TError,
+        CloseRoadCapacityMutationVariables,
+        TContext
+      > => {
+      return useMutation(getCloseRoadCapacityMutationOptions(options));
+    }
+
+export const getAssignRoadDriverUrl = (capacityId: string,) => {
+
+
+
+
+  return `/api/road/capacity/${capacityId}/assignments`
+}
+
+export const assignRoadDriver = async (capacityId: string,
+    roadAssignmentInput: RoadAssignmentInput, options?: Parameters<typeof customFetch>[1]): Promise<RoadAssignment> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return customFetch<RoadAssignment>(getAssignRoadDriverUrl(capacityId),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(roadAssignmentInput)
+  }
+);}
+
+
+
+
+
+export const getAssignRoadDriverMutationKey = () => ['assignRoadDriver'] as const;
+
+export const getAssignRoadDriverMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof assignRoadDriver>>, TError,AssignRoadDriverMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof assignRoadDriver>>, TError,AssignRoadDriverMutationVariables, TContext> => {
+
+const mutationKey = getAssignRoadDriverMutationKey();
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof assignRoadDriver>>, AssignRoadDriverMutationVariables> = (props) => {
+          const {capacityId,data} = props ?? {};
+
+          return  assignRoadDriver(capacityId,data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type AssignRoadDriverMutationResult = NonNullable<Awaited<ReturnType<typeof assignRoadDriver>>>
+    export type AssignRoadDriverMutationBody = BodyType<RoadAssignmentInput>
+    export type AssignRoadDriverMutationError = ErrorType<unknown>
+    export type AssignRoadDriverMutationVariables = {capacityId: string;data: BodyType<RoadAssignmentInput>}
+
+    export const useAssignRoadDriver = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof assignRoadDriver>>, TError,AssignRoadDriverMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof assignRoadDriver>>,
+        TError,
+        AssignRoadDriverMutationVariables,
+        TContext
+      > => {
+      return useMutation(getAssignRoadDriverMutationOptions(options));
+    }
+
+export const getConfirmRoadAssignmentUrl = (assignmentId: string,) => {
+
+
+
+
+  return `/api/road/assignments/${assignmentId}/confirm`
+}
+
+export const confirmRoadAssignment = async (assignmentId: string,
+    roadOperationalAction?: RoadOperationalAction, options?: Parameters<typeof customFetch>[1]): Promise<RoadAssignment> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return customFetch<RoadAssignment>(getConfirmRoadAssignmentUrl(assignmentId),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(roadOperationalAction)
+  }
+);}
+
+
+
+
+
+export const getConfirmRoadAssignmentMutationKey = () => ['confirmRoadAssignment'] as const;
+
+export const getConfirmRoadAssignmentMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof confirmRoadAssignment>>, TError,ConfirmRoadAssignmentMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof confirmRoadAssignment>>, TError,ConfirmRoadAssignmentMutationVariables, TContext> => {
+
+const mutationKey = getConfirmRoadAssignmentMutationKey();
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof confirmRoadAssignment>>, ConfirmRoadAssignmentMutationVariables> = (props) => {
+          const {assignmentId,data} = props ?? {};
+
+          return  confirmRoadAssignment(assignmentId,data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type ConfirmRoadAssignmentMutationResult = NonNullable<Awaited<ReturnType<typeof confirmRoadAssignment>>>
+    export type ConfirmRoadAssignmentMutationBody = BodyType<RoadOperationalAction> | undefined
+    export type ConfirmRoadAssignmentMutationError = ErrorType<unknown>
+    export type ConfirmRoadAssignmentMutationVariables = {assignmentId: string;data?: BodyType<RoadOperationalAction>}
+
+    export const useConfirmRoadAssignment = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof confirmRoadAssignment>>, TError,ConfirmRoadAssignmentMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof confirmRoadAssignment>>,
+        TError,
+        ConfirmRoadAssignmentMutationVariables,
+        TContext
+      > => {
+      return useMutation(getConfirmRoadAssignmentMutationOptions(options));
+    }
+
+export const getFlagRoadAssignmentUrl = (assignmentId: string,) => {
+
+
+
+
+  return `/api/road/assignments/${assignmentId}/flag`
+}
+
+export const flagRoadAssignment = async (assignmentId: string,
+    roadOperationalAction: RoadOperationalAction, options?: Parameters<typeof customFetch>[1]): Promise<RoadAssignment> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return customFetch<RoadAssignment>(getFlagRoadAssignmentUrl(assignmentId),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(roadOperationalAction)
+  }
+);}
+
+
+
+
+
+export const getFlagRoadAssignmentMutationKey = () => ['flagRoadAssignment'] as const;
+
+export const getFlagRoadAssignmentMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof flagRoadAssignment>>, TError,FlagRoadAssignmentMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof flagRoadAssignment>>, TError,FlagRoadAssignmentMutationVariables, TContext> => {
+
+const mutationKey = getFlagRoadAssignmentMutationKey();
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof flagRoadAssignment>>, FlagRoadAssignmentMutationVariables> = (props) => {
+          const {assignmentId,data} = props ?? {};
+
+          return  flagRoadAssignment(assignmentId,data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type FlagRoadAssignmentMutationResult = NonNullable<Awaited<ReturnType<typeof flagRoadAssignment>>>
+    export type FlagRoadAssignmentMutationBody = BodyType<RoadOperationalAction>
+    export type FlagRoadAssignmentMutationError = ErrorType<unknown>
+    export type FlagRoadAssignmentMutationVariables = {assignmentId: string;data: BodyType<RoadOperationalAction>}
+
+    export const useFlagRoadAssignment = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof flagRoadAssignment>>, TError,FlagRoadAssignmentMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof flagRoadAssignment>>,
+        TError,
+        FlagRoadAssignmentMutationVariables,
+        TContext
+      > => {
+      return useMutation(getFlagRoadAssignmentMutationOptions(options));
+    }
+
+export const getListRoadMatchesUrl = (params?: ListRoadMatchesParams,) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : String(value))
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0 ? `/api/road/matches?${stringifiedParams}` : `/api/road/matches`
+}
+
+export const listRoadMatches = async (params?: ListRoadMatchesParams, options?: Parameters<typeof customFetch>[1]): Promise<RoadMatchListResponse> => {
+
+  return customFetch<RoadMatchListResponse>(getListRoadMatchesUrl(params),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getListRoadMatchesQueryKey = (params?: ListRoadMatchesParams,) => {
+    return [
+    `/api/road/matches`, ...(params ? [params] : [])
+    ] as const;
+    }
+
+
+export const getListRoadMatchesQueryOptions = <TData = Awaited<ReturnType<typeof listRoadMatches>>, TError = ErrorType<unknown>>(params?: ListRoadMatchesParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof listRoadMatches>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getListRoadMatchesQueryKey(params);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof listRoadMatches>>> = ({ signal }) => listRoadMatches(params, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof listRoadMatches>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type ListRoadMatchesQueryResult = NonNullable<Awaited<ReturnType<typeof listRoadMatches>>>
+export type ListRoadMatchesQueryError = ErrorType<unknown>
+
+
+
+export function useListRoadMatches<TData = Awaited<ReturnType<typeof listRoadMatches>>, TError = ErrorType<unknown>>(
+ params?: ListRoadMatchesParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof listRoadMatches>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getListRoadMatchesQueryOptions(params,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getGetRoadMatchUrl = (matchId: string,) => {
+
+
+
+
+  return `/api/road/matches/${matchId}`
+}
+
+export const getRoadMatch = async (matchId: string, options?: Parameters<typeof customFetch>[1]): Promise<RoadMatch> => {
+
+  return customFetch<RoadMatch>(getGetRoadMatchUrl(matchId),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetRoadMatchQueryKey = (matchId: string,) => {
+    return [
+    `/api/road/matches/${matchId}`
+    ] as const;
+    }
+
+
+export const getGetRoadMatchQueryOptions = <TData = Awaited<ReturnType<typeof getRoadMatch>>, TError = ErrorType<unknown>>(matchId: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getRoadMatch>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetRoadMatchQueryKey(matchId);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getRoadMatch>>> = ({ signal }) => getRoadMatch(matchId, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: matchId !== null && matchId !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getRoadMatch>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetRoadMatchQueryResult = NonNullable<Awaited<ReturnType<typeof getRoadMatch>>>
+export type GetRoadMatchQueryError = ErrorType<unknown>
+
+
+
+export function useGetRoadMatch<TData = Awaited<ReturnType<typeof getRoadMatch>>, TError = ErrorType<unknown>>(
+ matchId: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getRoadMatch>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetRoadMatchQueryOptions(matchId,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
 
 export const getListMyVesselsUrl = (params?: ListMyVesselsParams,) => {
   const normalizedParams = new URLSearchParams();

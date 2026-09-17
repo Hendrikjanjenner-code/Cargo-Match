@@ -44,6 +44,7 @@ export const vesselTypeEnum = pgEnum("vessel_type", [
 export const transportModeEnum = pgEnum("transport_mode", [
   "INLAND_WATERWAY",
   "DEEPSEA_BULK",
+  "ROAD",
 ]);
 export const deepseaVesselClassEnum = pgEnum("deepsea_vessel_class", [
   "HANDYSIZE",
@@ -120,6 +121,7 @@ export const notificationTypeEnum = pgEnum("notification_type", [
   "INTEREST_DECLINED",
   "NEW_MESSAGE",
   "LISTING_EXPIRES_SOON",
+  "ROAD_OPPORTUNITY_FLAGGED",
 ]);
 export const vesselIdentifierTypeEnum = pgEnum("vessel_identifier_type", [
   "ENI",
@@ -418,7 +420,12 @@ export const cargoListingsTable = pgTable(
     loadingFrom: timestamp("loading_from", { withTimezone: true }).notNull(),
     loadingUntil: timestamp("loading_until", { withTimezone: true }).notNull(),
     expectedUnloadingDate: date("expected_unloading_date", { mode: "string" }),
-    requiredVesselType: vesselTypeEnum("required_vessel_type").notNull(),
+    /**
+     * Road cargo has no vessel requirement. Dedicated road routes enforce the
+     * mode-specific requirement rows instead of allowing this generic field
+     * to masquerade as a road validation.
+     */
+    requiredVesselType: vesselTypeEnum("required_vessel_type"),
     specialRequirements: text("special_requirements"),
     visibility: visibilityEnum("visibility").notNull(),
     notes: text("notes"),
@@ -489,9 +496,12 @@ export const capacityOffersTable = pgTable(
     transportMode: transportModeEnum("transport_mode")
       .notNull()
       .default("INLAND_WATERWAY"),
-    vesselId: uuid("vessel_id")
-      .notNull()
-      .references(() => vesselsTable.id),
+    /**
+     * ROAD capacity is attached to a road asset extension, not a vessel.
+     * Generic listing routes reject ROAD and dedicated routes validate the
+     * nullable association transactionally.
+     */
+    vesselId: uuid("vessel_id").references(() => vesselsTable.id),
     locationId: uuid("location_id")
       .notNull()
       .references(() => locationsTable.id),
@@ -656,9 +666,9 @@ export const matchesTable = pgTable(
     check(
       "matches_exactly_one_domain_pair_check",
       sql`(
-        (${table.cargoListingId} IS NOT NULL AND ${table.capacityOfferId} IS NOT NULL AND ${table.linerCargoId} IS NULL AND ${table.linerSailingId} IS NULL)
-        OR
         (${table.cargoListingId} IS NULL AND ${table.capacityOfferId} IS NULL AND ${table.linerCargoId} IS NOT NULL AND ${table.linerSailingId} IS NOT NULL)
+        OR
+        (${table.cargoListingId} IS NOT NULL AND ${table.capacityOfferId} IS NOT NULL AND ${table.linerCargoId} IS NULL AND ${table.linerSailingId} IS NULL)
       )`,
     ),
     index("matches_status_idx").on(table.status),

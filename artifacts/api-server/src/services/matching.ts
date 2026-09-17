@@ -14,6 +14,9 @@ import {
   deepseaCapacityExtensionsTable,
   deepseaCargoRequirementsTable,
   deepseaVesselProfilesTable,
+  roadAssetsTable,
+  roadCargoRequirementsTable,
+  roadCapacityExtensionsTable,
   db,
 } from "@workspace/db";
 import {
@@ -28,7 +31,7 @@ const EARTH_RADIUS_KM = 6_371;
 export type PairInput = {
   cargo: typeof cargoListingsTable.$inferSelect;
   capacity: typeof capacityOffersTable.$inferSelect;
-  vessel: typeof vesselsTable.$inferSelect;
+  vessel: typeof vesselsTable.$inferSelect | null;
   loading: typeof locationsTable.$inferSelect;
   destination: typeof locationsTable.$inferSelect;
   capacityLocation: typeof locationsTable.$inferSelect;
@@ -37,6 +40,9 @@ export type PairInput = {
   deepseaProfile: typeof deepseaVesselProfilesTable.$inferSelect | null;
   deepseaRequirement: typeof deepseaCargoRequirementsTable.$inferSelect | null;
   deepseaExtension: typeof deepseaCapacityExtensionsTable.$inferSelect | null;
+  roadAsset: typeof roadAssetsTable.$inferSelect | null;
+  roadRequirement: typeof roadCargoRequirementsTable.$inferSelect | null;
+  roadExtension: typeof roadCapacityExtensionsTable.$inferSelect | null;
 };
 
 export type EligibilityResult =
@@ -148,10 +154,11 @@ export function evaluateEligibility(pair: PairInput, now = new Date()): Eligibil
   const { cargo, capacity, vessel, loading, cargoCompany, capacityCompany } = pair;
   const cargoMode = cargo.transportMode ?? "INLAND_WATERWAY";
   const capacityMode = capacity.transportMode ?? "INLAND_WATERWAY";
-  const vesselMode = vessel.transportMode ?? "INLAND_WATERWAY";
+  const vesselMode = vessel?.transportMode ?? (cargoMode === "ROAD" ? "ROAD" : "INLAND_WATERWAY");
   if (cargoMode !== capacityMode || capacityMode !== vesselMode) {
     return { eligible: false, reason: "transport_mode_mismatch" };
   }
+  if (cargoMode === "ROAD") return evaluateRoadEligibility(pair, now);
   if (cargoMode === "DEEPSEA_BULK") {
     return evaluateDeepseaEligibility(pair, now);
   }
@@ -161,7 +168,7 @@ export function evaluateEligibility(pair: PairInput, now = new Date()): Eligibil
   if (cargoCompany.id === capacityCompany.id) {
     return { eligible: false, reason: "same_company" };
   }
-  if (!vessel.active || !loading.active || !pair.destination.active || !pair.capacityLocation.active) {
+  if (!vessel || !vessel.active || !loading.active || !pair.destination.active || !pair.capacityLocation.active) {
     return { eligible: false, reason: "catalogue_or_vessel_inactive" };
   }
   if (
@@ -227,6 +234,129 @@ export function evaluateEligibility(pair: PairInput, now = new Date()): Eligibil
   return { eligible: true, distanceKm: distance };
 }
 
+function includesAll(values: string[], required: string[]) {
+  const available = new Set(values.map((value) => value.trim().toLowerCase()));
+  return required.every((value) => available.has(value.trim().toLowerCase()));
+}
+
+function finitePositive(value: unknown) {
+  return typeof value === "number" && Number.isFinite(value) && value > 0;
+}
+
+function directionCompatible(direction: string | null | undefined, destination: typeof locationsTable.$inferSelect) {
+  if (!direction?.trim()) return true;
+  const normalized = direction.trim().toLowerCase();
+  if (normalized === "all" || normalized === "any") return true;
+  const destinationText = `${destination.name} ${destination.region} ${destination.country}`.toLowerCase();
+  if (normalized.includes("rhine") && /duisburg|dusseldorf|düsseldorf|cologne|köln|germany|deutschland|nl|netherlands/.test(destinationText)) return true;
+  return normalized.split(/[,/ ]+/).some((part) => part.length > 2 && destinationText.includes(part));
+}
+
+function temperatureCapabilityContains(
+  requiredMin: number | null | undefined,
+  requiredMax: number | null | undefined,
+  availableMin: number | null | undefined,
+  availableMax: number | null | undefined,
+) {
+  if (requiredMin == null && requiredMax == null) return true;
+  // Unknown capability is not unlimited capability. If only one requested
+  // bound is supplied, that declared temperature must still be attainable.
+  if (availableMin == null || availableMax == null) return false;
+  const lower = requiredMin ?? requiredMax!;
+  const upper = requiredMax ?? requiredMin!;
+  if (![lower, upper, availableMin, availableMax].every(Number.isFinite)) return false;
+  return lower <= upper && availableMin <= lower && availableMax >= upper;
+}
+
+/**
+ * Road eligibility is deliberately separate from maritime evaluation. It
+ * never reads vessel profiles, vessel type, AIS, or a vessel score.
+ */
+export function evaluateRoadEligibility(
+  pair: PairInput,
+  now = new Date(),
+): EligibilityResult {
+  const { cargo, capacity, loading, destination, capacityLocation, cargoCompany, capacityCompany } = pair;
+  const asset = pair.roadAsset;
+  const requirement = pair.roadRequirement;
+  const extension = pair.roadExtension;
+  if (
+    cargo.transportMode !== "ROAD" ||
+    capacity.transportMode !== "ROAD" ||
+    cargoCompany.status !== "ACTIVE" ||
+    capacityCompany.status !== "ACTIVE"
+  ) return { eligible: false, reason: "road_mode_or_company_mismatch" };
+  if (cargoCompany.id === capacityCompany.id) return { eligible: false, reason: "same_company" };
+  if (!asset || !requirement || !extension || !asset.active) return { eligible: false, reason: "road_profile_missing" };
+  if (asset.companyId !== capacityCompany.id || extension.roadAssetId !== asset.id) return { eligible: false, reason: "road_asset_ownership_mismatch" };
+  if (!loading.active || !destination.active || !capacityLocation.active) return { eligible: false, reason: "catalogue_inactive" };
+  if (extension.expectedAvailabilityLocationId !== capacityLocation.id) return { eligible: false, reason: "road_location_mismatch" };
+  if (
+    cargo.listingStatus !== "ACTIVE" || cargo.visibility !== "OPEN_NETWORK" ||
+    capacity.listingStatus !== "ACTIVE" || capacity.visibility !== "OPEN_NETWORK"
+  ) return { eligible: false, reason: "not_discoverable" };
+  if (cargo.loadingUntil <= now || capacity.availableUntil <= now) return { eligible: false, reason: "expired" };
+  if (
+    !Number.isFinite(cargo.loadingFrom.getTime()) || !Number.isFinite(cargo.loadingUntil.getTime()) ||
+    cargo.loadingFrom >= cargo.loadingUntil || !Number.isFinite(capacity.availableFrom.getTime()) ||
+    !Number.isFinite(capacity.availableUntil.getTime()) || capacity.availableFrom >= capacity.availableUntil
+  ) return { eligible: false, reason: "invalid_time_window" };
+  if (
+    !finitePositive(cargo.weightTonnes) || !finitePositive(capacity.availableCapacityTonnes) ||
+    !finitePositive(asset.payloadTonnes) || capacity.availableCapacityTonnes > asset.payloadTonnes ||
+    capacity.availableCapacityTonnes < cargo.weightTonnes
+  ) return { eligible: false, reason: "insufficient_tonnage" };
+  if (
+    !finitePositive(asset.volumeCubicMetres) || !finitePositive(asset.loadingMetres) ||
+    !finitePositive(asset.palletPositions) || !finitePositive(extension.availableVolumeCubicMetres) ||
+    !finitePositive(extension.availableLoadingMetres) || !finitePositive(extension.availablePalletPositions)
+  ) return { eligible: false, reason: "invalid_road_dimensions" };
+  if (
+    (requirement.volumeCubicMetres != null && !finitePositive(requirement.volumeCubicMetres)) ||
+    (requirement.loadingMetres != null && !finitePositive(requirement.loadingMetres)) ||
+    (requirement.palletPositions != null && !finitePositive(requirement.palletPositions))
+  ) return { eligible: false, reason: "invalid_road_requirements" };
+  if (
+    extension.availableVolumeCubicMetres > asset.volumeCubicMetres ||
+    extension.availableLoadingMetres > asset.loadingMetres ||
+    extension.availablePalletPositions > asset.palletPositions
+  ) return { eligible: false, reason: "road_capacity_exceeds_asset" };
+  if (
+    requirement.volumeCubicMetres != null && extension.availableVolumeCubicMetres < requirement.volumeCubicMetres ||
+    requirement.loadingMetres != null && extension.availableLoadingMetres < requirement.loadingMetres ||
+    requirement.palletPositions != null && extension.availablePalletPositions < requirement.palletPositions
+  ) return { eligible: false, reason: "insufficient_road_dimensions" };
+  const availableEquipment = [...asset.equipment, ...extension.equipment];
+  if (!includesAll(availableEquipment, requirement.requiredEquipment)) return { eligible: false, reason: "equipment_incompatible" };
+  if (requirement.requiredTrailerType && requirement.requiredTrailerType.toLowerCase() !== (extension.trailerType ?? asset.trailerType ?? "").toLowerCase()) {
+    return { eligible: false, reason: "trailer_type_incompatible" };
+  }
+  if (
+    (extension.temperatureMinCelsius != null && (asset.temperatureMinCelsius == null || extension.temperatureMinCelsius < asset.temperatureMinCelsius)) ||
+    (extension.temperatureMaxCelsius != null && (asset.temperatureMaxCelsius == null || extension.temperatureMaxCelsius > asset.temperatureMaxCelsius))
+  ) return { eligible: false, reason: "temperature_capability_overclaimed" };
+  if (!temperatureCapabilityContains(requirement.temperatureMinCelsius, requirement.temperatureMaxCelsius, extension.temperatureMinCelsius ?? asset.temperatureMinCelsius, extension.temperatureMaxCelsius ?? asset.temperatureMaxCelsius)) {
+    return { eligible: false, reason: "temperature_incompatible" };
+  }
+  if (!includesAll(extension.adrClasses.length ? extension.adrClasses : asset.adrClasses, requirement.adrClasses)) return { eligible: false, reason: "adr_incompatible" };
+  if (!compatibilityScore(cargo, capacity)) return { eligible: false, reason: "cargo_incompatible" };
+  const uncertaintyMs = extension.availabilityUncertaintyMinutes * 60_000;
+  // Use the conservative latest possible availability. A load can wait after
+  // that point, but may never extend beyond the shared offer expiration.
+  const conservativeAvailableFrom = new Date(extension.expectedAvailabilityAt.getTime() + uncertaintyMs);
+  const effectiveFrom = new Date(Math.max(capacity.availableFrom.getTime(), conservativeAvailableFrom.getTime()));
+  const effectiveUntil = capacity.availableUntil;
+  if (Math.max(effectiveFrom.getTime(), cargo.loadingFrom.getTime()) >=
+      Math.min(effectiveUntil.getTime(), cargo.loadingUntil.getTime())) {
+    return { eligible: false, reason: "future_availability_outside_window" };
+  }
+  if (!directionCompatible(extension.preferredDirection ?? requirement.direction, destination)) return { eligible: false, reason: "direction_incompatible" };
+  const distance = distanceKm(loading, capacityLocation);
+  if (distance > capacity.maximumPositioningDistanceKm) return { eligible: false, reason: "outside_positioning_distance" };
+  if (extension.currentDeliveryExpectedAt > extension.expectedAvailabilityAt) return { eligible: false, reason: "invalid_delivery_sequence" };
+  return { eligible: true, distanceKm: distance, provisional: true };
+}
+
 export function evaluateDeepseaEligibility(
   pair: PairInput,
   now = new Date(),
@@ -241,6 +371,7 @@ export function evaluateDeepseaEligibility(
     return { eligible: false, reason: "same_company" };
   }
   if (
+    !vessel ||
     !profile ||
     !requirement ||
     !vessel.active ||
@@ -374,7 +505,7 @@ export function scoreEligiblePair(
     100,
     (pair.capacity.availableCapacityTonnes / pair.cargo.weightTonnes) * 100,
   );
-  const vesselType = pair.vessel.vesselType === pair.cargo.requiredVesselType ? 100 : 0;
+  const vesselType = pair.vessel!.vesselType === pair.cargo.requiredVesselType ? 100 : 0;
   const direction = directionScore(
     pair.capacity.preferredDirection,
     pair.destination,
@@ -412,6 +543,45 @@ export function scoreEligiblePair(
     evaluationInputs,
     explanation:
       "Potential fit based on approximate positioning, timing, capacity, vessel type, direction, and cargo compatibility. This is not a booking or suitability guarantee.",
+  };
+}
+
+export function scoreRoadEligiblePair(pair: PairInput, distance: number): ScoreResult {
+  const requirement = pair.roadRequirement!;
+  const extension = pair.roadExtension!;
+  const dimensions = [
+    requirement.volumeCubicMetres == null ? 100 : Math.min(100, (extension.availableVolumeCubicMetres / requirement.volumeCubicMetres) * 100),
+    requirement.loadingMetres == null ? 100 : Math.min(100, (extension.availableLoadingMetres / requirement.loadingMetres) * 100),
+    requirement.palletPositions == null ? 100 : Math.min(100, (extension.availablePalletPositions / requirement.palletPositions) * 100),
+  ];
+  const capacityScore = Math.min(
+    100,
+    (pair.capacity.availableCapacityTonnes / pair.cargo.weightTonnes) * 100,
+  );
+  const timingScore = scoreTiming(pair.capacity, pair.cargo);
+  const direction = directionScore(extension.preferredDirection ?? requirement.direction ?? "", pair.destination);
+  const total = scoreDistance(distance, pair.capacity.maximumPositioningDistanceKm) * 0.25 +
+    timingScore * 0.25 + capacityScore * 0.25 + Math.min(...dimensions) * 0.15 + direction * 0.1;
+  return {
+    totalScore: total,
+    distanceScore: scoreDistance(distance, pair.capacity.maximumPositioningDistanceKm),
+    timingScore,
+    capacityScore,
+    vesselTypeScore: 0,
+    directionScore: direction,
+    cargoCompatibilityScore: 100,
+    distanceKm: distance,
+    evaluationInputs: {
+      mode: "ROAD",
+      capacityFit: `${Math.round(capacityScore)}`,
+      volumeFit: requirement.volumeCubicMetres == null ? "not-required" : `${Math.round(dimensions[0]!)}`,
+      loadingMetresFit: requirement.loadingMetres == null ? "not-required" : `${Math.round(dimensions[1]!)}`,
+      palletFit: requirement.palletPositions == null ? "not-required" : `${Math.round(dimensions[2]!)}`,
+      timing: pair.roadExtension!.availabilityUncertaintyMinutes > 0 ? "USER_ESTIMATED_INTERVAL" : "USER_ESTIMATED",
+      location: "CATALOGUE_REGION_ONLY",
+      verification: "NOT_VERIFIED",
+    },
+    explanation: "Potential road fit based on manually declared future availability, four simultaneous capacity limits, equipment, safety requirements, timing, and approximate positioning. This is not a booking or suitability guarantee.",
   };
 }
 
@@ -536,7 +706,7 @@ export async function listPairRows(executor: QueryExecutor = db): Promise<PairIn
     .select({
       cargo: cargoListingsTable,
       capacity: capacityOffersTable,
-      vessel: vesselsTable,
+       vessel: vesselsTable,
       loading: loadingLocation,
       destination: destinationLocation,
       capacityLocation,
@@ -545,10 +715,13 @@ export async function listPairRows(executor: QueryExecutor = db): Promise<PairIn
       deepseaProfile: deepseaVesselProfilesTable,
       deepseaRequirement: deepseaCargoRequirementsTable,
       deepseaExtension: deepseaCapacityExtensionsTable,
+      roadAsset: roadAssetsTable,
+      roadRequirement: roadCargoRequirementsTable,
+      roadExtension: roadCapacityExtensionsTable,
     })
     .from(cargoListingsTable)
     .innerJoin(capacityOffersTable, sql`true`)
-    .innerJoin(vesselsTable, eq(vesselsTable.id, capacityOffersTable.vesselId))
+    .leftJoin(vesselsTable, eq(vesselsTable.id, capacityOffersTable.vesselId))
     .leftJoin(
       deepseaVesselProfilesTable,
       eq(deepseaVesselProfilesTable.vesselId, vesselsTable.id),
@@ -564,6 +737,9 @@ export async function listPairRows(executor: QueryExecutor = db): Promise<PairIn
         capacityOffersTable.id,
       ),
     )
+    .leftJoin(roadCapacityExtensionsTable, eq(roadCapacityExtensionsTable.capacityOfferId, capacityOffersTable.id))
+    .leftJoin(roadAssetsTable, eq(roadAssetsTable.id, roadCapacityExtensionsTable.roadAssetId))
+    .leftJoin(roadCargoRequirementsTable, eq(roadCargoRequirementsTable.cargoListingId, cargoListingsTable.id))
     .innerJoin(
       loadingLocation,
       eq(loadingLocation.id, cargoListingsTable.loadingLocationId),
@@ -591,6 +767,7 @@ export type RecalculationOptions = {
   changedCargoIds?: string[];
   changedCapacityIds?: string[];
   changedVesselIds?: string[];
+  changedRoadAssetIds?: string[];
   invalidateAllPending?: boolean;
 };
 
@@ -605,6 +782,7 @@ export async function recalculateMatchesWithin(
   const changedCargoIds = new Set(options.changedCargoIds ?? []);
   const changedCapacityIds = new Set(options.changedCapacityIds ?? []);
   const changedVesselIds = new Set(options.changedVesselIds ?? []);
+  const changedRoadAssetIds = new Set(options.changedRoadAssetIds ?? []);
 
   const byPair = new Map(
     existing.map((match: typeof matchesTable.$inferSelect) => [
@@ -619,7 +797,8 @@ export async function recalculateMatchesWithin(
       options.invalidateAllPending ||
       changedCargoIds.has(pair.cargo.id) ||
       changedCapacityIds.has(pair.capacity.id) ||
-      changedVesselIds.has(pair.vessel.id);
+      changedVesselIds.has(pair.vessel?.id ?? "") ||
+      changedRoadAssetIds.has(pair.roadAsset?.id ?? "");
     if (!eligibility.eligible) {
       if (prior && prior.status !== "CONNECTED") {
         await executor
@@ -635,6 +814,8 @@ export async function recalculateMatchesWithin(
     const score =
       pair.cargo.transportMode === "DEEPSEA_BULK"
         ? scoreDeepseaEligiblePair(pair, eligibility.distanceKm, now)
+        : pair.cargo.transportMode === "ROAD"
+          ? scoreRoadEligiblePair(pair, eligibility.distanceKm)
         : scoreEligiblePair(pair, eligibility.distanceKm);
     const values = {
       cargoListingId: pair.cargo.id,
@@ -648,8 +829,10 @@ export async function recalculateMatchesWithin(
       cargoCompatibilityScore: score.cargoCompatibilityScore,
       approximatePositioningDistanceKm: score.distanceKm,
       calculationVersion:
-        pair.cargo.transportMode === "DEEPSEA_BULK"
+          pair.cargo.transportMode === "DEEPSEA_BULK"
           ? "deepsea-v3"
+            : pair.cargo.transportMode === "ROAD"
+              ? "road-v1"
           : CALCULATION_VERSION,
       calculatedAt: now,
       evaluationInputs: score.evaluationInputs,
@@ -693,6 +876,9 @@ export async function recalculateMatchesWithin(
               pair.capacityCompany.id,
             ]),
             eq(companyMembersTable.active, true),
+            ...(pair.cargo.transportMode === "ROAD"
+              ? [inArray(companyMembersTable.role, ["OWNER", "ADMIN"])]
+              : []),
           ),
         )) as Array<{ userId: string }>;
       if (created && recipients.length) {
@@ -700,9 +886,12 @@ export async function recalculateMatchesWithin(
           recipients.map(({ userId }) => ({
             userId,
             type: "NEW_MATCH" as const,
-            title: "New marketplace match",
-            message: "A new privacy-safe marketplace match is available for review.",
+            title: pair.cargo.transportMode === "ROAD" ? "New road match" : "New marketplace match",
+            message: pair.cargo.transportMode === "ROAD"
+              ? "A new privacy-safe road match is available for planner review."
+              : "A new privacy-safe marketplace match is available for review.",
             relatedMatchId: created.id,
+            relatedMatchDomain: pair.cargo.transportMode === "ROAD" ? "ROAD" : "MARKETPLACE",
           })),
         );
       }

@@ -240,6 +240,7 @@ export type TransportMode = typeof TransportMode[keyof typeof TransportMode];
 export const TransportMode = {
   INLAND_WATERWAY: 'INLAND_WATERWAY',
   DEEPSEA_BULK: 'DEEPSEA_BULK',
+  ROAD: 'ROAD',
 } as const;
 
 export type DeepseaVesselClass = typeof DeepseaVesselClass[keyof typeof DeepseaVesselClass];
@@ -650,7 +651,7 @@ export interface CargoListing {
   loadingUntil: string;
   /** @nullable */
   expectedUnloadingDate?: string | null;
-  requiredVesselType: VesselType;
+  requiredVesselType?: VesselType | null;
   /** @nullable */
   specialRequirements?: string | null;
   visibility: Visibility;
@@ -697,7 +698,7 @@ export interface CargoListingUpdateRequest {
   loadingUntil?: string;
   /** @nullable */
   expectedUnloadingDate?: string | null;
-  requiredVesselType?: VesselType;
+  requiredVesselType?: VesselType | null;
   /** @nullable */
   specialRequirements?: string | null;
   visibility?: Visibility;
@@ -711,7 +712,7 @@ export interface CapacityOffer {
   id: string;
   companyId: string;
   transportMode: TransportMode;
-  vesselId: string;
+  vesselId: string | null;
   locationId: string;
   availableFrom: string;
   availableUntil: string;
@@ -1378,7 +1379,7 @@ export interface AnonymousCargoListing {
   cargoTypeBand: string;
   loadingRegion: string;
   destinationRegion: string;
-  requiredVesselType: VesselType;
+  requiredVesselType: VesselType | null;
   /** Anonymized cargo tonnage band, never an exact weight. */
   tonnageBand: string;
   /** Anonymized loading-window band, never exact timestamps. */
@@ -1428,7 +1429,7 @@ export interface AnonymousCapacityListing {
   id: string;
   transportMode: TransportMode;
   listingType: AnonymousCapacityListingListingType;
-  vesselType: VesselType;
+  vesselType: VesselType | null;
   availabilityType: AvailabilityType;
   cargoCompatibilityBand: string;
   directionBand: string;
@@ -1464,6 +1465,7 @@ export type MatchDomain = typeof MatchDomain[keyof typeof MatchDomain];
 export const MatchDomain = {
   MARKETPLACE: 'MARKETPLACE',
   LINER: 'LINER',
+  ROAD: 'ROAD',
 } as const;
 
 export type MatchAction = typeof MatchAction[keyof typeof MatchAction];
@@ -1648,7 +1650,7 @@ export interface ConnectedCargoListing {
   loadingUntil: string;
   /** @nullable */
   expectedUnloadingDate?: string | null;
-  requiredVesselType: VesselType;
+  requiredVesselType: VesselType | null;
   /** @nullable */
   specialRequirements?: string | null;
   visibility: Visibility;
@@ -1665,7 +1667,8 @@ export interface ConnectedCapacityOffer {
   id: string;
   companyId: string;
   transportMode?: TransportMode;
-  vesselId: string;
+  /** @nullable */
+  vesselId: string | null;
   locationId: string;
   availableFrom: string;
   availableUntil: string;
@@ -1784,6 +1787,7 @@ export const NotificationType = {
   INTEREST_DECLINED: 'INTEREST_DECLINED',
   NEW_MESSAGE: 'NEW_MESSAGE',
   LISTING_EXPIRES_SOON: 'LISTING_EXPIRES_SOON',
+  ROAD_OPPORTUNITY_FLAGGED: 'ROAD_OPPORTUNITY_FLAGGED',
 } as const;
 
 export interface Notification {
@@ -1852,6 +1856,443 @@ export interface ErrorEnvelope {
   error: string;
 }
 
+export type RoadAssetType = typeof RoadAssetType[keyof typeof RoadAssetType];
+
+
+export const RoadAssetType = {
+  TRUCK: 'TRUCK',
+  TRACTOR: 'TRACTOR',
+  TRAILER: 'TRAILER',
+  TRUCK_TRAILER_COMBINATION: 'TRUCK_TRAILER_COMBINATION',
+} as const;
+
+export type RoadAvailabilitySource = typeof RoadAvailabilitySource[keyof typeof RoadAvailabilitySource];
+
+
+export const RoadAvailabilitySource = {
+  MANUAL: 'MANUAL',
+  DRIVER_INPUT: 'DRIVER_INPUT',
+  TMS: 'TMS',
+  TELEMATICS: 'TELEMATICS',
+} as const;
+
+export type RoadAssignmentStatus = typeof RoadAssignmentStatus[keyof typeof RoadAssignmentStatus];
+
+
+export const RoadAssignmentStatus = {
+  ASSIGNED: 'ASSIGNED',
+  CONFIRMED: 'CONFIRMED',
+  FLAGGED: 'FLAGGED',
+} as const;
+
+export interface RoadAsset {
+  id: string;
+  companyId: string;
+  assetType: RoadAssetType;
+  /** @minLength 1 */
+  assetName: string;
+  /** @nullable */
+  registrationReference?: string | null;
+  /** @exclusiveMinimum 0 */
+  payloadTonnes: number;
+  /** @exclusiveMinimum 0 */
+  volumeCubicMetres: number;
+  /** @exclusiveMinimum 0 */
+  loadingMetres: number;
+  /** @exclusiveMinimum 0 */
+  palletPositions: number;
+  /** @nullable */
+  trailerType?: string | null;
+  equipment: string[];
+  /** @nullable */
+  temperatureMinCelsius?: number | null;
+  /** @nullable */
+  temperatureMaxCelsius?: number | null;
+  adrClasses: string[];
+  /** @nullable */
+  notes?: string | null;
+  active: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface RoadAssetInput {
+  assetType: RoadAssetType;
+  /** @minLength 1 */
+  assetName: string;
+  registrationReference?: string;
+  /** @exclusiveMinimum 0 */
+  payloadTonnes: number;
+  /** @exclusiveMinimum 0 */
+  volumeCubicMetres: number;
+  /** @exclusiveMinimum 0 */
+  loadingMetres: number;
+  /** @exclusiveMinimum 0 */
+  palletPositions: number;
+  trailerType?: string;
+  equipment?: string[];
+  temperatureMinCelsius?: number;
+  temperatureMaxCelsius?: number;
+  adrClasses?: string[];
+  notes?: string;
+  active?: boolean;
+}
+
+/**
+ * Partial road asset update; omitted properties are retained.
+ */
+export interface RoadAssetUpdate {
+  assetType?: RoadAssetType;
+  /** @minLength 1 */
+  assetName?: string;
+  /** @nullable */
+  registrationReference?: string | null;
+  /** @exclusiveMinimum 0 */
+  payloadTonnes?: number;
+  /** @exclusiveMinimum 0 */
+  volumeCubicMetres?: number;
+  /** @exclusiveMinimum 0 */
+  loadingMetres?: number;
+  /** @exclusiveMinimum 0 */
+  palletPositions?: number;
+  /** @nullable */
+  trailerType?: string | null;
+  equipment?: string[];
+  /** @nullable */
+  temperatureMinCelsius?: number | null;
+  /** @nullable */
+  temperatureMaxCelsius?: number | null;
+  adrClasses?: string[];
+  /** @nullable */
+  notes?: string | null;
+  active?: boolean;
+}
+
+export interface RoadAssetListResponse {
+  items: RoadAsset[];
+  page: number;
+  pageSize: number;
+  total: number;
+}
+
+export interface RoadCargoRequirements {
+  /**
+     * @exclusiveMinimum 0
+     * @nullable
+     */
+  volumeCubicMetres?: number | null;
+  /**
+     * @exclusiveMinimum 0
+     * @nullable
+     */
+  loadingMetres?: number | null;
+  /**
+     * @exclusiveMinimum 0
+     * @nullable
+     */
+  palletPositions?: number | null;
+  /** @nullable */
+  requiredTrailerType?: string | null;
+  requiredEquipment?: string[];
+  /** @nullable */
+  temperatureMinCelsius?: number | null;
+  /** @nullable */
+  temperatureMaxCelsius?: number | null;
+  adrClasses?: string[];
+  /** @nullable */
+  direction?: string | null;
+  /** @nullable */
+  notes?: string | null;
+}
+
+export interface RoadCargo {
+  id: string;
+  companyId: string;
+  transportMode: 'ROAD';
+  cargoName: string;
+  cargoType: string;
+  /** @exclusiveMinimum 0 */
+  weightTonnes: number;
+  loadingLocationId: string;
+  destinationLocationId: string;
+  loadingFrom: string;
+  loadingUntil: string;
+  visibility: Visibility;
+  /** @nullable */
+  notes?: string | null;
+  listingStatus: ListingStatus;
+  roadRequirements: RoadCargoRequirements;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface RoadCargoInput {
+  /** @minLength 1 */
+  cargoName: string;
+  /** @minLength 1 */
+  cargoType: string;
+  /** @exclusiveMinimum 0 */
+  weightTonnes: number;
+  loadingLocationId: string;
+  destinationLocationId: string;
+  loadingFrom: string;
+  loadingUntil: string;
+  visibility: Visibility;
+  listingStatus?: ListingStatus;
+  notes?: string;
+  roadRequirements?: RoadCargoRequirements;
+}
+
+/**
+ * Partial road cargo update; omitted properties are retained.
+ */
+export interface RoadCargoUpdate {
+  /** @minLength 1 */
+  cargoName?: string;
+  /** @minLength 1 */
+  cargoType?: string;
+  /** @exclusiveMinimum 0 */
+  weightTonnes?: number;
+  loadingLocationId?: string;
+  destinationLocationId?: string;
+  loadingFrom?: string;
+  loadingUntil?: string;
+  visibility?: Visibility;
+  listingStatus?: ListingStatus;
+  /** @nullable */
+  notes?: string | null;
+  roadRequirements?: RoadCargoRequirements;
+}
+
+export interface RoadCargoListResponse {
+  items: RoadCargo[];
+  page: number;
+  pageSize: number;
+  total: number;
+}
+
+export interface RoadCapacityExtension {
+  roadAssetId: string;
+  currentDeliveryLocationId: string;
+  currentDeliveryExpectedAt: string;
+  expectedAvailabilityLocationId: string;
+  expectedAvailabilityAt: string;
+  /** @minimum 0 */
+  availabilityUncertaintyMinutes: number;
+  availabilitySource: RoadAvailabilitySource;
+  /** @exclusiveMinimum 0 */
+  availableVolumeCubicMetres: number;
+  /** @exclusiveMinimum 0 */
+  availableLoadingMetres: number;
+  /** @exclusiveMinimum 0 */
+  availablePalletPositions: number;
+  /** @nullable */
+  trailerType?: string | null;
+  equipment: string[];
+  /** @nullable */
+  temperatureMinCelsius?: number | null;
+  /** @nullable */
+  temperatureMaxCelsius?: number | null;
+  adrClasses: string[];
+  /** @nullable */
+  preferredDirection?: string | null;
+  /** @nullable */
+  notes?: string | null;
+}
+
+export interface RoadAssignment {
+  id: string;
+  capacityOfferId: string;
+  companyId: string;
+  driverUserId: string;
+  assignedByUserId: string;
+  status: RoadAssignmentStatus;
+  /** @nullable */
+  operationalNote?: string | null;
+  /** @nullable */
+  flaggedReason?: string | null;
+  /** @nullable */
+  flaggedMatchId?: string | null;
+  /** @nullable */
+  confirmedAt?: string | null;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface RoadCapacity {
+  id: string;
+  companyId: string;
+  transportMode: 'ROAD';
+  locationId: string;
+  availableFrom: string;
+  availableUntil: string;
+  availabilityType?: AvailabilityType;
+  /** @exclusiveMinimum 0 */
+  availableCapacityTonnes: number;
+  cargoCompatibility?: string[];
+  preferredDirection?: string;
+  /** @exclusiveMinimum 0 */
+  maximumPositioningDistanceKm?: number;
+  visibility: Visibility;
+  availabilityConfidence?: AvailabilityConfidence;
+  /** @nullable */
+  notes?: string | null;
+  listingStatus: ListingStatus;
+  roadExtension: RoadCapacityExtension;
+  assignments: RoadAssignment[];
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface RoadCapacityInput {
+  roadAssetId: string;
+  currentDeliveryLocationId: string;
+  currentDeliveryExpectedAt: string;
+  expectedAvailabilityLocationId: string;
+  expectedAvailabilityAt: string;
+  /** @minimum 0 */
+  availabilityUncertaintyMinutes?: number;
+  availabilitySource?: RoadAvailabilitySource;
+  /** @exclusiveMinimum 0 */
+  availableCapacityTonnes: number;
+  /** @exclusiveMinimum 0 */
+  availableVolumeCubicMetres: number;
+  /** @exclusiveMinimum 0 */
+  availableLoadingMetres: number;
+  /** @exclusiveMinimum 0 */
+  availablePalletPositions: number;
+  trailerType?: string;
+  equipment?: string[];
+  temperatureMinCelsius?: number;
+  temperatureMaxCelsius?: number;
+  adrClasses?: string[];
+  preferredDirection?: string;
+  /** @exclusiveMinimum 0 */
+  maximumPositioningDistanceKm?: number;
+  cargoCompatibility?: string[];
+  visibility: Visibility;
+  listingStatus?: ListingStatus;
+  notes?: string;
+}
+
+/**
+ * Partial road capacity update; omitted properties are retained.
+ */
+export interface RoadCapacityUpdate {
+  roadAssetId?: string;
+  currentDeliveryLocationId?: string;
+  currentDeliveryExpectedAt?: string;
+  expectedAvailabilityLocationId?: string;
+  expectedAvailabilityAt?: string;
+  /** @minimum 0 */
+  availabilityUncertaintyMinutes?: number;
+  availabilitySource?: RoadAvailabilitySource;
+  /** @exclusiveMinimum 0 */
+  availableCapacityTonnes?: number;
+  /** @exclusiveMinimum 0 */
+  availableVolumeCubicMetres?: number;
+  /** @exclusiveMinimum 0 */
+  availableLoadingMetres?: number;
+  /** @exclusiveMinimum 0 */
+  availablePalletPositions?: number;
+  /** @nullable */
+  trailerType?: string | null;
+  equipment?: string[];
+  /** @nullable */
+  temperatureMinCelsius?: number | null;
+  /** @nullable */
+  temperatureMaxCelsius?: number | null;
+  adrClasses?: string[];
+  /** @nullable */
+  preferredDirection?: string | null;
+  /** @exclusiveMinimum 0 */
+  maximumPositioningDistanceKm?: number;
+  cargoCompatibility?: string[];
+  visibility?: Visibility;
+  listingStatus?: ListingStatus;
+  /** @nullable */
+  notes?: string | null;
+}
+
+export interface RoadCapacityListResponse {
+  items: RoadCapacity[];
+  page: number;
+  pageSize: number;
+  total: number;
+}
+
+export interface RoadAssignmentInput {
+  /** @minLength 1 */
+  driverUserId: string;
+  operationalNote?: string;
+}
+
+export interface RoadDriver {
+  userId: string;
+  /** @nullable */
+  firstName: string | null;
+  /** @nullable */
+  lastName: string | null;
+  /** @nullable */
+  email: string | null;
+}
+
+export interface RoadDriverListResponse {
+  items: RoadDriver[];
+}
+
+export interface RoadOperationalAction {
+  note?: string;
+  reason?: string;
+  /** Required for FLAGGED; identifies the specific eligible shared road opportunity. */
+  matchId?: string;
+}
+
+export type RoadMatchEvaluationInputs = {[key: string]: string};
+
+/**
+ * Privacy-safe planning bands derived from the joined road cargo, capacity, location, and requirement rows.
+ */
+export interface RoadOpportunityProjection {
+  cargoTypeBand: string;
+  originRegion: string;
+  destinationRegion: string;
+  loadingDateBand: string;
+  loadingTimeWindowBand: string;
+  weightBand: string;
+  equipmentBand: string;
+  temperatureBand: string;
+  adrBand: string;
+  dimensionalRequirementsBand: string;
+  freeAreaBand: string;
+  freeTimeBand: string;
+  freeCapacityBand: string;
+  capacityEquipmentBand: string;
+  capacityTemperatureBand: string;
+  capacityAdrBand: string;
+}
+
+export interface RoadMatch {
+  id: string;
+  status: MatchStatus;
+  totalScore: number;
+  calculationVersion: 'road-v1';
+  explanation: string;
+  cargoListingId: string;
+  capacityOfferId: string;
+  evaluationInputs: RoadMatchEvaluationInputs;
+  projection: RoadOpportunityProjection;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface RoadMatchListResponse {
+  items: RoadMatch[];
+  page: number;
+  pageSize: number;
+  total: number;
+}
+
 /**
  * Request validation failed.
  */
@@ -1901,6 +2342,57 @@ iss?: string;
 
 export type LogoutBrowserSessionParams = {
 returnTo?: string;
+};
+
+export type ListRoadAssetsParams = {
+/**
+ * @minimum 1
+ */
+page?: PageParameter;
+/**
+ * @minimum 1
+ * @maximum 100
+ */
+pageSize?: PageSizeParameter;
+activeOnly?: boolean;
+};
+
+export type ListRoadCargoParams = {
+/**
+ * @minimum 1
+ */
+page?: PageParameter;
+/**
+ * @minimum 1
+ * @maximum 100
+ */
+pageSize?: PageSizeParameter;
+listingStatus?: ListingStatus;
+};
+
+export type ListRoadCapacityParams = {
+/**
+ * @minimum 1
+ */
+page?: PageParameter;
+/**
+ * @minimum 1
+ * @maximum 100
+ */
+pageSize?: PageSizeParameter;
+listingStatus?: ListingStatus;
+};
+
+export type ListRoadMatchesParams = {
+/**
+ * @minimum 1
+ */
+page?: PageParameter;
+/**
+ * @minimum 1
+ * @maximum 100
+ */
+pageSize?: PageSizeParameter;
 };
 
 export type ListMyVesselsParams = {

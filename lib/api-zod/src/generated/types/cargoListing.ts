@@ -30,7 +30,7 @@ export interface CargoListing {
   loadingUntil: Date;
   /** @nullable */
   expectedUnloadingDate?: Date | null;
-  requiredVesselType: VesselType;
+  requiredVesselType?: VesselType | null;
   /** @nullable */
   specialRequirements?: string | null;
   visibility: Visibility;

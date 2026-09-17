@@ -22,7 +22,8 @@ export interface ConnectedCapacityOffer {
   id: string;
   companyId: string;
   transportMode?: TransportMode;
-  vesselId: string;
+  /** @nullable */
+  vesselId: string | null;
   locationId: string;
   availableFrom: Date;
   availableUntil: Date;

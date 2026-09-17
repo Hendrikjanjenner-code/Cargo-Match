@@ -8,4 +8,8 @@ psql "$DATABASE_URL" -X -v ON_ERROR_STOP=1 --single-transaction \
   -f lib/db/migrations/0004_deepsea_reachability_manual_fields.sql \
   -f lib/db/migrations/0004_availability_suggestions.sql \
   -f lib/db/migrations/0004_liner_breakbulk_vertical.sql
+psql "$DATABASE_URL" -X -v ON_ERROR_STOP=1 --single-transaction \
+  -f lib/db/migrations/0005_road_freight_vertical.sql
+psql "$DATABASE_URL" -X -v ON_ERROR_STOP=1 --single-transaction \
+  -f lib/db/migrations/0006_road_operational_flags.sql
 pnpm --filter @workspace/scripts run seed-locations

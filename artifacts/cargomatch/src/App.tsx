@@ -34,6 +34,7 @@ import LinerCargo from "./pages/liner/LinerCargo";
 import LinerMarketplace from "./pages/liner/LinerMarketplace";
 import LinerMatches from "./pages/liner/LinerMatches";
 import LinerMatchDetail from "./pages/liner/LinerMatchDetail";
+import RoadPilot from "./pages/road/RoadPilot";
 
 function ProtectedRoute({ component: Component, requireCompany = true, allowedActivities = [] }: { component: React.ComponentType, requireCompany?: boolean, allowedActivities?: CompanyActivity[] }) {
   const { isAuthenticated, isLoading: authLoading } = useAuth();
@@ -133,6 +134,15 @@ function AppRouter() {
       <Route path="/liner/marketplace">{() => <ProtectedRoute component={LinerMarketplace} />}</Route>
       <Route path="/liner/matches">{() => <ProtectedRoute component={LinerMatches} />}</Route>
       <Route path="/liner/matches/:id">{() => <ProtectedRoute component={LinerMatchDetail} />}</Route>
+
+      {/* Road freight pilot routes */}
+      <Route path="/road">{() => <Redirect to="/road/assets" />}</Route>
+      <Route path="/road/assets">{() => <ProtectedRoute component={RoadPilot} />}</Route>
+      <Route path="/road/capacity">{() => <ProtectedRoute component={RoadPilot} />}</Route>
+      <Route path="/road/cargo">{() => <ProtectedRoute component={RoadPilot} />}</Route>
+      <Route path="/road/opportunities">{() => <ProtectedRoute component={RoadPilot} />}</Route>
+      <Route path="/road/matches">{() => <ProtectedRoute component={RoadPilot} />}</Route>
+      <Route path="/road/matches/:id">{({ id }) => <ProtectedRoute component={() => <RoadPilot matchId={id} />} />}</Route>
 
       <Route>
         <div className="flex items-center justify-center min-h-screen">{t("not_found.title")}</div>

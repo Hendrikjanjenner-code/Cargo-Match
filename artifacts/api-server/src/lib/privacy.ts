@@ -8,6 +8,7 @@ import type {
   deepseaCargoRequirementsTable,
   deepseaVesselProfilesTable,
   vesselsTable,
+  roadAssetsTable,
 } from "@workspace/db";
 
 type Cargo = typeof cargoListingsTable.$inferSelect;
@@ -19,6 +20,26 @@ type Match = typeof matchesTable.$inferSelect;
 type DeepseaProfile = typeof deepseaVesselProfilesTable.$inferSelect;
 type DeepseaRequirement = typeof deepseaCargoRequirementsTable.$inferSelect;
 type DeepseaExtension = typeof deepseaCapacityExtensionsTable.$inferSelect;
+type RoadRequirement = {
+  volumeCubicMetres: number | null;
+  loadingMetres: number | null;
+  palletPositions: number | null;
+  requiredTrailerType: string | null;
+  requiredEquipment: string[];
+  temperatureMinCelsius: number | null;
+  temperatureMaxCelsius: number | null;
+  adrClasses: string[];
+};
+type RoadExtension = {
+  availableVolumeCubicMetres: number;
+  availableLoadingMetres: number;
+  availablePalletPositions: number;
+  equipment: string[];
+  temperatureMinCelsius: number | null;
+  temperatureMaxCelsius: number | null;
+  adrClasses: string[];
+  availabilityUncertaintyMinutes: number;
+};
 
 function bandTonnes(value: number): string {
   if (value < 500) return "< 500 t";
@@ -26,6 +47,13 @@ function bandTonnes(value: number): string {
   if (value < 1500) return "1,000–1,500 t";
   if (value < 2500) return "1,500–2,500 t";
   return "2,500+ t";
+}
+
+function roadTonnageBand(value: number): string {
+  if (value < 5) return "< 5 t";
+  if (value < 15) return "5–15 t";
+  if (value < 25) return "15–25 t";
+  return "25+ t";
 }
 
 function bandDwt(value: number): string {
@@ -69,6 +97,96 @@ function cargoTypeBand(value: string): string {
   if (normalized.includes("liquid") || normalized.includes("oil")) return "Liquid bulk";
   if (normalized.includes("container")) return "Containerized cargo";
   return "General cargo";
+}
+
+function roadDateBand(value: Date): string {
+  const month = value.toLocaleString("en-US", { month: "short", timeZone: "UTC" });
+  const period = value.getUTCDate() <= 10 ? "early" : value.getUTCDate() <= 20 ? "mid" : "late";
+  return `${period} ${month} ${value.getUTCFullYear()}`;
+}
+
+function roadTimeWindowBand(from: Date, until: Date): string {
+  const hour = from.getUTCHours();
+  const dayPart = hour < 12 ? "Morning" : hour < 17 ? "Afternoon" : "Evening";
+  return `${dayPart} · ${bandTime(from, until)}`;
+}
+
+function roadRequirementEquipmentBand(values: string[]): string {
+  if (!values.length) return "Standard equipment";
+  const normalized = values.join(" ").toLowerCase();
+  if (/refrigerat|reefer|cool|freez/.test(normalized)) return "Temperature equipment";
+  if (/lift|ramp|loading/.test(normalized)) return "Loading assistance";
+  return "Special equipment";
+}
+
+function roadTemperatureBand(min: number | null, max: number | null): string {
+  if (min == null && max == null) return "Ambient";
+  if (max != null && max <= -10) return "Frozen";
+  if (min != null && min >= 0 && max != null && max <= 10) return "Chilled";
+  return "Temperature-controlled";
+}
+
+function roadAdrBand(classes: string[]): string {
+  return classes.length ? "ADR-regulated cargo" : "No ADR indicated";
+}
+
+function roadDimensionBand(
+  volume: number | null,
+  loadingMetres: number | null,
+  pallets: number | null,
+): string {
+  const volumeBand = volume == null ? "volume not specified" : volume < 20 ? "< 20 m³" : volume < 50 ? "20–50 m³" : "50+ m³";
+  const loadingBand = loadingMetres == null ? "loading space not specified" : loadingMetres < 5 ? "< 5 lm" : loadingMetres < 10 ? "5–10 lm" : "10+ lm";
+  const palletBand = pallets == null ? "pallet footprint not specified" : pallets < 10 ? "< 10 pallets" : pallets < 25 ? "10–25 pallets" : "25+ pallets";
+  return `${volumeBand}; ${loadingBand}; ${palletBand}`;
+}
+
+/**
+ * A road match projection is deliberately built from the joined cargo,
+ * capacity, location, and road-extension rows. It contains useful planning
+ * bands without relaying names, notes, identifiers, coordinates, or exact
+ * commercial quantities.
+ */
+export function roadOpportunityProjection(input: {
+  cargo: Cargo;
+  capacity: Capacity;
+  loading: Location;
+  destination: Location;
+  capacityLocation: Location;
+  roadRequirement?: RoadRequirement | null;
+  roadExtension?: RoadExtension | null;
+  roadAsset?: typeof roadAssetsTable.$inferSelect | null;
+}) {
+  const requirement = input.roadRequirement;
+  const extension = input.roadExtension;
+  return {
+    cargoTypeBand: cargoTypeBand(input.cargo.cargoType),
+    originRegion: input.loading.region,
+    destinationRegion: input.destination.region,
+    loadingDateBand: roadDateBand(input.cargo.loadingFrom),
+    loadingTimeWindowBand: roadTimeWindowBand(input.cargo.loadingFrom, input.cargo.loadingUntil),
+    weightBand: roadTonnageBand(input.cargo.weightTonnes),
+    equipmentBand: roadRequirementEquipmentBand(requirement?.requiredEquipment ?? []),
+    temperatureBand: roadTemperatureBand(
+      requirement?.temperatureMinCelsius ?? null,
+      requirement?.temperatureMaxCelsius ?? null,
+    ),
+    adrBand: roadAdrBand(requirement?.adrClasses ?? []),
+    dimensionalRequirementsBand: roadDimensionBand(
+      requirement?.volumeCubicMetres ?? null,
+      requirement?.loadingMetres ?? null,
+      requirement?.palletPositions ?? null,
+    ),
+    freeAreaBand: input.capacityLocation.region,
+    freeTimeBand: `${roadDateBand(input.capacity.availableFrom)} · ${roadTimeWindowBand(input.capacity.availableFrom, input.capacity.availableUntil)}${extension?.availabilityUncertaintyMinutes ? " · Estimated availability" : ""}`,
+    freeCapacityBand: roadTonnageBand(input.capacity.availableCapacityTonnes),
+    capacityEquipmentBand: roadRequirementEquipmentBand([...(input.roadAsset?.equipment ?? []), ...(extension?.equipment ?? [])]),
+    capacityTemperatureBand: roadTemperatureBand(
+      extension?.temperatureMinCelsius ?? input.roadAsset?.temperatureMinCelsius ?? null,
+      extension?.temperatureMaxCelsius ?? input.roadAsset?.temperatureMaxCelsius ?? null,
+    ),
+    capacityAdrBand: roadAdrBand(extension?.adrClasses.length ? extension.adrClasses : input.roadAsset?.adrClasses ?? []),
+  };
 }
 
 export function companyResponse(company: Company) {
@@ -172,7 +290,7 @@ export function anonymousCargo(cargo: Cargo, loading: Location, destination: Loc
     loadingRegion: loading.region,
     destinationRegion: destination.region,
     requiredVesselType: cargo.requiredVesselType,
-    tonnageBand: bandTonnes(cargo.weightTonnes),
+    tonnageBand: cargo.transportMode === "ROAD" ? roadTonnageBand(cargo.weightTonnes) : bandTonnes(cargo.weightTonnes),
     timeBand: bandTime(cargo.loadingFrom, cargo.loadingUntil),
     distanceBand: "Regional positioning only",
     visibility: "OPEN_NETWORK" as const,
@@ -185,7 +303,7 @@ export function anonymousCargo(cargo: Cargo, loading: Location, destination: Loc
 
 export function anonymousCapacity(
   capacity: Capacity,
-  vessel: Vessel,
+  vessel: Vessel | null,
   location: Location,
   profile?: DeepseaProfile | null,
   extension?: DeepseaExtension | null,
@@ -195,14 +313,14 @@ export function anonymousCapacity(
     id: capacity.id,
     transportMode: capacity.transportMode,
     listingType: "CAPACITY" as const,
-    vesselType: vessel.vesselType,
+    vesselType: vessel?.vesselType ?? null,
     availabilityType: capacity.availabilityType,
-    cargoCompatibilityBand: bandText(capacity.cargoCompatibility),
+    cargoCompatibilityBand: capacity.transportMode === "ROAD" ? "Road cargo requirements checked" : bandText(capacity.cargoCompatibility),
     directionBand: direction.includes("rhine")
       ? "Rhine corridor"
       : "Regional direction",
     availabilityRegion: location.region,
-    tonnageBand: bandTonnes(capacity.availableCapacityTonnes),
+    tonnageBand: capacity.transportMode === "ROAD" ? roadTonnageBand(capacity.availableCapacityTonnes) : bandTonnes(capacity.availableCapacityTonnes),
     timeBand: bandTime(capacity.availableFrom, capacity.availableUntil),
     distanceBand: bandDistance(capacity.maximumPositioningDistanceKm),
     visibility: "OPEN_NETWORK" as const,
@@ -374,6 +492,7 @@ export function matchScore(match: Match, deepsea = false) {
     calculatedAt: match.calculatedAt,
     provisional:
       deepsea ||
+      match.calculationVersion?.startsWith("road-") === true ||
       inputs.verification === "NOT_VERIFIED" ||
       inputs.timingBand === "Provisional timing fit",
     explanation: match.explanation,
@@ -385,7 +504,7 @@ export type MatchBundle = {
   initiatedByCompanyId: string | null;
   cargo: Cargo;
   capacity: Capacity;
-  vessel: Vessel;
+  vessel: Vessel | null;
   deepseaProfile?: DeepseaProfile | null;
   deepseaRequirement?: DeepseaRequirement | null;
   deepseaExtension?: DeepseaExtension | null;

@@ -109,6 +109,7 @@ router.get("/cargo", async (req, res) => {
   if (!current) return;
   const parsed = ListMyCargoQueryParams.safeParse(req.query);
   if (!parsed.success) return error(res, 400, "Invalid cargo filters");
+  if (parsed.data.transportMode === "ROAD") return error(res, 400, "ROAD cargo uses /road/cargo");
   const { page, pageSize, offset } = pageParams(parsed.data.page, parsed.data.pageSize);
   const where = and(
     eq(cargoListingsTable.companyId, current.company.id),
@@ -135,6 +136,7 @@ router.post("/cargo", async (req, res) => {
   if (!parsed.success || !validWindow(parsed.data.loadingFrom, parsed.data.loadingUntil)) {
     return error(res, 400, "Invalid cargo data or loading window");
   }
+  if (parsed.data.transportMode === "ROAD") return error(res, 400, "ROAD cargo uses /road/cargo");
   if (parsed.data.transportMode === "DEEPSEA_BULK" &&
     !validateDeepseaCargoRequirement(parsed.data.deepseaRequirement)) {
     return error(res, 400, "Deepsea cargo requires valid deepsea requirements");
@@ -201,6 +203,7 @@ router.patch("/cargo/:cargoId", async (req, res) => {
     )).for("update");
     if (!existing) return { kind: "missing" as const };
     const mode = parsed.data.transportMode ?? existing.transportMode;
+    if (mode === "ROAD") return { kind: "road-dedicated" as const };
     const requirement = parsed.data.deepseaRequirement === undefined
       ? await deepseaDetailsForCargo(tx, existing.id) : parsed.data.deepseaRequirement;
     if (mode === "DEEPSEA_BULK" && !validateDeepseaCargoRequirement(requirement)) {
@@ -243,6 +246,7 @@ router.patch("/cargo/:cargoId", async (req, res) => {
   if (result.kind === "invalid-transition") return error(res, 409, "Listing status transition is not allowed");
   if (result.kind === "invalid-window") return error(res, 400, "Invalid loading window");
   if (result.kind === "invalid-location") return error(res, 400, "Unknown or inactive catalogue location");
+  if (result.kind === "road-dedicated") return error(res, 400, "ROAD cargo uses /road/cargo");
   res.json(UpdateMyCargoResponse.parse(
     cargoResponse(result.cargo, await deepseaDetailsForCargo(db, result.cargo.id)),
   ));
@@ -285,6 +289,7 @@ router.get("/capacity", async (req, res) => {
   if (!current) return;
   const parsed = ListMyCapacityQueryParams.safeParse(req.query);
   if (!parsed.success) return error(res, 400, "Invalid capacity filters");
+  if (parsed.data.transportMode === "ROAD") return error(res, 400, "ROAD capacity uses /road/capacity");
   const { page, pageSize, offset } = pageParams(parsed.data.page, parsed.data.pageSize);
   const where = and(
     eq(capacityOffersTable.companyId, current.company.id),
@@ -311,6 +316,7 @@ router.post("/capacity", async (req, res) => {
   if (!parsed.success || !validWindow(parsed.data.availableFrom, parsed.data.availableUntil)) {
     return error(res, 400, "Invalid capacity data or availability window");
   }
+  if (parsed.data.transportMode === "ROAD") return error(res, 400, "ROAD capacity uses /road/capacity");
   const result = await db.transaction(async (tx) => {
     await lockDomain(tx);
     const membership = await listingWriteMembership(tx, req.user!.id);
@@ -322,6 +328,7 @@ router.post("/capacity", async (req, res) => {
     )).for("update");
     if (!vessel) return { kind: "invalid-vessel" as const };
     const mode = parsed.data.transportMode ?? "INLAND_WATERWAY";
+    if (mode === "ROAD") return { kind: "road-dedicated" as const };
     if (vessel.transportMode !== mode) return { kind: "mode-mismatch" as const };
     if (mode === "DEEPSEA_BULK") {
       const [profile] = await tx.select().from(deepseaVesselProfilesTable)
@@ -396,6 +403,7 @@ router.post("/capacity", async (req, res) => {
   if (result.kind === "forbidden") return error(res, 403, "Company membership is no longer authorized");
   if (result.kind === "invalid-vessel") return error(res, 400, "Vessel is not active or is not owned by the company");
   if (result.kind === "mode-mismatch") return error(res, 400, "Capacity transport mode must match its vessel");
+  if (result.kind === "road-dedicated") return error(res, 400, "ROAD capacity uses /road/capacity");
   if (result.kind === "invalid-deepsea-profile") return error(res, 400, "Deepsea capacity requires a vessel profile");
   if (result.kind === "invalid-capacity") return error(res, 400, "Offered capacity cannot exceed vessel total capacity");
   if (result.kind === "invalid-location") return error(res, 400, "Unknown or inactive catalogue location");
@@ -451,6 +459,7 @@ router.patch("/capacity/:capacityId", async (req, res) => {
     if (!validListingTransition(existing.listingStatus, status)) return { kind: "invalid-transition" as const };
     if (!validWindow(availableFrom, availableUntil)) return { kind: "invalid-window" as const };
     const vesselId = parsed.data.vesselId ?? existing.vesselId;
+    if (!vesselId) return { kind: "invalid-vessel" as const };
     const [vessel] = await tx.select().from(vesselsTable).where(and(
       eq(vesselsTable.id, vesselId),
       eq(vesselsTable.companyId, membership.company.id),
@@ -458,6 +467,7 @@ router.patch("/capacity/:capacityId", async (req, res) => {
     )).for("update");
     if (!vessel) return { kind: "invalid-vessel" as const };
     const mode = parsed.data.transportMode ?? existing.transportMode;
+    if (mode === "ROAD") return { kind: "road-dedicated" as const };
     if (vessel.transportMode !== mode) return { kind: "mode-mismatch" as const };
     if (mode === "DEEPSEA_BULK") {
       const [profile] = await tx.select().from(deepseaVesselProfilesTable)
@@ -500,6 +510,7 @@ router.patch("/capacity/:capacityId", async (req, res) => {
   if (result.kind === "invalid-window") return error(res, 400, "Invalid availability window");
   if (result.kind === "invalid-vessel") return error(res, 400, "Vessel is not active or is not owned by the company");
   if (result.kind === "mode-mismatch") return error(res, 400, "Capacity transport mode must match its vessel");
+  if (result.kind === "road-dedicated") return error(res, 400, "ROAD capacity uses /road/capacity");
   if (result.kind === "invalid-deepsea-profile") return error(res, 400, "Deepsea capacity requires a vessel profile");
   if (result.kind === "invalid-deepsea-extension") return error(res, 400, "Invalid deepsea capacity extension");
   if (result.kind === "invalid-capacity") return error(res, 400, "Offered capacity cannot exceed vessel total capacity");

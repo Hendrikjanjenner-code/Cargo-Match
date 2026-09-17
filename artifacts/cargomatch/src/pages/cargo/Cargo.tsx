@@ -105,6 +105,10 @@ export default function Cargo() {
   };
 
   const handleEdit = (c: CargoListing) => {
+    if (!c.requiredVesselType) {
+      setLifecycleError("This cargo has no vessel requirement. Use the road transport workspace for road cargo.");
+      return;
+    }
     reset({
       cargoName: c.cargoName,
       cargoType: c.cargoType,

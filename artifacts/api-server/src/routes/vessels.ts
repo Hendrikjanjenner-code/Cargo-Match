@@ -60,6 +60,10 @@ router.get("/vessels", async (req, res) => {
     error(res, 400, "Invalid vessel filters");
     return;
   }
+  if (parsed.data.transportMode === "ROAD") {
+    error(res, 400, "ROAD assets use /road/assets, not /vessels");
+    return;
+  }
   const { page, pageSize, offset } = pageParams(
     parsed.data.page,
     parsed.data.pageSize,
@@ -105,6 +109,10 @@ router.post("/vessels", async (req, res) => {
   const parsed = CreateMyVesselBody.safeParse(req.body);
   if (!parsed.success) {
     error(res, 400, "Invalid vessel data");
+    return;
+  }
+  if (parsed.data.transportMode === "ROAD") {
+    error(res, 400, "ROAD assets use /road/assets, not /vessels");
     return;
   }
   try {
@@ -211,6 +219,7 @@ router.patch("/vessels/:vesselId", async (req, res) => {
       return { kind: "invalid" as const };
     }
     const nextMode = parsed.data.transportMode ?? existing.transportMode;
+    if (nextMode === "ROAD") return { kind: "road-dedicated" as const };
     if (nextMode === "DEEPSEA_BULK") {
       const profile =
         parsed.data.deepseaProfile === undefined
@@ -294,6 +303,10 @@ router.patch("/vessels/:vesselId", async (req, res) => {
   }
   if (result.kind === "mode-conflict") {
     error(res, 409, "Vessel transport mode cannot change with outstanding offers");
+    return;
+  }
+  if (result.kind === "road-dedicated") {
+    error(res, 400, "ROAD assets use /road/assets, not /vessels");
     return;
   }
   if (result.kind === "invalid-deepsea-profile") {

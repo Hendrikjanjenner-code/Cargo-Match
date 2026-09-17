@@ -53,7 +53,7 @@ export default function Notifications() {
                   {notif.relatedConversationId ? (
                     <Link className="text-sm text-primary underline" href={`/messages/${notif.relatedConversationId}`}>Open conversation</Link>
                   ) : notif.relatedMatchId ? (
-                    <Link className="text-sm text-primary underline" href={`${notif.relatedMatchDomain === "LINER" ? "/liner/matches" : "/matches"}/${notif.relatedMatchId}`}>View match</Link>
+                    <Link className="text-sm text-primary underline" href={`${notif.relatedMatchDomain === "LINER" ? "/liner/matches" : notif.relatedMatchDomain === "ROAD" ? "/road/matches" : "/matches"}/${notif.relatedMatchId}`}>View match</Link>
                   ) : null}
                 </div>
                 {!notif.readAt && (

@@ -26,7 +26,7 @@ export interface AnonymousCapacityListing {
   id: string;
   transportMode: TransportMode;
   listingType: AnonymousCapacityListingListingType;
-  vesselType: VesselType;
+  vesselType: VesselType | null;
   availabilityType: AvailabilityType;
   cargoCompatibilityBand: string;
   directionBand: string;

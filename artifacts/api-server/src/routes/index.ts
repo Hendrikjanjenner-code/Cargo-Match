@@ -13,6 +13,7 @@ import conversationsRouter from "./conversations";
 import notificationsRouter from "./notifications";
 import availabilitySuggestionsRouter from "./availabilitySuggestions";
 import linerRouter from "./liner";
+import roadRouter from "./road";
 
 const router: IRouter = Router();
 
@@ -30,4 +31,5 @@ router.use(conversationsRouter);
 router.use(notificationsRouter);
 router.use(availabilitySuggestionsRouter);
 router.use(linerRouter);
+router.use(roadRouter);
 export default router;

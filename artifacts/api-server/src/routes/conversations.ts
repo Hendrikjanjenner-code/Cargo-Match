@@ -30,13 +30,14 @@ import {
   db,
 } from "@workspace/db";
 
-import { error, getMembershipWithin, pageParams, requireMembership } from "../lib/http";
+import { error, getMembership, getMembershipWithin, hasRoadCommercialAuthority, pageParams, requireMembership } from "../lib/http";
 import { connectedCompany } from "../lib/privacy";
 import { lockDomain } from "../services/matching";
 
 const router: IRouter = Router();
 
 type ConversationView = {
+  road: boolean;
   conversation: typeof conversationsTable.$inferSelect;
   participantCompanies: Array<typeof companiesTable.$inferSelect>;
   lastMessage: (typeof messagesTable.$inferSelect & { readAt: Date | null }) | null;
@@ -52,6 +53,7 @@ async function getConversation(
     .from(conversationsTable).innerJoin(matchesTable, eq(matchesTable.id, conversationsTable.matchId))
     .where(and(eq(conversationsTable.id, conversationId), eq(matchesTable.status, "CONNECTED")));
   if (!base) return null;
+  let road = false;
   let row: { conversation: typeof conversationsTable.$inferSelect; cargoCompanyId: string; capacityCompanyId: string } | null = null;
   if (base.match.linerCargoId && base.match.linerSailingId) {
     const [liner] = await db.select({ cargoCompanyId: linerCargoTable.companyId, capacityCompanyId: linerServicesTable.companyId })
@@ -60,13 +62,20 @@ async function getConversation(
       .where(eq(linerCargoTable.id, base.match.linerCargoId));
     if (liner) row = { conversation: base.conversation, ...liner };
   } else if (base.match.cargoListingId && base.match.capacityOfferId) {
-    const [standard] = await db.select({ cargoCompanyId: cargoListingsTable.companyId, capacityCompanyId: capacityOffersTable.companyId })
+    const [standard] = await db.select({ cargoCompanyId: cargoListingsTable.companyId, capacityCompanyId: capacityOffersTable.companyId, transportMode: cargoListingsTable.transportMode })
       .from(cargoListingsTable).innerJoin(capacityOffersTable, eq(capacityOffersTable.id, base.match.capacityOfferId))
       .where(eq(cargoListingsTable.id, base.match.cargoListingId));
-    if (standard) row = { conversation: base.conversation, ...standard };
+    if (standard) {
+      road = standard.transportMode === "ROAD";
+      row = { conversation: base.conversation, ...standard };
+    }
   }
   if (!row || (row.cargoCompanyId !== companyId && row.capacityCompanyId !== companyId)) return null;
-  return row ? buildConversationView(row, userId) : null;
+  if (road) {
+    const current = await getMembership(userId);
+    if (!current || current.company.id !== companyId || !hasRoadCommercialAuthority(current)) return null;
+  }
+  return buildConversationView(row, userId, road);
 }
 
 async function buildConversationView(
@@ -76,6 +85,7 @@ async function buildConversationView(
     capacityCompanyId: string;
   },
   userId: string,
+  road: boolean,
 ): Promise<ConversationView> {
   const [participantCompanies, allMessages] = await Promise.all([
     db
@@ -110,6 +120,7 @@ async function buildConversationView(
   const readMap = new Map(reads.map((read) => [read.messageId, read.readAt]));
   const last = allMessages[0];
   return {
+    road,
     conversation: row.conversation,
     participantCompanies,
     lastMessage: last ? { ...last, readAt: readMap.get(last.id) ?? null } : null,
@@ -254,6 +265,7 @@ router.post("/conversations/:conversationId/messages", async (req, res) => {
     await lockDomain(tx);
     const freshMembership = await getMembershipWithin(tx, req.user!.id, true);
     if (!freshMembership || !freshMembership.membership.active || freshMembership.company.status !== "ACTIVE" || freshMembership.company.id !== current.company.id) return null;
+    if (view.road && !hasRoadCommercialAuthority(freshMembership)) return null;
     const [created] = await tx
       .insert(messagesTable)
       .values({
@@ -271,6 +283,7 @@ router.post("/conversations/:conversationId/messages", async (req, res) => {
           inArray(companyMembersTable.companyId, view.participantCompanies.map((company) => company.id)),
           notInArray(companyMembersTable.companyId, [freshMembership.company.id]),
           eq(companyMembersTable.active, true),
+          ...(view.road ? [inArray(companyMembersTable.role, ["OWNER", "ADMIN"])] : []),
         ),
       );
     if (recipientMembers.length) {
@@ -328,6 +341,7 @@ router.post("/conversations/:conversationId/read", async (req, res) => {
     await lockDomain(tx);
     const freshMembership = await getMembershipWithin(tx, req.user!.id, true);
     if (!freshMembership || !freshMembership.membership.active || freshMembership.company.status !== "ACTIVE" || freshMembership.company.id !== current.company.id) return false;
+    if (view.road && !hasRoadCommercialAuthority(freshMembership)) return false;
     await tx
       .insert(messageReadsTable)
       .values(

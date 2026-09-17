@@ -28,6 +28,12 @@ export type CurrentMembership = {
   membership: typeof companyMembersTable.$inferSelect;
 };
 
+/** Pilot commercial authority is explicit; a driver membership never grants it. */
+export function hasRoadCommercialAuthority(current: CurrentMembership): boolean {
+  return current.membership.active &&
+    (current.membership.role === "OWNER" || current.membership.role === "ADMIN");
+}
+
 export async function getMembership(
   userId: string,
 ): Promise<CurrentMembership | null> {

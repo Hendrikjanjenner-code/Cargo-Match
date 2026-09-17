@@ -13,6 +13,8 @@ const locations = [
   ["Duisburg", "DE", "North Rhine-Westphalia", 51.4344, 6.7623, "PORT"],
   ["Düsseldorf", "DE", "North Rhine-Westphalia", 51.2277, 6.7735, "PORT"],
   ["Cologne", "DE", "North Rhine-Westphalia", 50.9375, 6.9603, "PORT"],
+  // Road pilot: city-level positioning, not a depot address or driving route.
+  ["Eindhoven", "NL", "North Brabant", 51.4416, 5.4697, "CITY"],
   // Curated deepsea pilot fixtures. Coordinates are approximate port-area
   // points for eligibility bands only, not berth or navigable-route data.
   ["Singapore", "SG", "Singapore", 1.2644, 103.8200, "PORT"],

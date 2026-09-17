@@ -119,6 +119,10 @@ export default function Capacity() {
   };
 
   const handleEdit = (c: CapacityOffer) => {
+    if (!c.vesselId) {
+      setLifecycleError("This offer has no vessel. Use the road transport workspace for road offers.");
+      return;
+    }
     reset({
       vesselId: c.vesselId,
       locationId: c.locationId,

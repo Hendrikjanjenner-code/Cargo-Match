@@ -31,6 +31,8 @@ import {
 } from "../services/matching";
 import { applyMatchConsent } from "../services/consent";
 
+import { hasRoadCommercialAuthority } from "../lib/http";
+
 const router: IRouter = Router();
 
 async function accessibleBundles(companyId: string) {
@@ -84,6 +86,7 @@ router.get("/matches", async (req, res) => {
   }
   const bundles = (await accessibleBundles(current.company.id)).filter(
     (bundle) =>
+      (bundle.cargo.transportMode !== "ROAD" || hasRoadCommercialAuthority(current)) &&
       (!bundle.match.isStale || bundle.match.status === "CONNECTED") &&
       (!parsed.data.status || bundle.match.status === parsed.data.status) &&
       (bundle.cargo.transportMode ===
@@ -116,7 +119,7 @@ router.get("/matches/:matchId", async (req, res) => {
   const bundle = (await accessibleBundles(current.company.id)).find(
     (candidate) => candidate.match.id === parsed.data.matchId,
   );
-  if (!bundle || (bundle.match.isStale && bundle.match.status !== "CONNECTED")) {
+  if (!bundle || (bundle.cargo.transportMode === "ROAD" && !hasRoadCommercialAuthority(current)) || (bundle.match.isStale && bundle.match.status !== "CONNECTED")) {
     error(res, 404, "Match not found");
     return;
   }
@@ -137,6 +140,10 @@ router.post("/matches/:matchId/actions", async (req, res) => {
   );
   if (!bundle) {
     error(res, 404, "Match not found");
+    return;
+  }
+  if (bundle.cargo.transportMode === "ROAD" && !hasRoadCommercialAuthority(current)) {
+    error(res, 403, "Only an authorized planner may act on road introductions");
     return;
   }
   if (bundle.match.isStale || bundle.match.status === "EXPIRED") {
@@ -187,6 +194,9 @@ router.post("/matches/:matchId/actions", async (req, res) => {
       ) {
         throw new Error("STALE_MATCH");
       }
+      if (freshPair.cargo.transportMode === "ROAD" && !hasRoadCommercialAuthority(freshMembership)) {
+        throw new Error("FORBIDDEN");
+      }
       const [initiatedInterest] = await tx
         .select()
         .from(interestsTable)
@@ -210,6 +220,7 @@ router.post("/matches/:matchId/actions", async (req, res) => {
           transactionBundle.capacityCompany.id,
         ],
         notificationDomain: "marketplace",
+        commercialPlannersOnly: transactionBundle.cargo.transportMode === "ROAD",
       });
     });
   } catch (cause) {

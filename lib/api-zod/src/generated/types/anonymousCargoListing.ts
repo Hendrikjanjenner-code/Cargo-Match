@@ -26,7 +26,7 @@ export interface AnonymousCargoListing {
   cargoTypeBand: string;
   loadingRegion: string;
   destinationRegion: string;
-  requiredVesselType: VesselType;
+  requiredVesselType: VesselType | null;
   /** Anonymized cargo tonnage band, never an exact weight. */
   tonnageBand: string;
   /** Anonymized loading-window band, never exact timestamps. */

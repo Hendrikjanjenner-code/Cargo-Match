@@ -2,7 +2,7 @@ import { Link, useLocation } from "wouter";
 import { useAuth } from "@workspace/replit-auth-web";
 import { useQueryClient } from "@tanstack/react-query";
 import { 
-  LogOut, LayoutDashboard, Ship, Package, Layers, Globe, 
+  LogOut, LayoutDashboard, Ship, Package, Layers, Globe, Truck,
   Handshake, MessageSquare, Building2, Bell, Menu, ChevronDown
 } from "lucide-react";
 import { Button } from "@/components/ui/primitives";
@@ -53,6 +53,14 @@ export default function Shell({ children }: { children: React.ReactNode }) {
     { href: "/liner/matches", label: "Matches", icon: Handshake },
   ];
 
+  const roadNavItems = [
+    { href: "/road/assets", label: "Road assets", icon: Truck },
+    { href: "/road/capacity", label: "Future capacity", icon: Layers },
+    { href: "/road/cargo", label: "Road cargo", icon: Package },
+    { href: "/road/opportunities", label: "Next-load opportunities", icon: Globe },
+    { href: "/road/matches", label: "Road matches", icon: Handshake },
+  ];
+
   return (
     <div className="flex min-h-screen flex-col bg-background">
       <header className="sticky top-0 z-30 flex h-14 items-center gap-4 border-b bg-primary px-4 sm:px-6 shadow-sm">
@@ -82,6 +90,7 @@ export default function Shell({ children }: { children: React.ReactNode }) {
             { title: t("nav.inland"), items: navItems },
             { title: t("nav.deepsea"), items: deepseaNavItems },
             { title: "Liner Breakbulk", items: linerNavItems },
+             { title: "Road pilot", items: roadNavItems },
           ].map((group) => <section key={group.title} className="mb-3">
             <h2 className="px-2 py-2 text-xs font-semibold uppercase text-muted-foreground">{group.title}</h2>
             <div className="grid grid-cols-2 gap-1">
@@ -156,6 +165,24 @@ export default function Shell({ children }: { children: React.ReactNode }) {
                  {item.label}
                </Link>
              ))}
+
+              <div className="px-3 text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2 mt-6">
+                Road pilot
+              </div>
+              {roadNavItems.map((item) => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={`flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors ${
+                    location === item.href || location.startsWith(item.href)
+                      ? "bg-accent/10 text-accent"
+                      : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                  }`}
+                >
+                  <item.icon className="h-4 w-4" />
+                  {item.label}
+                </Link>
+              ))}
           </nav>
         </aside>
 

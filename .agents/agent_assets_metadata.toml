@@ -1,0 +1,9 @@
+uploads = []
+generated = []
+
+[[outputs]]
+id = "TZa87LbHW0S0BOGTLXL_e"
+uri = "file://attached_assets/closa/source/music.mp3"
+type = "audio"
+title = "Closa rustige instrumentale filmmuziek"
+description = "Generated music: 75-second understated cinematic instrumental for a premium real estate collaboration film. Warm felt piano, very subtle sustained strings, soft low ambient texture, restrained organi…"

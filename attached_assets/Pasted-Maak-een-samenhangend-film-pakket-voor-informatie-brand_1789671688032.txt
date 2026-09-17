@@ -1,0 +1,14 @@
+Maak een samenhangend film­pakket voor informatie, branding en sales van LetShare4Gov richting publieke organisaties. De gebruiker heeft expliciet animatie afgewezen en gekozen voor AI-gegenereerde, fotorealistische filmbeelden met mensen en locaties, in hoge kwaliteit (1080p). Engelse voice-over en Engelse schermteksten, met afzonderlijke Nederlandse en Portugese ondertitelversies.
+
+Done looks like
+Een film van circa 75 seconden vertelt het probleem van versnipperde informatie, toont hoe LetShare4Gov ondersteunt en sluit af met een duidelijke demo-uitnodiging. Mensen en herkenbare werksituaties staan centraal; geen motion graphics, cartoonbeelden, bewegende dashboards of geanimeerde logo-intro.
+Vier zorgvuldig gekadreerde uitvoeringen: 16:9 (1920×1080), 9:16 (1080×1920), 1:1 (1080×1080) en 4:5 (1080×1350). Onderwerpen, merk en ondertitels blijven zichtbaar; geen uitgerekte of letterboxed kopieën.
+Acht downloadbare MP4-bestanden: ieder formaat met Engelse voice-over en óf ingebakken Nederlandse óf ingebakken Portugese ondertiteling. De twee ondertiteltalen staan nooit tegelijk in beeld. Lever ook de gesynchroniseerde NL/PT-ondertitelbestanden als SRT en VTT.
+Alle versies hebben dezelfde boodschap en inhoudelijk consistente vertalingen, verstaanbare spraak en ondertitels met voldoende leestijd, contrast en veilige marges.
+Exacte merknaam LetShare4Gov, aangeleverde originele logos, Inter en de bestaande donkere/blauwe huisstijl. Filmbeelden krijgen een consistente natuurlijke uitstraling; merkteksten worden in de montage toegevoegd en niet door de videogenerator getekend.
+Filmbeelden worden eerlijk omschreven als AI-gegenereerd, niet als echte medewerkers, klanten, klantcases of opnamen. Geen verzonnen cijfers, complianceclaims, certificeringen of persoonlijke gegevens.
+Downloadbestanden en een beknopt overzicht van taal, formaat, resolutie en duur zijn daadwerkelijk aan de gebruiker gepresenteerd.
+Out of scope
+Echte filmopnamen, inzet van acteurs of stockvideo als vervanging van de gekozen AI-filmbeelden.
+Een nieuwe animatievideo, website-/app-redesign, video-editor, automatische publicatie of advertentiecampagne.
+Nederlandse of Portugese dubbing; de gesproken taal blijft Engels.

@@ -313,13 +313,51 @@ export interface DeepseaCargoRequirement {
   preferredVesselClass?: DeepseaVesselClass | null;
 }
 
+/**
+ * User-selected generic route option; no route engine or licensed route data is configured.
+ */
+export type DeepseaCapacityExtensionRouteChoice = typeof DeepseaCapacityExtensionRouteChoice[keyof typeof DeepseaCapacityExtensionRouteChoice];
+
+
+export const DeepseaCapacityExtensionRouteChoice = {
+  UNSPECIFIED: 'UNSPECIFIED',
+  DIRECT: 'DIRECT',
+  SUEZ: 'SUEZ',
+  PANAMA: 'PANAMA',
+  CAPE_GOOD_HOPE: 'CAPE_GOOD_HOPE',
+  OTHER: 'OTHER',
+} as const;
+
 export interface DeepseaCapacityExtension {
   /**
-     * Explicit user-estimated repositioning buffer; null means provisional, not a verified route.
+     * Legacy user-estimated travel duration in days; retained for compatibility and never independently verified.
      * @minimum 0
+     * @maximum 365
      * @nullable
      */
   manualPositioningDays?: number | null;
+  /** User-selected generic route option; no route engine or licensed route data is configured. */
+  routeChoice?: DeepseaCapacityExtensionRouteChoice;
+  /**
+     * Private owner note about the manually selected route; not disclosed before connection.
+     * @maxLength 500
+     * @nullable
+     */
+  routeNotes?: string | null;
+  /**
+     * User-estimated departure uncertainty in days.
+     * @minimum 0
+     * @maximum 365
+     * @nullable
+     */
+  departureUncertaintyDays?: number | null;
+  /**
+     * User-estimated positioning buffer in days.
+     * @minimum 0
+     * @maximum 365
+     * @nullable
+     */
+  positioningBufferDays?: number | null;
   /**
      * Geodesic approximation only, never actual sailing distance.
      * @exclusiveMinimum 0
@@ -868,7 +906,7 @@ export interface AnonymousCapacityListing {
   dwtBand?: string;
   availabilityConfidence?: AvailabilityConfidence;
   positioningConfidence?: AnonymousCapacityListingPositioningConfidence;
-  /** True when no manual repositioning estimate is available. */
+  /** Deepsea feasibility remains provisional because manual inputs are user-estimated, not verified route data. */
   provisional?: boolean;
 }
 
@@ -944,6 +982,65 @@ export interface MatchScoreComponents {
   cargoCompatibilityScore: number;
 }
 
+export type MatchEvaluationInputsReachabilityStatus = typeof MatchEvaluationInputsReachabilityStatus[keyof typeof MatchEvaluationInputsReachabilityStatus];
+
+
+export const MatchEvaluationInputsReachabilityStatus = {
+  UNKNOWN: 'UNKNOWN',
+  USER_ESTIMATED: 'USER_ESTIMATED',
+} as const;
+
+export type MatchEvaluationInputsLaycanAssessment = typeof MatchEvaluationInputsLaycanAssessment[keyof typeof MatchEvaluationInputsLaycanAssessment];
+
+
+export const MatchEvaluationInputsLaycanAssessment = {
+  UNKNOWN: 'UNKNOWN',
+  WITHIN_WINDOW: 'WITHIN_WINDOW',
+  UNCERTAIN: 'UNCERTAIN',
+  TOO_LATE: 'TOO_LATE',
+} as const;
+
+/**
+ * Generic status only; never an actual route choice in anonymous matching.
+ */
+export type MatchEvaluationInputsRouteChoice = typeof MatchEvaluationInputsRouteChoice[keyof typeof MatchEvaluationInputsRouteChoice];
+
+
+export const MatchEvaluationInputsRouteChoice = {
+  NOT_CONFIGURED: 'NOT_CONFIGURED',
+  USER_SELECTED: 'USER_SELECTED',
+} as const;
+
+export type MatchEvaluationInputsDepartureUncertainty = typeof MatchEvaluationInputsDepartureUncertainty[keyof typeof MatchEvaluationInputsDepartureUncertainty];
+
+
+export const MatchEvaluationInputsDepartureUncertainty = {
+  UNKNOWN: 'UNKNOWN',
+  USER_ESTIMATED: 'USER_ESTIMATED',
+} as const;
+
+export type MatchEvaluationInputsPositioningBuffer = typeof MatchEvaluationInputsPositioningBuffer[keyof typeof MatchEvaluationInputsPositioningBuffer];
+
+
+export const MatchEvaluationInputsPositioningBuffer = {
+  UNKNOWN: 'UNKNOWN',
+  USER_ESTIMATED: 'USER_ESTIMATED',
+} as const;
+
+export type MatchEvaluationInputsRouteDataAccess = typeof MatchEvaluationInputsRouteDataAccess[keyof typeof MatchEvaluationInputsRouteDataAccess];
+
+
+export const MatchEvaluationInputsRouteDataAccess = {
+  NOT_CONFIGURED: 'NOT_CONFIGURED',
+} as const;
+
+export type MatchEvaluationInputsVerification = typeof MatchEvaluationInputsVerification[keyof typeof MatchEvaluationInputsVerification];
+
+
+export const MatchEvaluationInputsVerification = {
+  NOT_VERIFIED: 'NOT_VERIFIED',
+} as const;
+
 /**
  * Anonymized bands used to explain a score without exposing precise commercial inputs.
  */
@@ -954,6 +1051,14 @@ export interface MatchEvaluationInputs {
   vesselTypeBand: string;
   directionBand: string;
   cargoCompatibilityBand: string;
+  reachabilityStatus: MatchEvaluationInputsReachabilityStatus;
+  laycanAssessment: MatchEvaluationInputsLaycanAssessment;
+  /** Generic status only; never an actual route choice in anonymous matching. */
+  routeChoice: MatchEvaluationInputsRouteChoice;
+  departureUncertainty: MatchEvaluationInputsDepartureUncertainty;
+  positioningBuffer: MatchEvaluationInputsPositioningBuffer;
+  routeDataAccess: MatchEvaluationInputsRouteDataAccess;
+  verification: MatchEvaluationInputsVerification;
 }
 
 export interface MatchScore {

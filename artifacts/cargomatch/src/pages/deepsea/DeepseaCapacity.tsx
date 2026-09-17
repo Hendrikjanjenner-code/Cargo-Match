@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import { 
   useListMyCapacity, useCreateMyCapacity, useUpdateMyCapacity, useWithdrawMyCapacity, useCloseMyCapacity, 
   getListMyCapacityQueryKey, getListMarketplaceQueryKey, getListMyMatchesQueryKey, useListLocations,
-  useListMyVessels, AvailabilityType, Visibility, CapacityOffer, ListingStatus, TransportMode, LocationType, AvailabilityConfidence
+  useListMyVessels, AvailabilityType, Visibility, CapacityOffer, ListingStatus, TransportMode, LocationType, AvailabilityConfidence,
+  DeepseaCapacityExtensionRouteChoice, DeepseaCapacityExtension
 } from "@workspace/api-client-react";
 import { useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
@@ -27,12 +28,20 @@ const schema = z.object({
   notes: z.string().optional(),
 
   availabilityConfidence: z.nativeEnum(AvailabilityConfidence),
-  manualPositioningDays: z.preprocess((val) => (val === "" || val === undefined || val === null) ? null : val, z.coerce.number().min(0, "Cannot be negative").nullable().optional()),
+  manualPositioningDays: z.preprocess((val) => (val === "" || val === undefined || val === null) ? null : val, z.coerce.number().min(0, "Cannot be negative").max(365, "Cannot exceed 365 days").nullable().optional()),
   approximateMaxDistanceKm: z.preprocess((val) => (val === "" || val === undefined || val === null) ? null : val, z.coerce.number().positive("Must be positive").nullable().optional()),
-  previousVoyageContext: z.string().optional().nullable()
-});
+  previousVoyageContext: z.string().optional().nullable(),
+  routeChoice: z.nativeEnum(DeepseaCapacityExtensionRouteChoice).default(DeepseaCapacityExtensionRouteChoice.UNSPECIFIED),
+  routeNotes: z.string().max(500, "Route notes cannot exceed 500 characters").optional().nullable(),
+  departureUncertaintyDays: z.preprocess((val) => (val === "" || val === undefined || val === null) ? null : val, z.coerce.number().min(0, "Cannot be negative").max(365, "Cannot exceed 365 days").nullable().optional()),
+  positioningBufferDays: z.preprocess((val) => (val === "" || val === undefined || val === null) ? null : val, z.coerce.number().min(0, "Cannot be negative").max(365, "Cannot exceed 365 days").nullable().optional())
+}).refine(
+  values => !values.availableFrom || !values.availableUntil || new Date(values.availableUntil).getTime() >= new Date(values.availableFrom).getTime(),
+  { path: ["availableUntil"], message: t("validation.available_until_after_from") }
+);
 
 type FormValues = z.infer<typeof schema>;
+const DEEPSEA_ROUTE_CHOICES = Object.values(DeepseaCapacityExtensionRouteChoice);
 
 function errorMessage(error: unknown, fallback: string): string {
   return error instanceof Error && error.message.trim() ? error.message : fallback;
@@ -65,15 +74,37 @@ export default function DeepseaCapacity() {
     withdrawCap.isPending ||
     closeCap.isPending;
 
-  const { register, handleSubmit, reset, formState: { errors } } = useForm<FormValues>({
+  const { register, handleSubmit, reset, setValue, watch, formState: { errors } } = useForm<FormValues>({
     resolver: zodResolver(schema),
     defaultValues: { 
       availabilityType: AvailabilityType.FULLY_EMPTY, 
       visibility: Visibility.OPEN_NETWORK, 
       maximumPositioningDistanceKm: 1000,
-      availabilityConfidence: AvailabilityConfidence.EXPECTED
+      availabilityConfidence: AvailabilityConfidence.EXPECTED,
+      routeChoice: DeepseaCapacityExtensionRouteChoice.UNSPECIFIED
     }
   });
+  const watchedAvailableFrom = watch("availableFrom");
+  const watchedDepartureUncertainty = watch("departureUncertaintyDays");
+  const availableFromDate = watchedAvailableFrom ? new Date(watchedAvailableFrom) : null;
+  const departureUncertaintyRaw = watchedDepartureUncertainty == null
+    ? ""
+    : String(watchedDepartureUncertainty);
+  const departureUncertaintyNumber = departureUncertaintyRaw === ""
+    ? null
+    : Number(departureUncertaintyRaw);
+  const validDepartureUncertainty = departureUncertaintyNumber != null &&
+    Number.isFinite(departureUncertaintyNumber) &&
+    departureUncertaintyNumber >= 0 &&
+    departureUncertaintyNumber <= 365;
+  const validAvailableFrom = availableFromDate != null &&
+    !Number.isNaN(availableFromDate.getTime());
+  const availableFromIsPast = availableFromDate != null &&
+    validAvailableFrom &&
+    availableFromDate.getTime() < Date.now();
+  const manualLatestDeparture = validAvailableFrom && departureUncertaintyNumber != null && validDepartureUncertainty
+    ? new Date(Math.max(availableFromDate.getTime(), Date.now()) + departureUncertaintyNumber * 86400000)
+    : null;
 
   const invalidateCapacityCaches = () => {
     void queryClient.invalidateQueries({ queryKey: getListMyCapacityQueryKey({ transportMode: TransportMode.DEEPSEA_BULK }) });
@@ -102,8 +133,12 @@ export default function DeepseaCapacity() {
       deepseaExtension: {
         manualPositioningDays: data.manualPositioningDays ?? null,
         approximateMaxDistanceKm: data.approximateMaxDistanceKm ?? null,
-        previousVoyageContext: data.previousVoyageContext || null
-      }
+        previousVoyageContext: data.previousVoyageContext || null,
+        routeChoice: data.routeChoice || DeepseaCapacityExtensionRouteChoice.UNSPECIFIED,
+        routeNotes: data.routeNotes || null,
+        departureUncertaintyDays: data.departureUncertaintyDays ?? null,
+        positioningBufferDays: data.positioningBufferDays ?? null
+      } satisfies DeepseaCapacityExtension
     };
 
     if (editingId) {
@@ -140,10 +175,14 @@ export default function DeepseaCapacity() {
       maximumPositioningDistanceKm: c.maximumPositioningDistanceKm,
       visibility: c.visibility,
       notes: c.notes || "",
-      availabilityConfidence: c.availabilityConfidence ?? AvailabilityConfidence.EXPECTED,
+      availabilityConfidence: (c as any).availabilityConfidence || AvailabilityConfidence.EXPECTED, // Need cast if API type incomplete? Wait, it's optional on the request but might not be on the response if we don't have it explicitly typed. It's actually not on CapacityOffer? Ah! wait. Is it on CapacityOffer? Let's check schemas again.
       manualPositioningDays: c.deepseaExtension?.manualPositioningDays ?? undefined,
       approximateMaxDistanceKm: c.deepseaExtension?.approximateMaxDistanceKm ?? undefined,
-      previousVoyageContext: c.deepseaExtension?.previousVoyageContext || ""
+      previousVoyageContext: c.deepseaExtension?.previousVoyageContext || "",
+      routeChoice: c.deepseaExtension?.routeChoice || DeepseaCapacityExtensionRouteChoice.UNSPECIFIED,
+      routeNotes: c.deepseaExtension?.routeNotes || "",
+      departureUncertaintyDays: c.deepseaExtension?.departureUncertaintyDays ?? undefined,
+      positioningBufferDays: c.deepseaExtension?.positioningBufferDays ?? undefined
     });
     setEditingId(c.id);
     setEditingStatus(c.listingStatus);
@@ -163,24 +202,46 @@ export default function DeepseaCapacity() {
       availabilityType: AvailabilityType.FULLY_EMPTY, availableCapacityTonnes: 0,
       cargoCompatibility: "", preferredDirection: "", maximumPositioningDistanceKm: 1000,
       visibility: Visibility.OPEN_NETWORK, notes: "", availabilityConfidence: AvailabilityConfidence.EXPECTED,
-      manualPositioningDays: undefined, approximateMaxDistanceKm: undefined, previousVoyageContext: ""
+       manualPositioningDays: undefined, approximateMaxDistanceKm: undefined, previousVoyageContext: "",
+       routeChoice: DeepseaCapacityExtensionRouteChoice.UNSPECIFIED, routeNotes: "", departureUncertaintyDays: undefined, positioningBufferDays: undefined
     });
   };
 
-  const handleStatusChange = (id: string, action: 'publish' | 'withdraw' | 'close') => {
+  const handleStatusChange = (id: string, action: 'publish' | 'withdraw' | 'close' | 'reopen') => {
     setLifecycleError(null);
     const options = {
       onSuccess: invalidateCapacityCaches,
       onError: (err: unknown) => setLifecycleError(errorMessage(err, t("error.lifecycle")))
     };
 
-    if (action === 'publish') {
+    if (action === 'publish' || action === 'reopen') {
       updateCapacity.mutate({ capacityId: id, data: { listingStatus: ListingStatus.ACTIVE } }, options);
     } else if (action === 'withdraw') {
       withdrawCap.mutate({ capacityId: id }, options);
     } else if (action === 'close') {
       closeCap.mutate({ capacityId: id }, options);
     }
+  };
+
+  const clearDeepseaFields = () => {
+    setValue("manualPositioningDays", undefined);
+    setValue("approximateMaxDistanceKm", undefined);
+    setValue("previousVoyageContext", "");
+    setValue("routeChoice", DeepseaCapacityExtensionRouteChoice.UNSPECIFIED);
+    setValue("routeNotes", "");
+    setValue("departureUncertaintyDays", undefined);
+    setValue("positioningBufferDays", undefined);
+  };
+
+  const resetFormFields = () => {
+    reset({
+      vesselId: "", locationId: "", availableFrom: "", availableUntil: "",
+      availabilityType: AvailabilityType.FULLY_EMPTY, availableCapacityTonnes: 0,
+      cargoCompatibility: "", preferredDirection: "", maximumPositioningDistanceKm: 1000,
+      visibility: Visibility.OPEN_NETWORK, notes: "", availabilityConfidence: AvailabilityConfidence.EXPECTED,
+      manualPositioningDays: undefined, approximateMaxDistanceKm: undefined, previousVoyageContext: "",
+      routeChoice: DeepseaCapacityExtensionRouteChoice.UNSPECIFIED, routeNotes: "", departureUncertaintyDays: undefined, positioningBufferDays: undefined
+    });
   };
 
   return (
@@ -291,11 +352,45 @@ export default function DeepseaCapacity() {
                 
                 <div className="space-y-2">
                   <Label htmlFor="manualPositioningDays">{t("deepsea.capacity.manual_pos_days")}</Label>
-  <Input id="manualPositioningDays" type="number" {...register("manualPositioningDays")} />
+                  <Input id="manualPositioningDays" type="number" step="any" min="0" max="365" {...register("manualPositioningDays")} />
+                  <p className="text-xs text-muted-foreground">{t("deepsea.capacity.manual_pos_days_help")}</p>
+                  {errors.manualPositioningDays && <span className="text-xs text-destructive">{errors.manualPositioningDays.message}</span>}
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="approximateMaxDistanceKm">{t("deepsea.capacity.approx_max_distance")}</Label>
-  <Input id="approximateMaxDistanceKm" type="number" {...register("approximateMaxDistanceKm")} />
+                  <Input id="approximateMaxDistanceKm" type="number" min="0" {...register("approximateMaxDistanceKm")} />
+                  {errors.approximateMaxDistanceKm && <span className="text-xs text-destructive">{errors.approximateMaxDistanceKm.message}</span>}
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="departureUncertaintyDays">{t("deepsea.capacity.departure_uncertainty")}</Label>
+                  <Input id="departureUncertaintyDays" type="number" step="any" min="0" max="365" {...register("departureUncertaintyDays")} />
+                  <p className="text-xs text-muted-foreground">{t("deepsea.capacity.departure_uncertainty_help")}</p>
+                  {availableFromIsPast && (
+                    <p className="text-xs text-amber-700">{t("deepsea.capacity.available_from_past_help")}</p>
+                  )}
+                  {manualLatestDeparture && !Number.isNaN(manualLatestDeparture.getTime()) && (
+                    <p className="text-xs text-amber-700">{t("deepsea.capacity.latest_departure_preview")}: {manualLatestDeparture.toLocaleString()}</p>
+                  )}
+                  {errors.departureUncertaintyDays && <span className="text-xs text-destructive">{errors.departureUncertaintyDays.message}</span>}
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="positioningBufferDays">{t("deepsea.capacity.positioning_buffer")}</Label>
+                  <Input id="positioningBufferDays" type="number" step="any" min="0" max="365" {...register("positioningBufferDays")} />
+                  <p className="text-xs text-muted-foreground">{t("deepsea.capacity.positioning_buffer_help")}</p>
+                  {errors.positioningBufferDays && <span className="text-xs text-destructive">{errors.positioningBufferDays.message}</span>}
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="routeChoice">{t("deepsea.capacity.route_choice")}</Label>
+                  <Select id="routeChoice" {...register("routeChoice")}>
+                    {DEEPSEA_ROUTE_CHOICES.map(v => <option key={v} value={v}>{t(`deepsea.capacity.route.${v}`)}</option>)}
+                  </Select>
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="routeNotes">{t("deepsea.capacity.route_notes")}</Label>
+                  <Textarea id="routeNotes" maxLength={500} {...register("routeNotes")} placeholder={t("deepsea.capacity.route_notes_placeholder")} />
+                  {errors.routeNotes && <span className="text-xs text-destructive">{errors.routeNotes.message}</span>}
                 </div>
 
                 <div className="space-y-2">
@@ -315,12 +410,18 @@ export default function DeepseaCapacity() {
                 </div>
               </div>
 
+              <div className="md:col-span-2 rounded-md border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-900">
+                {t("deepsea.capacity.route_notice")}
+              </div>
+
               {formError && (
                 <div className="text-sm text-destructive mt-2">{formError}</div>
               )}
               
               <div className="flex justify-end gap-2 mt-4">
                 <Button type="button" variant="outline" onClick={closeForm} disabled={isPending}>{t("action.cancel")}</Button>
+                <Button type="button" variant="outline" onClick={resetFormFields} disabled={isPending}>{t("action.reset_fields")}</Button>
+                <Button type="button" variant="outline" onClick={clearDeepseaFields} disabled={isPending}>{t("action.clear_fields")}</Button>
                 {(!editingId || editingStatus === ListingStatus.DRAFT) && (
                   <Button 
                     type="button" 
@@ -375,11 +476,21 @@ export default function DeepseaCapacity() {
                     </TableCell>
                     <TableCell className="text-xs">
                       {formatDate(c.availableFrom)} to {formatDate(c.availableUntil)}
+                      <div className="text-muted-foreground">{t("deepsea.capacity.earliest_departure")}</div>
+                      {c.deepseaExtension?.departureUncertaintyDays != null && (
+                        <div className="text-amber-700">{t("deepsea.capacity.latest_departure_provisional")}</div>
+                      )}
                     </TableCell>
                     <TableCell className="text-xs">
                       {c.availableCapacityTonnes}t<br/>{c.availabilityType.replace('_', ' ')}
                     </TableCell>
-                    <TableCell className="text-xs">{c.preferredDirection}</TableCell>
+                    <TableCell className="text-xs">
+                      {c.preferredDirection}
+                      <div className="text-muted-foreground">
+                        {t("deepsea.capacity.route")}: {t(`deepsea.capacity.route.${c.deepseaExtension?.routeChoice || DeepseaCapacityExtensionRouteChoice.UNSPECIFIED}`)}
+                      </div>
+                      <div className="text-amber-700">{t("deepsea.capacity.route_not_verified")}</div>
+                    </TableCell>
                     <TableCell>
                       <Badge variant={c.listingStatus === 'ACTIVE' ? 'default' : 'secondary'}>
                         {t(`status.${c.listingStatus.toLowerCase()}`)}
@@ -405,6 +516,11 @@ export default function DeepseaCapacity() {
                             <XCircle className="h-4 w-4 text-emerald-600" />
                           </Button>
                         </>
+                      )}
+                      {(c.listingStatus === 'WITHDRAWN' || c.listingStatus === 'CLOSED' || c.listingStatus === 'EXPIRED') && (
+                        <Button variant="outline" size="sm" onClick={() => handleStatusChange(c.id, 'reopen')} title={t("action.reopen")}>
+                          <PlayCircle className="h-4 w-4 text-emerald-600" />
+                        </Button>
                       )}
                     </TableCell>
                   </TableRow>

@@ -110,7 +110,7 @@ function deepseaCargoPayload(overrides: Record<string, unknown> = {}) {
       minimumVesselDwtTonnes: 70_000,
       maximumVesselDwtTonnes: 90_000,
       maximumDraftMetres: 14,
-      requiredGear: "cranes",
+      requiredGear: "ship cranes",
       preferredVesselClass: "KAMSARMAX",
     },
     ...overrides,
@@ -139,6 +139,10 @@ function deepseaCapacityPayload(
     // Null is intentional: matching remains eligible but provisional.
     deepseaExtension: {
       manualPositioningDays: null,
+        routeChoice: "DIRECT",
+        routeNotes: "  manually selected route  ",
+        departureUncertaintyDays: 0.5,
+        positioningBufferDays: 1.25,
       approximateMaxDistanceKm: 5_000,
       previousVoyageContext: "Open position after an Asia-Pacific voyage",
     },
@@ -228,7 +232,34 @@ test("deepsea API vertical enforces isolation, privacy, consent, and revalidatio
   assert.equal(capacityResponse.body.transportMode, "DEEPSEA_BULK");
   assert.equal(capacityResponse.body.availabilityConfidence, "EXPECTED");
   assert.equal(capacityResponse.body.deepseaExtension.manualPositioningDays, null);
+  assert.equal(capacityResponse.body.deepseaExtension.routeChoice, "DIRECT");
+  assert.equal(capacityResponse.body.deepseaExtension.routeNotes, "manually selected route");
+  assert.equal(capacityResponse.body.deepseaExtension.departureUncertaintyDays, 0.5);
+  assert.equal(capacityResponse.body.deepseaExtension.positioningBufferDays, 1.25);
   const capacityId = capacityResponse.body.id;
+
+  const clearedExtension = await call(
+    "PATCH",
+    `/api/capacity/${capacityId}`,
+    A.cookie,
+    { deepseaExtension: null },
+  );
+  assert.equal(clearedExtension.status, 200, JSON.stringify(clearedExtension.body));
+  assert.equal(clearedExtension.body.deepseaExtension, null);
+  const reloadedCapacity = await call(
+    "GET",
+    `/api/capacity/${capacityId}`,
+    A.cookie,
+  );
+  assert.equal(reloadedCapacity.status, 200);
+  assert.equal(reloadedCapacity.body.deepseaExtension, null);
+  const restoredExtension = await call(
+    "PATCH",
+    `/api/capacity/${capacityId}`,
+    A.cookie,
+    { deepseaExtension: deepseaCapacityPayload(vesselId).deepseaExtension },
+  );
+  assert.equal(restoredExtension.status, 200, JSON.stringify(restoredExtension.body));
 
   const cargoResponse = await call(
     "POST",
@@ -360,6 +391,35 @@ test("deepsea API vertical enforces isolation, privacy, consent, and revalidatio
   );
   assert.equal(message.status, 201, JSON.stringify(message.body));
   assert.equal(message.body.body, "Deepsea pilot introduction");
+
+  const incompatibleCargo = await call(
+    "POST",
+    "/api/cargo",
+    B.cookie,
+    deepseaCargoPayload({
+      cargoName: "Coal cargo should not match iron ore capacity",
+      cargoType: "coal",
+    }),
+  );
+  assert.equal(
+    incompatibleCargo.status,
+    201,
+    JSON.stringify(incompatibleCargo.body),
+  );
+  const incompatibleMatches = await call(
+    "GET",
+    "/api/matches?transportMode=DEEPSEA_BULK",
+    B.cookie,
+  );
+  assert.equal(incompatibleMatches.status, 200);
+  assert.equal(
+    incompatibleMatches.body.items.some(
+      (item: any) =>
+        item.cargoListingId === incompatibleCargo.body.id &&
+        item.capacityOfferId === capacityId,
+    ),
+    false,
+  );
 
   // A second pending consent is reset by a material edit, and then expires
   // (with its consent removed) when its cargo is withdrawn.

@@ -8,6 +8,13 @@
  *
  * OpenAPI spec version: 0.1.0
  */
+import type { MatchEvaluationInputsDepartureUncertainty } from './matchEvaluationInputsDepartureUncertainty';
+import type { MatchEvaluationInputsLaycanAssessment } from './matchEvaluationInputsLaycanAssessment';
+import type { MatchEvaluationInputsPositioningBuffer } from './matchEvaluationInputsPositioningBuffer';
+import type { MatchEvaluationInputsReachabilityStatus } from './matchEvaluationInputsReachabilityStatus';
+import type { MatchEvaluationInputsRouteChoice } from './matchEvaluationInputsRouteChoice';
+import type { MatchEvaluationInputsRouteDataAccess } from './matchEvaluationInputsRouteDataAccess';
+import type { MatchEvaluationInputsVerification } from './matchEvaluationInputsVerification';
 
 /**
  * Anonymized bands used to explain a score without exposing precise commercial inputs.
@@ -19,4 +26,12 @@ export interface MatchEvaluationInputs {
   vesselTypeBand: string;
   directionBand: string;
   cargoCompatibilityBand: string;
+  reachabilityStatus: MatchEvaluationInputsReachabilityStatus;
+  laycanAssessment: MatchEvaluationInputsLaycanAssessment;
+  /** Generic status only; never an actual route choice in anonymous matching. */
+  routeChoice: MatchEvaluationInputsRouteChoice;
+  departureUncertainty: MatchEvaluationInputsDepartureUncertainty;
+  positioningBuffer: MatchEvaluationInputsPositioningBuffer;
+  routeDataAccess: MatchEvaluationInputsRouteDataAccess;
+  verification: MatchEvaluationInputsVerification;
 }

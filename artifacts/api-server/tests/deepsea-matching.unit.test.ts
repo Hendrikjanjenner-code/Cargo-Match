@@ -3,6 +3,7 @@ import test from "node:test";
 
 import {
   evaluateEligibility,
+  evaluateDeepseaReachability,
   scoreDeepseaEligiblePair,
 } from "../src/services/matching";
 import { anonymousCapacity } from "../src/lib/privacy";
@@ -216,6 +217,27 @@ test("required vessel type remains a hard deepsea eligibility constraint", () =>
   });
 });
 
+test("deepsea cargo compatibility is a hard eligibility constraint", () => {
+  const incompatible = deepseaPair({
+    capacity: { cargoCompatibility: ["coal"] },
+  });
+  assert.deepEqual(evaluateEligibility(incompatible, now), {
+    eligible: false,
+    reason: "cargo_incompatible",
+  });
+
+  const emptyCompatibility = deepseaPair({
+    capacity: { cargoCompatibility: [] },
+  });
+  assert.deepEqual(evaluateEligibility(emptyCompatibility, now), {
+    eligible: false,
+    reason: "cargo_incompatible",
+  });
+
+  const compatible = deepseaPair();
+  assert.equal(evaluateEligibility(compatible, now).eligible, true);
+});
+
 test("quantity tolerance has a strict 100 percent boundary and defaults to zero", () => {
   assert.equal(validateDeepseaCargoRequirement({}), true);
   assert.equal(
@@ -299,5 +321,164 @@ test("deepsea uses approximate geodesic positioning bounds", () => {
   assert.deepEqual(evaluateEligibility(pair, now), {
     eligible: false,
     reason: "outside_approximate_positioning_distance",
+  });
+});
+
+test("manual deepsea reachability preserves fractional days and allows early arrival", () => {
+  const result = evaluateDeepseaReachability({
+    availableFrom: new Date("2030-01-01T00:00:00.000Z"),
+    availableUntil: new Date("2030-01-20T00:00:00.000Z"),
+    laycanFrom: new Date("2030-01-05T00:00:00.000Z"),
+    laycanUntil: new Date("2030-01-06T12:00:00.000Z"),
+    now: new Date("2030-01-01T00:00:00.000Z"),
+    manualPositioningDays: 2.25,
+    positioningBufferDays: 0.25,
+    departureUncertaintyDays: 0,
+  });
+  assert.equal(result.earliestArrival?.toISOString(), "2030-01-03T12:00:00.000Z");
+  assert.equal(result.latestArrival?.toISOString(), "2030-01-03T12:00:00.000Z");
+  assert.equal(result.laycanAssessment, "WITHIN_WINDOW");
+  assert.equal(result.reachabilityStatus, "USER_ESTIMATED");
+});
+
+test("departure uncertainty straddling laycan is not optimistically matched as certain", () => {
+  const result = evaluateDeepseaReachability({
+    availableFrom: new Date("2030-01-01T00:00:00.000Z"),
+    availableUntil: new Date("2030-01-20T00:00:00.000Z"),
+    laycanFrom: new Date("2030-01-03T00:00:00.000Z"),
+    laycanUntil: new Date("2030-01-04T00:00:00.000Z"),
+    now: new Date("2030-01-01T00:00:00.000Z"),
+    manualPositioningDays: 1,
+    positioningBufferDays: 0.5,
+    departureUncertaintyDays: 2,
+  });
+  assert.equal(result.laycanAssessment, "UNCERTAIN");
+  assert.equal(result.definitelyLate, false);
+});
+
+test("missing manual inputs stay unknown while definitely late arrivals are rejected", () => {
+  const unknown = evaluateDeepseaReachability({
+    availableFrom: new Date("2030-01-01T00:00:00.000Z"),
+    availableUntil: new Date("2030-01-20T00:00:00.000Z"),
+    laycanFrom: new Date("2030-01-03T00:00:00.000Z"),
+    laycanUntil: new Date("2030-01-04T00:00:00.000Z"),
+    now: new Date("2030-01-01T00:00:00.000Z"),
+    manualPositioningDays: null,
+    positioningBufferDays: null,
+  });
+  assert.equal(unknown.reachabilityStatus, "UNKNOWN");
+  assert.equal(unknown.laycanAssessment, "UNKNOWN");
+  const late = evaluateDeepseaReachability({
+    availableFrom: new Date("2030-01-01T00:00:00.000Z"),
+    availableUntil: new Date("2030-01-20T00:00:00.000Z"),
+    laycanFrom: new Date("2030-01-03T00:00:00.000Z"),
+    laycanUntil: new Date("2030-01-04T00:00:00.000Z"),
+    now: new Date("2030-01-01T00:00:00.000Z"),
+    manualPositioningDays: 5,
+    positioningBufferDays: 0,
+    departureUncertaintyDays: 0,
+  });
+  assert.equal(late.laycanAssessment, "TOO_LATE");
+  assert.equal(late.definitelyLate, true);
+});
+
+test("unknown travel cannot match when departure is already after laycan", () => {
+  const pair = deepseaPair({
+    capacity: {
+      availableFrom: new Date("2030-01-26T00:00:00.000Z"),
+      availableUntil: new Date("2030-02-01T00:00:00.000Z"),
+    },
+    deepseaExtension: { manualPositioningDays: null },
+  });
+  assert.deepEqual(evaluateEligibility(pair, now), {
+    eligible: false,
+    reason: "laycan_incompatible_with_positioning",
+  });
+});
+
+test("known buffer still proves late without exposing an invented ETA", () => {
+  const result = evaluateDeepseaReachability({
+    availableFrom: new Date("2030-01-01T00:00:00.000Z"),
+    availableUntil: new Date("2030-01-20T00:00:00.000Z"),
+    laycanFrom: new Date("2030-01-03T00:00:00.000Z"),
+    laycanUntil: new Date("2030-01-04T00:00:00.000Z"),
+    now: new Date("2030-01-01T00:00:00.000Z"),
+    manualPositioningDays: null,
+    positioningBufferDays: 5,
+  });
+  assert.equal(result.earliestArrival, null);
+  assert.equal(result.laycanAssessment, "TOO_LATE");
+  assert.equal(result.definitelyLate, true);
+});
+
+test("availability horizon uses laycan start and marks late latest arrivals uncertain", () => {
+  const beforeLaycan = evaluateDeepseaReachability({
+    availableFrom: new Date("2030-01-01T00:00:00.000Z"),
+    availableUntil: new Date("2030-01-02T00:00:00.000Z"),
+    laycanFrom: new Date("2030-01-03T00:00:00.000Z"),
+    laycanUntil: new Date("2030-01-10T00:00:00.000Z"),
+    now: new Date("2030-01-01T00:00:00.000Z"),
+  });
+  assert.equal(beforeLaycan.availabilityHorizonAssessment, "TOO_LATE");
+  const uncertain = evaluateDeepseaReachability({
+    availableFrom: new Date("2030-01-01T00:00:00.000Z"),
+    availableUntil: new Date("2030-01-03T12:00:00.000Z"),
+    laycanFrom: new Date("2030-01-03T00:00:00.000Z"),
+    laycanUntil: new Date("2030-01-10T00:00:00.000Z"),
+    now: new Date("2030-01-01T00:00:00.000Z"),
+    manualPositioningDays: 1,
+    positioningBufferDays: 0,
+    departureUncertaintyDays: 3,
+  });
+  assert.equal(uncertain.availabilityHorizonAssessment, "UNCERTAIN");
+  assert.equal(uncertain.laycanAssessment, "UNCERTAIN");
+});
+
+test("deepsea timing score ranks within, uncertain, unknown, and late states", () => {
+  const scoreFor = (deepseaExtension: Record<string, unknown>) => {
+    const pair = deepseaPair({ deepseaExtension });
+    return scoreDeepseaEligiblePair(pair, 0, now);
+  };
+
+  const within = scoreFor({
+    manualPositioningDays: 2,
+    departureUncertaintyDays: 0,
+    positioningBufferDays: 0,
+  });
+  const uncertain = scoreFor({
+    manualPositioningDays: 2,
+    departureUncertaintyDays: 10,
+    positioningBufferDays: 0,
+  });
+  const unknown = scoreFor({
+    manualPositioningDays: null,
+    departureUncertaintyDays: null,
+    positioningBufferDays: null,
+  });
+  const tooLate = scoreFor({
+    manualPositioningDays: 11,
+    departureUncertaintyDays: 0,
+    positioningBufferDays: 0,
+  });
+
+  assert.equal(within.timingScore, 100);
+  assert.equal(uncertain.timingScore, 50);
+  assert.equal(unknown.timingScore, 25);
+  assert.equal(tooLate.timingScore, 0);
+  assert.ok(within.totalScore > uncertain.totalScore);
+  assert.ok(uncertain.totalScore > unknown.totalScore);
+  assert.ok(unknown.totalScore > tooLate.totalScore);
+});
+
+test("eligibility rejects invalid extension values even when database rows bypass API validation", () => {
+  const result = evaluateEligibility(
+    deepseaPair({
+      deepseaExtension: { manualPositioningDays: Number.NaN },
+    }),
+    now,
+  );
+  assert.deepEqual(result, {
+    eligible: false,
+    reason: "invalid_deepsea_extension",
   });
 });

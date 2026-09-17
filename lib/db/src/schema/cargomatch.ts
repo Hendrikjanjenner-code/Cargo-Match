@@ -57,6 +57,14 @@ export const deepseaVesselClassEnum = pgEnum("deepsea_vessel_class", [
   "NEWCASTLEMAX",
   "OTHER",
 ]);
+export const deepseaRouteChoiceEnum = pgEnum("deepsea_route_choice", [
+  "UNSPECIFIED",
+  "DIRECT",
+  "SUEZ",
+  "PANAMA",
+  "CAPE_GOOD_HOPE",
+  "OTHER",
+]);
 export const availabilityConfidenceEnum = pgEnum("availability_confidence", [
   "EXPECTED",
   "CONFIRMED",
@@ -533,7 +541,13 @@ export const deepseaCapacityExtensionsTable = pgTable(
     capacityOfferId: uuid("capacity_offer_id")
       .primaryKey()
       .references(() => capacityOffersTable.id, { onDelete: "cascade" }),
-    manualPositioningDays: integer("manual_positioning_days"),
+    manualPositioningDays: doublePrecision("manual_positioning_days"),
+    routeChoice: deepseaRouteChoiceEnum("route_choice")
+      .notNull()
+      .default("UNSPECIFIED"),
+    routeNotes: varchar("route_notes", { length: 500 }),
+    departureUncertaintyDays: doublePrecision("departure_uncertainty_days"),
+    positioningBufferDays: doublePrecision("positioning_buffer_days"),
     approximateMaxDistanceKm: doublePrecision("approximate_max_distance_km"),
     previousVoyageContext: text("previous_voyage_context"),
     createdAt: timestamp("created_at", { withTimezone: true })

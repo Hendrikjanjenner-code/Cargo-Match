@@ -1709,9 +1709,29 @@ components:
       additionalProperties: false
       properties:
         manualPositioningDays:
-          type: [integer, "null"]
+          type: [number, "null"]
           minimum: 0
-          description: Explicit user-estimated repositioning buffer; null means provisional, not a verified route.
+          maximum: 365
+          description: Legacy user-estimated travel duration in days; retained for compatibility and never independently verified.
+        routeChoice:
+          type: string
+          enum: [UNSPECIFIED, DIRECT, SUEZ, PANAMA, CAPE_GOOD_HOPE, OTHER]
+          default: UNSPECIFIED
+          description: User-selected generic route option; no route engine or licensed route data is configured.
+        routeNotes:
+          type: [string, "null"]
+          maxLength: 500
+          description: Private owner note about the manually selected route; not disclosed before connection.
+        departureUncertaintyDays:
+          type: [number, "null"]
+          minimum: 0
+          maximum: 365
+          description: User-estimated departure uncertainty in days.
+        positioningBufferDays:
+          type: [number, "null"]
+          minimum: 0
+          maximum: 365
+          description: User-estimated positioning buffer in days.
         approximateMaxDistanceKm:
           type: [number, "null"]
           exclusiveMinimum: 0
@@ -2590,7 +2610,7 @@ components:
           enum: [PROVISIONAL, ESTIMATED]
         provisional:
           type: boolean
-          description: True when no manual repositioning estimate is available.
+          description: Deepsea feasibility remains provisional because manual inputs are user-estimated, not verified route data.
     MarketplaceListing:
       oneOf:
         - $ref: "#/components/schemas/AnonymousCargoListing"
@@ -2664,6 +2684,13 @@ components:
         - vesselTypeBand
         - directionBand
         - cargoCompatibilityBand
+        - reachabilityStatus
+        - laycanAssessment
+        - routeChoice
+        - departureUncertainty
+        - positioningBuffer
+        - routeDataAccess
+        - verification
       properties:
         distanceBand:
           type: string
@@ -2677,6 +2704,28 @@ components:
           type: string
         cargoCompatibilityBand:
           type: string
+        reachabilityStatus:
+          type: string
+          enum: [UNKNOWN, USER_ESTIMATED]
+        laycanAssessment:
+          type: string
+          enum: [UNKNOWN, WITHIN_WINDOW, UNCERTAIN, TOO_LATE]
+        routeChoice:
+          type: string
+          enum: [NOT_CONFIGURED, USER_SELECTED]
+          description: Generic status only; never an actual route choice in anonymous matching.
+        departureUncertainty:
+          type: string
+          enum: [UNKNOWN, USER_ESTIMATED]
+        positioningBuffer:
+          type: string
+          enum: [UNKNOWN, USER_ESTIMATED]
+        routeDataAccess:
+          type: string
+          enum: [NOT_CONFIGURED]
+        verification:
+          type: string
+          enum: [NOT_VERIFIED]
     MatchScore:
       type: object
       required:

@@ -1311,6 +1311,16 @@ export const listMyCapacityResponseItemsItemAvailableCapacityTonnesExclusiveMin 
 export const listMyCapacityResponseItemsItemMaximumPositioningDistanceKmExclusiveMin = 0;
 
 export const listMyCapacityResponseItemsItemDeepseaExtensionOneManualPositioningDaysMin = 0;
+export const listMyCapacityResponseItemsItemDeepseaExtensionOneManualPositioningDaysMax = 365;
+
+export const listMyCapacityResponseItemsItemDeepseaExtensionOneRouteChoiceDefault = `UNSPECIFIED`;
+export const listMyCapacityResponseItemsItemDeepseaExtensionOneRouteNotesMax = 500;
+
+export const listMyCapacityResponseItemsItemDeepseaExtensionOneDepartureUncertaintyDaysMin = 0;
+export const listMyCapacityResponseItemsItemDeepseaExtensionOneDepartureUncertaintyDaysMax = 365;
+
+export const listMyCapacityResponseItemsItemDeepseaExtensionOnePositioningBufferDaysMin = 0;
+export const listMyCapacityResponseItemsItemDeepseaExtensionOnePositioningBufferDaysMax = 365;
 
 export const listMyCapacityResponseItemsItemDeepseaExtensionOneApproximateMaxDistanceKmExclusiveMin = 0;
 
@@ -1339,7 +1349,11 @@ export const ListMyCapacityResponse = zod.object({
   "createdAt": zod.coerce.date(),
   "updatedAt": zod.coerce.date(),
   "deepseaExtension": zod.union([zod.object({
-  "manualPositioningDays": zod.number().int().min(listMyCapacityResponseItemsItemDeepseaExtensionOneManualPositioningDaysMin).nullish().describe('Explicit user-estimated repositioning buffer; null means provisional, not a verified route.'),
+  "manualPositioningDays": zod.number().min(listMyCapacityResponseItemsItemDeepseaExtensionOneManualPositioningDaysMin).max(listMyCapacityResponseItemsItemDeepseaExtensionOneManualPositioningDaysMax).nullish().describe('Legacy user-estimated travel duration in days; retained for compatibility and never independently verified.'),
+  "routeChoice": zod.enum(['UNSPECIFIED', 'DIRECT', 'SUEZ', 'PANAMA', 'CAPE_GOOD_HOPE', 'OTHER']).default(listMyCapacityResponseItemsItemDeepseaExtensionOneRouteChoiceDefault).describe('User-selected generic route option; no route engine or licensed route data is configured.'),
+  "routeNotes": zod.string().max(listMyCapacityResponseItemsItemDeepseaExtensionOneRouteNotesMax).nullish().describe('Private owner note about the manually selected route; not disclosed before connection.'),
+  "departureUncertaintyDays": zod.number().min(listMyCapacityResponseItemsItemDeepseaExtensionOneDepartureUncertaintyDaysMin).max(listMyCapacityResponseItemsItemDeepseaExtensionOneDepartureUncertaintyDaysMax).nullish().describe('User-estimated departure uncertainty in days.'),
+  "positioningBufferDays": zod.number().min(listMyCapacityResponseItemsItemDeepseaExtensionOnePositioningBufferDaysMin).max(listMyCapacityResponseItemsItemDeepseaExtensionOnePositioningBufferDaysMax).nullish().describe('User-estimated positioning buffer in days.'),
   "approximateMaxDistanceKm": zod.number().gt(listMyCapacityResponseItemsItemDeepseaExtensionOneApproximateMaxDistanceKmExclusiveMin).nullish().describe('Geodesic approximation only, never actual sailing distance.'),
   "previousVoyageContext": zod.string().max(listMyCapacityResponseItemsItemDeepseaExtensionOnePreviousVoyageContextMax).nullish()
 }),zod.null()]).optional()
@@ -1363,6 +1377,16 @@ export const createMyCapacityBodyMaximumPositioningDistanceKmExclusiveMin = 0;
 export const createMyCapacityBodyListingStatusDefault = `DRAFT`;
 export const createMyCapacityBodyAvailabilityConfidenceDefault = `CONFIRMED`;
 export const createMyCapacityBodyDeepseaExtensionManualPositioningDaysMin = 0;
+export const createMyCapacityBodyDeepseaExtensionManualPositioningDaysMax = 365;
+
+export const createMyCapacityBodyDeepseaExtensionRouteChoiceDefault = `UNSPECIFIED`;
+export const createMyCapacityBodyDeepseaExtensionRouteNotesMax = 500;
+
+export const createMyCapacityBodyDeepseaExtensionDepartureUncertaintyDaysMin = 0;
+export const createMyCapacityBodyDeepseaExtensionDepartureUncertaintyDaysMax = 365;
+
+export const createMyCapacityBodyDeepseaExtensionPositioningBufferDaysMin = 0;
+export const createMyCapacityBodyDeepseaExtensionPositioningBufferDaysMax = 365;
 
 export const createMyCapacityBodyDeepseaExtensionApproximateMaxDistanceKmExclusiveMin = 0;
 
@@ -1386,7 +1410,11 @@ export const CreateMyCapacityBody = zod.object({
   "listingStatus": zod.enum(['DRAFT', 'ACTIVE', 'WITHDRAWN', 'EXPIRED', 'CLOSED']).default(createMyCapacityBodyListingStatusDefault),
   "availabilityConfidence": zod.enum(['EXPECTED', 'CONFIRMED']).default(createMyCapacityBodyAvailabilityConfidenceDefault),
   "deepseaExtension": zod.object({
-  "manualPositioningDays": zod.number().int().min(createMyCapacityBodyDeepseaExtensionManualPositioningDaysMin).nullish().describe('Explicit user-estimated repositioning buffer; null means provisional, not a verified route.'),
+  "manualPositioningDays": zod.number().min(createMyCapacityBodyDeepseaExtensionManualPositioningDaysMin).max(createMyCapacityBodyDeepseaExtensionManualPositioningDaysMax).nullish().describe('Legacy user-estimated travel duration in days; retained for compatibility and never independently verified.'),
+  "routeChoice": zod.enum(['UNSPECIFIED', 'DIRECT', 'SUEZ', 'PANAMA', 'CAPE_GOOD_HOPE', 'OTHER']).default(createMyCapacityBodyDeepseaExtensionRouteChoiceDefault).describe('User-selected generic route option; no route engine or licensed route data is configured.'),
+  "routeNotes": zod.string().max(createMyCapacityBodyDeepseaExtensionRouteNotesMax).nullish().describe('Private owner note about the manually selected route; not disclosed before connection.'),
+  "departureUncertaintyDays": zod.number().min(createMyCapacityBodyDeepseaExtensionDepartureUncertaintyDaysMin).max(createMyCapacityBodyDeepseaExtensionDepartureUncertaintyDaysMax).nullish().describe('User-estimated departure uncertainty in days.'),
+  "positioningBufferDays": zod.number().min(createMyCapacityBodyDeepseaExtensionPositioningBufferDaysMin).max(createMyCapacityBodyDeepseaExtensionPositioningBufferDaysMax).nullish().describe('User-estimated positioning buffer in days.'),
   "approximateMaxDistanceKm": zod.number().gt(createMyCapacityBodyDeepseaExtensionApproximateMaxDistanceKmExclusiveMin).nullish().describe('Geodesic approximation only, never actual sailing distance.'),
   "previousVoyageContext": zod.string().max(createMyCapacityBodyDeepseaExtensionPreviousVoyageContextMax).nullish()
 }).optional()
@@ -1399,6 +1427,16 @@ export const createMyCapacityResponseAvailableCapacityTonnesExclusiveMin = 0;
 export const createMyCapacityResponseMaximumPositioningDistanceKmExclusiveMin = 0;
 
 export const createMyCapacityResponseDeepseaExtensionOneManualPositioningDaysMin = 0;
+export const createMyCapacityResponseDeepseaExtensionOneManualPositioningDaysMax = 365;
+
+export const createMyCapacityResponseDeepseaExtensionOneRouteChoiceDefault = `UNSPECIFIED`;
+export const createMyCapacityResponseDeepseaExtensionOneRouteNotesMax = 500;
+
+export const createMyCapacityResponseDeepseaExtensionOneDepartureUncertaintyDaysMin = 0;
+export const createMyCapacityResponseDeepseaExtensionOneDepartureUncertaintyDaysMax = 365;
+
+export const createMyCapacityResponseDeepseaExtensionOnePositioningBufferDaysMin = 0;
+export const createMyCapacityResponseDeepseaExtensionOnePositioningBufferDaysMax = 365;
 
 export const createMyCapacityResponseDeepseaExtensionOneApproximateMaxDistanceKmExclusiveMin = 0;
 
@@ -1426,7 +1464,11 @@ export const CreateMyCapacityResponse = zod.object({
   "createdAt": zod.coerce.date(),
   "updatedAt": zod.coerce.date(),
   "deepseaExtension": zod.union([zod.object({
-  "manualPositioningDays": zod.number().int().min(createMyCapacityResponseDeepseaExtensionOneManualPositioningDaysMin).nullish().describe('Explicit user-estimated repositioning buffer; null means provisional, not a verified route.'),
+  "manualPositioningDays": zod.number().min(createMyCapacityResponseDeepseaExtensionOneManualPositioningDaysMin).max(createMyCapacityResponseDeepseaExtensionOneManualPositioningDaysMax).nullish().describe('Legacy user-estimated travel duration in days; retained for compatibility and never independently verified.'),
+  "routeChoice": zod.enum(['UNSPECIFIED', 'DIRECT', 'SUEZ', 'PANAMA', 'CAPE_GOOD_HOPE', 'OTHER']).default(createMyCapacityResponseDeepseaExtensionOneRouteChoiceDefault).describe('User-selected generic route option; no route engine or licensed route data is configured.'),
+  "routeNotes": zod.string().max(createMyCapacityResponseDeepseaExtensionOneRouteNotesMax).nullish().describe('Private owner note about the manually selected route; not disclosed before connection.'),
+  "departureUncertaintyDays": zod.number().min(createMyCapacityResponseDeepseaExtensionOneDepartureUncertaintyDaysMin).max(createMyCapacityResponseDeepseaExtensionOneDepartureUncertaintyDaysMax).nullish().describe('User-estimated departure uncertainty in days.'),
+  "positioningBufferDays": zod.number().min(createMyCapacityResponseDeepseaExtensionOnePositioningBufferDaysMin).max(createMyCapacityResponseDeepseaExtensionOnePositioningBufferDaysMax).nullish().describe('User-estimated positioning buffer in days.'),
   "approximateMaxDistanceKm": zod.number().gt(createMyCapacityResponseDeepseaExtensionOneApproximateMaxDistanceKmExclusiveMin).nullish().describe('Geodesic approximation only, never actual sailing distance.'),
   "previousVoyageContext": zod.string().max(createMyCapacityResponseDeepseaExtensionOnePreviousVoyageContextMax).nullish()
 }),zod.null()]).optional()
@@ -1447,6 +1489,16 @@ export const getMyCapacityResponseAvailableCapacityTonnesExclusiveMin = 0;
 export const getMyCapacityResponseMaximumPositioningDistanceKmExclusiveMin = 0;
 
 export const getMyCapacityResponseDeepseaExtensionOneManualPositioningDaysMin = 0;
+export const getMyCapacityResponseDeepseaExtensionOneManualPositioningDaysMax = 365;
+
+export const getMyCapacityResponseDeepseaExtensionOneRouteChoiceDefault = `UNSPECIFIED`;
+export const getMyCapacityResponseDeepseaExtensionOneRouteNotesMax = 500;
+
+export const getMyCapacityResponseDeepseaExtensionOneDepartureUncertaintyDaysMin = 0;
+export const getMyCapacityResponseDeepseaExtensionOneDepartureUncertaintyDaysMax = 365;
+
+export const getMyCapacityResponseDeepseaExtensionOnePositioningBufferDaysMin = 0;
+export const getMyCapacityResponseDeepseaExtensionOnePositioningBufferDaysMax = 365;
 
 export const getMyCapacityResponseDeepseaExtensionOneApproximateMaxDistanceKmExclusiveMin = 0;
 
@@ -1474,7 +1526,11 @@ export const GetMyCapacityResponse = zod.object({
   "createdAt": zod.coerce.date(),
   "updatedAt": zod.coerce.date(),
   "deepseaExtension": zod.union([zod.object({
-  "manualPositioningDays": zod.number().int().min(getMyCapacityResponseDeepseaExtensionOneManualPositioningDaysMin).nullish().describe('Explicit user-estimated repositioning buffer; null means provisional, not a verified route.'),
+  "manualPositioningDays": zod.number().min(getMyCapacityResponseDeepseaExtensionOneManualPositioningDaysMin).max(getMyCapacityResponseDeepseaExtensionOneManualPositioningDaysMax).nullish().describe('Legacy user-estimated travel duration in days; retained for compatibility and never independently verified.'),
+  "routeChoice": zod.enum(['UNSPECIFIED', 'DIRECT', 'SUEZ', 'PANAMA', 'CAPE_GOOD_HOPE', 'OTHER']).default(getMyCapacityResponseDeepseaExtensionOneRouteChoiceDefault).describe('User-selected generic route option; no route engine or licensed route data is configured.'),
+  "routeNotes": zod.string().max(getMyCapacityResponseDeepseaExtensionOneRouteNotesMax).nullish().describe('Private owner note about the manually selected route; not disclosed before connection.'),
+  "departureUncertaintyDays": zod.number().min(getMyCapacityResponseDeepseaExtensionOneDepartureUncertaintyDaysMin).max(getMyCapacityResponseDeepseaExtensionOneDepartureUncertaintyDaysMax).nullish().describe('User-estimated departure uncertainty in days.'),
+  "positioningBufferDays": zod.number().min(getMyCapacityResponseDeepseaExtensionOnePositioningBufferDaysMin).max(getMyCapacityResponseDeepseaExtensionOnePositioningBufferDaysMax).nullish().describe('User-estimated positioning buffer in days.'),
   "approximateMaxDistanceKm": zod.number().gt(getMyCapacityResponseDeepseaExtensionOneApproximateMaxDistanceKmExclusiveMin).nullish().describe('Geodesic approximation only, never actual sailing distance.'),
   "previousVoyageContext": zod.string().max(getMyCapacityResponseDeepseaExtensionOnePreviousVoyageContextMax).nullish()
 }),zod.null()]).optional()
@@ -1495,6 +1551,16 @@ export const updateMyCapacityBodyAvailableCapacityTonnesExclusiveMin = 0;
 export const updateMyCapacityBodyMaximumPositioningDistanceKmExclusiveMin = 0;
 
 export const updateMyCapacityBodyDeepseaExtensionOneManualPositioningDaysMin = 0;
+export const updateMyCapacityBodyDeepseaExtensionOneManualPositioningDaysMax = 365;
+
+export const updateMyCapacityBodyDeepseaExtensionOneRouteChoiceDefault = `UNSPECIFIED`;
+export const updateMyCapacityBodyDeepseaExtensionOneRouteNotesMax = 500;
+
+export const updateMyCapacityBodyDeepseaExtensionOneDepartureUncertaintyDaysMin = 0;
+export const updateMyCapacityBodyDeepseaExtensionOneDepartureUncertaintyDaysMax = 365;
+
+export const updateMyCapacityBodyDeepseaExtensionOnePositioningBufferDaysMin = 0;
+export const updateMyCapacityBodyDeepseaExtensionOnePositioningBufferDaysMax = 365;
 
 export const updateMyCapacityBodyDeepseaExtensionOneApproximateMaxDistanceKmExclusiveMin = 0;
 
@@ -1518,7 +1584,11 @@ export const UpdateMyCapacityBody = zod.object({
   "listingStatus": zod.enum(['DRAFT', 'ACTIVE', 'WITHDRAWN', 'EXPIRED', 'CLOSED']).optional(),
   "availabilityConfidence": zod.enum(['EXPECTED', 'CONFIRMED']).optional(),
   "deepseaExtension": zod.union([zod.object({
-  "manualPositioningDays": zod.number().int().min(updateMyCapacityBodyDeepseaExtensionOneManualPositioningDaysMin).nullish().describe('Explicit user-estimated repositioning buffer; null means provisional, not a verified route.'),
+  "manualPositioningDays": zod.number().min(updateMyCapacityBodyDeepseaExtensionOneManualPositioningDaysMin).max(updateMyCapacityBodyDeepseaExtensionOneManualPositioningDaysMax).nullish().describe('Legacy user-estimated travel duration in days; retained for compatibility and never independently verified.'),
+  "routeChoice": zod.enum(['UNSPECIFIED', 'DIRECT', 'SUEZ', 'PANAMA', 'CAPE_GOOD_HOPE', 'OTHER']).default(updateMyCapacityBodyDeepseaExtensionOneRouteChoiceDefault).describe('User-selected generic route option; no route engine or licensed route data is configured.'),
+  "routeNotes": zod.string().max(updateMyCapacityBodyDeepseaExtensionOneRouteNotesMax).nullish().describe('Private owner note about the manually selected route; not disclosed before connection.'),
+  "departureUncertaintyDays": zod.number().min(updateMyCapacityBodyDeepseaExtensionOneDepartureUncertaintyDaysMin).max(updateMyCapacityBodyDeepseaExtensionOneDepartureUncertaintyDaysMax).nullish().describe('User-estimated departure uncertainty in days.'),
+  "positioningBufferDays": zod.number().min(updateMyCapacityBodyDeepseaExtensionOnePositioningBufferDaysMin).max(updateMyCapacityBodyDeepseaExtensionOnePositioningBufferDaysMax).nullish().describe('User-estimated positioning buffer in days.'),
   "approximateMaxDistanceKm": zod.number().gt(updateMyCapacityBodyDeepseaExtensionOneApproximateMaxDistanceKmExclusiveMin).nullish().describe('Geodesic approximation only, never actual sailing distance.'),
   "previousVoyageContext": zod.string().max(updateMyCapacityBodyDeepseaExtensionOnePreviousVoyageContextMax).nullish()
 }),zod.null()]).optional()
@@ -1531,6 +1601,16 @@ export const updateMyCapacityResponseAvailableCapacityTonnesExclusiveMin = 0;
 export const updateMyCapacityResponseMaximumPositioningDistanceKmExclusiveMin = 0;
 
 export const updateMyCapacityResponseDeepseaExtensionOneManualPositioningDaysMin = 0;
+export const updateMyCapacityResponseDeepseaExtensionOneManualPositioningDaysMax = 365;
+
+export const updateMyCapacityResponseDeepseaExtensionOneRouteChoiceDefault = `UNSPECIFIED`;
+export const updateMyCapacityResponseDeepseaExtensionOneRouteNotesMax = 500;
+
+export const updateMyCapacityResponseDeepseaExtensionOneDepartureUncertaintyDaysMin = 0;
+export const updateMyCapacityResponseDeepseaExtensionOneDepartureUncertaintyDaysMax = 365;
+
+export const updateMyCapacityResponseDeepseaExtensionOnePositioningBufferDaysMin = 0;
+export const updateMyCapacityResponseDeepseaExtensionOnePositioningBufferDaysMax = 365;
 
 export const updateMyCapacityResponseDeepseaExtensionOneApproximateMaxDistanceKmExclusiveMin = 0;
 
@@ -1558,7 +1638,11 @@ export const UpdateMyCapacityResponse = zod.object({
   "createdAt": zod.coerce.date(),
   "updatedAt": zod.coerce.date(),
   "deepseaExtension": zod.union([zod.object({
-  "manualPositioningDays": zod.number().int().min(updateMyCapacityResponseDeepseaExtensionOneManualPositioningDaysMin).nullish().describe('Explicit user-estimated repositioning buffer; null means provisional, not a verified route.'),
+  "manualPositioningDays": zod.number().min(updateMyCapacityResponseDeepseaExtensionOneManualPositioningDaysMin).max(updateMyCapacityResponseDeepseaExtensionOneManualPositioningDaysMax).nullish().describe('Legacy user-estimated travel duration in days; retained for compatibility and never independently verified.'),
+  "routeChoice": zod.enum(['UNSPECIFIED', 'DIRECT', 'SUEZ', 'PANAMA', 'CAPE_GOOD_HOPE', 'OTHER']).default(updateMyCapacityResponseDeepseaExtensionOneRouteChoiceDefault).describe('User-selected generic route option; no route engine or licensed route data is configured.'),
+  "routeNotes": zod.string().max(updateMyCapacityResponseDeepseaExtensionOneRouteNotesMax).nullish().describe('Private owner note about the manually selected route; not disclosed before connection.'),
+  "departureUncertaintyDays": zod.number().min(updateMyCapacityResponseDeepseaExtensionOneDepartureUncertaintyDaysMin).max(updateMyCapacityResponseDeepseaExtensionOneDepartureUncertaintyDaysMax).nullish().describe('User-estimated departure uncertainty in days.'),
+  "positioningBufferDays": zod.number().min(updateMyCapacityResponseDeepseaExtensionOnePositioningBufferDaysMin).max(updateMyCapacityResponseDeepseaExtensionOnePositioningBufferDaysMax).nullish().describe('User-estimated positioning buffer in days.'),
   "approximateMaxDistanceKm": zod.number().gt(updateMyCapacityResponseDeepseaExtensionOneApproximateMaxDistanceKmExclusiveMin).nullish().describe('Geodesic approximation only, never actual sailing distance.'),
   "previousVoyageContext": zod.string().max(updateMyCapacityResponseDeepseaExtensionOnePreviousVoyageContextMax).nullish()
 }),zod.null()]).optional()
@@ -1579,6 +1663,16 @@ export const withdrawMyCapacityResponseAvailableCapacityTonnesExclusiveMin = 0;
 export const withdrawMyCapacityResponseMaximumPositioningDistanceKmExclusiveMin = 0;
 
 export const withdrawMyCapacityResponseDeepseaExtensionOneManualPositioningDaysMin = 0;
+export const withdrawMyCapacityResponseDeepseaExtensionOneManualPositioningDaysMax = 365;
+
+export const withdrawMyCapacityResponseDeepseaExtensionOneRouteChoiceDefault = `UNSPECIFIED`;
+export const withdrawMyCapacityResponseDeepseaExtensionOneRouteNotesMax = 500;
+
+export const withdrawMyCapacityResponseDeepseaExtensionOneDepartureUncertaintyDaysMin = 0;
+export const withdrawMyCapacityResponseDeepseaExtensionOneDepartureUncertaintyDaysMax = 365;
+
+export const withdrawMyCapacityResponseDeepseaExtensionOnePositioningBufferDaysMin = 0;
+export const withdrawMyCapacityResponseDeepseaExtensionOnePositioningBufferDaysMax = 365;
 
 export const withdrawMyCapacityResponseDeepseaExtensionOneApproximateMaxDistanceKmExclusiveMin = 0;
 
@@ -1606,7 +1700,11 @@ export const WithdrawMyCapacityResponse = zod.object({
   "createdAt": zod.coerce.date(),
   "updatedAt": zod.coerce.date(),
   "deepseaExtension": zod.union([zod.object({
-  "manualPositioningDays": zod.number().int().min(withdrawMyCapacityResponseDeepseaExtensionOneManualPositioningDaysMin).nullish().describe('Explicit user-estimated repositioning buffer; null means provisional, not a verified route.'),
+  "manualPositioningDays": zod.number().min(withdrawMyCapacityResponseDeepseaExtensionOneManualPositioningDaysMin).max(withdrawMyCapacityResponseDeepseaExtensionOneManualPositioningDaysMax).nullish().describe('Legacy user-estimated travel duration in days; retained for compatibility and never independently verified.'),
+  "routeChoice": zod.enum(['UNSPECIFIED', 'DIRECT', 'SUEZ', 'PANAMA', 'CAPE_GOOD_HOPE', 'OTHER']).default(withdrawMyCapacityResponseDeepseaExtensionOneRouteChoiceDefault).describe('User-selected generic route option; no route engine or licensed route data is configured.'),
+  "routeNotes": zod.string().max(withdrawMyCapacityResponseDeepseaExtensionOneRouteNotesMax).nullish().describe('Private owner note about the manually selected route; not disclosed before connection.'),
+  "departureUncertaintyDays": zod.number().min(withdrawMyCapacityResponseDeepseaExtensionOneDepartureUncertaintyDaysMin).max(withdrawMyCapacityResponseDeepseaExtensionOneDepartureUncertaintyDaysMax).nullish().describe('User-estimated departure uncertainty in days.'),
+  "positioningBufferDays": zod.number().min(withdrawMyCapacityResponseDeepseaExtensionOnePositioningBufferDaysMin).max(withdrawMyCapacityResponseDeepseaExtensionOnePositioningBufferDaysMax).nullish().describe('User-estimated positioning buffer in days.'),
   "approximateMaxDistanceKm": zod.number().gt(withdrawMyCapacityResponseDeepseaExtensionOneApproximateMaxDistanceKmExclusiveMin).nullish().describe('Geodesic approximation only, never actual sailing distance.'),
   "previousVoyageContext": zod.string().max(withdrawMyCapacityResponseDeepseaExtensionOnePreviousVoyageContextMax).nullish()
 }),zod.null()]).optional()
@@ -1627,6 +1725,16 @@ export const closeMyCapacityResponseAvailableCapacityTonnesExclusiveMin = 0;
 export const closeMyCapacityResponseMaximumPositioningDistanceKmExclusiveMin = 0;
 
 export const closeMyCapacityResponseDeepseaExtensionOneManualPositioningDaysMin = 0;
+export const closeMyCapacityResponseDeepseaExtensionOneManualPositioningDaysMax = 365;
+
+export const closeMyCapacityResponseDeepseaExtensionOneRouteChoiceDefault = `UNSPECIFIED`;
+export const closeMyCapacityResponseDeepseaExtensionOneRouteNotesMax = 500;
+
+export const closeMyCapacityResponseDeepseaExtensionOneDepartureUncertaintyDaysMin = 0;
+export const closeMyCapacityResponseDeepseaExtensionOneDepartureUncertaintyDaysMax = 365;
+
+export const closeMyCapacityResponseDeepseaExtensionOnePositioningBufferDaysMin = 0;
+export const closeMyCapacityResponseDeepseaExtensionOnePositioningBufferDaysMax = 365;
 
 export const closeMyCapacityResponseDeepseaExtensionOneApproximateMaxDistanceKmExclusiveMin = 0;
 
@@ -1654,7 +1762,11 @@ export const CloseMyCapacityResponse = zod.object({
   "createdAt": zod.coerce.date(),
   "updatedAt": zod.coerce.date(),
   "deepseaExtension": zod.union([zod.object({
-  "manualPositioningDays": zod.number().int().min(closeMyCapacityResponseDeepseaExtensionOneManualPositioningDaysMin).nullish().describe('Explicit user-estimated repositioning buffer; null means provisional, not a verified route.'),
+  "manualPositioningDays": zod.number().min(closeMyCapacityResponseDeepseaExtensionOneManualPositioningDaysMin).max(closeMyCapacityResponseDeepseaExtensionOneManualPositioningDaysMax).nullish().describe('Legacy user-estimated travel duration in days; retained for compatibility and never independently verified.'),
+  "routeChoice": zod.enum(['UNSPECIFIED', 'DIRECT', 'SUEZ', 'PANAMA', 'CAPE_GOOD_HOPE', 'OTHER']).default(closeMyCapacityResponseDeepseaExtensionOneRouteChoiceDefault).describe('User-selected generic route option; no route engine or licensed route data is configured.'),
+  "routeNotes": zod.string().max(closeMyCapacityResponseDeepseaExtensionOneRouteNotesMax).nullish().describe('Private owner note about the manually selected route; not disclosed before connection.'),
+  "departureUncertaintyDays": zod.number().min(closeMyCapacityResponseDeepseaExtensionOneDepartureUncertaintyDaysMin).max(closeMyCapacityResponseDeepseaExtensionOneDepartureUncertaintyDaysMax).nullish().describe('User-estimated departure uncertainty in days.'),
+  "positioningBufferDays": zod.number().min(closeMyCapacityResponseDeepseaExtensionOnePositioningBufferDaysMin).max(closeMyCapacityResponseDeepseaExtensionOnePositioningBufferDaysMax).nullish().describe('User-estimated positioning buffer in days.'),
   "approximateMaxDistanceKm": zod.number().gt(closeMyCapacityResponseDeepseaExtensionOneApproximateMaxDistanceKmExclusiveMin).nullish().describe('Geodesic approximation only, never actual sailing distance.'),
   "previousVoyageContext": zod.string().max(closeMyCapacityResponseDeepseaExtensionOnePreviousVoyageContextMax).nullish()
 }),zod.null()]).optional()
@@ -1718,7 +1830,7 @@ export const ListMarketplaceResponse = zod.object({
   "dwtBand": zod.string().optional(),
   "availabilityConfidence": zod.enum(['EXPECTED', 'CONFIRMED']).optional(),
   "positioningConfidence": zod.enum(['PROVISIONAL', 'ESTIMATED']).optional(),
-  "provisional": zod.boolean().optional().describe('True when no manual repositioning estimate is available.')
+  "provisional": zod.boolean().optional().describe('Deepsea feasibility remains provisional because manual inputs are user-estimated, not verified route data.')
 }).describe('Privacy-safe open-network capacity representation. It intentionally\ncontains bands rather than exact tonnage, timestamps, coordinates,\nvessel identity, or owner-entered notes.\n')])),
   "page": zod.number().int(),
   "pageSize": zod.number().int(),
@@ -1807,7 +1919,7 @@ export const ListMyMatchesResponse = zod.object({
   "dwtBand": zod.string().optional(),
   "availabilityConfidence": zod.enum(['EXPECTED', 'CONFIRMED']).optional(),
   "positioningConfidence": zod.enum(['PROVISIONAL', 'ESTIMATED']).optional(),
-  "provisional": zod.boolean().optional().describe('True when no manual repositioning estimate is available.')
+  "provisional": zod.boolean().optional().describe('Deepsea feasibility remains provisional because manual inputs are user-estimated, not verified route data.')
 }).describe('Privacy-safe open-network capacity representation. It intentionally\ncontains bands rather than exact tonnage, timestamps, coordinates,\nvessel identity, or owner-entered notes.\n'),
   "score": zod.object({
   "totalScore": zod.number().int().min(listMyMatchesResponseItemsItemScoreTotalScoreMin).max(listMyMatchesResponseItemsItemScoreTotalScoreMax).describe('Rounded display score only; the stored calculation may retain full precision.'),
@@ -1825,7 +1937,14 @@ export const ListMyMatchesResponse = zod.object({
   "capacityBand": zod.string(),
   "vesselTypeBand": zod.string(),
   "directionBand": zod.string(),
-  "cargoCompatibilityBand": zod.string()
+  "cargoCompatibilityBand": zod.string(),
+  "reachabilityStatus": zod.enum(['UNKNOWN', 'USER_ESTIMATED']),
+  "laycanAssessment": zod.enum(['UNKNOWN', 'WITHIN_WINDOW', 'UNCERTAIN', 'TOO_LATE']),
+  "routeChoice": zod.enum(['NOT_CONFIGURED', 'USER_SELECTED']).describe('Generic status only; never an actual route choice in anonymous matching.'),
+  "departureUncertainty": zod.enum(['UNKNOWN', 'USER_ESTIMATED']),
+  "positioningBuffer": zod.enum(['UNKNOWN', 'USER_ESTIMATED']),
+  "routeDataAccess": zod.enum(['NOT_CONFIGURED']),
+  "verification": zod.enum(['NOT_VERIFIED'])
 }).describe('Anonymized bands used to explain a score without exposing precise commercial inputs.'),
   "calculationVersion": zod.string(),
   "calculatedAt": zod.coerce.date(),
@@ -1902,6 +2021,16 @@ export const getMyMatchResponseTwoOwnedCapacityOneAvailableCapacityTonnesExclusi
 export const getMyMatchResponseTwoOwnedCapacityOneMaximumPositioningDistanceKmExclusiveMin = 0;
 
 export const getMyMatchResponseTwoOwnedCapacityOneDeepseaExtensionOneManualPositioningDaysMin = 0;
+export const getMyMatchResponseTwoOwnedCapacityOneDeepseaExtensionOneManualPositioningDaysMax = 365;
+
+export const getMyMatchResponseTwoOwnedCapacityOneDeepseaExtensionOneRouteChoiceDefault = `UNSPECIFIED`;
+export const getMyMatchResponseTwoOwnedCapacityOneDeepseaExtensionOneRouteNotesMax = 500;
+
+export const getMyMatchResponseTwoOwnedCapacityOneDeepseaExtensionOneDepartureUncertaintyDaysMin = 0;
+export const getMyMatchResponseTwoOwnedCapacityOneDeepseaExtensionOneDepartureUncertaintyDaysMax = 365;
+
+export const getMyMatchResponseTwoOwnedCapacityOneDeepseaExtensionOnePositioningBufferDaysMin = 0;
+export const getMyMatchResponseTwoOwnedCapacityOneDeepseaExtensionOnePositioningBufferDaysMax = 365;
 
 export const getMyMatchResponseTwoOwnedCapacityOneDeepseaExtensionOneApproximateMaxDistanceKmExclusiveMin = 0;
 
@@ -1920,6 +2049,16 @@ export const getMyMatchResponseTwoConnectedCargoOneDeepseaRequirementOneMaximumD
 export const getMyMatchResponseTwoConnectedCargoOneDeepseaRequirementOneRequiredGearMax = 120;
 
 export const getMyMatchResponseTwoConnectedCapacityOneDeepseaExtensionOneManualPositioningDaysMin = 0;
+export const getMyMatchResponseTwoConnectedCapacityOneDeepseaExtensionOneManualPositioningDaysMax = 365;
+
+export const getMyMatchResponseTwoConnectedCapacityOneDeepseaExtensionOneRouteChoiceDefault = `UNSPECIFIED`;
+export const getMyMatchResponseTwoConnectedCapacityOneDeepseaExtensionOneRouteNotesMax = 500;
+
+export const getMyMatchResponseTwoConnectedCapacityOneDeepseaExtensionOneDepartureUncertaintyDaysMin = 0;
+export const getMyMatchResponseTwoConnectedCapacityOneDeepseaExtensionOneDepartureUncertaintyDaysMax = 365;
+
+export const getMyMatchResponseTwoConnectedCapacityOneDeepseaExtensionOnePositioningBufferDaysMin = 0;
+export const getMyMatchResponseTwoConnectedCapacityOneDeepseaExtensionOnePositioningBufferDaysMax = 365;
 
 export const getMyMatchResponseTwoConnectedCapacityOneDeepseaExtensionOneApproximateMaxDistanceKmExclusiveMin = 0;
 
@@ -1966,7 +2105,7 @@ export const GetMyMatchResponse = zod.object({
   "dwtBand": zod.string().optional(),
   "availabilityConfidence": zod.enum(['EXPECTED', 'CONFIRMED']).optional(),
   "positioningConfidence": zod.enum(['PROVISIONAL', 'ESTIMATED']).optional(),
-  "provisional": zod.boolean().optional().describe('True when no manual repositioning estimate is available.')
+  "provisional": zod.boolean().optional().describe('Deepsea feasibility remains provisional because manual inputs are user-estimated, not verified route data.')
 }).describe('Privacy-safe open-network capacity representation. It intentionally\ncontains bands rather than exact tonnage, timestamps, coordinates,\nvessel identity, or owner-entered notes.\n'),
   "score": zod.object({
   "totalScore": zod.number().int().min(getMyMatchResponseOneScoreTotalScoreMin).max(getMyMatchResponseOneScoreTotalScoreMax).describe('Rounded display score only; the stored calculation may retain full precision.'),
@@ -1984,7 +2123,14 @@ export const GetMyMatchResponse = zod.object({
   "capacityBand": zod.string(),
   "vesselTypeBand": zod.string(),
   "directionBand": zod.string(),
-  "cargoCompatibilityBand": zod.string()
+  "cargoCompatibilityBand": zod.string(),
+  "reachabilityStatus": zod.enum(['UNKNOWN', 'USER_ESTIMATED']),
+  "laycanAssessment": zod.enum(['UNKNOWN', 'WITHIN_WINDOW', 'UNCERTAIN', 'TOO_LATE']),
+  "routeChoice": zod.enum(['NOT_CONFIGURED', 'USER_SELECTED']).describe('Generic status only; never an actual route choice in anonymous matching.'),
+  "departureUncertainty": zod.enum(['UNKNOWN', 'USER_ESTIMATED']),
+  "positioningBuffer": zod.enum(['UNKNOWN', 'USER_ESTIMATED']),
+  "routeDataAccess": zod.enum(['NOT_CONFIGURED']),
+  "verification": zod.enum(['NOT_VERIFIED'])
 }).describe('Anonymized bands used to explain a score without exposing precise commercial inputs.'),
   "calculationVersion": zod.string(),
   "calculatedAt": zod.coerce.date(),
@@ -2052,7 +2198,11 @@ export const GetMyMatchResponse = zod.object({
   "createdAt": zod.coerce.date(),
   "updatedAt": zod.coerce.date(),
   "deepseaExtension": zod.union([zod.object({
-  "manualPositioningDays": zod.number().int().min(getMyMatchResponseTwoOwnedCapacityOneDeepseaExtensionOneManualPositioningDaysMin).nullish().describe('Explicit user-estimated repositioning buffer; null means provisional, not a verified route.'),
+  "manualPositioningDays": zod.number().min(getMyMatchResponseTwoOwnedCapacityOneDeepseaExtensionOneManualPositioningDaysMin).max(getMyMatchResponseTwoOwnedCapacityOneDeepseaExtensionOneManualPositioningDaysMax).nullish().describe('Legacy user-estimated travel duration in days; retained for compatibility and never independently verified.'),
+  "routeChoice": zod.enum(['UNSPECIFIED', 'DIRECT', 'SUEZ', 'PANAMA', 'CAPE_GOOD_HOPE', 'OTHER']).default(getMyMatchResponseTwoOwnedCapacityOneDeepseaExtensionOneRouteChoiceDefault).describe('User-selected generic route option; no route engine or licensed route data is configured.'),
+  "routeNotes": zod.string().max(getMyMatchResponseTwoOwnedCapacityOneDeepseaExtensionOneRouteNotesMax).nullish().describe('Private owner note about the manually selected route; not disclosed before connection.'),
+  "departureUncertaintyDays": zod.number().min(getMyMatchResponseTwoOwnedCapacityOneDeepseaExtensionOneDepartureUncertaintyDaysMin).max(getMyMatchResponseTwoOwnedCapacityOneDeepseaExtensionOneDepartureUncertaintyDaysMax).nullish().describe('User-estimated departure uncertainty in days.'),
+  "positioningBufferDays": zod.number().min(getMyMatchResponseTwoOwnedCapacityOneDeepseaExtensionOnePositioningBufferDaysMin).max(getMyMatchResponseTwoOwnedCapacityOneDeepseaExtensionOnePositioningBufferDaysMax).nullish().describe('User-estimated positioning buffer in days.'),
   "approximateMaxDistanceKm": zod.number().gt(getMyMatchResponseTwoOwnedCapacityOneDeepseaExtensionOneApproximateMaxDistanceKmExclusiveMin).nullish().describe('Geodesic approximation only, never actual sailing distance.'),
   "previousVoyageContext": zod.string().max(getMyMatchResponseTwoOwnedCapacityOneDeepseaExtensionOnePreviousVoyageContextMax).nullish()
 }),zod.null()]).optional()
@@ -2103,7 +2253,11 @@ export const GetMyMatchResponse = zod.object({
   "createdAt": zod.coerce.date(),
   "updatedAt": zod.coerce.date(),
   "deepseaExtension": zod.union([zod.object({
-  "manualPositioningDays": zod.number().int().min(getMyMatchResponseTwoConnectedCapacityOneDeepseaExtensionOneManualPositioningDaysMin).nullish().describe('Explicit user-estimated repositioning buffer; null means provisional, not a verified route.'),
+  "manualPositioningDays": zod.number().min(getMyMatchResponseTwoConnectedCapacityOneDeepseaExtensionOneManualPositioningDaysMin).max(getMyMatchResponseTwoConnectedCapacityOneDeepseaExtensionOneManualPositioningDaysMax).nullish().describe('Legacy user-estimated travel duration in days; retained for compatibility and never independently verified.'),
+  "routeChoice": zod.enum(['UNSPECIFIED', 'DIRECT', 'SUEZ', 'PANAMA', 'CAPE_GOOD_HOPE', 'OTHER']).default(getMyMatchResponseTwoConnectedCapacityOneDeepseaExtensionOneRouteChoiceDefault).describe('User-selected generic route option; no route engine or licensed route data is configured.'),
+  "routeNotes": zod.string().max(getMyMatchResponseTwoConnectedCapacityOneDeepseaExtensionOneRouteNotesMax).nullish().describe('Private owner note about the manually selected route; not disclosed before connection.'),
+  "departureUncertaintyDays": zod.number().min(getMyMatchResponseTwoConnectedCapacityOneDeepseaExtensionOneDepartureUncertaintyDaysMin).max(getMyMatchResponseTwoConnectedCapacityOneDeepseaExtensionOneDepartureUncertaintyDaysMax).nullish().describe('User-estimated departure uncertainty in days.'),
+  "positioningBufferDays": zod.number().min(getMyMatchResponseTwoConnectedCapacityOneDeepseaExtensionOnePositioningBufferDaysMin).max(getMyMatchResponseTwoConnectedCapacityOneDeepseaExtensionOnePositioningBufferDaysMax).nullish().describe('User-estimated positioning buffer in days.'),
   "approximateMaxDistanceKm": zod.number().gt(getMyMatchResponseTwoConnectedCapacityOneDeepseaExtensionOneApproximateMaxDistanceKmExclusiveMin).nullish().describe('Geodesic approximation only, never actual sailing distance.'),
   "previousVoyageContext": zod.string().max(getMyMatchResponseTwoConnectedCapacityOneDeepseaExtensionOnePreviousVoyageContextMax).nullish()
 }),zod.null()]).optional()
@@ -2179,6 +2333,16 @@ export const actOnMatchResponseTwoOwnedCapacityOneAvailableCapacityTonnesExclusi
 export const actOnMatchResponseTwoOwnedCapacityOneMaximumPositioningDistanceKmExclusiveMin = 0;
 
 export const actOnMatchResponseTwoOwnedCapacityOneDeepseaExtensionOneManualPositioningDaysMin = 0;
+export const actOnMatchResponseTwoOwnedCapacityOneDeepseaExtensionOneManualPositioningDaysMax = 365;
+
+export const actOnMatchResponseTwoOwnedCapacityOneDeepseaExtensionOneRouteChoiceDefault = `UNSPECIFIED`;
+export const actOnMatchResponseTwoOwnedCapacityOneDeepseaExtensionOneRouteNotesMax = 500;
+
+export const actOnMatchResponseTwoOwnedCapacityOneDeepseaExtensionOneDepartureUncertaintyDaysMin = 0;
+export const actOnMatchResponseTwoOwnedCapacityOneDeepseaExtensionOneDepartureUncertaintyDaysMax = 365;
+
+export const actOnMatchResponseTwoOwnedCapacityOneDeepseaExtensionOnePositioningBufferDaysMin = 0;
+export const actOnMatchResponseTwoOwnedCapacityOneDeepseaExtensionOnePositioningBufferDaysMax = 365;
 
 export const actOnMatchResponseTwoOwnedCapacityOneDeepseaExtensionOneApproximateMaxDistanceKmExclusiveMin = 0;
 
@@ -2197,6 +2361,16 @@ export const actOnMatchResponseTwoConnectedCargoOneDeepseaRequirementOneMaximumD
 export const actOnMatchResponseTwoConnectedCargoOneDeepseaRequirementOneRequiredGearMax = 120;
 
 export const actOnMatchResponseTwoConnectedCapacityOneDeepseaExtensionOneManualPositioningDaysMin = 0;
+export const actOnMatchResponseTwoConnectedCapacityOneDeepseaExtensionOneManualPositioningDaysMax = 365;
+
+export const actOnMatchResponseTwoConnectedCapacityOneDeepseaExtensionOneRouteChoiceDefault = `UNSPECIFIED`;
+export const actOnMatchResponseTwoConnectedCapacityOneDeepseaExtensionOneRouteNotesMax = 500;
+
+export const actOnMatchResponseTwoConnectedCapacityOneDeepseaExtensionOneDepartureUncertaintyDaysMin = 0;
+export const actOnMatchResponseTwoConnectedCapacityOneDeepseaExtensionOneDepartureUncertaintyDaysMax = 365;
+
+export const actOnMatchResponseTwoConnectedCapacityOneDeepseaExtensionOnePositioningBufferDaysMin = 0;
+export const actOnMatchResponseTwoConnectedCapacityOneDeepseaExtensionOnePositioningBufferDaysMax = 365;
 
 export const actOnMatchResponseTwoConnectedCapacityOneDeepseaExtensionOneApproximateMaxDistanceKmExclusiveMin = 0;
 
@@ -2243,7 +2417,7 @@ export const ActOnMatchResponse = zod.object({
   "dwtBand": zod.string().optional(),
   "availabilityConfidence": zod.enum(['EXPECTED', 'CONFIRMED']).optional(),
   "positioningConfidence": zod.enum(['PROVISIONAL', 'ESTIMATED']).optional(),
-  "provisional": zod.boolean().optional().describe('True when no manual repositioning estimate is available.')
+  "provisional": zod.boolean().optional().describe('Deepsea feasibility remains provisional because manual inputs are user-estimated, not verified route data.')
 }).describe('Privacy-safe open-network capacity representation. It intentionally\ncontains bands rather than exact tonnage, timestamps, coordinates,\nvessel identity, or owner-entered notes.\n'),
   "score": zod.object({
   "totalScore": zod.number().int().min(actOnMatchResponseOneScoreTotalScoreMin).max(actOnMatchResponseOneScoreTotalScoreMax).describe('Rounded display score only; the stored calculation may retain full precision.'),
@@ -2261,7 +2435,14 @@ export const ActOnMatchResponse = zod.object({
   "capacityBand": zod.string(),
   "vesselTypeBand": zod.string(),
   "directionBand": zod.string(),
-  "cargoCompatibilityBand": zod.string()
+  "cargoCompatibilityBand": zod.string(),
+  "reachabilityStatus": zod.enum(['UNKNOWN', 'USER_ESTIMATED']),
+  "laycanAssessment": zod.enum(['UNKNOWN', 'WITHIN_WINDOW', 'UNCERTAIN', 'TOO_LATE']),
+  "routeChoice": zod.enum(['NOT_CONFIGURED', 'USER_SELECTED']).describe('Generic status only; never an actual route choice in anonymous matching.'),
+  "departureUncertainty": zod.enum(['UNKNOWN', 'USER_ESTIMATED']),
+  "positioningBuffer": zod.enum(['UNKNOWN', 'USER_ESTIMATED']),
+  "routeDataAccess": zod.enum(['NOT_CONFIGURED']),
+  "verification": zod.enum(['NOT_VERIFIED'])
 }).describe('Anonymized bands used to explain a score without exposing precise commercial inputs.'),
   "calculationVersion": zod.string(),
   "calculatedAt": zod.coerce.date(),
@@ -2329,7 +2510,11 @@ export const ActOnMatchResponse = zod.object({
   "createdAt": zod.coerce.date(),
   "updatedAt": zod.coerce.date(),
   "deepseaExtension": zod.union([zod.object({
-  "manualPositioningDays": zod.number().int().min(actOnMatchResponseTwoOwnedCapacityOneDeepseaExtensionOneManualPositioningDaysMin).nullish().describe('Explicit user-estimated repositioning buffer; null means provisional, not a verified route.'),
+  "manualPositioningDays": zod.number().min(actOnMatchResponseTwoOwnedCapacityOneDeepseaExtensionOneManualPositioningDaysMin).max(actOnMatchResponseTwoOwnedCapacityOneDeepseaExtensionOneManualPositioningDaysMax).nullish().describe('Legacy user-estimated travel duration in days; retained for compatibility and never independently verified.'),
+  "routeChoice": zod.enum(['UNSPECIFIED', 'DIRECT', 'SUEZ', 'PANAMA', 'CAPE_GOOD_HOPE', 'OTHER']).default(actOnMatchResponseTwoOwnedCapacityOneDeepseaExtensionOneRouteChoiceDefault).describe('User-selected generic route option; no route engine or licensed route data is configured.'),
+  "routeNotes": zod.string().max(actOnMatchResponseTwoOwnedCapacityOneDeepseaExtensionOneRouteNotesMax).nullish().describe('Private owner note about the manually selected route; not disclosed before connection.'),
+  "departureUncertaintyDays": zod.number().min(actOnMatchResponseTwoOwnedCapacityOneDeepseaExtensionOneDepartureUncertaintyDaysMin).max(actOnMatchResponseTwoOwnedCapacityOneDeepseaExtensionOneDepartureUncertaintyDaysMax).nullish().describe('User-estimated departure uncertainty in days.'),
+  "positioningBufferDays": zod.number().min(actOnMatchResponseTwoOwnedCapacityOneDeepseaExtensionOnePositioningBufferDaysMin).max(actOnMatchResponseTwoOwnedCapacityOneDeepseaExtensionOnePositioningBufferDaysMax).nullish().describe('User-estimated positioning buffer in days.'),
   "approximateMaxDistanceKm": zod.number().gt(actOnMatchResponseTwoOwnedCapacityOneDeepseaExtensionOneApproximateMaxDistanceKmExclusiveMin).nullish().describe('Geodesic approximation only, never actual sailing distance.'),
   "previousVoyageContext": zod.string().max(actOnMatchResponseTwoOwnedCapacityOneDeepseaExtensionOnePreviousVoyageContextMax).nullish()
 }),zod.null()]).optional()
@@ -2380,7 +2565,11 @@ export const ActOnMatchResponse = zod.object({
   "createdAt": zod.coerce.date(),
   "updatedAt": zod.coerce.date(),
   "deepseaExtension": zod.union([zod.object({
-  "manualPositioningDays": zod.number().int().min(actOnMatchResponseTwoConnectedCapacityOneDeepseaExtensionOneManualPositioningDaysMin).nullish().describe('Explicit user-estimated repositioning buffer; null means provisional, not a verified route.'),
+  "manualPositioningDays": zod.number().min(actOnMatchResponseTwoConnectedCapacityOneDeepseaExtensionOneManualPositioningDaysMin).max(actOnMatchResponseTwoConnectedCapacityOneDeepseaExtensionOneManualPositioningDaysMax).nullish().describe('Legacy user-estimated travel duration in days; retained for compatibility and never independently verified.'),
+  "routeChoice": zod.enum(['UNSPECIFIED', 'DIRECT', 'SUEZ', 'PANAMA', 'CAPE_GOOD_HOPE', 'OTHER']).default(actOnMatchResponseTwoConnectedCapacityOneDeepseaExtensionOneRouteChoiceDefault).describe('User-selected generic route option; no route engine or licensed route data is configured.'),
+  "routeNotes": zod.string().max(actOnMatchResponseTwoConnectedCapacityOneDeepseaExtensionOneRouteNotesMax).nullish().describe('Private owner note about the manually selected route; not disclosed before connection.'),
+  "departureUncertaintyDays": zod.number().min(actOnMatchResponseTwoConnectedCapacityOneDeepseaExtensionOneDepartureUncertaintyDaysMin).max(actOnMatchResponseTwoConnectedCapacityOneDeepseaExtensionOneDepartureUncertaintyDaysMax).nullish().describe('User-estimated departure uncertainty in days.'),
+  "positioningBufferDays": zod.number().min(actOnMatchResponseTwoConnectedCapacityOneDeepseaExtensionOnePositioningBufferDaysMin).max(actOnMatchResponseTwoConnectedCapacityOneDeepseaExtensionOnePositioningBufferDaysMax).nullish().describe('User-estimated positioning buffer in days.'),
   "approximateMaxDistanceKm": zod.number().gt(actOnMatchResponseTwoConnectedCapacityOneDeepseaExtensionOneApproximateMaxDistanceKmExclusiveMin).nullish().describe('Geodesic approximation only, never actual sailing distance.'),
   "previousVoyageContext": zod.string().max(actOnMatchResponseTwoConnectedCapacityOneDeepseaExtensionOnePreviousVoyageContextMax).nullish()
 }),zod.null()]).optional()

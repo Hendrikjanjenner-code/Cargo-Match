@@ -13,6 +13,7 @@ const schema = z.object({
   vesselName: z.string().min(1, t("vessels.error_name_required")),
   vesselType: z.nativeEnum(VesselType),
   totalCapacityTonnes: z.coerce.number().min(1, t("vessels.error_capacity_positive")),
+  eniNumber: z.string().optional(),
   cargoCompatibility: z.string().min(1, t("vessels.error_compatibility_required")),
   notes: z.string().optional(),
   
@@ -59,7 +60,7 @@ export default function DeepseaVessels() {
     };
 
     if (editingId) {
-      const payload = { ...basePayload, notes: data.notes || null };
+      const payload = { ...basePayload, eniNumber: data.eniNumber || null, notes: data.notes || null };
       updateVessel.mutate({ vesselId: editingId, data: payload }, {
         onSuccess: () => {
           queryClient.invalidateQueries({ queryKey: getListMyVesselsQueryKey({ transportMode: TransportMode.DEEPSEA_BULK }) });
@@ -70,7 +71,7 @@ export default function DeepseaVessels() {
         }
       });
     } else {
-      const payload = { ...basePayload, notes: data.notes || undefined };
+      const payload = { ...basePayload, eniNumber: data.eniNumber || undefined, notes: data.notes || undefined };
       createVessel.mutate({ data: payload }, {
         onSuccess: () => {
           queryClient.invalidateQueries({ queryKey: getListMyVesselsQueryKey({ transportMode: TransportMode.DEEPSEA_BULK }) });
@@ -85,6 +86,7 @@ export default function DeepseaVessels() {
       vesselName: v.vesselName,
       vesselType: v.vesselType,
       totalCapacityTonnes: v.totalCapacityTonnes,
+      eniNumber: v.eniNumber || "",
       cargoCompatibility: v.cargoCompatibility.join(", "),
       notes: v.notes || "",
       vesselClass: v.deepseaProfile?.vesselClass || DeepseaVesselClass.HANDYSIZE,
@@ -99,7 +101,7 @@ export default function DeepseaVessels() {
   const closeForm = () => {
     setShowForm(false);
     setEditingId(null);
-    reset({ vesselType: VesselType.DRY_CARGO, vesselClass: DeepseaVesselClass.HANDYSIZE, vesselName: "", totalCapacityTonnes: 0, dwtTonnes: 0, summerDraftMetres: undefined, gearConfiguration: "", cargoCompatibility: "", notes: "" });
+    reset({ vesselType: VesselType.DRY_CARGO, vesselClass: DeepseaVesselClass.HANDYSIZE, vesselName: "", eniNumber: "", totalCapacityTonnes: 0, dwtTonnes: 0, summerDraftMetres: undefined, gearConfiguration: "", cargoCompatibility: "", notes: "" });
   };
 
   const handleDeactivate = (id: string) => {
@@ -107,9 +109,9 @@ export default function DeepseaVessels() {
       deactivateVessel.mutate({ vesselId: id }, {
         onSuccess: () => {
           queryClient.invalidateQueries({ queryKey: getListMyVesselsQueryKey({ transportMode: TransportMode.DEEPSEA_BULK }) });
-          void queryClient.invalidateQueries({ queryKey: getListMyCapacityQueryKey() });
-          void queryClient.invalidateQueries({ queryKey: getListMarketplaceQueryKey() });
-          void queryClient.invalidateQueries({ queryKey: getListMyMatchesQueryKey() });
+           void queryClient.invalidateQueries({ queryKey: getListMyCapacityQueryKey() });
+           void queryClient.invalidateQueries({ queryKey: getListMarketplaceQueryKey() });
+           void queryClient.invalidateQueries({ queryKey: getListMyMatchesQueryKey() });
         }
       });
     }
@@ -144,6 +146,10 @@ export default function DeepseaVessels() {
                   <Label htmlFor="vesselName">{t("vessels.vessel_name")}</Label>
                   <Input id="vesselName" {...register("vesselName")} placeholder={t("vessels.vessel_name_placeholder")} />
                   {errors.vesselName && <span className="text-xs text-destructive">{errors.vesselName.message}</span>}
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="eniNumber">{t("deepsea.vessels.imo")}</Label>
+                  <Input id="eniNumber" {...register("eniNumber")} placeholder={t("deepsea.vessels.imo_placeholder")} />
                 </div>
                 
                 <div className="space-y-2">

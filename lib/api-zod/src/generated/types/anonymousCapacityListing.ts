@@ -43,6 +43,6 @@ export interface AnonymousCapacityListing {
   dwtBand?: string;
   availabilityConfidence?: AvailabilityConfidence;
   positioningConfidence?: AnonymousCapacityListingPositioningConfidence;
-  /** True when no manual repositioning estimate is available. */
+  /** Deepsea feasibility remains provisional because manual inputs are user-estimated, not verified route data. */
   provisional?: boolean;
 }

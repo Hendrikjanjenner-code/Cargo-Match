@@ -61,6 +61,7 @@ import {
   deepseaDetailsForCargo,
   replaceDeepseaCapacityExtension,
   replaceDeepseaCargoRequirement,
+  validateDeepseaCapacityExtension,
   validateDeepseaCargoRequirement,
 } from "../services/deepsea";
 
@@ -517,6 +518,13 @@ router.post("/capacity", async (req, res) => {
     error(res, 400, "Invalid capacity data or availability window");
     return;
   }
+  if (
+    parsed.data.transportMode === "DEEPSEA_BULK" &&
+    !validateDeepseaCapacityExtension(parsed.data.deepseaExtension)
+  ) {
+    error(res, 400, "Invalid deepsea capacity extension");
+    return;
+  }
   const result = await db.transaction(async (tx) => {
     await lockDomain(tx);
     const writeMembership = await listingWriteMembership(tx, req.user!.id);
@@ -730,6 +738,12 @@ router.patch("/capacity/:capacityId", async (req, res) => {
       if (nextAvailableCapacity > profile.dwtTonnes) {
         return { kind: "invalid-capacity" as const };
       }
+      if (
+        parsed.data.deepseaExtension !== undefined &&
+        !validateDeepseaCapacityExtension(parsed.data.deepseaExtension)
+      ) {
+        return { kind: "invalid-deepsea-extension" as const };
+      }
     }
     if (
       !isCapacityWithinVessel(
@@ -807,6 +821,10 @@ router.patch("/capacity/:capacityId", async (req, res) => {
   }
   if (result.kind === "invalid-deepsea-profile") {
     error(res, 400, "Deepsea capacity requires a vessel profile");
+    return;
+  }
+  if (result.kind === "invalid-deepsea-extension") {
+    error(res, 400, "Invalid deepsea capacity extension");
     return;
   }
   if (result.kind === "invalid-capacity") {

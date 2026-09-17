@@ -8,14 +8,38 @@
  *
  * OpenAPI spec version: 0.1.0
  */
+import type { DeepseaCapacityExtensionRouteChoice } from './deepseaCapacityExtensionRouteChoice';
 
 export interface DeepseaCapacityExtension {
   /**
-     * Explicit user-estimated repositioning buffer; null means provisional, not a verified route.
+     * Legacy user-estimated travel duration in days; retained for compatibility and never independently verified.
      * @minimum 0
+     * @maximum 365
      * @nullable
      */
   manualPositioningDays?: number | null;
+  /** User-selected generic route option; no route engine or licensed route data is configured. */
+  routeChoice?: DeepseaCapacityExtensionRouteChoice;
+  /**
+     * Private owner note about the manually selected route; not disclosed before connection.
+     * @maxLength 500
+     * @nullable
+     */
+  routeNotes?: string | null;
+  /**
+     * User-estimated departure uncertainty in days.
+     * @minimum 0
+     * @maximum 365
+     * @nullable
+     */
+  departureUncertaintyDays?: number | null;
+  /**
+     * User-estimated positioning buffer in days.
+     * @minimum 0
+     * @maximum 365
+     * @nullable
+     */
+  positioningBufferDays?: number | null;
   /**
      * Geodesic approximation only, never actual sailing distance.
      * @exclusiveMinimum 0

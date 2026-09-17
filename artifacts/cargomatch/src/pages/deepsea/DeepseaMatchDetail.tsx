@@ -1,4 +1,5 @@
 import { listMyConversations, useGetMyMatch, useActOnMatch, getListMyConversationsQueryKey, getGetMyMatchQueryKey, getListMyMatchesQueryKey, MatchAction, MatchStatus } from "@workspace/api-client-react";
+import type { MatchEvaluationInputs } from "@workspace/api-client-react";
 import { useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useRoute, useLocation } from "wouter";
@@ -12,6 +13,31 @@ const CONVERSATION_PAGE_SIZE = 100;
 function errorMessage(error: unknown, fallback: string): string {
   return error instanceof Error && error.message.trim() ? error.message : fallback;
 }
+
+const STATUS_LABEL_KEYS: Record<string, string> = {
+  UNKNOWN: "deepsea.matches.status.unknown",
+  USER_ESTIMATED: "deepsea.matches.status.user_estimated",
+  WITHIN_WINDOW: "deepsea.matches.status.within_window",
+  UNCERTAIN: "deepsea.matches.status.uncertain",
+  TOO_LATE: "deepsea.matches.status.too_late",
+  NOT_CONFIGURED: "deepsea.matches.status.not_configured",
+  USER_SELECTED: "deepsea.matches.status.user_selected",
+  NOT_VERIFIED: "deepsea.matches.status.not_verified",
+};
+
+function statusLabel(value: string): string {
+  return STATUS_LABEL_KEYS[value] ? t(STATUS_LABEL_KEYS[value]) : value.replace(/_/g, " ");
+}
+
+type SafeStatusKey = keyof Pick<MatchEvaluationInputs, "reachabilityStatus" | "routeChoice" | "departureUncertainty" | "positioningBuffer" | "routeDataAccess" | "verification">;
+const SAFE_STATUS_FIELDS: Array<[SafeStatusKey, string]> = [
+  ["reachabilityStatus", "deepsea.matches.reachability"],
+  ["routeChoice", "deepsea.matches.route_choice"],
+  ["departureUncertainty", "deepsea.matches.departure_uncertainty"],
+  ["positioningBuffer", "deepsea.matches.positioning_buffer"],
+  ["routeDataAccess", "deepsea.matches.route_data_access"],
+  ["verification", "deepsea.matches.verification"],
+];
 
 async function listAllConversations() {
   const firstPage = await listMyConversations({
@@ -103,7 +129,6 @@ export default function DeepseaMatchDetail() {
           {t(`status.${match.status.toLowerCase()}` as any)}
         </Badge>
       </div>
-
       <p className="text-sm text-muted-foreground">{t("deepsea.matches.introduction_notice")}</p>
 
       {match.deepseaMatch?.provisional && (
@@ -195,6 +220,22 @@ export default function DeepseaMatchDetail() {
                   <div className="text-muted-foreground">{t("deepsea.marketplace.positioning")}</div>
                   <div className="font-medium">{match.deepseaMatch.positioningBand}</div>
                 </div>
+                <div>
+                  <div className="text-muted-foreground">{t("deepsea.matches.laycan")}</div>
+                  <div className="font-medium">{statusLabel(match.score.evaluationInputs.laycanAssessment || "UNKNOWN")}</div>
+                </div>
+                <div>
+                  <div className="text-muted-foreground">{t("deepsea.matches.manual_status")}</div>
+                  <div className="font-medium">
+                    {match.deepseaMatch.provisional ? t("deepsea.matches.manual_provisional") : t("deepsea.matches.manual_status_unknown")}
+                  </div>
+                </div>
+                {SAFE_STATUS_FIELDS.map(([key, label]) => (
+                  <div key={key}>
+                    <div className="text-muted-foreground">{t(label)}</div>
+                    <div className="font-medium">{statusLabel(match.score.evaluationInputs[key] || "UNKNOWN")}</div>
+                  </div>
+                ))}
               </CardContent>
             </Card>
           )}
@@ -208,6 +249,9 @@ export default function DeepseaMatchDetail() {
             </CardHeader>
             <CardContent className="pt-6">
               <p className="text-sm text-muted-foreground mb-6">{match.score.explanation}</p>
+              <div className="mb-6 rounded-md border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-900">
+                {t("deepsea.matches.route_notice")}
+              </div>
               
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-y-6 text-sm">
                 <div>

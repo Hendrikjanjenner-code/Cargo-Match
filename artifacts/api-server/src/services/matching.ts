@@ -16,6 +16,11 @@ import {
   deepseaVesselProfilesTable,
   db,
 } from "@workspace/db";
+import {
+  evaluateDeepseaReachability,
+  validateDeepseaCapacityExtension,
+} from "./deepsea";
+export { evaluateDeepseaReachability } from "./deepsea";
 
 const CALCULATION_VERSION = "v1";
 const EARTH_RADIUS_KM = 6_371;
@@ -245,6 +250,9 @@ export function evaluateDeepseaEligibility(
   ) {
     return { eligible: false, reason: "required_deepsea_profile_missing" };
   }
+  if (!validateDeepseaCapacityExtension(pair.deepseaExtension)) {
+    return { eligible: false, reason: "invalid_deepsea_extension" };
+  }
   if (vessel.vesselType !== cargo.requiredVesselType) {
     return { eligible: false, reason: "vessel_type_incompatible" };
   }
@@ -269,6 +277,9 @@ export function evaluateDeepseaEligibility(
   }
   if (capacity.availableCapacityTonnes > profile.dwtTonnes) {
     return { eligible: false, reason: "cargo_tonnage_exceeds_vessel_dwt" };
+  }
+  if (compatibilityScore(cargo, capacity) === 0) {
+    return { eligible: false, reason: "cargo_incompatible" };
   }
   if (
     !Number.isFinite(cargo.loadingFrom.getTime()) ||
@@ -325,20 +336,28 @@ export function evaluateDeepseaEligibility(
     return { eligible: false, reason: "outside_approximate_positioning_distance" };
   }
   const repositioningDays = pair.deepseaExtension?.manualPositioningDays;
-  const adjustedOpen = new Date(capacity.availableFrom);
-  if (repositioningDays != null) {
-    adjustedOpen.setUTCDate(adjustedOpen.getUTCDate() + repositioningDays);
-    if (adjustedOpen > cargo.loadingUntil) {
-      return { eligible: false, reason: "laycan_incompatible_with_positioning" };
-    }
-  }
   if (capacity.availableUntil < cargo.loadingFrom) {
     return { eligible: false, reason: "laycan_incompatible" };
+  }
+  const reachability = evaluateDeepseaReachability({
+    availableFrom: capacity.availableFrom,
+    availableUntil: capacity.availableUntil,
+    laycanFrom: cargo.loadingFrom,
+    laycanUntil: cargo.loadingUntil,
+    now,
+    manualPositioningDays: repositioningDays,
+    departureUncertaintyDays:
+      pair.deepseaExtension?.departureUncertaintyDays,
+    positioningBufferDays: pair.deepseaExtension?.positioningBufferDays,
+  });
+  if (reachability.definitelyLate) {
+    return { eligible: false, reason: "laycan_incompatible_with_positioning" };
   }
   return {
     eligible: true,
     distanceKm: distance,
-    provisional: repositioningDays == null,
+    // Manual inputs are useful estimates, but never independently verified.
+    provisional: true,
   };
 }
 
@@ -399,6 +418,7 @@ export function scoreEligiblePair(
 export function scoreDeepseaEligiblePair(
   pair: PairInput,
   distance: number,
+  now = new Date(),
 ): ScoreResult {
   const maximumDistance =
     pair.deepseaExtension?.approximateMaxDistanceKm ??
@@ -406,11 +426,6 @@ export function scoreDeepseaEligiblePair(
   const distanceScore = scoreDistance(distance, maximumDistance);
   const requirement = pair.deepseaRequirement!;
   const profile = pair.deepseaProfile!;
-  const timing =
-    pair.capacity.availableUntil >= pair.cargo.loadingFrom &&
-    pair.capacity.availableFrom <= pair.cargo.loadingUntil
-      ? 100
-      : 0;
   const tolerance = requirement.quantityTolerancePercent;
   const capacityScore = Math.min(
     100,
@@ -424,13 +439,36 @@ export function scoreDeepseaEligiblePair(
       ? 100
       : 0;
   const compatibility = compatibilityScore(pair.cargo, pair.capacity);
+  const reachability = evaluateDeepseaReachability({
+    availableFrom: pair.capacity.availableFrom,
+    availableUntil: pair.capacity.availableUntil,
+    laycanFrom: pair.cargo.loadingFrom,
+    laycanUntil: pair.cargo.loadingUntil,
+    now,
+    manualPositioningDays: pair.deepseaExtension?.manualPositioningDays,
+    departureUncertaintyDays:
+      pair.deepseaExtension?.departureUncertaintyDays,
+    positioningBufferDays: pair.deepseaExtension?.positioningBufferDays,
+  });
+  // Ranking weights, not a probability or independent verification. Missing
+  // assumptions must not rank as highly as an estimated interval within laycan.
+  const timing = reachability.definitelyLate ? 0 : {
+    WITHIN_WINDOW: 100,
+    UNCERTAIN: 50,
+    UNKNOWN: 25,
+    TOO_LATE: 0,
+  }[reachability.laycanAssessment];
   const total =
     distanceScore * 0.35 +
     timing * 0.25 +
     capacityScore * 0.2 +
     classScore * 0.1 +
     compatibility * 0.1;
-  const provisional = pair.deepseaExtension?.manualPositioningDays == null;
+  const extension = pair.deepseaExtension;
+  const routeChoice =
+    extension?.routeChoice && extension.routeChoice !== "UNSPECIFIED"
+      ? "USER_SELECTED"
+      : "NOT_CONFIGURED";
   return {
     totalScore: total,
     distanceScore,
@@ -442,16 +480,38 @@ export function scoreDeepseaEligiblePair(
     distanceKm: distance,
     evaluationInputs: {
       distanceBand: distance < 500 ? "< 500 km approx." : "500+ km approx.",
-      timingBand: provisional ? "Provisional timing fit" : "Laycan and buffer fit",
+      timingBand:
+        reachability.definitelyLate
+          ? "Timing not feasible"
+          : reachability.laycanAssessment === "WITHIN_WINDOW"
+          ? "Laycan and buffer fit"
+          : reachability.laycanAssessment === "TOO_LATE"
+            ? "Timing not feasible"
+            : "Provisional timing fit",
       capacityBand: "Deepsea cargo tonnage fit",
       vesselTypeBand: `${profile.vesselClass} / DWT fit`,
       directionBand: "Trade direction requires commercial confirmation",
       cargoCompatibilityBand:
         compatibility === 100 ? "Cargo compatible" : "Compatibility uncertain",
+      reachabilityStatus: reachability.reachabilityStatus,
+      laycanAssessment: reachability.laycanAssessment,
+      routeChoice,
+      departureUncertainty:
+        extension?.departureUncertaintyDays == null
+          ? "UNKNOWN"
+          : "USER_ESTIMATED",
+      positioningBuffer:
+        extension?.positioningBufferDays == null
+          ? "UNKNOWN"
+          : "USER_ESTIMATED",
+      routeDataAccess: "NOT_CONFIGURED",
+      verification: "NOT_VERIFIED",
     },
-    explanation: provisional
-      ? "Potential deepsea dry-bulk fit using geodesic approximate positioning. Repositioning estimate is unknown, so feasibility is provisional and not a verified route."
-      : "Potential deepsea dry-bulk fit using an explicit user-estimated repositioning buffer and geodesic approximate positioning. This is not a verified sailing route or booking.",
+    explanation:
+      reachability.reachabilityStatus === "UNKNOWN" ||
+      reachability.laycanAssessment === "UNKNOWN"
+        ? "Potential deepsea dry-bulk fit using geodesic approximate positioning. Manual travel and route timing inputs are incomplete, so feasibility is provisional and not a verified route."
+        : "Potential deepsea dry-bulk fit using user-estimated travel, departure, and positioning inputs. This is provisional and not a verified sailing route or booking.",
   };
 }
 
@@ -538,6 +598,7 @@ export async function recalculateMatchesWithin(
   executor: QueryExecutor,
   options: RecalculationOptions = {},
 ) {
+  const now = new Date();
   const rows = await listPairRows(executor);
   const existing =
     (await executor.select().from(matchesTable)) as (typeof matchesTable.$inferSelect)[];
@@ -552,7 +613,7 @@ export async function recalculateMatchesWithin(
     ]),
   );
   for (const pair of rows) {
-    const eligibility = evaluateEligibility(pair);
+    const eligibility = evaluateEligibility(pair, now);
     const prior = byPair.get(`${pair.cargo.id}:${pair.capacity.id}`);
     const affected =
       options.invalidateAllPending ||
@@ -573,7 +634,7 @@ export async function recalculateMatchesWithin(
     }
     const score =
       pair.cargo.transportMode === "DEEPSEA_BULK"
-        ? scoreDeepseaEligiblePair(pair, eligibility.distanceKm)
+        ? scoreDeepseaEligiblePair(pair, eligibility.distanceKm, now)
         : scoreEligiblePair(pair, eligibility.distanceKm);
     const values = {
       cargoListingId: pair.cargo.id,
@@ -588,9 +649,9 @@ export async function recalculateMatchesWithin(
       approximatePositioningDistanceKm: score.distanceKm,
       calculationVersion:
         pair.cargo.transportMode === "DEEPSEA_BULK"
-          ? "deepsea-v1"
+          ? "deepsea-v3"
           : CALCULATION_VERSION,
-      calculatedAt: new Date(),
+      calculatedAt: now,
       evaluationInputs: score.evaluationInputs,
       explanation: score.explanation,
       isStale: false,

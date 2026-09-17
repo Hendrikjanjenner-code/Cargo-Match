@@ -152,6 +152,10 @@ export function capacityResponse(
     deepseaExtension: extension
       ? {
           manualPositioningDays: extension.manualPositioningDays,
+          routeChoice: extension.routeChoice,
+          routeNotes: extension.routeNotes,
+          departureUncertaintyDays: extension.departureUncertaintyDays,
+          positioningBufferDays: extension.positioningBufferDays,
           approximateMaxDistanceKm: extension.approximateMaxDistanceKm,
           previousVoyageContext: extension.previousVoyageContext,
         }
@@ -208,10 +212,9 @@ export function anonymousCapacity(
           deepseaClassBand: profile?.vesselClass ?? "Class not disclosed",
           dwtBand: profile ? bandDwt(profile.dwtTonnes) : "DWT not disclosed",
           availabilityConfidence: capacity.availabilityConfidence,
-          positioningConfidence: extension?.manualPositioningDays == null
-            ? "PROVISIONAL"
-            : "ESTIMATED",
-          provisional: extension?.manualPositioningDays == null,
+           // Complete manual inputs remain user-estimated and unverified.
+           positioningConfidence: "PROVISIONAL",
+           provisional: true,
         }
       : {}),
   };
@@ -247,6 +250,10 @@ export function connectedCapacity(
     deepseaExtension: extension
       ? {
           manualPositioningDays: extension.manualPositioningDays,
+          routeChoice: extension.routeChoice,
+          routeNotes: extension.routeNotes,
+          departureUncertaintyDays: extension.departureUncertaintyDays,
+          positioningBufferDays: extension.positioningBufferDays,
           approximateMaxDistanceKm: extension.approximateMaxDistanceKm,
           previousVoyageContext: extension.previousVoyageContext,
         }
@@ -266,7 +273,7 @@ export function connectedCompany(company: Company) {
   };
 }
 
-export function matchScore(match: Match) {
+export function matchScore(match: Match, deepsea = false) {
   const standardizeScore = (value: number) => Math.round(value);
   const inputs = match.evaluationInputs ?? {};
   const safeBand = (
@@ -299,6 +306,7 @@ export function matchScore(match: Match) {
           "Strong timing fit",
           "Usable timing fit",
           "Timing fit",
+          "Timing not feasible",
           "Provisional timing fit",
           "Laycan and buffer fit",
         ],
@@ -324,10 +332,50 @@ export function matchScore(match: Match) {
         ["Cargo compatible", "Compatibility uncertain"],
         "Cargo compatibility band",
       ),
+      reachabilityStatus: safeBand(
+        "reachabilityStatus",
+        ["UNKNOWN", "USER_ESTIMATED"],
+        "UNKNOWN",
+      ),
+      laycanAssessment: safeBand(
+        "laycanAssessment",
+        ["UNKNOWN", "WITHIN_WINDOW", "UNCERTAIN", "TOO_LATE"],
+        "UNKNOWN",
+      ),
+      // This is deliberately a generic status; actual route choices and
+      // private notes are returned only in owner/connected capacity views.
+      routeChoice: safeBand(
+        "routeChoice",
+        ["NOT_CONFIGURED", "USER_SELECTED"],
+        "NOT_CONFIGURED",
+      ),
+      departureUncertainty: safeBand(
+        "departureUncertainty",
+        ["UNKNOWN", "USER_ESTIMATED"],
+        "UNKNOWN",
+      ),
+      positioningBuffer: safeBand(
+        "positioningBuffer",
+        ["UNKNOWN", "USER_ESTIMATED"],
+        "UNKNOWN",
+      ),
+      routeDataAccess: safeBand(
+        "routeDataAccess",
+        ["NOT_CONFIGURED"],
+        "NOT_CONFIGURED",
+      ),
+      verification: safeBand(
+        "verification",
+        ["NOT_VERIFIED"],
+        "NOT_VERIFIED",
+      ),
     },
     calculationVersion: match.calculationVersion,
     calculatedAt: match.calculatedAt,
-    provisional: inputs.timingBand === "Provisional timing fit",
+    provisional:
+      deepsea ||
+      inputs.verification === "NOT_VERIFIED" ||
+      inputs.timingBand === "Provisional timing fit",
     explanation: match.explanation,
   };
 }
@@ -356,8 +404,7 @@ export function matchSummary(bundle: MatchBundle, companyId: string) {
           vesselClass: bundle.deepseaProfile.vesselClass,
           dwtBand: bandDwt(bundle.deepseaProfile.dwtTonnes),
           availabilityConfidence: bundle.capacity.availabilityConfidence,
-          provisional:
-            bundle.deepseaExtension?.manualPositioningDays == null,
+           provisional: true,
           positioningBand: bandDistance(
             bundle.match.approximatePositioningDistanceKm,
           ),
@@ -377,7 +424,10 @@ export function matchSummary(bundle: MatchBundle, companyId: string) {
       bundle.deepseaProfile,
       bundle.deepseaExtension,
     ),
-    score: matchScore(bundle.match),
+    score: matchScore(
+      bundle.match,
+      bundle.capacity.transportMode === "DEEPSEA_BULK",
+    ),
     deepseaMatch,
     initiatedByMe,
     canAccept:

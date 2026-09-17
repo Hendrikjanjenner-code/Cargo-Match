@@ -13,3 +13,9 @@ Tenant ownership of a CargoMatch record is not proof of ownership of the physica
 **Why:** A tenant can create a record named after any vessel and copy its public MMSI. Treating tenant-authored evidence as authoritative would permit tracking another company's exact location.
 
 **How to apply:** Keep tenant claims separate from independent operator/provider ownership verification. Unverified claims must not reserve global identifiers or authorize paid telemetry access.
+
+Independent vessel identity verification is not verification of a planner's operational information.
+
+**Why:** Ownership evidence establishes who may participate, not whether unloading times, remaining tonnage, or future commercial availability are accurate. Combining these trust levels would make a manual plan appear independently verified.
+
+**How to apply:** Keep operational-source provenance and uncertainty separate from identity confidence when adding future prediction sources. A permitted identity or AIS license alone cannot establish permission to reuse operational data.

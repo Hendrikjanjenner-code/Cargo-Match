@@ -11,6 +11,7 @@ import marketplaceRouter from "./marketplace";
 import matchesRouter from "./matches";
 import conversationsRouter from "./conversations";
 import notificationsRouter from "./notifications";
+import availabilitySuggestionsRouter from "./availabilitySuggestions";
 
 const router: IRouter = Router();
 
@@ -26,5 +27,6 @@ router.use(marketplaceRouter);
 router.use(matchesRouter);
 router.use(conversationsRouter);
 router.use(notificationsRouter);
+router.use(availabilitySuggestionsRouter);
 
 export default router;

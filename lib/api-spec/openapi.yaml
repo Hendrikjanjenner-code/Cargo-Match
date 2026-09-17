@@ -25,6 +25,8 @@ tags:
     description: Curated inland-shipping location catalogue.
   - name: Listings
     description: Owned cargo and capacity listings.
+  - name: Availability suggestions
+    description: Private, manually submitted operational availability plans.
   - name: Marketplace
     description: Privacy-safe open-network discovery.
   - name: Matches
@@ -789,6 +791,89 @@ paths:
           $ref: "#/components/responses/Unauthorized"
         "403":
           $ref: "#/components/responses/Forbidden"
+  /availability-suggestions:
+    get:
+      tags: [Availability suggestions]
+      operationId: listMyAvailabilitySuggestions
+      summary: List private availability suggestions
+      description: |
+        Lists only suggestions owned by the current company. Suggestions are
+        operational manual plans, not telemetry or ETA predictions. Statuses
+        EXPIRED and INVALIDATED are derived at read time.
+      security:
+        - sessionCookie: []
+        - bearerAuth: []
+      parameters:
+        - $ref: "#/components/parameters/Page"
+        - $ref: "#/components/parameters/PageSize"
+      responses:
+        "200":
+          description: Private availability suggestions.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AvailabilitySuggestionListResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+    post:
+      tags: [Availability suggestions]
+      operationId: createAvailabilitySuggestion
+      summary: Submit a manually observed availability suggestion
+      description: |
+        OWNER and ADMIN only. Requires an independently operator-reviewed
+        active AIS identity at submission. No provider request or telemetry is
+        made or stored. Dates remain explicitly uncertain.
+      security:
+        - sessionCookie: []
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AvailabilitySuggestionCreateRequest"
+      responses:
+        "201":
+          description: Availability suggestion created.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AvailabilitySuggestion"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "409":
+          $ref: "#/components/responses/Conflict"
+  /availability-suggestions/{suggestionId}/dismiss:
+    post:
+      tags: [Availability suggestions]
+      operationId: dismissAvailabilitySuggestion
+      summary: Dismiss an availability suggestion
+      security:
+        - sessionCookie: []
+        - bearerAuth: []
+      parameters:
+        - $ref: "#/components/parameters/AvailabilitySuggestionId"
+      responses:
+        "200":
+          description: Availability suggestion dismissed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AvailabilitySuggestion"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "409":
+          $ref: "#/components/responses/Conflict"
   /capacity/{capacityId}:
     parameters:
       - $ref: "#/components/parameters/CapacityId"
@@ -1287,6 +1372,13 @@ components:
       schema:
         type: string
         format: uuid
+    AvailabilitySuggestionId:
+      name: suggestionId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
     MatchId:
       name: matchId
       in: path
@@ -1329,6 +1421,12 @@ components:
             $ref: "#/components/schemas/ErrorEnvelope"
     NotFound:
       description: Resource not found or not visible to the current user.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorEnvelope"
+    Conflict:
+      description: The requested state transition conflicts with the current resource state.
       content:
         application/json:
           schema:
@@ -2399,6 +2497,13 @@ components:
           default: CONFIRMED
         deepseaExtension:
           $ref: "#/components/schemas/DeepseaCapacityExtension"
+        availabilitySuggestionId:
+          type: string
+          format: uuid
+          description: Optional private operational plan being confirmed.
+        suggestionConfirmed:
+          type: boolean
+          description: Must be true when availabilitySuggestionId is supplied.
     CapacityOfferUpdateRequest:
       type: object
       minProperties: 1
@@ -2445,6 +2550,126 @@ components:
           anyOf:
             - $ref: "#/components/schemas/DeepseaCapacityExtension"
             - type: "null"
+
+    AvailabilitySuggestionCreateRequest:
+      type: object
+      additionalProperties: false
+      required:
+        - vesselId
+        - locationId
+        - expectedAvailableFrom
+        - expectedAvailableUntil
+        - sourceReference
+        - sourceObservedAt
+        - participationConfirmed
+        - sourceUseConfirmed
+        - uncertaintyAcknowledged
+      properties:
+        vesselId:
+          type: string
+          format: uuid
+        locationId:
+          type: string
+          format: uuid
+        expectedAvailableFrom:
+          type: string
+          format: date-time
+        expectedAvailableUntil:
+          type: string
+          format: date-time
+        sourceReference:
+          type: string
+          minLength: 1
+          maxLength: 300
+        sourceObservedAt:
+          type: string
+          format: date-time
+        participationConfirmed:
+          type: boolean
+          const: true
+        sourceUseConfirmed:
+          type: boolean
+          const: true
+        uncertaintyAcknowledged:
+          type: boolean
+          const: true
+    AvailabilitySuggestion:
+      type: object
+      required:
+        - id
+        - vesselId
+        - locationId
+        - expectedAvailableFrom
+        - expectedAvailableUntil
+        - sourceReference
+        - sourceObservedAt
+        - createdAt
+        - expiresAt
+        - status
+        - uncertainty
+        - explanation
+        - unknowns
+        - capacityOfferId
+        - canConfirm
+      properties:
+        id:
+          type: string
+          format: uuid
+        vesselId:
+          type: string
+          format: uuid
+        locationId:
+          type: string
+          format: uuid
+        expectedAvailableFrom:
+          type: string
+          format: date-time
+        expectedAvailableUntil:
+          type: string
+          format: date-time
+        sourceReference:
+          type: string
+          maxLength: 300
+        sourceObservedAt:
+          type: string
+          format: date-time
+        createdAt:
+          type: string
+          format: date-time
+        expiresAt:
+          type: string
+          format: date-time
+        status:
+          type: string
+          enum: [PENDING, DISMISSED, CONVERTED, EXPIRED, INVALIDATED]
+        uncertainty:
+          type: string
+          const: UNCERTAIN
+        explanation:
+          type: string
+        unknowns:
+          type: array
+          items:
+            type: string
+        capacityOfferId:
+          type: [string, "null"]
+          format: uuid
+        canConfirm:
+          type: boolean
+    AvailabilitySuggestionListResponse:
+      type: object
+      required: [items, page, pageSize, total]
+      properties:
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/AvailabilitySuggestion"
+        page:
+          type: integer
+        pageSize:
+          type: integer
+        total:
+          type: integer
 
     VesselListResponse:
       type: object

@@ -27,6 +27,9 @@ import type {
   AisIdentityCreateRequest,
   AisIdentityUpdateRequest,
   AuthUserEnvelope,
+  AvailabilitySuggestion,
+  AvailabilitySuggestionCreateRequest,
+  AvailabilitySuggestionListResponse,
   BadRequestResponse,
   BeginBrowserLoginParams,
   CapacityListResponse,
@@ -40,6 +43,7 @@ import type {
   Company,
   CompanyCreateRequest,
   CompanyUpdateRequest,
+  ConflictResponse,
   Conversation,
   ConversationListResponse,
   ErrorEnvelope,
@@ -48,6 +52,7 @@ import type {
   HealthStatus,
   ListLocationsParams,
   ListMarketplaceParams,
+  ListMyAvailabilitySuggestionsParams,
   ListMyCapacityParams,
   ListMyCargoParams,
   ListMyConversationsParams,
@@ -2507,6 +2512,258 @@ export const useCreateMyCapacity = <TError = ErrorType<BadRequestResponse | Unau
         TContext
       > => {
       return useMutation(getCreateMyCapacityMutationOptions(options));
+    }
+
+export const getListMyAvailabilitySuggestionsUrl = (params?: ListMyAvailabilitySuggestionsParams,) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : String(value))
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0 ? `/api/availability-suggestions?${stringifiedParams}` : `/api/availability-suggestions`
+}
+
+/**
+ * Lists only suggestions owned by the current company. Suggestions are
+ * operational manual plans, not telemetry or ETA predictions. Statuses
+ * EXPIRED and INVALIDATED are derived at read time.
+ * @summary List private availability suggestions
+ */
+export const listMyAvailabilitySuggestions = async (params?: ListMyAvailabilitySuggestionsParams, options?: Parameters<typeof customFetch>[1]): Promise<AvailabilitySuggestionListResponse> => {
+
+  return customFetch<AvailabilitySuggestionListResponse>(getListMyAvailabilitySuggestionsUrl(params),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getListMyAvailabilitySuggestionsQueryKey = (params?: ListMyAvailabilitySuggestionsParams,) => {
+    return [
+    `/api/availability-suggestions`, ...(params ? [params] : [])
+    ] as const;
+    }
+
+
+export const getListMyAvailabilitySuggestionsQueryOptions = <TData = Awaited<ReturnType<typeof listMyAvailabilitySuggestions>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse>>(params?: ListMyAvailabilitySuggestionsParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof listMyAvailabilitySuggestions>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getListMyAvailabilitySuggestionsQueryKey(params);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof listMyAvailabilitySuggestions>>> = ({ signal }) => listMyAvailabilitySuggestions(params, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof listMyAvailabilitySuggestions>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type ListMyAvailabilitySuggestionsQueryResult = NonNullable<Awaited<ReturnType<typeof listMyAvailabilitySuggestions>>>
+export type ListMyAvailabilitySuggestionsQueryError = ErrorType<UnauthorizedResponse | ForbiddenResponse>
+
+
+/**
+ * @summary List private availability suggestions
+ */
+
+export function useListMyAvailabilitySuggestions<TData = Awaited<ReturnType<typeof listMyAvailabilitySuggestions>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse>>(
+ params?: ListMyAvailabilitySuggestionsParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof listMyAvailabilitySuggestions>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getListMyAvailabilitySuggestionsQueryOptions(params,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getCreateAvailabilitySuggestionUrl = () => {
+
+
+
+
+  return `/api/availability-suggestions`
+}
+
+/**
+ * OWNER and ADMIN only. Requires an independently operator-reviewed
+ * active AIS identity at submission. No provider request or telemetry is
+ * made or stored. Dates remain explicitly uncertain.
+ * @summary Submit a manually observed availability suggestion
+ */
+export const createAvailabilitySuggestion = async (availabilitySuggestionCreateRequest: AvailabilitySuggestionCreateRequest, options?: Parameters<typeof customFetch>[1]): Promise<AvailabilitySuggestion> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return customFetch<AvailabilitySuggestion>(getCreateAvailabilitySuggestionUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(availabilitySuggestionCreateRequest)
+  }
+);}
+
+
+
+
+
+export const getCreateAvailabilitySuggestionMutationKey = () => ['createAvailabilitySuggestion'] as const;
+
+export const getCreateAvailabilitySuggestionMutationOptions = <TError = ErrorType<BadRequestResponse | UnauthorizedResponse | ForbiddenResponse | ConflictResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createAvailabilitySuggestion>>, TError,CreateAvailabilitySuggestionMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof createAvailabilitySuggestion>>, TError,CreateAvailabilitySuggestionMutationVariables, TContext> => {
+
+const mutationKey = getCreateAvailabilitySuggestionMutationKey();
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof createAvailabilitySuggestion>>, CreateAvailabilitySuggestionMutationVariables> = (props) => {
+          const {data} = props ?? {};
+
+          return  createAvailabilitySuggestion(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type CreateAvailabilitySuggestionMutationResult = NonNullable<Awaited<ReturnType<typeof createAvailabilitySuggestion>>>
+    export type CreateAvailabilitySuggestionMutationBody = BodyType<AvailabilitySuggestionCreateRequest>
+    export type CreateAvailabilitySuggestionMutationError = ErrorType<BadRequestResponse | UnauthorizedResponse | ForbiddenResponse | ConflictResponse>
+    export type CreateAvailabilitySuggestionMutationVariables = {data: BodyType<AvailabilitySuggestionCreateRequest>}
+
+    /**
+ * @summary Submit a manually observed availability suggestion
+ */
+export const useCreateAvailabilitySuggestion = <TError = ErrorType<BadRequestResponse | UnauthorizedResponse | ForbiddenResponse | ConflictResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createAvailabilitySuggestion>>, TError,CreateAvailabilitySuggestionMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof createAvailabilitySuggestion>>,
+        TError,
+        CreateAvailabilitySuggestionMutationVariables,
+        TContext
+      > => {
+      return useMutation(getCreateAvailabilitySuggestionMutationOptions(options));
+    }
+
+export const getDismissAvailabilitySuggestionUrl = (suggestionId: string,) => {
+
+
+
+
+  return `/api/availability-suggestions/${suggestionId}/dismiss`
+}
+
+/**
+ * @summary Dismiss an availability suggestion
+ */
+export const dismissAvailabilitySuggestion = async (suggestionId: string, options?: Parameters<typeof customFetch>[1]): Promise<AvailabilitySuggestion> => {
+
+  return customFetch<AvailabilitySuggestion>(getDismissAvailabilitySuggestionUrl(suggestionId),
+  {
+    ...options,
+    method: 'POST'
+
+
+  }
+);}
+
+
+
+
+
+export const getDismissAvailabilitySuggestionMutationKey = () => ['dismissAvailabilitySuggestion'] as const;
+
+export const getDismissAvailabilitySuggestionMutationOptions = <TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof dismissAvailabilitySuggestion>>, TError,DismissAvailabilitySuggestionMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof dismissAvailabilitySuggestion>>, TError,DismissAvailabilitySuggestionMutationVariables, TContext> => {
+
+const mutationKey = getDismissAvailabilitySuggestionMutationKey();
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof dismissAvailabilitySuggestion>>, DismissAvailabilitySuggestionMutationVariables> = (props) => {
+          const {suggestionId} = props ?? {};
+
+          return  dismissAvailabilitySuggestion(suggestionId,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type DismissAvailabilitySuggestionMutationResult = NonNullable<Awaited<ReturnType<typeof dismissAvailabilitySuggestion>>>
+
+    export type DismissAvailabilitySuggestionMutationError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse>
+    export type DismissAvailabilitySuggestionMutationVariables = {suggestionId: string}
+
+    /**
+ * @summary Dismiss an availability suggestion
+ */
+export const useDismissAvailabilitySuggestion = <TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof dismissAvailabilitySuggestion>>, TError,DismissAvailabilitySuggestionMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof dismissAvailabilitySuggestion>>,
+        TError,
+        DismissAvailabilitySuggestionMutationVariables,
+        TContext
+      > => {
+      return useMutation(getDismissAvailabilitySuggestionMutationOptions(options));
     }
 
 export const getGetMyCapacityUrl = (capacityId: string,) => {

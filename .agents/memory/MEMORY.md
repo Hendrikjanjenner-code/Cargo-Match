@@ -2,3 +2,4 @@
 - [Demo isolation tradeoff](demo-isolation.md) — demo matching mirrors core rules without importing server code; preserve parity when core rules change.
 - [Commercial AIS boundary](ais-commercial-boundary.md) — public API docs and fixture tests do not establish paid access or commercial reuse rights.
 - [Deepsea feasibility provenance](deepsea-provenance.md) — arithmetic on manual estimates is not licensed route calculation or independent verification.
+- [Conflict reconstruction](conflict-reconstruction.md) — inspect clean git stages; generated conflict merges can corrupt unmarked neighboring handlers.

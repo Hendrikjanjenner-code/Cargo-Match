@@ -752,6 +752,10 @@ export interface CapacityOfferCreateRequest {
   listingStatus?: ListingStatus;
   availabilityConfidence?: AvailabilityConfidence;
   deepseaExtension?: DeepseaCapacityExtension;
+  /** Optional private operational plan being confirmed. */
+  availabilitySuggestionId?: string;
+  /** Must be true when availabilitySuggestionId is supplied. */
+  suggestionConfirmed?: boolean;
 }
 
 export interface CapacityOfferUpdateRequest {
@@ -777,6 +781,21 @@ export interface CapacityOfferUpdateRequest {
   deepseaExtension?: DeepseaCapacityExtension | null;
 }
 
+export interface AvailabilitySuggestionCreateRequest {
+  vesselId: string;
+  locationId: string;
+  expectedAvailableFrom: string;
+  expectedAvailableUntil: string;
+  /**
+     * @minLength 1
+     * @maxLength 300
+     */
+  sourceReference: string;
+  sourceObservedAt: string;
+  participationConfirmed: true;
+  sourceUseConfirmed: true;
+  uncertaintyAcknowledged: true;
+}
 export interface VesselListResponse {
   items: Vessel[];
   page: number;
@@ -1346,6 +1365,10 @@ export type ForbiddenResponse = ErrorEnvelope;
 export type NotFoundResponse = ErrorEnvelope;
 
 /**
+ * The requested state transition conflicts with the current resource state.
+ */
+export type ConflictResponse = ErrorEnvelope;
+/**
  * Opaque session token — `Bearer <sid>`.
  */
 export type AuthorizationSessionHeaderParameter = string;
@@ -1428,6 +1451,17 @@ page?: PageParameter;
 pageSize?: PageSizeParameter;
 };
 
+export type ListMyAvailabilitySuggestionsParams = {
+/**
+ * @minimum 1
+ */
+page?: PageParameter;
+/**
+ * @minimum 1
+ * @maximum 100
+ */
+pageSize?: PageSizeParameter;
+};
 export type ListMarketplaceParams = {
 listingType?: MarketplaceListingType;
 transportMode?: TransportMode;
@@ -1484,3 +1518,40 @@ page?: PageParameter;
 pageSize?: PageSizeParameter;
 };
 
+
+export const AvailabilitySuggestionStatus = {
+  PENDING: 'PENDING',
+  DISMISSED: 'DISMISSED',
+  CONVERTED: 'CONVERTED',
+  EXPIRED: 'EXPIRED',
+  INVALIDATED: 'INVALIDATED',
+} as const;
+
+export interface AvailabilitySuggestion {
+  id: string;
+  vesselId: string;
+  locationId: string;
+  expectedAvailableFrom: string;
+  expectedAvailableUntil: string;
+  /** @maxLength 300 */
+  sourceReference: string;
+  sourceObservedAt: string;
+  createdAt: string;
+  expiresAt: string;
+  status: AvailabilitySuggestionStatus;
+  uncertainty: 'UNCERTAIN';
+  explanation: string;
+  unknowns: string[];
+  /** @nullable */
+  capacityOfferId: string | null;
+  canConfirm: boolean;
+}
+
+export interface AvailabilitySuggestionListResponse {
+  items: AvailabilitySuggestion[];
+  page: number;
+  pageSize: number;
+  total: number;
+}
+
+export type AvailabilitySuggestionStatus = typeof AvailabilitySuggestionStatus[keyof typeof AvailabilitySuggestionStatus];

@@ -81,11 +81,6 @@ export const LogoutBrowserSessionResponse = zod.void()
  */
 
 
-
-
-
-
-
 export const ExchangeMobileAuthorizationCodeBody = zod.object({
   "code": zod.string().min(1),
   "code_verifier": zod.string().min(1),
@@ -117,8 +112,6 @@ export const LogoutMobileSessionResponse = zod.object({
  */
 
 
-
-
 export const GetMyCompanyResponse = zod.object({
   "id": zod.string().uuid(),
   "name": zod.string().min(1),
@@ -143,10 +136,6 @@ export const GetMyCompanyResponse = zod.object({
 export const createMyCompanyBodyCountryMin = 2;
 
 
-
-
-
-
 export const CreateMyCompanyBody = zod.object({
   "name": zod.string().min(1),
   "country": zod.string().min(createMyCompanyBodyCountryMin),
@@ -158,9 +147,6 @@ export const CreateMyCompanyBody = zod.object({
   "termsAccepted": zod.boolean().optional(),
   "privacyAccepted": zod.boolean().optional()
 })
-
-
-
 
 
 export const CreateMyCompanyResponse = zod.object({
@@ -186,10 +172,6 @@ export const CreateMyCompanyResponse = zod.object({
 export const updateMyCompanyBodyCountryMin = 2;
 
 
-
-
-
-
 export const UpdateMyCompanyBody = zod.object({
   "name": zod.string().min(1).optional(),
   "country": zod.string().min(updateMyCompanyBodyCountryMin).optional(),
@@ -199,9 +181,6 @@ export const UpdateMyCompanyBody = zod.object({
   "phone": zod.string().min(1).optional(),
   "vatRegistrationNumber": zod.string().nullish()
 })
-
-
-
 
 
 export const UpdateMyCompanyResponse = zod.object({
@@ -252,7 +231,6 @@ export const listMyVesselsResponseItemsItemDeepseaProfileOneDwtTonnesExclusiveMi
 export const listMyVesselsResponseItemsItemDeepseaProfileOneSummerDraftMetresExclusiveMin = 0;
 
 export const listMyVesselsResponseItemsItemDeepseaProfileOneGearConfigurationMax = 120;
-
 
 
 export const ListMyVesselsResponse = zod.object({
@@ -345,7 +323,6 @@ export const createMyVesselResponseDeepseaProfileOneSummerDraftMetresExclusiveMi
 export const createMyVesselResponseDeepseaProfileOneGearConfigurationMax = 120;
 
 
-
 export const CreateMyVesselResponse = zod.object({
   "id": zod.string().uuid(),
   "companyId": zod.string().uuid(),
@@ -394,7 +371,6 @@ export const getMyVesselResponseDeepseaProfileOneDwtTonnesExclusiveMin = 0;
 export const getMyVesselResponseDeepseaProfileOneSummerDraftMetresExclusiveMin = 0;
 
 export const getMyVesselResponseDeepseaProfileOneGearConfigurationMax = 120;
-
 
 
 export const GetMyVesselResponse = zod.object({
@@ -447,7 +423,6 @@ export const updateMyVesselBodyDeepseaProfileOneSummerDraftMetresExclusiveMin = 
 export const updateMyVesselBodyDeepseaProfileOneGearConfigurationMax = 120;
 
 
-
 export const UpdateMyVesselBody = zod.object({
   "transportMode": zod.enum(['INLAND_WATERWAY', 'DEEPSEA_BULK']).optional().describe('Transport mode. Omitted request values default to INLAND_WATERWAY.'),
   "vesselName": zod.string().min(1).optional(),
@@ -484,7 +459,6 @@ export const updateMyVesselResponseDeepseaProfileOneDwtTonnesExclusiveMin = 0;
 export const updateMyVesselResponseDeepseaProfileOneSummerDraftMetresExclusiveMin = 0;
 
 export const updateMyVesselResponseDeepseaProfileOneGearConfigurationMax = 120;
-
 
 
 export const UpdateMyVesselResponse = zod.object({
@@ -536,7 +510,6 @@ export const deactivateMyVesselResponseDeepseaProfileOneDwtTonnesExclusiveMin = 
 export const deactivateMyVesselResponseDeepseaProfileOneSummerDraftMetresExclusiveMin = 0;
 
 export const deactivateMyVesselResponseDeepseaProfileOneGearConfigurationMax = 120;
-
 
 
 export const DeactivateMyVesselResponse = zod.object({
@@ -592,9 +565,6 @@ export const getMyVesselAisResponseTelemetryOneHeadingDegreesExclusiveMax = 360;
 export const getMyVesselAisResponseTelemetryOneReportedDraughtMetersMin = 0;
 
 
-
-
-
 export const GetMyVesselAisResponse = zod.object({
   "vesselId": zod.string().uuid(),
   "status": zod.enum(['NOT_CONFIGURED', 'AVAILABLE', 'UNAVAILABLE']),
@@ -647,7 +617,6 @@ export const listMyVesselAisIdentitiesResponseItemsItemEvidenceOneSourceMax = 20
 export const listMyVesselAisIdentitiesResponseItemsItemEvidenceOneReferenceMax = 1000;
 
 export const listMyVesselAisIdentitiesResponseItemsItemEvidenceOneNotesMax = 2000;
-
 
 
 export const ListMyVesselAisIdentitiesResponse = zod.object({
@@ -707,7 +676,6 @@ export const registerMyVesselAisIdentityBodyEvidenceOneReferenceMax = 1000;
 export const registerMyVesselAisIdentityBodyEvidenceOneNotesMax = 2000;
 
 
-
 export const RegisterMyVesselAisIdentityBody = zod.object({
   "identifierType": zod.enum(['ENI', 'MMSI', 'IMO', 'VESSELFINDER_ID', 'MARINETRAFFIC_ID', 'OTHER']),
   "identifierValue": zod.string().min(1).max(registerMyVesselAisIdentityBodyIdentifierValueMax).describe('Stable ENI, MMSI, IMO, or provider identifier; never a vessel name.'),
@@ -726,7 +694,6 @@ export const registerMyVesselAisIdentityResponseEvidenceOneSourceMax = 200;
 export const registerMyVesselAisIdentityResponseEvidenceOneReferenceMax = 1000;
 
 export const registerMyVesselAisIdentityResponseEvidenceOneNotesMax = 2000;
-
 
 
 export const RegisterMyVesselAisIdentityResponse = zod.object({
@@ -771,7 +738,6 @@ export const updateMyVesselAisIdentityBodyEvidenceOneReferenceMax = 1000;
 export const updateMyVesselAisIdentityBodyEvidenceOneNotesMax = 2000;
 
 
-
 export const UpdateMyVesselAisIdentityBody = zod.object({
   "identifierType": zod.enum(['ENI', 'MMSI', 'IMO', 'VESSELFINDER_ID', 'MARINETRAFFIC_ID', 'OTHER']).optional(),
   "identifierValue": zod.string().min(1).max(updateMyVesselAisIdentityBodyIdentifierValueMax).optional().describe('Stable ENI, MMSI, IMO, or provider identifier; never a vessel name.'),
@@ -790,7 +756,6 @@ export const updateMyVesselAisIdentityResponseEvidenceOneSourceMax = 200;
 export const updateMyVesselAisIdentityResponseEvidenceOneReferenceMax = 1000;
 
 export const updateMyVesselAisIdentityResponseEvidenceOneNotesMax = 2000;
-
 
 
 export const UpdateMyVesselAisIdentityResponse = zod.object({
@@ -835,7 +800,6 @@ export const listLocationsQueryPageSizeDefault = 25;
 export const listLocationsQueryPageSizeMax = 100;
 
 
-
 export const ListLocationsQueryParams = zod.object({
   "search": zod.coerce.string().optional(),
   "country": zod.coerce.string().optional(),
@@ -868,14 +832,12 @@ export const listMyCargoQueryPageSizeDefault = 25;
 export const listMyCargoQueryPageSizeMax = 100;
 
 
-
 export const ListMyCargoQueryParams = zod.object({
   "listingStatus": zod.enum(['DRAFT', 'ACTIVE', 'WITHDRAWN', 'EXPIRED', 'CLOSED']).optional(),
   "transportMode": zod.enum(['INLAND_WATERWAY', 'DEEPSEA_BULK']).optional(),
   "page": zod.coerce.number().int().min(1).default(listMyCargoQueryPageDefault),
   "pageSize": zod.coerce.number().int().min(1).max(listMyCargoQueryPageSizeMax).default(listMyCargoQueryPageSizeDefault)
 })
-
 
 
 export const listMyCargoResponseItemsItemWeightTonnesExclusiveMin = 0;
@@ -891,7 +853,6 @@ export const listMyCargoResponseItemsItemDeepseaRequirementOneMaximumVesselDwtTo
 export const listMyCargoResponseItemsItemDeepseaRequirementOneMaximumDraftMetresExclusiveMin = 0;
 
 export const listMyCargoResponseItemsItemDeepseaRequirementOneRequiredGearMax = 120;
-
 
 
 export const ListMyCargoResponse = zod.object({
@@ -950,7 +911,6 @@ export const createMyCargoBodyDeepseaRequirementMaximumDraftMetresExclusiveMin =
 export const createMyCargoBodyDeepseaRequirementRequiredGearMax = 120;
 
 
-
 export const CreateMyCargoBody = zod.object({
   "transportMode": zod.enum(['INLAND_WATERWAY', 'DEEPSEA_BULK']).default(createMyCargoBodyTransportModeDefault).describe('Transport mode. Omitted request values default to INLAND_WATERWAY.'),
   "cargoName": zod.string().min(1),
@@ -977,7 +937,6 @@ export const CreateMyCargoBody = zod.object({
 })
 
 
-
 export const createMyCargoResponseWeightTonnesExclusiveMin = 0;
 
 export const createMyCargoResponseDeepseaRequirementOneQuantityTolerancePercentDefault = 0;
@@ -991,7 +950,6 @@ export const createMyCargoResponseDeepseaRequirementOneMaximumVesselDwtTonnesExc
 export const createMyCargoResponseDeepseaRequirementOneMaximumDraftMetresExclusiveMin = 0;
 
 export const createMyCargoResponseDeepseaRequirementOneRequiredGearMax = 120;
-
 
 
 export const CreateMyCargoResponse = zod.object({
@@ -1032,7 +990,6 @@ export const GetMyCargoParams = zod.object({
 })
 
 
-
 export const getMyCargoResponseWeightTonnesExclusiveMin = 0;
 
 export const getMyCargoResponseDeepseaRequirementOneQuantityTolerancePercentDefault = 0;
@@ -1046,7 +1003,6 @@ export const getMyCargoResponseDeepseaRequirementOneMaximumVesselDwtTonnesExclus
 export const getMyCargoResponseDeepseaRequirementOneMaximumDraftMetresExclusiveMin = 0;
 
 export const getMyCargoResponseDeepseaRequirementOneRequiredGearMax = 120;
-
 
 
 export const GetMyCargoResponse = zod.object({
@@ -1087,7 +1043,6 @@ export const UpdateMyCargoParams = zod.object({
 })
 
 
-
 export const updateMyCargoBodyWeightTonnesExclusiveMin = 0;
 
 export const updateMyCargoBodyDeepseaRequirementOneQuantityTolerancePercentDefault = 0;
@@ -1101,7 +1056,6 @@ export const updateMyCargoBodyDeepseaRequirementOneMaximumVesselDwtTonnesExclusi
 export const updateMyCargoBodyDeepseaRequirementOneMaximumDraftMetresExclusiveMin = 0;
 
 export const updateMyCargoBodyDeepseaRequirementOneRequiredGearMax = 120;
-
 
 
 export const UpdateMyCargoBody = zod.object({
@@ -1130,7 +1084,6 @@ export const UpdateMyCargoBody = zod.object({
 })
 
 
-
 export const updateMyCargoResponseWeightTonnesExclusiveMin = 0;
 
 export const updateMyCargoResponseDeepseaRequirementOneQuantityTolerancePercentDefault = 0;
@@ -1144,7 +1097,6 @@ export const updateMyCargoResponseDeepseaRequirementOneMaximumVesselDwtTonnesExc
 export const updateMyCargoResponseDeepseaRequirementOneMaximumDraftMetresExclusiveMin = 0;
 
 export const updateMyCargoResponseDeepseaRequirementOneRequiredGearMax = 120;
-
 
 
 export const UpdateMyCargoResponse = zod.object({
@@ -1185,7 +1137,6 @@ export const WithdrawMyCargoParams = zod.object({
 })
 
 
-
 export const withdrawMyCargoResponseWeightTonnesExclusiveMin = 0;
 
 export const withdrawMyCargoResponseDeepseaRequirementOneQuantityTolerancePercentDefault = 0;
@@ -1199,7 +1150,6 @@ export const withdrawMyCargoResponseDeepseaRequirementOneMaximumVesselDwtTonnesE
 export const withdrawMyCargoResponseDeepseaRequirementOneMaximumDraftMetresExclusiveMin = 0;
 
 export const withdrawMyCargoResponseDeepseaRequirementOneRequiredGearMax = 120;
-
 
 
 export const WithdrawMyCargoResponse = zod.object({
@@ -1240,7 +1190,6 @@ export const CloseMyCargoParams = zod.object({
 })
 
 
-
 export const closeMyCargoResponseWeightTonnesExclusiveMin = 0;
 
 export const closeMyCargoResponseDeepseaRequirementOneQuantityTolerancePercentDefault = 0;
@@ -1254,7 +1203,6 @@ export const closeMyCargoResponseDeepseaRequirementOneMaximumVesselDwtTonnesExcl
 export const closeMyCargoResponseDeepseaRequirementOneMaximumDraftMetresExclusiveMin = 0;
 
 export const closeMyCargoResponseDeepseaRequirementOneRequiredGearMax = 120;
-
 
 
 export const CloseMyCargoResponse = zod.object({
@@ -1296,7 +1244,6 @@ export const listMyCapacityQueryPageSizeDefault = 25;
 export const listMyCapacityQueryPageSizeMax = 100;
 
 
-
 export const ListMyCapacityQueryParams = zod.object({
   "listingStatus": zod.enum(['DRAFT', 'ACTIVE', 'WITHDRAWN', 'EXPIRED', 'CLOSED']).optional(),
   "transportMode": zod.enum(['INLAND_WATERWAY', 'DEEPSEA_BULK']).optional(),
@@ -1305,7 +1252,6 @@ export const ListMyCapacityQueryParams = zod.object({
 })
 
 export const listMyCapacityResponseItemsItemAvailableCapacityTonnesExclusiveMin = 0;
-
 
 
 export const listMyCapacityResponseItemsItemMaximumPositioningDistanceKmExclusiveMin = 0;
@@ -1325,7 +1271,6 @@ export const listMyCapacityResponseItemsItemDeepseaExtensionOnePositioningBuffer
 export const listMyCapacityResponseItemsItemDeepseaExtensionOneApproximateMaxDistanceKmExclusiveMin = 0;
 
 export const listMyCapacityResponseItemsItemDeepseaExtensionOnePreviousVoyageContextMax = 4000;
-
 
 
 export const ListMyCapacityResponse = zod.object({
@@ -1371,7 +1316,6 @@ export const createMyCapacityBodyTransportModeDefault = `INLAND_WATERWAY`;
 export const createMyCapacityBodyAvailableCapacityTonnesExclusiveMin = 0;
 
 
-
 export const createMyCapacityBodyMaximumPositioningDistanceKmExclusiveMin = 0;
 
 export const createMyCapacityBodyListingStatusDefault = `DRAFT`;
@@ -1391,7 +1335,6 @@ export const createMyCapacityBodyDeepseaExtensionPositioningBufferDaysMax = 365;
 export const createMyCapacityBodyDeepseaExtensionApproximateMaxDistanceKmExclusiveMin = 0;
 
 export const createMyCapacityBodyDeepseaExtensionPreviousVoyageContextMax = 4000;
-
 
 
 export const CreateMyCapacityBody = zod.object({
@@ -1417,11 +1360,12 @@ export const CreateMyCapacityBody = zod.object({
   "positioningBufferDays": zod.number().min(createMyCapacityBodyDeepseaExtensionPositioningBufferDaysMin).max(createMyCapacityBodyDeepseaExtensionPositioningBufferDaysMax).nullish().describe('User-estimated positioning buffer in days.'),
   "approximateMaxDistanceKm": zod.number().gt(createMyCapacityBodyDeepseaExtensionApproximateMaxDistanceKmExclusiveMin).nullish().describe('Geodesic approximation only, never actual sailing distance.'),
   "previousVoyageContext": zod.string().max(createMyCapacityBodyDeepseaExtensionPreviousVoyageContextMax).nullish()
-}).optional()
+}).optional(),
+  "availabilitySuggestionId": zod.string().uuid().optional().describe('Optional private operational plan being confirmed.'),
+  "suggestionConfirmed": zod.boolean().optional().describe('Must be true when availabilitySuggestionId is supplied.')
 })
 
 export const createMyCapacityResponseAvailableCapacityTonnesExclusiveMin = 0;
-
 
 
 export const createMyCapacityResponseMaximumPositioningDistanceKmExclusiveMin = 0;
@@ -1441,7 +1385,6 @@ export const createMyCapacityResponseDeepseaExtensionOnePositioningBufferDaysMax
 export const createMyCapacityResponseDeepseaExtensionOneApproximateMaxDistanceKmExclusiveMin = 0;
 
 export const createMyCapacityResponseDeepseaExtensionOnePreviousVoyageContextMax = 4000;
-
 
 
 export const CreateMyCapacityResponse = zod.object({
@@ -1474,7 +1417,13 @@ export const CreateMyCapacityResponse = zod.object({
 }),zod.null()]).optional()
 })
 
-
+/**
+ * Lists only suggestions owned by the current company. Suggestions are
+ * operational manual plans, not telemetry or ETA predictions. Statuses
+ * EXPIRED and INVALIDATED are derived at read time.
+ * @summary List private availability suggestions
+ */
+export const listMyAvailabilitySuggestionsQueryPageDefault = 1;
 /**
  * @summary Get one of the current company's capacity offers
  */
@@ -1483,7 +1432,6 @@ export const GetMyCapacityParams = zod.object({
 })
 
 export const getMyCapacityResponseAvailableCapacityTonnesExclusiveMin = 0;
-
 
 
 export const getMyCapacityResponseMaximumPositioningDistanceKmExclusiveMin = 0;
@@ -1503,7 +1451,6 @@ export const getMyCapacityResponseDeepseaExtensionOnePositioningBufferDaysMax = 
 export const getMyCapacityResponseDeepseaExtensionOneApproximateMaxDistanceKmExclusiveMin = 0;
 
 export const getMyCapacityResponseDeepseaExtensionOnePreviousVoyageContextMax = 4000;
-
 
 
 export const GetMyCapacityResponse = zod.object({
@@ -1547,7 +1494,6 @@ export const UpdateMyCapacityParams = zod.object({
 export const updateMyCapacityBodyAvailableCapacityTonnesExclusiveMin = 0;
 
 
-
 export const updateMyCapacityBodyMaximumPositioningDistanceKmExclusiveMin = 0;
 
 export const updateMyCapacityBodyDeepseaExtensionOneManualPositioningDaysMin = 0;
@@ -1565,7 +1511,6 @@ export const updateMyCapacityBodyDeepseaExtensionOnePositioningBufferDaysMax = 3
 export const updateMyCapacityBodyDeepseaExtensionOneApproximateMaxDistanceKmExclusiveMin = 0;
 
 export const updateMyCapacityBodyDeepseaExtensionOnePreviousVoyageContextMax = 4000;
-
 
 
 export const UpdateMyCapacityBody = zod.object({
@@ -1597,7 +1542,6 @@ export const UpdateMyCapacityBody = zod.object({
 export const updateMyCapacityResponseAvailableCapacityTonnesExclusiveMin = 0;
 
 
-
 export const updateMyCapacityResponseMaximumPositioningDistanceKmExclusiveMin = 0;
 
 export const updateMyCapacityResponseDeepseaExtensionOneManualPositioningDaysMin = 0;
@@ -1615,7 +1559,6 @@ export const updateMyCapacityResponseDeepseaExtensionOnePositioningBufferDaysMax
 export const updateMyCapacityResponseDeepseaExtensionOneApproximateMaxDistanceKmExclusiveMin = 0;
 
 export const updateMyCapacityResponseDeepseaExtensionOnePreviousVoyageContextMax = 4000;
-
 
 
 export const UpdateMyCapacityResponse = zod.object({
@@ -1659,7 +1602,6 @@ export const WithdrawMyCapacityParams = zod.object({
 export const withdrawMyCapacityResponseAvailableCapacityTonnesExclusiveMin = 0;
 
 
-
 export const withdrawMyCapacityResponseMaximumPositioningDistanceKmExclusiveMin = 0;
 
 export const withdrawMyCapacityResponseDeepseaExtensionOneManualPositioningDaysMin = 0;
@@ -1677,7 +1619,6 @@ export const withdrawMyCapacityResponseDeepseaExtensionOnePositioningBufferDaysM
 export const withdrawMyCapacityResponseDeepseaExtensionOneApproximateMaxDistanceKmExclusiveMin = 0;
 
 export const withdrawMyCapacityResponseDeepseaExtensionOnePreviousVoyageContextMax = 4000;
-
 
 
 export const WithdrawMyCapacityResponse = zod.object({
@@ -1721,7 +1662,6 @@ export const CloseMyCapacityParams = zod.object({
 export const closeMyCapacityResponseAvailableCapacityTonnesExclusiveMin = 0;
 
 
-
 export const closeMyCapacityResponseMaximumPositioningDistanceKmExclusiveMin = 0;
 
 export const closeMyCapacityResponseDeepseaExtensionOneManualPositioningDaysMin = 0;
@@ -1739,7 +1679,6 @@ export const closeMyCapacityResponseDeepseaExtensionOnePositioningBufferDaysMax 
 export const closeMyCapacityResponseDeepseaExtensionOneApproximateMaxDistanceKmExclusiveMin = 0;
 
 export const closeMyCapacityResponseDeepseaExtensionOnePreviousVoyageContextMax = 4000;
-
 
 
 export const CloseMyCapacityResponse = zod.object({
@@ -1784,7 +1723,6 @@ export const listMarketplaceQueryPageDefault = 1;
 
 export const listMarketplaceQueryPageSizeDefault = 25;
 export const listMarketplaceQueryPageSizeMax = 100;
-
 
 
 export const ListMarketplaceQueryParams = zod.object({
@@ -1848,7 +1786,6 @@ export const listMyMatchesQueryPageSizeDefault = 25;
 export const listMyMatchesQueryPageSizeMax = 100;
 
 
-
 export const ListMyMatchesQueryParams = zod.object({
   "status": zod.enum(['NEW', 'INTEREST_SENT', 'CONNECTED', 'DECLINED', 'EXPIRED']).optional(),
   "transportMode": zod.enum(['INLAND_WATERWAY', 'DEEPSEA_BULK']).optional(),
@@ -1876,7 +1813,6 @@ export const listMyMatchesResponseItemsItemScoreComponentsDirectionScoreMax = 10
 
 export const listMyMatchesResponseItemsItemScoreComponentsCargoCompatibilityScoreMin = 0;
 export const listMyMatchesResponseItemsItemScoreComponentsCargoCompatibilityScoreMax = 100;
-
 
 
 export const ListMyMatchesResponse = zod.object({
@@ -1999,7 +1935,6 @@ export const getMyMatchResponseOneScoreComponentsCargoCompatibilityScoreMin = 0;
 export const getMyMatchResponseOneScoreComponentsCargoCompatibilityScoreMax = 100;
 
 
-
 export const getMyMatchResponseTwoOwnedCargoOneWeightTonnesExclusiveMin = 0;
 
 export const getMyMatchResponseTwoOwnedCargoOneDeepseaRequirementOneQuantityTolerancePercentDefault = 0;
@@ -2015,7 +1950,6 @@ export const getMyMatchResponseTwoOwnedCargoOneDeepseaRequirementOneMaximumDraft
 export const getMyMatchResponseTwoOwnedCargoOneDeepseaRequirementOneRequiredGearMax = 120;
 
 export const getMyMatchResponseTwoOwnedCapacityOneAvailableCapacityTonnesExclusiveMin = 0;
-
 
 
 export const getMyMatchResponseTwoOwnedCapacityOneMaximumPositioningDistanceKmExclusiveMin = 0;
@@ -2063,7 +1997,6 @@ export const getMyMatchResponseTwoConnectedCapacityOneDeepseaExtensionOnePositio
 export const getMyMatchResponseTwoConnectedCapacityOneDeepseaExtensionOneApproximateMaxDistanceKmExclusiveMin = 0;
 
 export const getMyMatchResponseTwoConnectedCapacityOneDeepseaExtensionOnePreviousVoyageContextMax = 4000;
-
 
 
 export const GetMyMatchResponse = zod.object({
@@ -2311,7 +2244,6 @@ export const actOnMatchResponseOneScoreComponentsCargoCompatibilityScoreMin = 0;
 export const actOnMatchResponseOneScoreComponentsCargoCompatibilityScoreMax = 100;
 
 
-
 export const actOnMatchResponseTwoOwnedCargoOneWeightTonnesExclusiveMin = 0;
 
 export const actOnMatchResponseTwoOwnedCargoOneDeepseaRequirementOneQuantityTolerancePercentDefault = 0;
@@ -2327,7 +2259,6 @@ export const actOnMatchResponseTwoOwnedCargoOneDeepseaRequirementOneMaximumDraft
 export const actOnMatchResponseTwoOwnedCargoOneDeepseaRequirementOneRequiredGearMax = 120;
 
 export const actOnMatchResponseTwoOwnedCapacityOneAvailableCapacityTonnesExclusiveMin = 0;
-
 
 
 export const actOnMatchResponseTwoOwnedCapacityOneMaximumPositioningDistanceKmExclusiveMin = 0;
@@ -2375,7 +2306,6 @@ export const actOnMatchResponseTwoConnectedCapacityOneDeepseaExtensionOnePositio
 export const actOnMatchResponseTwoConnectedCapacityOneDeepseaExtensionOneApproximateMaxDistanceKmExclusiveMin = 0;
 
 export const actOnMatchResponseTwoConnectedCapacityOneDeepseaExtensionOnePreviousVoyageContextMax = 4000;
-
 
 
 export const ActOnMatchResponse = zod.object({
@@ -2595,7 +2525,6 @@ export const listMyConversationsQueryPageSizeDefault = 25;
 export const listMyConversationsQueryPageSizeMax = 100;
 
 
-
 export const ListMyConversationsQueryParams = zod.object({
   "page": zod.coerce.number().int().min(1).default(listMyConversationsQueryPageDefault),
   "pageSize": zod.coerce.number().int().min(1).max(listMyConversationsQueryPageSizeMax).default(listMyConversationsQueryPageSizeDefault)
@@ -2607,7 +2536,6 @@ export const listMyConversationsResponseItemsItemParticipantCompaniesMax = 2;
 export const listMyConversationsResponseItemsItemLastMessageOneBodyMax = 10000;
 
 export const listMyConversationsResponseItemsItemUnreadCountMin = 0;
-
 
 
 export const ListMyConversationsResponse = zod.object({
@@ -2658,7 +2586,6 @@ export const getMyConversationResponseLastMessageOneBodyMax = 10000;
 export const getMyConversationResponseUnreadCountMin = 0;
 
 
-
 export const GetMyConversationResponse = zod.object({
   "id": zod.string().uuid(),
   "matchId": zod.string().uuid(),
@@ -2696,7 +2623,6 @@ export const ListConversationMessagesParams = zod.object({
 export const listConversationMessagesResponseItemsItemBodyMax = 10000;
 
 
-
 export const ListConversationMessagesResponse = zod.object({
   "items": zod.array(zod.object({
   "id": zod.string().uuid(),
@@ -2723,13 +2649,11 @@ export const SendConversationMessageParams = zod.object({
 export const sendConversationMessageBodyBodyMax = 10000;
 
 
-
 export const SendConversationMessageBody = zod.object({
   "body": zod.string().min(1).max(sendConversationMessageBodyBodyMax)
 })
 
 export const sendConversationMessageResponseBodyMax = 10000;
-
 
 
 export const SendConversationMessageResponse = zod.object({
@@ -2752,8 +2676,6 @@ export const MarkConversationMessagesReadParams = zod.object({
 })
 
 
-
-
 export const MarkConversationMessagesReadBody = zod.object({
   "messageIds": zod.array(zod.string().uuid()).min(1)
 })
@@ -2774,7 +2696,6 @@ export const listMyNotificationsQueryPageSizeDefault = 25;
 export const listMyNotificationsQueryPageSizeMax = 100;
 
 
-
 export const ListMyNotificationsQueryParams = zod.object({
   "unreadOnly": zod.coerce.boolean().default(listMyNotificationsQueryUnreadOnlyDefault),
   "page": zod.coerce.number().int().min(1).default(listMyNotificationsQueryPageDefault),
@@ -2782,7 +2703,6 @@ export const ListMyNotificationsQueryParams = zod.object({
 })
 
 export const listMyNotificationsResponseUnreadCountMin = 0;
-
 
 
 export const ListMyNotificationsResponse = zod.object({
@@ -2822,3 +2742,103 @@ export const MarkNotificationReadResponse = zod.object({
 })
 
 
+export const CreateAvailabilitySuggestionBody = zod.object({
+  "vesselId": zod.string().uuid(),
+  "locationId": zod.string().uuid(),
+  "expectedAvailableFrom": zod.coerce.date(),
+  "expectedAvailableUntil": zod.coerce.date(),
+  "sourceReference": zod.string().min(1).max(createAvailabilitySuggestionBodySourceReferenceMax),
+  "sourceObservedAt": zod.coerce.date(),
+  "participationConfirmed": zod.literal(true),
+  "sourceUseConfirmed": zod.literal(true),
+  "uncertaintyAcknowledged": zod.literal(true)
+})
+
+export const listMyAvailabilitySuggestionsQueryPageSizeMax = 100;
+
+export const dismissAvailabilitySuggestionResponseSourceReferenceMax = 300;
+
+export const listMyAvailabilitySuggestionsQueryPageSizeDefault = 25;
+
+export const ListMyAvailabilitySuggestionsQueryParams = zod.object({
+  "page": zod.coerce.number().int().min(1).default(listMyAvailabilitySuggestionsQueryPageDefault),
+  "pageSize": zod.coerce.number().int().min(1).max(listMyAvailabilitySuggestionsQueryPageSizeMax).default(listMyAvailabilitySuggestionsQueryPageSizeDefault)
+})
+
+export const ListMyAvailabilitySuggestionsResponse = zod.object({
+  "items": zod.array(zod.object({
+  "id": zod.string().uuid(),
+  "vesselId": zod.string().uuid(),
+  "locationId": zod.string().uuid(),
+  "expectedAvailableFrom": zod.coerce.date(),
+  "expectedAvailableUntil": zod.coerce.date(),
+  "sourceReference": zod.string().max(listMyAvailabilitySuggestionsResponseItemsItemSourceReferenceMax),
+  "sourceObservedAt": zod.coerce.date(),
+  "createdAt": zod.coerce.date(),
+  "expiresAt": zod.coerce.date(),
+  "status": zod.enum(['PENDING', 'DISMISSED', 'CONVERTED', 'EXPIRED', 'INVALIDATED']),
+  "uncertainty": zod.literal("UNCERTAIN"),
+  "explanation": zod.string(),
+  "unknowns": zod.array(zod.string()),
+  "capacityOfferId": zod.string().uuid().nullable(),
+  "canConfirm": zod.boolean()
+})),
+  "page": zod.number().int(),
+  "pageSize": zod.number().int(),
+  "total": zod.number().int()
+})
+
+export const CreateAvailabilitySuggestionResponse = zod.object({
+  "id": zod.string().uuid(),
+  "vesselId": zod.string().uuid(),
+  "locationId": zod.string().uuid(),
+  "expectedAvailableFrom": zod.coerce.date(),
+  "expectedAvailableUntil": zod.coerce.date(),
+  "sourceReference": zod.string().max(createAvailabilitySuggestionResponseSourceReferenceMax),
+  "sourceObservedAt": zod.coerce.date(),
+  "createdAt": zod.coerce.date(),
+  "expiresAt": zod.coerce.date(),
+  "status": zod.enum(['PENDING', 'DISMISSED', 'CONVERTED', 'EXPIRED', 'INVALIDATED']),
+  "uncertainty": zod.literal("UNCERTAIN"),
+  "explanation": zod.string(),
+  "unknowns": zod.array(zod.string()),
+  "capacityOfferId": zod.string().uuid().nullable(),
+  "canConfirm": zod.boolean()
+})
+
+export const listMyAvailabilitySuggestionsResponseItemsItemSourceReferenceMax = 300;
+
+export const DismissAvailabilitySuggestionResponse = zod.object({
+  "id": zod.string().uuid(),
+  "vesselId": zod.string().uuid(),
+  "locationId": zod.string().uuid(),
+  "expectedAvailableFrom": zod.coerce.date(),
+  "expectedAvailableUntil": zod.coerce.date(),
+  "sourceReference": zod.string().max(dismissAvailabilitySuggestionResponseSourceReferenceMax),
+  "sourceObservedAt": zod.coerce.date(),
+  "createdAt": zod.coerce.date(),
+  "expiresAt": zod.coerce.date(),
+  "status": zod.enum(['PENDING', 'DISMISSED', 'CONVERTED', 'EXPIRED', 'INVALIDATED']),
+  "uncertainty": zod.literal("UNCERTAIN"),
+  "explanation": zod.string(),
+  "unknowns": zod.array(zod.string()),
+  "capacityOfferId": zod.string().uuid().nullable(),
+  "canConfirm": zod.boolean()
+})
+
+export const createAvailabilitySuggestionResponseSourceReferenceMax = 300;
+
+/**
+ * OWNER and ADMIN only. Requires an independently operator-reviewed
+ * active AIS identity at submission. No provider request or telemetry is
+ * made or stored. Dates remain explicitly uncertain.
+ * @summary Submit a manually observed availability suggestion
+ */
+export const createAvailabilitySuggestionBodySourceReferenceMax = 300;
+
+/**
+ * @summary Dismiss an availability suggestion
+ */
+export const DismissAvailabilitySuggestionParams = zod.object({
+  "suggestionId": zod.coerce.string().uuid()
+})

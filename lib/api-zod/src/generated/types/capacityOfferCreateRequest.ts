@@ -35,4 +35,8 @@ export interface CapacityOfferCreateRequest {
   listingStatus?: ListingStatus;
   availabilityConfidence?: AvailabilityConfidence;
   deepseaExtension?: DeepseaCapacityExtension;
+  /** Optional private operational plan being confirmed. */
+  availabilitySuggestionId?: string;
+  /** Must be true when availabilitySuggestionId is supplied. */
+  suggestionConfirmed?: boolean;
 }

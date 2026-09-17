@@ -2,16 +2,19 @@ import { useState } from "react";
 import { 
   useListMyCapacity, useCreateMyCapacity, useUpdateMyCapacity, useWithdrawMyCapacity, useCloseMyCapacity, 
   getListMyCapacityQueryKey, getListMarketplaceQueryKey, getListMyMatchesQueryKey, useListLocations,
-  useListMyVessels, AvailabilityType, Visibility, CapacityOffer, ListingStatus
+  useListMyVessels, AvailabilityType, Visibility, CapacityOffer, ListingStatus, AvailabilitySuggestion, AvailabilityConfidence,
+  getListMyAvailabilitySuggestionsQueryKey
 } from "@workspace/api-client-react";
 import { useQueryClient } from "@tanstack/react-query";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button, Input, Select, Label, Card, CardHeader, CardTitle, CardContent, Table, TableHeader, TableBody, TableRow, TableHead, TableCell, Badge, Textarea } from "@/components/ui/primitives";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Plus, XCircle, Ban, Edit2, PlayCircle, AlertCircle } from "lucide-react";
 import { formatDate, formatDateTimeInput } from "@/lib/utils";
 import { t } from "@/lib/i18n";
+import { CapacitySuggestions } from "./CapacitySuggestions";
 
 const schema = z.object({
   vesselId: z.string().min(1, t("validation.vessel_required")),
@@ -24,7 +27,12 @@ const schema = z.object({
   preferredDirection: z.string().min(1, t("validation.direction_required")),
   maximumPositioningDistanceKm: z.coerce.number().min(0, t("validation.distance_invalid")),
   visibility: z.nativeEnum(Visibility),
-  notes: z.string().optional()
+  notes: z.string().optional(),
+  availabilitySuggestionId: z.string().optional(),
+  suggestionConfirmed: z.boolean().optional()
+}).refine(data => !data.availabilitySuggestionId || data.suggestionConfirmed === true, {
+  message: "Controleer alle aanbodvelden en bevestig de omzetting naar een concept.",
+  path: ["suggestionConfirmed"]
 });
 
 type FormValues = z.infer<typeof schema>;
@@ -60,15 +68,18 @@ export default function Capacity() {
     withdrawCap.isPending ||
     closeCap.isPending;
 
-  const { register, handleSubmit, reset, formState: { errors } } = useForm<FormValues>({
+  const { register, handleSubmit, reset, watch, control, formState: { errors } } = useForm<FormValues>({
     resolver: zodResolver(schema),
     defaultValues: { availabilityType: AvailabilityType.FULLY_EMPTY, visibility: Visibility.OPEN_NETWORK, maximumPositioningDistanceKm: 50 }
   });
+
+  const currentSuggestionId = watch("availabilitySuggestionId");
 
   const invalidateCapacityCaches = () => {
     void queryClient.invalidateQueries({ queryKey: getListMyCapacityQueryKey() });
     void queryClient.invalidateQueries({ queryKey: getListMarketplaceQueryKey() });
     void queryClient.invalidateQueries({ queryKey: getListMyMatchesQueryKey() });
+    void queryClient.invalidateQueries({ queryKey: getListMyAvailabilitySuggestionsQueryKey() });
   };
 
   const onSubmit = (data: FormValues, requestedStatus?: ListingStatus) => {
@@ -82,7 +93,10 @@ export default function Capacity() {
       availableFrom: new Date(data.availableFrom).toISOString(),
       availableUntil: new Date(data.availableUntil).toISOString(),
       notes: data.notes || undefined,
-      cargoCompatibility: data.cargoCompatibility.split(",").map(s => s.trim()).filter(Boolean)
+      cargoCompatibility: data.cargoCompatibility.split(",").map(s => s.trim()).filter(Boolean),
+      availabilityConfidence: data.availabilitySuggestionId ? AvailabilityConfidence.EXPECTED : undefined,
+      availabilitySuggestionId: data.availabilitySuggestionId || undefined,
+      suggestionConfirmed: data.availabilitySuggestionId ? true : undefined,
     };
 
     if (editingId) {
@@ -116,10 +130,35 @@ export default function Capacity() {
       preferredDirection: c.preferredDirection,
       maximumPositioningDistanceKm: c.maximumPositioningDistanceKm,
       visibility: c.visibility,
-      notes: c.notes || ""
+      notes: c.notes || "",
+      availabilitySuggestionId: undefined,
+      suggestionConfirmed: undefined
     });
     setEditingId(c.id);
     setEditingStatus(c.listingStatus);
+    setFormError(null);
+    setLifecycleError(null);
+    setShowForm(true);
+  };
+
+  const handleReviewSuggestion = (s: AvailabilitySuggestion) => {
+    reset({
+      vesselId: s.vesselId,
+      locationId: s.locationId,
+      availableFrom: formatDateTimeInput(s.expectedAvailableFrom),
+      availableUntil: formatDateTimeInput(s.expectedAvailableUntil),
+      availabilityType: AvailabilityType.FULLY_EMPTY,
+      availableCapacityTonnes: 0, // human enters this
+      cargoCompatibility: "",
+      preferredDirection: "",
+      maximumPositioningDistanceKm: 50,
+      visibility: Visibility.OPEN_NETWORK,
+      notes: "",
+      availabilitySuggestionId: s.id,
+      suggestionConfirmed: false
+    });
+    setEditingId(null);
+    setEditingStatus(ListingStatus.DRAFT);
     setFormError(null);
     setLifecycleError(null);
     setShowForm(true);
@@ -135,7 +174,9 @@ export default function Capacity() {
       vesselId: "", locationId: "", availableFrom: "", availableUntil: "",
       availabilityType: AvailabilityType.FULLY_EMPTY, availableCapacityTonnes: 0,
       cargoCompatibility: "", preferredDirection: "", maximumPositioningDistanceKm: 50,
-      visibility: Visibility.OPEN_NETWORK, notes: ""
+      visibility: Visibility.OPEN_NETWORK, notes: "",
+      availabilitySuggestionId: undefined,
+      suggestionConfirmed: undefined
     });
   };
 
@@ -172,6 +213,13 @@ export default function Capacity() {
         </Button>
       </div>
 
+      <CapacitySuggestions
+        vessels={vessels}
+        locations={locations}
+        onReviewSuggestion={handleReviewSuggestion}
+        onManualOffer={() => { closeForm(); setShowForm(true); }}
+      />
+
       {capacityError && (
         <div role="alert" className="flex items-start gap-2 rounded-md border border-destructive/30 bg-destructive/10 p-3 text-sm text-destructive">
           <AlertCircle className="mt-0.5 h-4 w-4 shrink-0" />
@@ -194,10 +242,11 @@ export default function Capacity() {
                 
                 <div className="space-y-2">
                   <Label>{t("capacity.vessel_label")}</Label>
-                  <Select {...register("vesselId")}>
+                  <Select {...register("vesselId")} disabled={!!currentSuggestionId}>
                     <option value="">{t("capacity.select_vessel")}</option>
                     {vessels.map(v => <option key={v.id} value={v.id}>{v.vesselName} ({v.totalCapacityTonnes}t)</option>)}
                   </Select>
+                  {!!currentSuggestionId && <input type="hidden" {...register("vesselId")} />}
                   {errors.vesselId && <span className="text-xs text-destructive">{errors.vesselId.message}</span>}
                 </div>
 
@@ -265,6 +314,25 @@ export default function Capacity() {
                 </div>
               </div>
 
+              {currentSuggestionId && (
+                <div className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4 bg-muted/50 mt-4">
+                  <Controller
+                    name="suggestionConfirmed"
+                    control={control}
+                    render={({ field }) => (
+                      <Checkbox id="suggestionConfirmed" checked={field.value} onCheckedChange={field.onChange} />
+                    )}
+                  />
+                  <div className="space-y-1 leading-none">
+                    <Label htmlFor="suggestionConfirmed">Confirm Operational Plan</Label>
+                    <p className="text-xs text-muted-foreground mt-1">
+                      I have reviewed this operational plan and want to convert it into a commercial capacity draft.
+                    </p>
+                    {errors.suggestionConfirmed && <p className="text-xs text-destructive mt-1">{errors.suggestionConfirmed.message}</p>}
+                  </div>
+                </div>
+              )}
+
               {locationsError && (
                 <div role="alert" className="flex items-start gap-2 text-sm text-destructive mt-2">
                   <AlertCircle className="mt-0.5 h-4 w-4 shrink-0" />
@@ -289,9 +357,11 @@ export default function Capacity() {
                 <Button type="button" variant="outline" disabled={isPending} onClick={handleSubmit(data => onSubmit(data, ListingStatus.DRAFT))}>
                   {t("action.save_draft")}
                 </Button>
-                <Button type="button" disabled={isPending} onClick={handleSubmit(data => onSubmit(data, ListingStatus.ACTIVE))}>
-                  {isPending ? t("common.loading") : t("action.publish")}
-                </Button>
+                {!currentSuggestionId && (
+                  <Button type="button" disabled={isPending} onClick={handleSubmit(data => onSubmit(data, ListingStatus.ACTIVE))}>
+                    {isPending ? t("common.loading") : t("action.publish")}
+                  </Button>
+                )}
               </div>
             </form>
           </CardContent>
@@ -338,6 +408,13 @@ export default function Capacity() {
                       <Badge variant={c.listingStatus === 'ACTIVE' ? 'default' : 'secondary'}>
                         {t(`status.${c.listingStatus.toLowerCase()}`)}
                       </Badge>
+                      {c.availabilityConfidence === AvailabilityConfidence.EXPECTED && (
+                        <div className="mt-1">
+                          <Badge variant="outline" className="text-[10px] text-amber-600 border-amber-200 bg-amber-50">
+                            EXPECTED
+                          </Badge>
+                        </div>
+                      )}
                     </TableCell>
                     <TableCell className="text-right space-x-2">
                       {(c.listingStatus === 'ACTIVE' || c.listingStatus === 'DRAFT') && (

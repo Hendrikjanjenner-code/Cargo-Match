@@ -42,6 +42,7 @@ import {
   db,
   locationsTable,
   vesselsTable,
+  availabilitySuggestionsTable,
 } from "@workspace/db";
 
 import {
@@ -64,6 +65,10 @@ import {
   validateDeepseaCapacityExtension,
   validateDeepseaCargoRequirement,
 } from "../services/deepsea";
+import {
+  suggestionResponse,
+  verifiedSuggestionIdentity,
+} from "../services/availabilitySuggestions";
 
 const router: IRouter = Router();
 
@@ -100,11 +105,13 @@ async function listingWriteMembership(tx: any, userId: string) {
 }
 
 router.get("/cargo", async (req, res) => {
-  const current = await requireMembership(req, res);
+  const current = await requireMembership(req, res, {
+    roles: ["OWNER", "ADMIN"],
+  });
   if (!current) return;
-  const parsed = ListMyCargoQueryParams.safeParse(req.query);
+  const parsed = UpdateMyCapacityBody.safeParse(req.body);
   if (!parsed.success) {
-    error(res, 400, "Invalid cargo filters");
+    error(res, 400, "Invalid capacity filters");
     return;
   }
   const { page, pageSize, offset } = pageParams(
@@ -113,17 +120,17 @@ router.get("/cargo", async (req, res) => {
   );
   const where = parsed.data.listingStatus
     ? and(
-        eq(cargoListingsTable.companyId, current.company.id),
-        eq(cargoListingsTable.listingStatus, parsed.data.listingStatus),
-        eq(cargoListingsTable.transportMode, parsed.data.transportMode ?? "INLAND_WATERWAY"),
+        eq(capacityOffersTable.companyId, current.company.id),
+        eq(capacityOffersTable.listingStatus, parsed.data.listingStatus),
+        eq(capacityOffersTable.transportMode, parsed.data.transportMode ?? "INLAND_WATERWAY"),
       )
     : and(
-        eq(cargoListingsTable.companyId, current.company.id),
-        eq(cargoListingsTable.transportMode, parsed.data.transportMode ?? "INLAND_WATERWAY"),
+        eq(capacityOffersTable.companyId, current.company.id),
+        eq(capacityOffersTable.transportMode, parsed.data.transportMode ?? "INLAND_WATERWAY"),
       );
   const [items, [{ total }]] = await Promise.all([
-    db.select().from(cargoListingsTable).where(where).limit(pageSize).offset(offset),
-    db.select({ total: count() }).from(cargoListingsTable).where(where),
+    db.select().from(capacityOffersTable).where(where).limit(pageSize).offset(offset),
+    db.select({ total: count() }).from(capacityOffersTable).where(where),
   ]);
   const requirements = await db
     .select()
@@ -147,91 +154,190 @@ router.post("/cargo", async (req, res) => {
     roles: ["OWNER", "ADMIN"],
   });
   if (!current) return;
-  const parsed = CreateMyCargoBody.safeParse(req.body);
-  if (!parsed.success || !validWindow(parsed.data.loadingFrom, parsed.data.loadingUntil)) {
-    error(res, 400, "Invalid cargo data or loading window");
-    return;
-  }
-  if (
-    parsed.data.transportMode === "DEEPSEA_BULK" &&
-    !validateDeepseaCargoRequirement(parsed.data.deepseaRequirement)
-  ) {
-    error(res, 400, "Deepsea cargo requires valid deepsea requirements");
+  const parsed = UpdateMyCapacityBody.safeParse(req.body);
+  if (!params.success || !parsed.success || Object.keys(parsed.data).length === 0) {
+    error(res, 400, "Invalid capacity data");
     return;
   }
   const result = await db.transaction(async (tx) => {
     await lockDomain(tx);
     const writeMembership = await listingWriteMembership(tx, req.user!.id);
     if (!writeMembership) return { kind: "forbidden" as const };
-    const locations = await tx
-      .select({ id: locationsTable.id })
-      .from(locationsTable)
+    const [existing] = await tx
+      .select()
+      .from(capacityOffersTable)
       .where(
         and(
-          inArray(locationsTable.id, [
-            parsed.data.loadingLocationId,
-            parsed.data.destinationLocationId,
-          ]),
-          eq(locationsTable.active, true),
+          eq(capacityOffersTable.id, params.data.capacityId),
+          eq(capacityOffersTable.companyId, writeMembership.company.id),
         ),
       )
       .for("update");
-    if (locations.length !== 2) {
-      return { kind: "invalid-location" as const };
+    if (!existing) return { kind: "missing" as const };
+    const availableFrom = parsed.data.availableFrom ?? existing.availableFrom;
+    const availableUntil = parsed.data.availableUntil ?? existing.availableUntil;
+    const nextStatus = parsed.data.listingStatus ?? existing.listingStatus;
+    const nextAvailableCapacity =
+      parsed.data.availableCapacityTonnes ?? existing.availableCapacityTonnes;
+    if (!validListingTransition(existing.listingStatus, nextStatus)) {
+      return { kind: "invalid-transition" as const };
     }
-    const { deepseaRequirement, ...base } = parsed.data;
-    const [created] = await tx
-      .insert(cargoListingsTable)
-      .values({
+    if (!validWindow(availableFrom, availableUntil)) {
+      return { kind: "invalid-window" as const };
+    }
+    const nextVesselId = parsed.data.vesselId ?? existing.vesselId;
+    const [vessel] = await tx
+      .select()
+      .from(vesselsTable)
+      .where(
+        and(
+          eq(vesselsTable.id, nextVesselId),
+          eq(vesselsTable.companyId, writeMembership.company.id),
+          eq(vesselsTable.active, true),
+        ),
+      )
+      .for("update");
+    if (!vessel) return { kind: "invalid-vessel" as const };
+    const nextMode = parsed.data.transportMode ?? existing.transportMode;
+    if (vessel.transportMode !== nextMode) {
+      return { kind: "mode-mismatch" as const };
+    }
+    if (nextMode === "DEEPSEA_BULK") {
+      const [profile] = await tx
+        .select()
+        .from(deepseaVesselProfilesTable)
+        .where(eq(deepseaVesselProfilesTable.vesselId, vessel.id))
+        .for("update");
+      if (!profile) return { kind: "invalid-deepsea-profile" as const };
+      if (nextAvailableCapacity > profile.dwtTonnes) {
+        return { kind: "invalid-capacity" as const };
+      }
+      if (
+        parsed.data.deepseaExtension !== undefined &&
+        !validateDeepseaCapacityExtension(parsed.data.deepseaExtension)
+      ) {
+        return { kind: "invalid-deepsea-extension" as const };
+      }
+    }
+    if (
+      !isCapacityWithinVessel(
+        nextAvailableCapacity,
+        vessel.totalCapacityTonnes,
+      )
+    ) {
+      return { kind: "invalid-capacity" as const };
+    }
+    if (parsed.data.locationId) {
+      const [location] = await tx
+        .select({ id: locationsTable.id })
+        .from(locationsTable)
+        .where(
+          and(
+            eq(locationsTable.id, parsed.data.locationId),
+            eq(locationsTable.active, true),
+          ),
+        )
+        .for("update");
+      if (!location) return { kind: "invalid-location" as const };
+    }
+    const { deepseaExtension, ...base } = parsed.data;
+    const [updated] = await tx
+      .update(capacityOffersTable)
+      .set({
         ...base,
-        transportMode: base.transportMode ?? "INLAND_WATERWAY",
-        companyId: writeMembership.company.id,
-        expectedUnloadingDate: dateOnly(parsed.data.expectedUnloadingDate),
+        transportMode: nextMode,
+        updatedAt: new Date(),
       })
+      .where(
+        and(
+          eq(capacityOffersTable.id, params.data.capacityId),
+          eq(capacityOffersTable.companyId, writeMembership.company.id),
+        ),
+      )
       .returning();
-    if (created && deepseaRequirement) {
-      await replaceDeepseaCargoRequirement(tx, created.id, deepseaRequirement);
+    if (updated) {
+      if (nextMode === "DEEPSEA_BULK") {
+        if (deepseaExtension !== undefined) {
+          await replaceDeepseaCapacityExtension(tx, updated.id, deepseaExtension);
+        }
+      } else {
+        await replaceDeepseaCapacityExtension(tx, updated.id, null);
+      }
+      await recalculateMatchesWithin(tx, { changedCapacityIds: [updated.id] });
     }
-    if (created.listingStatus === "ACTIVE") {
-      await recalculateMatchesWithin(tx, { changedCargoIds: [created.id] });
-    }
-    return { kind: "created" as const, cargo: created };
+    return updated
+      ? { kind: "updated" as const, capacity: updated }
+      : { kind: "missing" as const };
   });
   if (result.kind === "forbidden") {
     error(res, 403, "Company membership is no longer authorized");
+    return;
+  }
+  if (result.kind === "invalid-vessel") {
+    error(res, 400, "Vessel is not active or is not owned by the company");
+    return;
+  }
+  if (result.kind === "mode-mismatch") {
+    error(res, 400, "Capacity transport mode must match its vessel");
+    return;
+  }
+  if (result.kind === "invalid-deepsea-profile") {
+    error(res, 400, "Deepsea capacity requires a vessel profile");
+    return;
+  }
+  if (result.kind === "invalid-capacity") {
+    error(res, 400, "Offered capacity cannot exceed vessel total capacity");
     return;
   }
   if (result.kind === "invalid-location") {
     error(res, 400, "Unknown or inactive catalogue location");
     return;
   }
+  if (result.kind === "suggestion-not-confirmed") {
+    error(res, 400, "suggestionConfirmed must be true");
+    return;
+  }
+  if (result.kind === "suggestion-draft-required") {
+    error(res, 400, "Suggestion confirmations must create DRAFT capacity with EXPECTED confidence");
+    return;
+  }
+  if (result.kind === "suggestion-missing") {
+    error(res, 404, "Availability suggestion not found");
+    return;
+  }
+  if (result.kind === "suggestion-invalid") {
+    error(res, 409, "Availability suggestion is expired, invalidated, or already converted");
+    return;
+  }
   res
     .status(201)
     .json(
-      CreateMyCargoResponse.parse(
-        cargoResponse(
-          result.cargo,
-          await deepseaDetailsForCargo(db, result.cargo.id),
+      CreateMyCapacityResponse.parse(
+        capacityResponse(
+          result.capacity,
+          await deepseaDetailsForCapacity(db, result.capacity.id),
         ),
       ),
     );
 });
 
-router.get("/cargo/:cargoId", async (req, res) => {
-  const current = await requireMembership(req, res);
+router.get("/capacity/:capacityId", async (req, res) => {
+  const current = await requireMembership(req, res, {
+    roles: ["OWNER", "ADMIN"],
+  });
   if (!current) return;
-  const parsed = GetMyCargoParams.safeParse(req.params);
+  const parsed = UpdateMyCapacityBody.safeParse(req.body);
   if (!parsed.success) {
-    error(res, 400, "Invalid cargo id");
+    error(res, 400, "Invalid capacity id");
     return;
   }
   const [existing] = await db
     .select()
-    .from(cargoListingsTable)
+    .from(capacityOffersTable)
     .where(
       and(
-        eq(cargoListingsTable.id, parsed.data.cargoId),
-        eq(cargoListingsTable.companyId, current.company.id),
+        eq(capacityOffersTable.id, parsed.data.capacityId),
+        eq(capacityOffersTable.companyId, current.company.id),
       ),
     );
   if (!existing) {
@@ -263,10 +369,10 @@ router.patch("/cargo/:cargoId", async (req, res) => {
     roles: ["OWNER", "ADMIN"],
   });
   if (!current) return;
-  const params = UpdateMyCargoParams.safeParse(req.params);
-  const parsed = UpdateMyCargoBody.safeParse(req.body);
+  const params = UpdateMyCapacityParams.safeParse(req.params);
+  const parsed = UpdateMyCapacityBody.safeParse(req.body);
   if (!params.success || !parsed.success || Object.keys(parsed.data).length === 0) {
-    error(res, 400, "Invalid cargo data");
+    error(res, 400, "Invalid capacity data");
     return;
   }
   const result = await db.transaction(async (tx) => {
@@ -275,81 +381,108 @@ router.patch("/cargo/:cargoId", async (req, res) => {
     if (!writeMembership) return { kind: "forbidden" as const };
     const [existing] = await tx
       .select()
-      .from(cargoListingsTable)
+      .from(capacityOffersTable)
       .where(
         and(
-          eq(cargoListingsTable.id, params.data.cargoId),
-          eq(cargoListingsTable.companyId, writeMembership.company.id),
+          eq(capacityOffersTable.id, params.data.capacityId),
+          eq(capacityOffersTable.companyId, writeMembership.company.id),
         ),
       )
       .for("update");
     if (!existing) return { kind: "missing" as const };
-    const nextMode = parsed.data.transportMode ?? existing.transportMode;
-    if (nextMode === "DEEPSEA_BULK") {
-      const requirement =
-        parsed.data.deepseaRequirement === undefined
-          ? await deepseaDetailsForCargo(tx, existing.id)
-          : parsed.data.deepseaRequirement;
-      if (!validateDeepseaCargoRequirement(requirement)) {
-        return { kind: "invalid-deepsea-requirement" as const };
-      }
-    }
-    const loadingFrom = parsed.data.loadingFrom ?? existing.loadingFrom;
-    const loadingUntil = parsed.data.loadingUntil ?? existing.loadingUntil;
+    const availableFrom = parsed.data.availableFrom ?? existing.availableFrom;
+    const availableUntil = parsed.data.availableUntil ?? existing.availableUntil;
     const nextStatus = parsed.data.listingStatus ?? existing.listingStatus;
+    const nextAvailableCapacity =
+      parsed.data.availableCapacityTonnes ?? existing.availableCapacityTonnes;
     if (!validListingTransition(existing.listingStatus, nextStatus)) {
       return { kind: "invalid-transition" as const };
     }
-    if (!validWindow(loadingFrom, loadingUntil)) {
+    if (!validWindow(availableFrom, availableUntil)) {
       return { kind: "invalid-window" as const };
     }
-    const locationIds = [
-      parsed.data.loadingLocationId,
-      parsed.data.destinationLocationId,
-    ].filter((id): id is string => !!id);
-    if (locationIds.length) {
-      const locations = await tx
+    const nextVesselId = parsed.data.vesselId ?? existing.vesselId;
+    const [vessel] = await tx
+      .select()
+      .from(vesselsTable)
+      .where(
+        and(
+          eq(vesselsTable.id, nextVesselId),
+          eq(vesselsTable.companyId, writeMembership.company.id),
+          eq(vesselsTable.active, true),
+        ),
+      )
+      .for("update");
+    if (!vessel) return { kind: "invalid-vessel" as const };
+    const nextMode = parsed.data.transportMode ?? existing.transportMode;
+    if (vessel.transportMode !== nextMode) {
+      return { kind: "mode-mismatch" as const };
+    }
+    if (nextMode === "DEEPSEA_BULK") {
+      const [profile] = await tx
+        .select()
+        .from(deepseaVesselProfilesTable)
+        .where(eq(deepseaVesselProfilesTable.vesselId, vessel.id))
+        .for("update");
+      if (!profile) return { kind: "invalid-deepsea-profile" as const };
+      if (nextAvailableCapacity > profile.dwtTonnes) {
+        return { kind: "invalid-capacity" as const };
+      }
+      if (
+        parsed.data.deepseaExtension !== undefined &&
+        !validateDeepseaCapacityExtension(parsed.data.deepseaExtension)
+      ) {
+        return { kind: "invalid-deepsea-extension" as const };
+      }
+    }
+    if (
+      !isCapacityWithinVessel(
+        nextAvailableCapacity,
+        vessel.totalCapacityTonnes,
+      )
+    ) {
+      return { kind: "invalid-capacity" as const };
+    }
+    if (parsed.data.locationId) {
+      const [location] = await tx
         .select({ id: locationsTable.id })
         .from(locationsTable)
         .where(
           and(
-            inArray(locationsTable.id, locationIds),
+            eq(locationsTable.id, parsed.data.locationId),
             eq(locationsTable.active, true),
           ),
         )
         .for("update");
-      if (locations.length !== locationIds.length) {
-        return { kind: "invalid-location" as const };
-      }
+      if (!location) return { kind: "invalid-location" as const };
     }
-    const { deepseaRequirement, ...base } = parsed.data;
+    const { deepseaExtension, ...base } = parsed.data;
     const [updated] = await tx
-      .update(cargoListingsTable)
+      .update(capacityOffersTable)
       .set({
         ...base,
         transportMode: nextMode,
-        expectedUnloadingDate: dateOnly(parsed.data.expectedUnloadingDate),
         updatedAt: new Date(),
       })
       .where(
         and(
-          eq(cargoListingsTable.id, params.data.cargoId),
-          eq(cargoListingsTable.companyId, writeMembership.company.id),
+          eq(capacityOffersTable.id, params.data.capacityId),
+          eq(capacityOffersTable.companyId, writeMembership.company.id),
         ),
       )
       .returning();
     if (updated) {
       if (nextMode === "DEEPSEA_BULK") {
-        if (deepseaRequirement !== undefined) {
-          await replaceDeepseaCargoRequirement(tx, updated.id, deepseaRequirement);
+        if (deepseaExtension !== undefined) {
+          await replaceDeepseaCapacityExtension(tx, updated.id, deepseaExtension);
         }
       } else {
-        await replaceDeepseaCargoRequirement(tx, updated.id, null);
+        await replaceDeepseaCapacityExtension(tx, updated.id, null);
       }
-      await recalculateMatchesWithin(tx, { changedCargoIds: [updated.id] });
+      await recalculateMatchesWithin(tx, { changedCapacityIds: [updated.id] });
     }
     return updated
-      ? { kind: "updated" as const, cargo: updated }
+      ? { kind: "updated" as const, capacity: updated }
       : { kind: "missing" as const };
   });
   if (result.kind === "forbidden") {
@@ -463,9 +596,11 @@ router.post("/cargo/:cargoId/close", (req, res) =>
 );
 
 router.get("/capacity", async (req, res) => {
-  const current = await requireMembership(req, res);
+  const current = await requireMembership(req, res, {
+    roles: ["OWNER", "ADMIN"],
+  });
   if (!current) return;
-  const parsed = ListMyCapacityQueryParams.safeParse(req.query);
+  const parsed = UpdateMyCapacityBody.safeParse(req.body);
   if (!parsed.success) {
     error(res, 400, "Invalid capacity filters");
     return;
@@ -510,89 +645,120 @@ router.post("/capacity", async (req, res) => {
     roles: ["OWNER", "ADMIN"],
   });
   if (!current) return;
-  const parsed = CreateMyCapacityBody.safeParse(req.body);
-  if (
-    !parsed.success ||
-    !validWindow(parsed.data.availableFrom, parsed.data.availableUntil)
-  ) {
-    error(res, 400, "Invalid capacity data or availability window");
-    return;
-  }
-  if (
-    parsed.data.transportMode === "DEEPSEA_BULK" &&
-    !validateDeepseaCapacityExtension(parsed.data.deepseaExtension)
-  ) {
-    error(res, 400, "Invalid deepsea capacity extension");
+  const parsed = UpdateMyCapacityBody.safeParse(req.body);
+  if (!params.success || !parsed.success || Object.keys(parsed.data).length === 0) {
+    error(res, 400, "Invalid capacity data");
     return;
   }
   const result = await db.transaction(async (tx) => {
     await lockDomain(tx);
     const writeMembership = await listingWriteMembership(tx, req.user!.id);
     if (!writeMembership) return { kind: "forbidden" as const };
+    const [existing] = await tx
+      .select()
+      .from(capacityOffersTable)
+      .where(
+        and(
+          eq(capacityOffersTable.id, params.data.capacityId),
+          eq(capacityOffersTable.companyId, writeMembership.company.id),
+        ),
+      )
+      .for("update");
+    if (!existing) return { kind: "missing" as const };
+    const availableFrom = parsed.data.availableFrom ?? existing.availableFrom;
+    const availableUntil = parsed.data.availableUntil ?? existing.availableUntil;
+    const nextStatus = parsed.data.listingStatus ?? existing.listingStatus;
+    const nextAvailableCapacity =
+      parsed.data.availableCapacityTonnes ?? existing.availableCapacityTonnes;
+    if (!validListingTransition(existing.listingStatus, nextStatus)) {
+      return { kind: "invalid-transition" as const };
+    }
+    if (!validWindow(availableFrom, availableUntil)) {
+      return { kind: "invalid-window" as const };
+    }
+    const nextVesselId = parsed.data.vesselId ?? existing.vesselId;
     const [vessel] = await tx
       .select()
       .from(vesselsTable)
       .where(
         and(
-          eq(vesselsTable.id, parsed.data.vesselId),
+          eq(vesselsTable.id, nextVesselId),
           eq(vesselsTable.companyId, writeMembership.company.id),
           eq(vesselsTable.active, true),
         ),
       )
       .for("update");
     if (!vessel) return { kind: "invalid-vessel" as const };
-    const requestedMode = parsed.data.transportMode ?? "INLAND_WATERWAY";
-    if (vessel.transportMode !== requestedMode) {
+    const nextMode = parsed.data.transportMode ?? existing.transportMode;
+    if (vessel.transportMode !== nextMode) {
       return { kind: "mode-mismatch" as const };
     }
-    if (requestedMode === "DEEPSEA_BULK") {
+    if (nextMode === "DEEPSEA_BULK") {
       const [profile] = await tx
         .select()
         .from(deepseaVesselProfilesTable)
         .where(eq(deepseaVesselProfilesTable.vesselId, vessel.id))
         .for("update");
       if (!profile) return { kind: "invalid-deepsea-profile" as const };
-      if (parsed.data.availableCapacityTonnes > profile.dwtTonnes) {
+      if (nextAvailableCapacity > profile.dwtTonnes) {
         return { kind: "invalid-capacity" as const };
+      }
+      if (
+        parsed.data.deepseaExtension !== undefined &&
+        !validateDeepseaCapacityExtension(parsed.data.deepseaExtension)
+      ) {
+        return { kind: "invalid-deepsea-extension" as const };
       }
     }
     if (
       !isCapacityWithinVessel(
-        parsed.data.availableCapacityTonnes,
+        nextAvailableCapacity,
         vessel.totalCapacityTonnes,
       )
     ) {
       return { kind: "invalid-capacity" as const };
     }
-    const [location] = await tx
-      .select()
-      .from(locationsTable)
+    if (parsed.data.locationId) {
+      const [location] = await tx
+        .select({ id: locationsTable.id })
+        .from(locationsTable)
+        .where(
+          and(
+            eq(locationsTable.id, parsed.data.locationId),
+            eq(locationsTable.active, true),
+          ),
+        )
+        .for("update");
+      if (!location) return { kind: "invalid-location" as const };
+    }
+    const { deepseaExtension, ...base } = parsed.data;
+    const [updated] = await tx
+      .update(capacityOffersTable)
+      .set({
+        ...base,
+        transportMode: nextMode,
+        updatedAt: new Date(),
+      })
       .where(
         and(
-          eq(locationsTable.id, parsed.data.locationId),
-          eq(locationsTable.active, true),
+          eq(capacityOffersTable.id, params.data.capacityId),
+          eq(capacityOffersTable.companyId, writeMembership.company.id),
         ),
       )
-      .for("update");
-    if (!location) return { kind: "invalid-location" as const };
-    const { deepseaExtension, ...base } = parsed.data;
-    const [created] = await tx
-      .insert(capacityOffersTable)
-      .values({
-        ...base,
-        transportMode: requestedMode,
-        companyId: writeMembership.company.id,
-        availabilityConfidence:
-          base.availabilityConfidence ?? "CONFIRMED",
-      })
       .returning();
-    if (created && deepseaExtension) {
-      await replaceDeepseaCapacityExtension(tx, created.id, deepseaExtension);
+    if (updated) {
+      if (nextMode === "DEEPSEA_BULK") {
+        if (deepseaExtension !== undefined) {
+          await replaceDeepseaCapacityExtension(tx, updated.id, deepseaExtension);
+        }
+      } else {
+        await replaceDeepseaCapacityExtension(tx, updated.id, null);
+      }
+      await recalculateMatchesWithin(tx, { changedCapacityIds: [updated.id] });
     }
-    if (created.listingStatus === "ACTIVE") {
-      await recalculateMatchesWithin(tx, { changedCapacityIds: [created.id] });
-    }
-    return { kind: "created" as const, capacity: created };
+    return updated
+      ? { kind: "updated" as const, capacity: updated }
+      : { kind: "missing" as const };
   });
   if (result.kind === "forbidden") {
     error(res, 403, "Company membership is no longer authorized");
@@ -618,6 +784,22 @@ router.post("/capacity", async (req, res) => {
     error(res, 400, "Unknown or inactive catalogue location");
     return;
   }
+  if (result.kind === "suggestion-not-confirmed") {
+    error(res, 400, "suggestionConfirmed must be true");
+    return;
+  }
+  if (result.kind === "suggestion-draft-required") {
+    error(res, 400, "Suggestion confirmations must create DRAFT capacity with EXPECTED confidence");
+    return;
+  }
+  if (result.kind === "suggestion-missing") {
+    error(res, 404, "Availability suggestion not found");
+    return;
+  }
+  if (result.kind === "suggestion-invalid") {
+    error(res, 409, "Availability suggestion is expired, invalidated, or already converted");
+    return;
+  }
   res
     .status(201)
     .json(
@@ -631,9 +813,11 @@ router.post("/capacity", async (req, res) => {
 });
 
 router.get("/capacity/:capacityId", async (req, res) => {
-  const current = await requireMembership(req, res);
+  const current = await requireMembership(req, res, {
+    roles: ["OWNER", "ADMIN"],
+  });
   if (!current) return;
-  const parsed = GetMyCapacityParams.safeParse(req.params);
+  const parsed = UpdateMyCapacityBody.safeParse(req.body);
   if (!parsed.success) {
     error(res, 400, "Invalid capacity id");
     return;

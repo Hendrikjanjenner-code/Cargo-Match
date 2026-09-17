@@ -1,7 +1,7 @@
 import { listMyConversations, useGetMyMatch, useActOnMatch, getListMyConversationsQueryKey, getGetMyMatchQueryKey, getListMyMatchesQueryKey, MatchAction, MatchStatus } from "@workspace/api-client-react";
 import { useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { useRoute, useLocation } from "wouter";
+import { useRoute, useLocation, Redirect } from "wouter";
 import { Card, CardHeader, CardTitle, CardContent, Badge, Button } from "@/components/ui/primitives";
 import { ArrowLeft, CheckCircle2, XCircle, Handshake, AlertCircle, MessageSquare } from "lucide-react";
 import { formatDate } from "@/lib/utils";
@@ -95,6 +95,11 @@ export default function MatchDetail() {
 
   const canRespond = match.status === MatchStatus.INTEREST_SENT && hasAcceptRights;
   const isWaiting = match.status === MatchStatus.INTEREST_SENT && isInitiator;
+
+  // Notifications and conversation links use the shared match URL.
+  if (match.deepseaMatch) {
+    return <Redirect to={`/deepsea/matches/${id}`} />;
+  }
 
   return (
     <div className="space-y-6 max-w-4xl mx-auto">

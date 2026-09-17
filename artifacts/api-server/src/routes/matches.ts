@@ -84,7 +84,9 @@ router.get("/matches", async (req, res) => {
   const bundles = (await accessibleBundles(current.company.id)).filter(
     (bundle) =>
       (!bundle.match.isStale || bundle.match.status === "CONNECTED") &&
-      (!parsed.data.status || bundle.match.status === parsed.data.status),
+      (!parsed.data.status || bundle.match.status === parsed.data.status) &&
+      (bundle.cargo.transportMode ===
+        (parsed.data.transportMode ?? "INLAND_WATERWAY")),
   );
   const { page, pageSize, offset } = pageParams(
     parsed.data.page,

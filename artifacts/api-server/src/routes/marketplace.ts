@@ -9,6 +9,8 @@ import {
   capacityOffersTable,
   cargoListingsTable,
   companiesTable,
+  deepseaCapacityExtensionsTable,
+  deepseaVesselProfilesTable,
   db,
   locationsTable,
   vesselsTable,
@@ -68,6 +70,10 @@ router.get("/marketplace", async (req, res) => {
           eq(cargoListingsTable.visibility, "OPEN_NETWORK"),
           eq(companiesTable.status, "ACTIVE"),
           ne(companiesTable.id, current.company.id),
+          eq(
+            cargoListingsTable.transportMode,
+            parsed.data.transportMode ?? "INLAND_WATERWAY",
+          ),
         ),
       ),
     db
@@ -75,9 +81,22 @@ router.get("/marketplace", async (req, res) => {
         capacity: capacityOffersTable,
         vessel: vesselsTable,
         location: capacityLocation,
+        deepseaProfile: deepseaVesselProfilesTable,
+        deepseaExtension: deepseaCapacityExtensionsTable,
       })
       .from(capacityOffersTable)
       .innerJoin(vesselsTable, eq(vesselsTable.id, capacityOffersTable.vesselId))
+      .leftJoin(
+        deepseaVesselProfilesTable,
+        eq(deepseaVesselProfilesTable.vesselId, vesselsTable.id),
+      )
+      .leftJoin(
+        deepseaCapacityExtensionsTable,
+        eq(
+          deepseaCapacityExtensionsTable.capacityOfferId,
+          capacityOffersTable.id,
+        ),
+      )
       .innerJoin(
         capacityLocation,
         eq(capacityLocation.id, capacityOffersTable.locationId),
@@ -93,6 +112,10 @@ router.get("/marketplace", async (req, res) => {
           eq(companiesTable.status, "ACTIVE"),
           ne(companiesTable.id, current.company.id),
           eq(vesselsTable.active, true),
+          eq(
+            capacityOffersTable.transportMode,
+            parsed.data.transportMode ?? "INLAND_WATERWAY",
+          ),
         ),
       ),
   ]);
@@ -117,7 +140,13 @@ router.get("/marketplace", async (req, res) => {
       items.push(anonymousCargo(cargo, loading, destination));
     }
   }
-  for (const { capacity, vessel, location } of capacityRows) {
+  for (const {
+    capacity,
+    vessel,
+    location,
+    deepseaProfile,
+    deepseaExtension,
+  } of capacityRows) {
     if (
       parsed.data.listingType === "CARGO" ||
       (parsed.data.vesselType && vessel.vesselType !== parsed.data.vesselType) ||
@@ -128,7 +157,15 @@ router.get("/marketplace", async (req, res) => {
     }
     if (!seen.has(`capacity:${capacity.id}`)) {
       seen.add(`capacity:${capacity.id}`);
-      items.push(anonymousCapacity(capacity, vessel, location));
+       items.push(
+         anonymousCapacity(
+           capacity,
+           vessel,
+           location,
+           deepseaProfile,
+           deepseaExtension,
+         ),
+       );
     }
   }
   const { page, pageSize, offset } = pageParams(

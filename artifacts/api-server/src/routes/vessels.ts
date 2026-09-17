@@ -16,6 +16,7 @@ import { Router, type IRouter } from "express";
 import {
   capacityOffersTable,
   db,
+  deepseaVesselProfilesTable,
   vesselsTable,
 } from "@workspace/db";
 
@@ -31,6 +32,10 @@ import {
   lockDomain,
   recalculateMatchesWithin,
 } from "../services/matching";
+import {
+  deepseaDetailsForVessel,
+  replaceDeepseaVesselProfile,
+} from "../services/deepsea";
 
 const router: IRouter = Router();
 
@@ -59,19 +64,32 @@ router.get("/vessels", async (req, res) => {
     parsed.data.page,
     parsed.data.pageSize,
   );
-  const where = parsed.data.activeOnly
-    ? and(
-        eq(vesselsTable.companyId, current.company.id),
-        eq(vesselsTable.active, true),
-      )
-    : eq(vesselsTable.companyId, current.company.id);
+  const where = and(
+    eq(vesselsTable.companyId, current.company.id),
+    eq(vesselsTable.transportMode, parsed.data.transportMode ?? "INLAND_WATERWAY"),
+    ...(parsed.data.activeOnly ? [eq(vesselsTable.active, true)] : []),
+  );
   const [items, [{ total }]] = await Promise.all([
     db.select().from(vesselsTable).where(where).limit(pageSize).offset(offset),
     db.select({ total: count() }).from(vesselsTable).where(where),
   ]);
+  const profiles = await db
+    .select()
+    .from(deepseaVesselProfilesTable)
+    .where(
+      inArray(
+        deepseaVesselProfilesTable.vesselId,
+        items.map((vessel) => vessel.id),
+      ),
+    );
+  const profileByVessel = new Map(
+    profiles.map((profile) => [profile.vesselId, profile]),
+  );
   res.json(
     ListMyVesselsResponse.parse({
-      items: items.map(vesselResponse),
+      items: items.map((vessel) =>
+        vesselResponse(vessel, profileByVessel.get(vessel.id)),
+      ),
       page,
       pageSize,
       total,
@@ -94,19 +112,38 @@ router.post("/vessels", async (req, res) => {
       await lockDomain(tx);
       const writeMembership = await vesselWriteMembership(tx, req.user!.id);
       if (!writeMembership) return { kind: "forbidden" as const };
+      const { deepseaProfile, ...base } = parsed.data;
+      if (base.transportMode === "DEEPSEA_BULK" && !deepseaProfile) {
+        return { kind: "invalid-deepsea-profile" as const };
+      }
       const [created] = await tx
         .insert(vesselsTable)
-        .values({ ...parsed.data, companyId: writeMembership.company.id })
+        .values({
+          ...base,
+          transportMode: base.transportMode ?? "INLAND_WATERWAY",
+          companyId: writeMembership.company.id,
+        })
         .returning();
-      return { kind: "created" as const, vessel: created };
+      if (created && deepseaProfile) {
+        await replaceDeepseaVesselProfile(tx, created.id, deepseaProfile);
+      }
+      return { kind: "created" as const, vessel: created, profile: deepseaProfile };
     });
     if (result.kind === "forbidden") {
       error(res, 403, "Company membership is no longer authorized");
       return;
     }
+    if (result.kind === "invalid-deepsea-profile") {
+      error(res, 400, "A deepsea vessel requires a vessel profile");
+      return;
+    }
     res
       .status(201)
-      .json(CreateMyVesselResponse.parse(vesselResponse(result.vessel)));
+      .json(
+        CreateMyVesselResponse.parse(
+          vesselResponse(result.vessel, result.profile),
+        ),
+      );
   } catch {
     error(res, 409, "Vessel could not be created");
   }
@@ -133,7 +170,11 @@ router.get("/vessels/:vesselId", async (req, res) => {
     error(res, 404, "Vessel not found");
     return;
   }
-  res.json(GetMyVesselResponse.parse(vesselResponse(vessel)));
+  res.json(
+    GetMyVesselResponse.parse(
+      vesselResponse(vessel, await deepseaDetailsForVessel(db, vessel.id)),
+    ),
+  );
 });
 
 router.patch("/vessels/:vesselId", async (req, res) => {
@@ -169,6 +210,30 @@ router.patch("/vessels/:vesselId", async (req, res) => {
     if (!existing.active && parsed.data.active === true) {
       return { kind: "invalid" as const };
     }
+    const nextMode = parsed.data.transportMode ?? existing.transportMode;
+    if (nextMode === "DEEPSEA_BULK") {
+      const profile =
+        parsed.data.deepseaProfile === undefined
+          ? await deepseaDetailsForVessel(tx, existing.id)
+          : parsed.data.deepseaProfile;
+      if (!profile) return { kind: "invalid-deepsea-profile" as const };
+    }
+    if (
+      parsed.data.transportMode &&
+      parsed.data.transportMode !== existing.transportMode
+    ) {
+      const outstandingOffers = await tx
+        .select({ id: capacityOffersTable.id })
+        .from(capacityOffersTable)
+        .where(
+          and(
+            eq(capacityOffersTable.vesselId, existing.id),
+            inArray(capacityOffersTable.listingStatus, ["DRAFT", "ACTIVE"]),
+          ),
+        )
+        .for("update");
+      if (outstandingOffers.length) return { kind: "mode-conflict" as const };
+    }
     const nextTotalCapacity =
       parsed.data.totalCapacityTonnes ?? existing.totalCapacityTonnes;
     if (nextTotalCapacity < existing.totalCapacityTonnes) {
@@ -197,15 +262,27 @@ router.patch("/vessels/:vesselId", async (req, res) => {
         return { kind: "capacity-conflict" as const };
       }
     }
+    const { deepseaProfile, ...base } = parsed.data;
     const [updated] = await tx
       .update(vesselsTable)
-      .set({ ...parsed.data, updatedAt: new Date() })
+      .set({ ...base, transportMode: nextMode, updatedAt: new Date() })
       .where(eq(vesselsTable.id, existing.id))
       .returning();
     if (updated) {
+      if (nextMode === "DEEPSEA_BULK") {
+        if (deepseaProfile !== undefined) {
+          await replaceDeepseaVesselProfile(tx, updated.id, deepseaProfile);
+        }
+      } else {
+        await replaceDeepseaVesselProfile(tx, updated.id, null);
+      }
       await recalculateMatchesWithin(tx, { changedVesselIds: [updated.id] });
     }
-    return { kind: "updated" as const, vessel: updated };
+    return {
+      kind: "updated" as const,
+      vessel: updated,
+      profile: deepseaProfile,
+    };
   });
   if (result.kind === "forbidden") {
     error(res, 403, "Company membership is no longer authorized");
@@ -213,6 +290,14 @@ router.patch("/vessels/:vesselId", async (req, res) => {
   }
   if (result.kind === "missing") {
     error(res, 404, "Vessel not found");
+    return;
+  }
+  if (result.kind === "mode-conflict") {
+    error(res, 409, "Vessel transport mode cannot change with outstanding offers");
+    return;
+  }
+  if (result.kind === "invalid-deepsea-profile") {
+    error(res, 400, "A deepsea vessel requires a vessel profile");
     return;
   }
   if (result.kind === "capacity-conflict") {
@@ -228,7 +313,16 @@ router.patch("/vessels/:vesselId", async (req, res) => {
     return;
   }
   const vessel = result.vessel;
-  res.json(UpdateMyVesselResponse.parse(vesselResponse(vessel)));
+  res.json(
+    UpdateMyVesselResponse.parse(
+      vesselResponse(
+        vessel,
+        result.profile === undefined
+          ? await deepseaDetailsForVessel(db, vessel.id)
+          : result.profile,
+      ),
+    ),
+  );
 });
 
 router.post("/vessels/:vesselId/deactivate", async (req, res) => {
@@ -271,7 +365,12 @@ router.post("/vessels/:vesselId/deactivate", async (req, res) => {
     return;
   }
   res.json(
-    DeactivateMyVesselResponse.parse(vesselResponse(result.vessel)),
+    DeactivateMyVesselResponse.parse(
+      vesselResponse(
+        result.vessel,
+        await deepseaDetailsForVessel(db, result.vessel.id),
+      ),
+    ),
   );
 });
 

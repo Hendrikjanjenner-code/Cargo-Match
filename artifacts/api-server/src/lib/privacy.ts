@@ -4,6 +4,9 @@ import type {
   companiesTable,
   locationsTable,
   matchesTable,
+  deepseaCapacityExtensionsTable,
+  deepseaCargoRequirementsTable,
+  deepseaVesselProfilesTable,
   vesselsTable,
 } from "@workspace/db";
 
@@ -13,6 +16,9 @@ type Company = typeof companiesTable.$inferSelect;
 type Location = typeof locationsTable.$inferSelect;
 type Vessel = typeof vesselsTable.$inferSelect;
 type Match = typeof matchesTable.$inferSelect;
+type DeepseaProfile = typeof deepseaVesselProfilesTable.$inferSelect;
+type DeepseaRequirement = typeof deepseaCargoRequirementsTable.$inferSelect;
+type DeepseaExtension = typeof deepseaCapacityExtensionsTable.$inferSelect;
 
 function bandTonnes(value: number): string {
   if (value < 500) return "< 500 t";
@@ -20,6 +26,14 @@ function bandTonnes(value: number): string {
   if (value < 1500) return "1,000–1,500 t";
   if (value < 2500) return "1,500–2,500 t";
   return "2,500+ t";
+}
+
+function bandDwt(value: number): string {
+  if (value < 10_000) return "< 10k DWT";
+  if (value < 35_000) return "10–35k DWT";
+  if (value < 65_000) return "35–65k DWT";
+  if (value < 85_000) return "65–85k DWT";
+  return "85k+ DWT";
 }
 
 function bandDistance(value: number): string {
@@ -74,8 +88,29 @@ export function companyResponse(company: Company) {
   };
 }
 
-export function vesselResponse(vessel: Vessel) {
-  return { ...vessel };
+export function vesselResponse(
+  vessel: Vessel,
+  profile?:
+    | DeepseaProfile
+    | {
+        vesselClass: DeepseaProfile["vesselClass"];
+        dwtTonnes: number;
+        summerDraftMetres?: number | null;
+        gearConfiguration?: string | null;
+      }
+    | null,
+) {
+  return {
+    ...vessel,
+    deepseaProfile: profile
+      ? {
+          vesselClass: profile.vesselClass,
+          dwtTonnes: profile.dwtTonnes,
+          summerDraftMetres: profile.summerDraftMetres ?? null,
+          gearConfiguration: profile.gearConfiguration ?? null,
+        }
+      : null,
+  };
 }
 
 export function locationResponse(location: Location) {
@@ -89,17 +124,45 @@ export function locationResponse(location: Location) {
   };
 }
 
-export function cargoResponse(cargo: Cargo) {
-  return { ...cargo };
+export function cargoResponse(
+  cargo: Cargo,
+  requirement?: DeepseaRequirement | null,
+) {
+  return {
+    ...cargo,
+    deepseaRequirement: requirement
+      ? {
+          quantityTolerancePercent: requirement.quantityTolerancePercent,
+          minimumVesselDwtTonnes: requirement.minimumVesselDwtTonnes,
+          maximumVesselDwtTonnes: requirement.maximumVesselDwtTonnes,
+          maximumDraftMetres: requirement.maximumDraftMetres,
+          requiredGear: requirement.requiredGear,
+          preferredVesselClass: requirement.preferredVesselClass,
+        }
+      : null,
+  };
 }
 
-export function capacityResponse(capacity: Capacity) {
-  return { ...capacity };
+export function capacityResponse(
+  capacity: Capacity,
+  extension?: DeepseaExtension | null,
+) {
+  return {
+    ...capacity,
+    deepseaExtension: extension
+      ? {
+          manualPositioningDays: extension.manualPositioningDays,
+          approximateMaxDistanceKm: extension.approximateMaxDistanceKm,
+          previousVoyageContext: extension.previousVoyageContext,
+        }
+      : null,
+  };
 }
 
 export function anonymousCargo(cargo: Cargo, loading: Location, destination: Location) {
   return {
     id: cargo.id,
+    transportMode: cargo.transportMode,
     listingType: "CARGO" as const,
     cargoTypeBand: cargoTypeBand(cargo.cargoType),
     loadingRegion: loading.region,
@@ -110,6 +173,9 @@ export function anonymousCargo(cargo: Cargo, loading: Location, destination: Loc
     distanceBand: "Regional positioning only",
     visibility: "OPEN_NETWORK" as const,
     listingStatus: "ACTIVE" as const,
+    ...(cargo.transportMode === "DEEPSEA_BULK"
+      ? { deepseaRequirementsBand: "Dry-bulk requirements on file" }
+      : {}),
   };
 }
 
@@ -117,10 +183,13 @@ export function anonymousCapacity(
   capacity: Capacity,
   vessel: Vessel,
   location: Location,
+  profile?: DeepseaProfile | null,
+  extension?: DeepseaExtension | null,
 ) {
   const direction = capacity.preferredDirection.toLowerCase();
   return {
     id: capacity.id,
+    transportMode: capacity.transportMode,
     listingType: "CAPACITY" as const,
     vesselType: vessel.vesselType,
     availabilityType: capacity.availabilityType,
@@ -134,17 +203,55 @@ export function anonymousCapacity(
     distanceBand: bandDistance(capacity.maximumPositioningDistanceKm),
     visibility: "OPEN_NETWORK" as const,
     listingStatus: "ACTIVE" as const,
+    ...(capacity.transportMode === "DEEPSEA_BULK"
+      ? {
+          deepseaClassBand: profile?.vesselClass ?? "Class not disclosed",
+          dwtBand: profile ? bandDwt(profile.dwtTonnes) : "DWT not disclosed",
+          availabilityConfidence: capacity.availabilityConfidence,
+          positioningConfidence: extension?.manualPositioningDays == null
+            ? "PROVISIONAL"
+            : "ESTIMATED",
+          provisional: extension?.manualPositioningDays == null,
+        }
+      : {}),
   };
 }
 
-export function connectedCargo(cargo: Cargo) {
+export function connectedCargo(
+  cargo: Cargo,
+  requirement?: DeepseaRequirement | null,
+) {
   const { notes: _notes, ...safe } = cargo;
-  return safe;
+  return {
+    ...safe,
+    deepseaRequirement: requirement
+      ? {
+          quantityTolerancePercent: requirement.quantityTolerancePercent,
+          minimumVesselDwtTonnes: requirement.minimumVesselDwtTonnes,
+          maximumVesselDwtTonnes: requirement.maximumVesselDwtTonnes,
+          maximumDraftMetres: requirement.maximumDraftMetres,
+          requiredGear: requirement.requiredGear,
+          preferredVesselClass: requirement.preferredVesselClass,
+        }
+      : null,
+  };
 }
 
-export function connectedCapacity(capacity: Capacity) {
+export function connectedCapacity(
+  capacity: Capacity,
+  extension?: DeepseaExtension | null,
+) {
   const { notes: _notes, ...safe } = capacity;
-  return safe;
+  return {
+    ...safe,
+    deepseaExtension: extension
+      ? {
+          manualPositioningDays: extension.manualPositioningDays,
+          approximateMaxDistanceKm: extension.approximateMaxDistanceKm,
+          previousVoyageContext: extension.previousVoyageContext,
+        }
+      : null,
+  };
 }
 
 export function connectedCompany(company: Company) {
@@ -188,7 +295,13 @@ export function matchScore(match: Match) {
       ),
       timingBand: safeBand(
         "timingBand",
-        ["Strong timing fit", "Usable timing fit", "Timing fit"],
+        [
+          "Strong timing fit",
+          "Usable timing fit",
+          "Timing fit",
+          "Provisional timing fit",
+          "Laycan and buffer fit",
+        ],
         "Timing fit",
       ),
       capacityBand: safeBand(
@@ -214,6 +327,7 @@ export function matchScore(match: Match) {
     },
     calculationVersion: match.calculationVersion,
     calculatedAt: match.calculatedAt,
+    provisional: inputs.timingBand === "Provisional timing fit",
     explanation: match.explanation,
   };
 }
@@ -224,6 +338,9 @@ export type MatchBundle = {
   cargo: Cargo;
   capacity: Capacity;
   vessel: Vessel;
+  deepseaProfile?: DeepseaProfile | null;
+  deepseaRequirement?: DeepseaRequirement | null;
+  deepseaExtension?: DeepseaExtension | null;
   loading: Location;
   destination: Location;
   capacityLocation: Location;
@@ -233,6 +350,19 @@ export type MatchBundle = {
 
 export function matchSummary(bundle: MatchBundle, companyId: string) {
   const initiatedByMe = bundle.initiatedByCompanyId === companyId;
+  const deepseaMatch =
+    bundle.capacity.transportMode === "DEEPSEA_BULK" && bundle.deepseaProfile
+      ? {
+          vesselClass: bundle.deepseaProfile.vesselClass,
+          dwtBand: bandDwt(bundle.deepseaProfile.dwtTonnes),
+          availabilityConfidence: bundle.capacity.availabilityConfidence,
+          provisional:
+            bundle.deepseaExtension?.manualPositioningDays == null,
+          positioningBand: bandDistance(
+            bundle.match.approximatePositioningDistanceKm,
+          ),
+        }
+      : null;
   return {
     id: bundle.match.id,
     cargoListingId: bundle.match.cargoListingId,
@@ -244,8 +374,11 @@ export function matchSummary(bundle: MatchBundle, companyId: string) {
       bundle.capacity,
       bundle.vessel,
       bundle.capacityLocation,
+      bundle.deepseaProfile,
+      bundle.deepseaExtension,
     ),
     score: matchScore(bundle.match),
+    deepseaMatch,
     initiatedByMe,
     canAccept:
       bundle.match.status === "INTEREST_SENT" &&
@@ -268,11 +401,20 @@ export function matchDetail(bundle: MatchBundle, companyId: string) {
       : ownsCargo || ownsCapacity
         ? ("OWNER" as const)
         : ("ANONYMOUS" as const),
-    ownedCargo: ownsCargo ? cargoResponse(bundle.cargo) : null,
-    ownedCapacity: ownsCapacity ? capacityResponse(bundle.capacity) : null,
-    connectedCargo: connected && !ownsCargo ? connectedCargo(bundle.cargo) : null,
+    ownedCargo: ownsCargo
+      ? cargoResponse(bundle.cargo, bundle.deepseaRequirement)
+      : null,
+    ownedCapacity: ownsCapacity
+      ? capacityResponse(bundle.capacity, bundle.deepseaExtension)
+      : null,
+    connectedCargo:
+      connected && !ownsCargo
+        ? connectedCargo(bundle.cargo, bundle.deepseaRequirement)
+        : null,
     connectedCapacity:
-      connected && !ownsCapacity ? connectedCapacity(bundle.capacity) : null,
+      connected && !ownsCapacity
+        ? connectedCapacity(bundle.capacity, bundle.deepseaExtension)
+        : null,
     connectedCompanies: connected
       ? [
           connectedCompany(bundle.cargoCompany),

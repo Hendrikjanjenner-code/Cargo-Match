@@ -18,6 +18,14 @@ import Messages from "./pages/messages/Messages";
 import MessageDetail from "./pages/messages/MessageDetail";
 import CompanyProfile from "./pages/company/CompanyProfile";
 import Notifications from "./pages/notifications/Notifications";
+
+import DeepseaVessels from "./pages/deepsea/DeepseaVessels";
+import DeepseaCargo from "./pages/deepsea/DeepseaCargo";
+import DeepseaCapacity from "./pages/deepsea/DeepseaCapacity";
+import DeepseaMarketplace from "./pages/deepsea/DeepseaMarketplace";
+import DeepseaMatches from "./pages/deepsea/DeepseaMatches";
+import DeepseaMatchDetail from "./pages/deepsea/DeepseaMatchDetail";
+
 import DemoApp from "./demo/DemoApp";
 import { DemoEntryContext } from "./demo/entry";
 import { t } from "./lib/i18n";
@@ -63,18 +71,17 @@ function ProtectedRoute({ component: Component, requireCompany = true }: { compo
   );
 }
 
+function HomeRoute() {
+  const { isAuthenticated } = useAuth();
+  return isAuthenticated ? <ProtectedRoute component={Overview} /> : <Landing />;
+}
+
 function AppRouter() {
   return (
     <Switch>
       {/* Public / Entry route */}
       <Route path="/">
-        {() => {
-          const { isAuthenticated } = useAuth();
-          if (isAuthenticated) {
-            return <ProtectedRoute component={Overview} />;
-          }
-          return <Landing />;
-        }}
+        <HomeRoute />
       </Route>
 
       <Route path="/onboarding">
@@ -92,6 +99,14 @@ function AppRouter() {
       <Route path="/messages/:id">{() => <ProtectedRoute component={MessageDetail} />}</Route>
       <Route path="/company">{() => <ProtectedRoute component={CompanyProfile} />}</Route>
       <Route path="/notifications">{() => <ProtectedRoute component={Notifications} />}</Route>
+
+      {/* Deepsea Routes */}
+      <Route path="/deepsea/vessels">{() => <ProtectedRoute component={DeepseaVessels} />}</Route>
+      <Route path="/deepsea/cargo">{() => <ProtectedRoute component={DeepseaCargo} />}</Route>
+      <Route path="/deepsea/capacity">{() => <ProtectedRoute component={DeepseaCapacity} />}</Route>
+      <Route path="/deepsea/marketplace">{() => <ProtectedRoute component={DeepseaMarketplace} />}</Route>
+      <Route path="/deepsea/matches">{() => <ProtectedRoute component={DeepseaMatches} />}</Route>
+      <Route path="/deepsea/matches/:id">{() => <ProtectedRoute component={DeepseaMatchDetail} />}</Route>
 
       <Route>
         <div className="flex items-center justify-center min-h-screen">{t("not_found.title")}</div>

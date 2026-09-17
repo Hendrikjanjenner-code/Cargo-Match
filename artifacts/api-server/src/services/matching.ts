@@ -11,6 +11,9 @@ import {
   matchesTable,
   notificationsTable,
   vesselsTable,
+  deepseaCapacityExtensionsTable,
+  deepseaCargoRequirementsTable,
+  deepseaVesselProfilesTable,
   db,
 } from "@workspace/db";
 
@@ -26,10 +29,13 @@ export type PairInput = {
   capacityLocation: typeof locationsTable.$inferSelect;
   cargoCompany: typeof companiesTable.$inferSelect;
   capacityCompany: typeof companiesTable.$inferSelect;
+  deepseaProfile: typeof deepseaVesselProfilesTable.$inferSelect | null;
+  deepseaRequirement: typeof deepseaCargoRequirementsTable.$inferSelect | null;
+  deepseaExtension: typeof deepseaCapacityExtensionsTable.$inferSelect | null;
 };
 
 export type EligibilityResult =
-  | { eligible: true; distanceKm: number }
+  | { eligible: true; distanceKm: number; provisional?: boolean }
   | { eligible: false; reason: string };
 
 export type ScoreResult = {
@@ -135,6 +141,15 @@ function compatibilityScore(
 
 export function evaluateEligibility(pair: PairInput, now = new Date()): EligibilityResult {
   const { cargo, capacity, vessel, loading, cargoCompany, capacityCompany } = pair;
+  const cargoMode = cargo.transportMode ?? "INLAND_WATERWAY";
+  const capacityMode = capacity.transportMode ?? "INLAND_WATERWAY";
+  const vesselMode = vessel.transportMode ?? "INLAND_WATERWAY";
+  if (cargoMode !== capacityMode || capacityMode !== vesselMode) {
+    return { eligible: false, reason: "transport_mode_mismatch" };
+  }
+  if (cargoMode === "DEEPSEA_BULK") {
+    return evaluateDeepseaEligibility(pair, now);
+  }
   if (cargoCompany.status !== "ACTIVE" || capacityCompany.status !== "ACTIVE") {
     return { eligible: false, reason: "company_inactive" };
   }
@@ -207,6 +222,126 @@ export function evaluateEligibility(pair: PairInput, now = new Date()): Eligibil
   return { eligible: true, distanceKm: distance };
 }
 
+export function evaluateDeepseaEligibility(
+  pair: PairInput,
+  now = new Date(),
+): EligibilityResult {
+  const { cargo, capacity, vessel, loading, cargoCompany, capacityCompany } = pair;
+  const profile = pair.deepseaProfile;
+  const requirement = pair.deepseaRequirement;
+  if (cargoCompany.status !== "ACTIVE" || capacityCompany.status !== "ACTIVE") {
+    return { eligible: false, reason: "company_inactive" };
+  }
+  if (cargoCompany.id === capacityCompany.id) {
+    return { eligible: false, reason: "same_company" };
+  }
+  if (
+    !profile ||
+    !requirement ||
+    !vessel.active ||
+    !loading.active ||
+    !pair.destination.active ||
+    !pair.capacityLocation.active
+  ) {
+    return { eligible: false, reason: "required_deepsea_profile_missing" };
+  }
+  if (vessel.vesselType !== cargo.requiredVesselType) {
+    return { eligible: false, reason: "vessel_type_incompatible" };
+  }
+  if (
+    cargo.listingStatus !== "ACTIVE" ||
+    cargo.visibility !== "OPEN_NETWORK" ||
+    capacity.listingStatus !== "ACTIVE" ||
+    capacity.visibility !== "OPEN_NETWORK"
+  ) {
+    return { eligible: false, reason: "not_discoverable" };
+  }
+  if (cargo.loadingUntil <= now || capacity.availableUntil <= now) {
+    return { eligible: false, reason: "expired" };
+  }
+  if (
+    !Number.isFinite(cargo.weightTonnes) ||
+    cargo.weightTonnes <= 0 ||
+    !Number.isFinite(capacity.availableCapacityTonnes) ||
+    capacity.availableCapacityTonnes <= 0
+  ) {
+    return { eligible: false, reason: "invalid_tonnage" };
+  }
+  if (capacity.availableCapacityTonnes > profile.dwtTonnes) {
+    return { eligible: false, reason: "cargo_tonnage_exceeds_vessel_dwt" };
+  }
+  if (
+    !Number.isFinite(cargo.loadingFrom.getTime()) ||
+    !Number.isFinite(cargo.loadingUntil.getTime()) ||
+    cargo.loadingFrom >= cargo.loadingUntil ||
+    !Number.isFinite(capacity.availableFrom.getTime()) ||
+    !Number.isFinite(capacity.availableUntil.getTime()) ||
+    capacity.availableFrom >= capacity.availableUntil
+  ) {
+    return { eligible: false, reason: "invalid_time_window" };
+  }
+  const tolerance = requirement.quantityTolerancePercent;
+  if (!Number.isFinite(tolerance) || tolerance < 0 || tolerance >= 100) {
+    return { eligible: false, reason: "invalid_quantity_tolerance" };
+  }
+  if (capacity.availableCapacityTonnes < cargo.weightTonnes * (1 - tolerance / 100)) {
+    return { eligible: false, reason: "insufficient_cargo_tonnage" };
+  }
+  if (
+    (requirement.minimumVesselDwtTonnes != null &&
+      profile.dwtTonnes < requirement.minimumVesselDwtTonnes) ||
+    (requirement.maximumVesselDwtTonnes != null &&
+      profile.dwtTonnes > requirement.maximumVesselDwtTonnes)
+  ) {
+    return { eligible: false, reason: "dwt_incompatible" };
+  }
+  if (
+    requirement.maximumDraftMetres != null &&
+    (profile.summerDraftMetres == null ||
+      profile.summerDraftMetres > requirement.maximumDraftMetres)
+  ) {
+    return { eligible: false, reason: "draft_incompatible" };
+  }
+  if (requirement.requiredGear) {
+    const requiredGear = requirement.requiredGear.trim().toLowerCase();
+    if (!profile.gearConfiguration) {
+      return { eligible: false, reason: "required_gear_unknown" };
+    }
+    if (!requiredGear) {
+      return { eligible: false, reason: "invalid_required_gear" };
+    }
+    if (profile.gearConfiguration.trim().toLowerCase() !== requiredGear) {
+      return { eligible: false, reason: "gear_incompatible" };
+    }
+  }
+  const distance = distanceKm(loading, pair.capacityLocation);
+  const maximumDistance =
+    pair.deepseaExtension?.approximateMaxDistanceKm ??
+    capacity.maximumPositioningDistanceKm;
+  if (!Number.isFinite(maximumDistance) || maximumDistance <= 0) {
+    return { eligible: false, reason: "invalid_positioning_distance" };
+  }
+  if (distance > maximumDistance) {
+    return { eligible: false, reason: "outside_approximate_positioning_distance" };
+  }
+  const repositioningDays = pair.deepseaExtension?.manualPositioningDays;
+  const adjustedOpen = new Date(capacity.availableFrom);
+  if (repositioningDays != null) {
+    adjustedOpen.setUTCDate(adjustedOpen.getUTCDate() + repositioningDays);
+    if (adjustedOpen > cargo.loadingUntil) {
+      return { eligible: false, reason: "laycan_incompatible_with_positioning" };
+    }
+  }
+  if (capacity.availableUntil < cargo.loadingFrom) {
+    return { eligible: false, reason: "laycan_incompatible" };
+  }
+  return {
+    eligible: true,
+    distanceKm: distance,
+    provisional: repositioningDays == null,
+  };
+}
+
 export function scoreEligiblePair(
   pair: PairInput,
   distance: number,
@@ -261,6 +396,65 @@ export function scoreEligiblePair(
   };
 }
 
+export function scoreDeepseaEligiblePair(
+  pair: PairInput,
+  distance: number,
+): ScoreResult {
+  const maximumDistance =
+    pair.deepseaExtension?.approximateMaxDistanceKm ??
+    pair.capacity.maximumPositioningDistanceKm;
+  const distanceScore = scoreDistance(distance, maximumDistance);
+  const requirement = pair.deepseaRequirement!;
+  const profile = pair.deepseaProfile!;
+  const timing =
+    pair.capacity.availableUntil >= pair.cargo.loadingFrom &&
+    pair.capacity.availableFrom <= pair.cargo.loadingUntil
+      ? 100
+      : 0;
+  const tolerance = requirement.quantityTolerancePercent;
+  const capacityScore = Math.min(
+    100,
+    (pair.capacity.availableCapacityTonnes /
+      (pair.cargo.weightTonnes * (1 - tolerance / 100))) *
+      100,
+  );
+  const classScore =
+    !requirement.preferredVesselClass ||
+    requirement.preferredVesselClass === profile.vesselClass
+      ? 100
+      : 0;
+  const compatibility = compatibilityScore(pair.cargo, pair.capacity);
+  const total =
+    distanceScore * 0.35 +
+    timing * 0.25 +
+    capacityScore * 0.2 +
+    classScore * 0.1 +
+    compatibility * 0.1;
+  const provisional = pair.deepseaExtension?.manualPositioningDays == null;
+  return {
+    totalScore: total,
+    distanceScore,
+    timingScore: timing,
+    capacityScore,
+    vesselTypeScore: classScore,
+    directionScore: 50,
+    cargoCompatibilityScore: compatibility,
+    distanceKm: distance,
+    evaluationInputs: {
+      distanceBand: distance < 500 ? "< 500 km approx." : "500+ km approx.",
+      timingBand: provisional ? "Provisional timing fit" : "Laycan and buffer fit",
+      capacityBand: "Deepsea cargo tonnage fit",
+      vesselTypeBand: `${profile.vesselClass} / DWT fit`,
+      directionBand: "Trade direction requires commercial confirmation",
+      cargoCompatibilityBand:
+        compatibility === 100 ? "Cargo compatible" : "Compatibility uncertain",
+    },
+    explanation: provisional
+      ? "Potential deepsea dry-bulk fit using geodesic approximate positioning. Repositioning estimate is unknown, so feasibility is provisional and not a verified route."
+      : "Potential deepsea dry-bulk fit using an explicit user-estimated repositioning buffer and geodesic approximate positioning. This is not a verified sailing route or booking.",
+  };
+}
+
 type QueryExecutor = any;
 
 export async function lockDomain(executor: QueryExecutor) {
@@ -288,10 +482,28 @@ export async function listPairRows(executor: QueryExecutor = db): Promise<PairIn
       capacityLocation,
       cargoCompany,
       capacityCompany,
+      deepseaProfile: deepseaVesselProfilesTable,
+      deepseaRequirement: deepseaCargoRequirementsTable,
+      deepseaExtension: deepseaCapacityExtensionsTable,
     })
     .from(cargoListingsTable)
     .innerJoin(capacityOffersTable, sql`true`)
     .innerJoin(vesselsTable, eq(vesselsTable.id, capacityOffersTable.vesselId))
+    .leftJoin(
+      deepseaVesselProfilesTable,
+      eq(deepseaVesselProfilesTable.vesselId, vesselsTable.id),
+    )
+    .leftJoin(
+      deepseaCargoRequirementsTable,
+      eq(deepseaCargoRequirementsTable.cargoListingId, cargoListingsTable.id),
+    )
+    .leftJoin(
+      deepseaCapacityExtensionsTable,
+      eq(
+        deepseaCapacityExtensionsTable.capacityOfferId,
+        capacityOffersTable.id,
+      ),
+    )
     .innerJoin(
       loadingLocation,
       eq(loadingLocation.id, cargoListingsTable.loadingLocationId),
@@ -359,7 +571,10 @@ export async function recalculateMatchesWithin(
       }
       continue;
     }
-    const score = scoreEligiblePair(pair, eligibility.distanceKm);
+    const score =
+      pair.cargo.transportMode === "DEEPSEA_BULK"
+        ? scoreDeepseaEligiblePair(pair, eligibility.distanceKm)
+        : scoreEligiblePair(pair, eligibility.distanceKm);
     const values = {
       cargoListingId: pair.cargo.id,
       capacityOfferId: pair.capacity.id,
@@ -371,7 +586,10 @@ export async function recalculateMatchesWithin(
       directionScore: score.directionScore,
       cargoCompatibilityScore: score.cargoCompatibilityScore,
       approximatePositioningDistanceKm: score.distanceKm,
-      calculationVersion: CALCULATION_VERSION,
+      calculationVersion:
+        pair.cargo.transportMode === "DEEPSEA_BULK"
+          ? "deepsea-v1"
+          : CALCULATION_VERSION,
       calculatedAt: new Date(),
       evaluationInputs: score.evaluationInputs,
       explanation: score.explanation,

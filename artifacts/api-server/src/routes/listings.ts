@@ -36,6 +36,9 @@ import { Router, type IRouter, type Request, type Response } from "express";
 import {
   capacityOffersTable,
   cargoListingsTable,
+  deepseaCapacityExtensionsTable,
+  deepseaCargoRequirementsTable,
+  deepseaVesselProfilesTable,
   db,
   locationsTable,
   vesselsTable,
@@ -53,6 +56,13 @@ import {
   isCapacityWithinVessel,
   recalculateMatchesWithin,
 } from "../services/matching";
+import {
+  deepseaDetailsForCapacity,
+  deepseaDetailsForCargo,
+  replaceDeepseaCapacityExtension,
+  replaceDeepseaCargoRequirement,
+  validateDeepseaCargoRequirement,
+} from "../services/deepsea";
 
 const router: IRouter = Router();
 
@@ -104,15 +114,26 @@ router.get("/cargo", async (req, res) => {
     ? and(
         eq(cargoListingsTable.companyId, current.company.id),
         eq(cargoListingsTable.listingStatus, parsed.data.listingStatus),
+        eq(cargoListingsTable.transportMode, parsed.data.transportMode ?? "INLAND_WATERWAY"),
       )
-    : eq(cargoListingsTable.companyId, current.company.id);
+    : and(
+        eq(cargoListingsTable.companyId, current.company.id),
+        eq(cargoListingsTable.transportMode, parsed.data.transportMode ?? "INLAND_WATERWAY"),
+      );
   const [items, [{ total }]] = await Promise.all([
     db.select().from(cargoListingsTable).where(where).limit(pageSize).offset(offset),
     db.select({ total: count() }).from(cargoListingsTable).where(where),
   ]);
+  const requirements = await db
+    .select()
+    .from(deepseaCargoRequirementsTable)
+    .where(inArray(deepseaCargoRequirementsTable.cargoListingId, items.map((item) => item.id)));
+  const requirementByCargo = new Map(
+    requirements.map((requirement) => [requirement.cargoListingId, requirement]),
+  );
   res.json(
     ListMyCargoResponse.parse({
-      items: items.map(cargoResponse),
+      items: items.map((item) => cargoResponse(item, requirementByCargo.get(item.id))),
       page,
       pageSize,
       total,
@@ -128,6 +149,13 @@ router.post("/cargo", async (req, res) => {
   const parsed = CreateMyCargoBody.safeParse(req.body);
   if (!parsed.success || !validWindow(parsed.data.loadingFrom, parsed.data.loadingUntil)) {
     error(res, 400, "Invalid cargo data or loading window");
+    return;
+  }
+  if (
+    parsed.data.transportMode === "DEEPSEA_BULK" &&
+    !validateDeepseaCargoRequirement(parsed.data.deepseaRequirement)
+  ) {
+    error(res, 400, "Deepsea cargo requires valid deepsea requirements");
     return;
   }
   const result = await db.transaction(async (tx) => {
@@ -150,14 +178,19 @@ router.post("/cargo", async (req, res) => {
     if (locations.length !== 2) {
       return { kind: "invalid-location" as const };
     }
+    const { deepseaRequirement, ...base } = parsed.data;
     const [created] = await tx
       .insert(cargoListingsTable)
       .values({
-        ...parsed.data,
+        ...base,
+        transportMode: base.transportMode ?? "INLAND_WATERWAY",
         companyId: writeMembership.company.id,
         expectedUnloadingDate: dateOnly(parsed.data.expectedUnloadingDate),
       })
       .returning();
+    if (created && deepseaRequirement) {
+      await replaceDeepseaCargoRequirement(tx, created.id, deepseaRequirement);
+    }
     if (created.listingStatus === "ACTIVE") {
       await recalculateMatchesWithin(tx, { changedCargoIds: [created.id] });
     }
@@ -173,7 +206,14 @@ router.post("/cargo", async (req, res) => {
   }
   res
     .status(201)
-    .json(CreateMyCargoResponse.parse(cargoResponse(result.cargo)));
+    .json(
+      CreateMyCargoResponse.parse(
+        cargoResponse(
+          result.cargo,
+          await deepseaDetailsForCargo(db, result.cargo.id),
+        ),
+      ),
+    );
 });
 
 router.get("/cargo/:cargoId", async (req, res) => {
@@ -210,7 +250,11 @@ router.get("/cargo/:cargoId", async (req, res) => {
     error(res, 404, "Cargo listing not found");
     return;
   }
-  res.json(GetMyCargoResponse.parse(cargoResponse(cargo)));
+  res.json(
+    GetMyCargoResponse.parse(
+      cargoResponse(cargo, await deepseaDetailsForCargo(db, cargo.id)),
+    ),
+  );
 });
 
 router.patch("/cargo/:cargoId", async (req, res) => {
@@ -239,6 +283,16 @@ router.patch("/cargo/:cargoId", async (req, res) => {
       )
       .for("update");
     if (!existing) return { kind: "missing" as const };
+    const nextMode = parsed.data.transportMode ?? existing.transportMode;
+    if (nextMode === "DEEPSEA_BULK") {
+      const requirement =
+        parsed.data.deepseaRequirement === undefined
+          ? await deepseaDetailsForCargo(tx, existing.id)
+          : parsed.data.deepseaRequirement;
+      if (!validateDeepseaCargoRequirement(requirement)) {
+        return { kind: "invalid-deepsea-requirement" as const };
+      }
+    }
     const loadingFrom = parsed.data.loadingFrom ?? existing.loadingFrom;
     const loadingUntil = parsed.data.loadingUntil ?? existing.loadingUntil;
     const nextStatus = parsed.data.listingStatus ?? existing.listingStatus;
@@ -267,10 +321,12 @@ router.patch("/cargo/:cargoId", async (req, res) => {
         return { kind: "invalid-location" as const };
       }
     }
+    const { deepseaRequirement, ...base } = parsed.data;
     const [updated] = await tx
       .update(cargoListingsTable)
       .set({
-        ...parsed.data,
+        ...base,
+        transportMode: nextMode,
         expectedUnloadingDate: dateOnly(parsed.data.expectedUnloadingDate),
         updatedAt: new Date(),
       })
@@ -282,6 +338,13 @@ router.patch("/cargo/:cargoId", async (req, res) => {
       )
       .returning();
     if (updated) {
+      if (nextMode === "DEEPSEA_BULK") {
+        if (deepseaRequirement !== undefined) {
+          await replaceDeepseaCargoRequirement(tx, updated.id, deepseaRequirement);
+        }
+      } else {
+        await replaceDeepseaCargoRequirement(tx, updated.id, null);
+      }
       await recalculateMatchesWithin(tx, { changedCargoIds: [updated.id] });
     }
     return updated
@@ -296,6 +359,10 @@ router.patch("/cargo/:cargoId", async (req, res) => {
     error(res, 404, "Cargo listing not found");
     return;
   }
+  if (result.kind === "invalid-deepsea-requirement") {
+    error(res, 400, "Deepsea cargo requires valid deepsea requirements");
+    return;
+  }
   if (result.kind === "invalid-transition") {
     error(res, 409, "Listing status transition is not allowed");
     return;
@@ -308,7 +375,14 @@ router.patch("/cargo/:cargoId", async (req, res) => {
     error(res, 400, "Unknown or inactive catalogue location");
     return;
   }
-  res.json(UpdateMyCargoResponse.parse(cargoResponse(result.cargo)));
+  res.json(
+    UpdateMyCargoResponse.parse(
+      cargoResponse(
+        result.cargo,
+        await deepseaDetailsForCargo(db, result.cargo.id),
+      ),
+    ),
+  );
 });
 
 async function setCargoStatus(
@@ -373,7 +447,11 @@ async function setCargoStatus(
     status === "WITHDRAWN"
       ? WithdrawMyCargoResponse
       : CloseMyCargoResponse;
-  res.json(response.parse(cargoResponse(cargo)));
+  res.json(
+    response.parse(
+      cargoResponse(cargo, await deepseaDetailsForCargo(db, cargo.id)),
+    ),
+  );
 }
 
 router.post("/cargo/:cargoId/withdraw", (req, res) =>
@@ -399,15 +477,26 @@ router.get("/capacity", async (req, res) => {
     ? and(
         eq(capacityOffersTable.companyId, current.company.id),
         eq(capacityOffersTable.listingStatus, parsed.data.listingStatus),
+        eq(capacityOffersTable.transportMode, parsed.data.transportMode ?? "INLAND_WATERWAY"),
       )
-    : eq(capacityOffersTable.companyId, current.company.id);
+    : and(
+        eq(capacityOffersTable.companyId, current.company.id),
+        eq(capacityOffersTable.transportMode, parsed.data.transportMode ?? "INLAND_WATERWAY"),
+      );
   const [items, [{ total }]] = await Promise.all([
     db.select().from(capacityOffersTable).where(where).limit(pageSize).offset(offset),
     db.select({ total: count() }).from(capacityOffersTable).where(where),
   ]);
+  const extensions = await db
+    .select()
+    .from(deepseaCapacityExtensionsTable)
+    .where(inArray(deepseaCapacityExtensionsTable.capacityOfferId, items.map((item) => item.id)));
+  const extensionByCapacity = new Map(
+    extensions.map((extension) => [extension.capacityOfferId, extension]),
+  );
   res.json(
     ListMyCapacityResponse.parse({
-      items: items.map(capacityResponse),
+      items: items.map((item) => capacityResponse(item, extensionByCapacity.get(item.id))),
       page,
       pageSize,
       total,
@@ -444,6 +533,21 @@ router.post("/capacity", async (req, res) => {
       )
       .for("update");
     if (!vessel) return { kind: "invalid-vessel" as const };
+    const requestedMode = parsed.data.transportMode ?? "INLAND_WATERWAY";
+    if (vessel.transportMode !== requestedMode) {
+      return { kind: "mode-mismatch" as const };
+    }
+    if (requestedMode === "DEEPSEA_BULK") {
+      const [profile] = await tx
+        .select()
+        .from(deepseaVesselProfilesTable)
+        .where(eq(deepseaVesselProfilesTable.vesselId, vessel.id))
+        .for("update");
+      if (!profile) return { kind: "invalid-deepsea-profile" as const };
+      if (parsed.data.availableCapacityTonnes > profile.dwtTonnes) {
+        return { kind: "invalid-capacity" as const };
+      }
+    }
     if (
       !isCapacityWithinVessel(
         parsed.data.availableCapacityTonnes,
@@ -463,10 +567,20 @@ router.post("/capacity", async (req, res) => {
       )
       .for("update");
     if (!location) return { kind: "invalid-location" as const };
+    const { deepseaExtension, ...base } = parsed.data;
     const [created] = await tx
       .insert(capacityOffersTable)
-      .values({ ...parsed.data, companyId: writeMembership.company.id })
+      .values({
+        ...base,
+        transportMode: requestedMode,
+        companyId: writeMembership.company.id,
+        availabilityConfidence:
+          base.availabilityConfidence ?? "CONFIRMED",
+      })
       .returning();
+    if (created && deepseaExtension) {
+      await replaceDeepseaCapacityExtension(tx, created.id, deepseaExtension);
+    }
     if (created.listingStatus === "ACTIVE") {
       await recalculateMatchesWithin(tx, { changedCapacityIds: [created.id] });
     }
@@ -480,6 +594,14 @@ router.post("/capacity", async (req, res) => {
     error(res, 400, "Vessel is not active or is not owned by the company");
     return;
   }
+  if (result.kind === "mode-mismatch") {
+    error(res, 400, "Capacity transport mode must match its vessel");
+    return;
+  }
+  if (result.kind === "invalid-deepsea-profile") {
+    error(res, 400, "Deepsea capacity requires a vessel profile");
+    return;
+  }
   if (result.kind === "invalid-capacity") {
     error(res, 400, "Offered capacity cannot exceed vessel total capacity");
     return;
@@ -490,7 +612,14 @@ router.post("/capacity", async (req, res) => {
   }
   res
     .status(201)
-    .json(CreateMyCapacityResponse.parse(capacityResponse(result.capacity)));
+    .json(
+      CreateMyCapacityResponse.parse(
+        capacityResponse(
+          result.capacity,
+          await deepseaDetailsForCapacity(db, result.capacity.id),
+        ),
+      ),
+    );
 });
 
 router.get("/capacity/:capacityId", async (req, res) => {
@@ -527,7 +656,14 @@ router.get("/capacity/:capacityId", async (req, res) => {
     error(res, 404, "Capacity offer not found");
     return;
   }
-  res.json(GetMyCapacityResponse.parse(capacityResponse(capacity)));
+  res.json(
+    GetMyCapacityResponse.parse(
+      capacityResponse(
+        capacity,
+        await deepseaDetailsForCapacity(db, capacity.id),
+      ),
+    ),
+  );
 });
 
 router.patch("/capacity/:capacityId", async (req, res) => {
@@ -580,6 +716,21 @@ router.patch("/capacity/:capacityId", async (req, res) => {
       )
       .for("update");
     if (!vessel) return { kind: "invalid-vessel" as const };
+    const nextMode = parsed.data.transportMode ?? existing.transportMode;
+    if (vessel.transportMode !== nextMode) {
+      return { kind: "mode-mismatch" as const };
+    }
+    if (nextMode === "DEEPSEA_BULK") {
+      const [profile] = await tx
+        .select()
+        .from(deepseaVesselProfilesTable)
+        .where(eq(deepseaVesselProfilesTable.vesselId, vessel.id))
+        .for("update");
+      if (!profile) return { kind: "invalid-deepsea-profile" as const };
+      if (nextAvailableCapacity > profile.dwtTonnes) {
+        return { kind: "invalid-capacity" as const };
+      }
+    }
     if (
       !isCapacityWithinVessel(
         nextAvailableCapacity,
@@ -601,9 +752,14 @@ router.patch("/capacity/:capacityId", async (req, res) => {
         .for("update");
       if (!location) return { kind: "invalid-location" as const };
     }
+    const { deepseaExtension, ...base } = parsed.data;
     const [updated] = await tx
       .update(capacityOffersTable)
-      .set({ ...parsed.data, updatedAt: new Date() })
+      .set({
+        ...base,
+        transportMode: nextMode,
+        updatedAt: new Date(),
+      })
       .where(
         and(
           eq(capacityOffersTable.id, params.data.capacityId),
@@ -612,6 +768,13 @@ router.patch("/capacity/:capacityId", async (req, res) => {
       )
       .returning();
     if (updated) {
+      if (nextMode === "DEEPSEA_BULK") {
+        if (deepseaExtension !== undefined) {
+          await replaceDeepseaCapacityExtension(tx, updated.id, deepseaExtension);
+        }
+      } else {
+        await replaceDeepseaCapacityExtension(tx, updated.id, null);
+      }
       await recalculateMatchesWithin(tx, { changedCapacityIds: [updated.id] });
     }
     return updated
@@ -638,6 +801,14 @@ router.patch("/capacity/:capacityId", async (req, res) => {
     error(res, 400, "Vessel is not active or is not owned by the company");
     return;
   }
+  if (result.kind === "mode-mismatch") {
+    error(res, 400, "Capacity transport mode must match its vessel");
+    return;
+  }
+  if (result.kind === "invalid-deepsea-profile") {
+    error(res, 400, "Deepsea capacity requires a vessel profile");
+    return;
+  }
   if (result.kind === "invalid-capacity") {
     error(res, 400, "Offered capacity cannot exceed vessel total capacity");
     return;
@@ -646,7 +817,14 @@ router.patch("/capacity/:capacityId", async (req, res) => {
     error(res, 400, "Unknown or inactive catalogue location");
     return;
   }
-  res.json(UpdateMyCapacityResponse.parse(capacityResponse(result.capacity)));
+  res.json(
+    UpdateMyCapacityResponse.parse(
+      capacityResponse(
+        result.capacity,
+        await deepseaDetailsForCapacity(db, result.capacity.id),
+      ),
+    ),
+  );
 });
 
 async function setCapacityStatus(
@@ -711,7 +889,14 @@ async function setCapacityStatus(
     status === "WITHDRAWN"
       ? WithdrawMyCapacityResponse
       : CloseMyCapacityResponse;
-  res.json(response.parse(capacityResponse(capacity)));
+  res.json(
+    response.parse(
+      capacityResponse(
+        capacity,
+        await deepseaDetailsForCapacity(db, capacity.id),
+      ),
+    ),
+  );
 }
 
 router.post("/capacity/:capacityId/withdraw", (req, res) =>

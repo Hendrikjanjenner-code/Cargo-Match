@@ -8,7 +8,7 @@
  */
 import { randomUUID } from "node:crypto";
 
-import { eq } from "drizzle-orm";
+import { eq, sql } from "drizzle-orm";
 import { companyMembersTable, companiesTable, db, usersTable } from "@workspace/db";
 
 import { createSession, deleteSession, type SessionData } from "../../src/lib/auth";
@@ -92,8 +92,18 @@ export async function addTestMembership(
 
 export async function disposeTestIdentity(identity: Awaited<ReturnType<typeof createTestIdentity>>) {
   await deleteSession(identity.sid);
-  if (identity.company) {
-    await db.delete(companiesTable).where(eq(companiesTable.id, identity.company.id));
-  }
-  await db.delete(usersTable).where(eq(usersTable.id, identity.user.id));
+  // Integration files run concurrently against the same test database. Keep
+  // fixture teardown behind the same coarse domain lock as material API
+  // mutations so a cascading company delete cannot race match recalculation.
+  await db.transaction(async (tx) => {
+    await tx.execute(
+      sql`SELECT pg_advisory_xact_lock(hashtext('cargomatch-domain-v1'))`,
+    );
+    if (identity.company) {
+      await tx
+        .delete(companiesTable)
+        .where(eq(companiesTable.id, identity.company.id));
+    }
+    await tx.delete(usersTable).where(eq(usersTable.id, identity.user.id));
+  });
 }

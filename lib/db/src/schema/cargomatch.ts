@@ -1,6 +1,7 @@
 import { relations, sql } from "drizzle-orm";
 import {
   boolean,
+  check,
   date,
   doublePrecision,
   index,
@@ -39,6 +40,26 @@ export const vesselTypeEnum = pgEnum("vessel_type", [
   "CONTAINER",
   "PUSH_BARGE",
   "OTHER",
+]);
+export const transportModeEnum = pgEnum("transport_mode", [
+  "INLAND_WATERWAY",
+  "DEEPSEA_BULK",
+]);
+export const deepseaVesselClassEnum = pgEnum("deepsea_vessel_class", [
+  "HANDYSIZE",
+  "HANDYMAX",
+  "SUPRAMAX",
+  "ULTRAMAX",
+  "PANAMAX",
+  "KAMSARMAX",
+  "POST_PANAMAX",
+  "CAPESIZE",
+  "NEWCASTLEMAX",
+  "OTHER",
+]);
+export const availabilityConfidenceEnum = pgEnum("availability_confidence", [
+  "EXPECTED",
+  "CONFIRMED",
 ]);
 export const locationTypeEnum = pgEnum("location_type", [
   "PORT",
@@ -178,6 +199,9 @@ export const vesselsTable = pgTable(
     companyId: uuid("company_id")
       .notNull()
       .references(() => companiesTable.id, { onDelete: "cascade" }),
+    transportMode: transportModeEnum("transport_mode")
+      .notNull()
+      .default("INLAND_WATERWAY"),
     vesselName: varchar("vessel_name", { length: 200 }).notNull(),
     eniNumber: varchar("eni_number", { length: 32 }),
     vesselType: vesselTypeEnum("vessel_type").notNull(),
@@ -200,11 +224,34 @@ export const vesselsTable = pgTable(
   (table) => [
     index("vessels_company_idx").on(table.companyId),
     index("vessels_company_active_idx").on(table.companyId, table.active),
+    index("vessels_company_mode_idx").on(table.companyId, table.transportMode),
     uniqueIndex("vessels_company_name_idx").on(
       table.companyId,
       table.vesselName,
     ),
   ],
+);
+
+/** Mode-specific dry-bulk particulars; the base vessel row remains shared. */
+export const deepseaVesselProfilesTable = pgTable(
+  "deepsea_vessel_profiles",
+  {
+    vesselId: uuid("vessel_id")
+      .primaryKey()
+      .references(() => vesselsTable.id, { onDelete: "cascade" }),
+    vesselClass: deepseaVesselClassEnum("vessel_class").notNull(),
+    dwtTonnes: doublePrecision("dwt_tonnes").notNull(),
+    summerDraftMetres: doublePrecision("summer_draft_metres"),
+    gearConfiguration: varchar("gear_configuration", { length: 120 }),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .notNull()
+      .defaultNow(),
+    updatedAt: timestamp("updated_at", { withTimezone: true })
+      .notNull()
+      .defaultNow()
+      .$onUpdate(() => new Date()),
+  },
+  (table) => [index("deepsea_vessel_profiles_dwt_idx").on(table.dwtTonnes)],
 );
 
 /**
@@ -335,6 +382,9 @@ export const cargoListingsTable = pgTable(
     companyId: uuid("company_id")
       .notNull()
       .references(() => companiesTable.id, { onDelete: "cascade" }),
+    transportMode: transportModeEnum("transport_mode")
+      .notNull()
+      .default("INLAND_WATERWAY"),
     cargoName: varchar("cargo_name", { length: 200 }).notNull(),
     cargoType: varchar("cargo_type", { length: 100 }).notNull(),
     weightTonnes: doublePrecision("weight_tonnes").notNull(),
@@ -370,6 +420,41 @@ export const cargoListingsTable = pgTable(
       table.loadingFrom,
     ),
     index("cargo_loading_location_idx").on(table.loadingLocationId),
+    index("cargo_mode_marketplace_idx").on(table.transportMode, table.listingStatus),
+  ],
+);
+
+export const deepseaCargoRequirementsTable = pgTable(
+  "deepsea_cargo_requirements",
+  {
+    cargoListingId: uuid("cargo_listing_id")
+      .primaryKey()
+      .references(() => cargoListingsTable.id, { onDelete: "cascade" }),
+    quantityTolerancePercent: doublePrecision("quantity_tolerance_percent")
+      .notNull()
+      .default(0),
+    minimumVesselDwtTonnes: doublePrecision("minimum_vessel_dwt_tonnes"),
+    maximumVesselDwtTonnes: doublePrecision("maximum_vessel_dwt_tonnes"),
+    maximumDraftMetres: doublePrecision("maximum_draft_metres"),
+    requiredGear: varchar("required_gear", { length: 120 }),
+    preferredVesselClass: deepseaVesselClassEnum("preferred_vessel_class"),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .notNull()
+      .defaultNow(),
+    updatedAt: timestamp("updated_at", { withTimezone: true })
+      .notNull()
+      .defaultNow()
+      .$onUpdate(() => new Date()),
+  },
+  (table) => [
+    check(
+      "deepsea_cargo_tolerance_check",
+      sql`${table.quantityTolerancePercent} >= 0 AND ${table.quantityTolerancePercent} < 100`,
+    ),
+    check(
+      "deepsea_cargo_dwt_range_check",
+      sql`${table.minimumVesselDwtTonnes} IS NULL OR ${table.maximumVesselDwtTonnes} IS NULL OR ${table.minimumVesselDwtTonnes} <= ${table.maximumVesselDwtTonnes}`,
+    ),
   ],
 );
 
@@ -380,6 +465,9 @@ export const capacityOffersTable = pgTable(
     companyId: uuid("company_id")
       .notNull()
       .references(() => companiesTable.id, { onDelete: "cascade" }),
+    transportMode: transportModeEnum("transport_mode")
+      .notNull()
+      .default("INLAND_WATERWAY"),
     vesselId: uuid("vessel_id")
       .notNull()
       .references(() => vesselsTable.id),
@@ -404,6 +492,9 @@ export const capacityOffersTable = pgTable(
       "maximum_positioning_distance_km",
     ).notNull(),
     visibility: visibilityEnum("visibility").notNull(),
+    availabilityConfidence: availabilityConfidenceEnum("availability_confidence")
+      .notNull()
+      .default("CONFIRMED"),
     notes: text("notes"),
     listingStatus: listingStatusEnum("listing_status")
       .notNull()
@@ -425,7 +516,34 @@ export const capacityOffersTable = pgTable(
     ),
     index("capacity_location_idx").on(table.locationId),
     index("capacity_vessel_idx").on(table.vesselId),
+    index("capacity_mode_marketplace_idx").on(
+      table.transportMode,
+      table.listingStatus,
+    ),
   ],
+);
+
+/**
+ * Expected future open-position details for deepsea bulk. Capacity offers
+ * retain the common capacity/listing/consent foreign keys and workflow.
+ */
+export const deepseaCapacityExtensionsTable = pgTable(
+  "deepsea_capacity_extensions",
+  {
+    capacityOfferId: uuid("capacity_offer_id")
+      .primaryKey()
+      .references(() => capacityOffersTable.id, { onDelete: "cascade" }),
+    manualPositioningDays: integer("manual_positioning_days"),
+    approximateMaxDistanceKm: doublePrecision("approximate_max_distance_km"),
+    previousVoyageContext: text("previous_voyage_context"),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .notNull()
+      .defaultNow(),
+    updatedAt: timestamp("updated_at", { withTimezone: true })
+      .notNull()
+      .defaultNow()
+      .$onUpdate(() => new Date()),
+  },
 );
 
 export const matchesTable = pgTable(

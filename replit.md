@@ -52,6 +52,7 @@ Compact, desktop-first European logistics interface; navy, marine blue and teal.
 - OAuth and cross-origin checks accept only configured origins. For a custom published domain, configure `APP_ORIGIN` to the verified HTTPS origin; do not trust arbitrary request Host headers.
 
 ## Pointers
+- Deepsea Dry Bulk manual pilot, additive migration, and explicitly deferred multimodal scope: `docs/deepsea-pilot.md`. Use the separate Deepsea navigation; existing listings default to inland mode.
 
 - AIS foundation and development-only simulated provider setup: `docs/ais-foundation.md`. Production remains not configured; explicit internal-vessel mappings are required before simulated positions can be shown. AIS never changes commercial availability.
 - See the `pnpm-workspace` skill for workspace structure, TypeScript setup, and package details

@@ -1,0 +1,2553 @@
+# CARGOMATCH — DEEPSEA + MULTIMODAL MASTER EXTENSION V3
+
+Extend the EXISTING CargoMatch application.
+
+IMPORTANT:
+
+Do NOT rebuild the application from scratch.
+
+Do NOT remove existing functionality.
+
+Do NOT replace the existing privacy, authentication, company, matching, messaging, network or AIS architecture unless a migration is explicitly required.
+
+Build on top of the existing CargoMatch application.
+
+The objective of this extension is to evolve CargoMatch from an inland-waterway capacity marketplace into a long-term:
+
+# TRANSPORT CAPACITY INTELLIGENCE NETWORK
+
+CargoMatch should eventually support:
+
+1. INLAND WATERWAY
+2. DEEPSEA DRY BULK
+3. CONVENTIONAL / BREAKBULK
+4. LINER SHIPPING
+5. ROAD FREIGHT
+6. RAIL FREIGHT
+7. AIR CARGO
+8. LCL / GROUPAGE IMPORT WORKFLOWS
+
+However:
+
+DO NOT attempt to fully build every transport mode at once.
+
+Design multimodal.
+
+Build and validate vertical slices.
+
+---
+
+# 1. CORE CARGOMATCH PRINCIPLE
+
+CargoMatch should answer one fundamental commercial question:
+
+**What suitable transport capacity is going to become available, where and when, and what cargo can use it next?**
+
+The platform should increasingly identify opportunities BEFORE transport capacity becomes empty, idle or unnecessarily repositioned.
+
+Universal flow:
+
+CURRENT OPERATION
+
+↓
+
+EXPECTED COMPLETION
+
+↓
+
+EXPECTED AVAILABILITY
+
+↓
+
+COMMERCIAL CAPACITY
+
+↓
+
+ELIGIBLE CARGO
+
+↓
+
+MATCH
+
+↓
+
+INTEREST
+
+↓
+
+MUTUAL ACCEPTANCE
+
+↓
+
+CONNECTED
+
+↓
+
+COMMERCIAL DISCUSSION
+
+CargoMatch facilitates commercial discovery and introductions.
+
+CONNECTED does NOT mean:
+
+BOOKED
+
+FIXED
+
+CONTRACTED
+
+RESERVED
+
+or
+
+TRANSPORT CONFIRMED.
+
+---
+
+# 2. TWO-SIDED MARKETPLACE
+
+CargoMatch must always work in both directions.
+
+CAPACITY → CARGO
+
+Example:
+
+"My vessel will become open in Malaysia."
+
+↓
+
+"What suitable cargo is available nearby?"
+
+And:
+
+CARGO → CAPACITY
+
+Example:
+
+"I have 75,000 mt loading Indonesia."
+
+↓
+
+"What suitable vessels are expected to become open nearby?"
+
+This principle applies across every transport mode.
+
+---
+
+# 3. EXPECTED AVAILABILITY IS CENTRAL
+
+Do NOT only search from the current location of an asset.
+
+CargoMatch must increasingly understand:
+
+WHERE WILL THE ASSET FINISH ITS CURRENT JOB?
+
+WHEN?
+
+WHAT CAPACITY WILL THEN BECOME AVAILABLE?
+
+Examples:
+
+VESSEL:
+
+expected discharge location
+
+↓
+
+future open position
+
+TRUCK:
+
+current delivery destination
+
+↓
+
+expected empty location
+
+RAIL:
+
+current operation
+
+↓
+
+future available wagon/service capacity
+
+AIR:
+
+scheduled flight
+
+↓
+
+remaining commercial flight capacity
+
+This concept should be called:
+
+EXPECTED AVAILABILITY
+
+and should become a core CargoMatch domain concept.
+
+---
+
+# 4. GENERIC TRANSPORT ARCHITECTURE
+
+Create an extensible conceptual architecture:
+
+TRANSPORT ASSET / SERVICE
+
+↓
+
+OPERATIONAL DATA
+
+↓
+
+CURRENT OPERATION
+
+↓
+
+EXPECTED COMPLETION
+
+↓
+
+EXPECTED AVAILABILITY
+
+↓
+
+COMMERCIAL CAPACITY
+
+↓
+
+ELIGIBILITY ENGINE
+
+↓
+
+MATCHING ENGINE
+
+↓
+
+CARGO OPPORTUNITY
+
+↓
+
+COMMERCIAL INTRODUCTION
+
+External tracking data supports this process.
+
+Tracking data does NOT automatically equal commercial availability.
+
+---
+
+# 5. TRANSPORT MODES
+
+Prepare an extensible enum:
+
+INLAND_WATERWAY
+
+DEEPSEA_BULK
+
+MARITIME_CONVENTIONAL
+
+MARITIME_LINER
+
+ROAD
+
+RAIL
+
+AIR_CARGO
+
+Do not permanently hardcode CargoMatch around VESSEL as the universal object.
+
+---
+
+# 6. GENERIC TRANSPORT ASSET
+
+Introduce a generic conceptual:
+
+TransportAsset
+
+Possible common fields:
+
+id
+
+company_id
+
+transport_mode
+
+display_name
+
+external_identifiers
+
+operational_status
+
+active
+
+created_at
+
+updated_at
+
+Use mode-specific profiles:
+
+VesselProfile
+
+TruckProfile
+
+RailAssetProfile
+
+AircraftProfile
+
+Do NOT create one enormous database table containing every transport-mode-specific field.
+
+---
+
+# 7. COMMERCIAL CAPACITY
+
+Create a generic conceptual:
+
+CapacityOpportunity
+
+Possible common fields:
+
+id
+
+company_id
+
+transport_mode
+
+asset_or_service_reference
+
+availability_location
+
+availability_region
+
+available_from
+
+available_until
+
+capacity_value
+
+capacity_unit
+
+destination_or_direction
+
+commercial_status
+
+visibility
+
+availability_source
+
+created_at
+
+updated_at
+
+Mode-specific details belong in mode-specific extensions.
+
+---
+
+# 8. OPERATIONAL SIGNAL ≠ COMMERCIAL AVAILABILITY
+
+This rule applies throughout CargoMatch.
+
+AIS shows a vessel at anchor.
+
+That does NOT prove the vessel is commercially open.
+
+GPS shows a truck stationary.
+
+That does NOT prove the truck is empty.
+
+Rail data shows wagons at a terminal.
+
+That does NOT prove they are commercially available.
+
+Flight tracking shows an aircraft flying.
+
+That does NOT prove there is cargo space for sale.
+
+Therefore separate:
+
+OPERATIONAL / TELEMETRY DATA
+
+from:
+
+COMMERCIAL CAPACITY DATA
+
+Commercial availability must come from:
+
+authorized user confirmation
+
+or
+
+trusted commercial system integration.
+
+---
+
+# PART A — INLAND WATERWAY
+
+# 9. PRESERVE EXISTING INLAND FUNCTIONALITY
+
+Keep the existing CargoMatch inland-waterway MVP.
+
+Continue supporting:
+
+vessels
+
+capacity offers
+
+cargo listings
+
+skippers
+
+planners
+
+charterers
+
+shippers
+
+matching
+
+privacy
+
+interest
+
+connections
+
+messages
+
+trusted networks
+
+AIS integration architecture
+
+Do not break existing workflows while adding multimodal support.
+
+---
+
+# 10. INLAND EXPECTED AVAILABILITY
+
+Support:
+
+CURRENT POSITION
+
+↓
+
+CURRENT VOYAGE / JOB
+
+↓
+
+EXPECTED UNLOADING
+
+↓
+
+EXPECTED AVAILABLE LOCATION
+
+↓
+
+EXPECTED AVAILABLE TIME
+
+↓
+
+CONFIRMED CAPACITY
+
+↓
+
+NEXT CARGO
+
+The skipper/planner may confirm:
+
+fully available
+
+partially available
+
+not available
+
+---
+
+# 11. INLAND AIS
+
+Keep provider-independent architecture:
+
+AISProvider
+
+↓
+
+VesselFinderConnector
+
+MarineTrafficConnector
+
+FutureAISConnector
+
+↓
+
+AISProviderManager
+
+↓
+
+Normalized AIS Data
+
+↓
+
+CargoMatch Intelligence
+
+Do not let business logic call VesselFinder or MarineTraffic directly.
+
+---
+
+# PART B — DEEPSEA DRY BULK
+
+# 12. DEEPSEA CORE PROBLEM
+
+Deepsea vessels can finish voyages far away from their next known employment.
+
+This may result in significant ballast repositioning.
+
+Example:
+
+An owner has fixed a vessel on a voyage.
+
+The vessel eventually discharges in Southeast Asia.
+
+Its next known employment would require substantial ballast repositioning.
+
+Meanwhile a charterer may have suitable cargo near the vessel's future open position.
+
+CargoMatch should identify that commercial opportunity BEFORE the vessel finishes its current voyage.
+
+Core flow:
+
+CURRENT VOYAGE
+
+↓
+
+EXPECTED DISCHARGE
+
+↓
+
+FUTURE OPEN POSITION
+
+↓
+
+SUITABLE FUTURE CARGO
+
+↓
+
+ELIGIBILITY
+
+↓
+
+MATCH
+
+↓
+
+COMMERCIAL INTRODUCTION
+
+---
+
+# 13. DEEPSEA VESSEL CLASSES
+
+Support extensible dry-bulk vessel classes:
+
+HANDYSIZE
+
+HANDYMAX
+
+SUPRAMAX
+
+ULTRAMAX
+
+PANAMAX
+
+KAMSARMAX
+
+POST_PANAMAX
+
+CAPESIZE
+
+NEWCASTLEMAX
+
+OTHER
+
+Actual vessel specifications are more authoritative than the class label.
+
+---
+
+# 14. DEEPSEA VESSEL PROFILE
+
+Possible fields:
+
+vessel name
+
+IMO
+
+MMSI
+
+flag
+
+year built
+
+DWT
+
+summer draft
+
+LOA
+
+beam
+
+vessel class
+
+holds
+
+hatches
+
+gear configuration
+
+crane capacity
+
+grab capability
+
+grain capacity
+
+bale capacity where relevant
+
+cargo restrictions
+
+registered owner
+
+commercial operator
+
+technical manager
+
+AIS identifiers
+
+Apply CargoMatch privacy rules.
+
+---
+
+# 15. VESSEL OPEN POSITION
+
+Create a deepsea-specific commercial object:
+
+VESSEL_OPEN_POSITION
+
+Fields may include:
+
+vessel
+
+expected open port
+
+expected open region
+
+open_from
+
+open_until
+
+available DWT
+
+previous voyage context
+
+preferred employment
+
+preferred trade lane
+
+cargo compatibility
+
+maximum preferred ballast positioning
+
+visibility
+
+source
+
+status
+
+Statuses:
+
+EXPECTED
+
+CONFIRMED
+
+WITHDRAWN
+
+EXPIRED
+
+Commercial availability must be confirmed by an authorized party.
+
+---
+
+# 16. FUTURE OPEN POSITION
+
+Do NOT only match vessels that are already empty.
+
+Example:
+
+Kamsarmax
+
+Current voyage:
+West Africa → Asia
+
+Expected discharge:
+Malaysia
+
+Expected open:
+Malaysia region
+
+Expected open date:
+20 October
+
+CargoMatch should already search future cargo with compatible laycan around the vessel's future open position.
+
+This is a central CargoMatch feature.
+
+---
+
+# 17. DEEPSEA CARGO ORDER
+
+Possible fields:
+
+commodity
+
+quantity
+
+quantity tolerance
+
+load port
+
+load range
+
+discharge port
+
+discharge range
+
+laycan start
+
+laycan end
+
+minimum DWT
+
+maximum DWT
+
+preferred vessel class
+
+maximum draft
+
+gear requirements
+
+loading rate
+
+discharge rate
+
+special requirements
+
+trade restrictions
+
+visibility
+
+company
+
+status
+
+private commercial notes
+
+---
+
+# 18. DEEPSEA ELIGIBILITY
+
+Eligibility occurs BEFORE scoring.
+
+Exclude combinations where:
+
+open date incompatible with laycan
+
+positioning unacceptable
+
+DWT insufficient
+
+vessel too large
+
+draft incompatible
+
+cargo incompatible
+
+gear incompatible
+
+trade restriction incompatible
+
+listing expired
+
+visibility prevents discovery
+
+required information missing
+
+company not authorized
+
+Only eligible combinations proceed to scoring.
+
+---
+
+# 19. DEEPSEA MATCHING
+
+Create:
+
+DeepseaBulkEligibilityStrategy
+
+DeepseaBulkMatchingStrategy
+
+Potential scoring dimensions:
+
+ballast proximity
+
+open date versus laycan
+
+DWT utilization
+
+vessel class suitability
+
+cargo compatibility
+
+trade-lane compatibility
+
+gear compatibility
+
+commercial preferences
+
+Do NOT reuse inland-waterway weights.
+
+Keep scoring explainable.
+
+---
+
+# 20. BALLAST DISTANCE
+
+Long term, integrate appropriate maritime routing.
+
+Until then:
+
+straight-line geographic distance must be clearly labelled approximate.
+
+Do NOT call it:
+
+actual sailing distance
+
+actual ballast distance
+
+voyage duration
+
+or navigable route distance.
+
+Do not calculate unsupported bunker/cost/CO2 savings.
+
+---
+
+# 21. DEEPSEA OWNER EXPERIENCE
+
+Example:
+
+MV OceanBridge Atlas
+
+Kamsarmax
+
+82,000 DWT
+
+Expected open:
+Malaysia
+
+20–23 October
+
+↓
+
+CargoMatch finds:
+
+75,000 mt bulk cargo
+
+Indonesia → China
+
+Laycan:
+22–25 October
+
+↓
+
+MATCH
+
+↓
+
+Owner sees privacy-safe cargo opportunity.
+
+↓
+
+SHOW INTEREST
+
+↓
+
+Charterer accepts.
+
+↓
+
+CONNECTED.
+
+The parties may then negotiate commercially.
+
+---
+
+# 22. CHARTERER EXPERIENCE
+
+Example:
+
+Cargo:
+
+65,000 mt
+
+Indonesia → China
+
+Laycan:
+20–25 October
+
+CargoMatch searches:
+
+confirmed open vessels
+
+expected open vessels
+
+trusted-network vessels
+
+eligible participating vessels
+
+and returns privacy-safe matches.
+
+---
+
+# 23. DEEPSEA PRIVACY
+
+Before connection, CargoMatch may show:
+
+VESSEL CLASS:
+Kamsarmax
+
+OPEN REGION:
+Southeast Asia
+
+OPEN WINDOW:
+20–23 October
+
+DWT BAND:
+80–85k
+
+GEAR:
+Gearless
+
+instead of automatically exposing:
+
+vessel name
+
+IMO
+
+exact owner
+
+exact commercial open port
+
+exact contact details
+
+Protect cargo orders symmetrically.
+
+---
+
+# 24. AIS-ASSISTED OPEN POSITION
+
+AIS may support:
+
+current position
+
+course
+
+speed
+
+reported destination
+
+reported ETA
+
+reported draft
+
+port calls
+
+voyage progression
+
+CargoMatch may use these signals to create:
+
+OPEN POSITION SUGGESTION
+
+Example:
+
+"MV Example may become available in Malaysia around 20 October."
+
+Authorized owner/operator can select:
+
+CONFIRM
+
+EDIT
+
+NOT AVAILABLE
+
+Only confirmed commercial information becomes an active capacity opportunity.
+
+---
+
+# PART C — CONVENTIONAL / BREAKBULK / LINER
+
+# 25. CONVENTIONAL SHIPPING
+
+Support cargo such as:
+
+breakbulk
+
+project cargo
+
+heavy lift
+
+steel
+
+machinery
+
+RoRo where applicable
+
+Compatibility may include:
+
+origin
+
+destination
+
+trade lane
+
+departure
+
+dimensions
+
+weight
+
+lifting requirements
+
+deck/hold requirements
+
+cargo type
+
+---
+
+# 26. SHIPPING SERVICES
+
+Introduce:
+
+SHIPPING_SERVICE
+
+SAILING
+
+PORT_ROTATION
+
+TRADE_LANE
+
+Example:
+
+North Europe → West Africa
+
+Antwerp
+
+↓
+
+Rotterdam
+
+↓
+
+Bilbao
+
+↓
+
+Dakar
+
+↓
+
+Tema
+
+CargoMatch should answer:
+
+Which participating carrier operates this trade lane?
+
+Which upcoming sailing may accept the cargo?
+
+---
+
+# 27. LINER MATCHING
+
+Example:
+
+Cargo:
+
+4 industrial machines
+
+Antwerp → Tema
+
+Ready:
+8 November
+
+CargoMatch finds:
+
+Sailing A:
+12 November
+
+Sailing B:
+17 November
+
+Eligibility considers:
+
+dimensions
+
+weight
+
+lifting
+
+cargo type
+
+destination
+
+cutoff
+
+service capability
+
+Then show relevant carrier/service opportunities.
+
+---
+
+# PART D — ROAD FREIGHT
+
+# 28. ROAD ASSETS
+
+Support:
+
+TRUCK
+
+TRACTOR
+
+TRAILER
+
+TRUCK_TRAILER_COMBINATION
+
+Operational data may come from:
+
+GPS
+
+telematics
+
+TMS
+
+driver input
+
+planner input
+
+---
+
+# 29. ROAD CONNECTORS
+
+Prepare provider-independent architecture:
+
+RoadTelematicsProvider
+
+Potential implementations:
+
+WebfleetConnector
+
+SamsaraConnector
+
+TrimbleConnector
+
+FutureTelematicsConnector
+
+Do not hardcode road logic around one vendor.
+
+---
+
+# 30. ROAD CAPACITY
+
+Potential fields:
+
+payload
+
+pallet positions
+
+loading metres
+
+volume
+
+vehicle type
+
+trailer type
+
+temperature capability
+
+ADR capability
+
+availability location
+
+availability time
+
+destination/direction
+
+commercial availability
+
+---
+
+# 31. ROAD FORWARD MATCHING
+
+Do not only use current GPS position.
+
+Example:
+
+Truck currently:
+Cologne
+
+Current delivery:
+Eindhoven
+
+Expected delivery:
+13:30
+
+Expected available:
+Eindhoven 14:00
+
+CargoMatch should search suitable loads around Eindhoven after 14:00.
+
+Flow:
+
+CURRENT DELIVERY
+
+↓
+
+EXPECTED EMPTY LOCATION
+
+↓
+
+EXPECTED EMPTY TIME
+
+↓
+
+SUITABLE NEXT LOAD
+
+↓
+
+MATCH
+
+---
+
+# 32. DRIVER + PLANNER
+
+Driver is an operational user.
+
+Planner may have commercial authority.
+
+Driver may:
+
+view assigned vehicle
+
+confirm operational status
+
+view next-load opportunities
+
+flag opportunities
+
+SEND TO PLANNER
+
+Do not automatically allow a driver to make binding commercial decisions.
+
+---
+
+# PART E — RAIL FREIGHT
+
+# 33. RAIL CAPACITY
+
+Rail capacity may represent:
+
+WAGON
+
+WAGON GROUP
+
+TRAIN CAPACITY
+
+RAIL SERVICE
+
+INTERMODAL SERVICE
+
+Do not model rail simply as a truck with different coordinates.
+
+---
+
+# 34. RAIL CONNECTORS
+
+Prepare:
+
+RailDataProvider
+
+Potential implementations:
+
+RailOperatorConnector
+
+TerminalConnector
+
+RailDataConnector
+
+FutureRailProviderConnector
+
+---
+
+# 35. RAIL MATCHING
+
+Eligibility/matching may consider:
+
+origin terminal
+
+destination terminal
+
+departure
+
+arrival
+
+wagon type
+
+wagon count
+
+weight
+
+volume
+
+cargo compatibility
+
+rail corridor
+
+terminal compatibility
+
+intermodal compatibility
+
+operational restrictions
+
+---
+
+# 36. RAIL FORWARD CAPACITY
+
+Example:
+
+12 suitable wagons expected available
+
+Duisburg
+
+Tomorrow 06:00
+
+↓
+
+CargoMatch
+
+↓
+
+search cargo requiring compatible rail capacity
+
+↓
+
+ELIGIBILITY
+
+↓
+
+MATCH
+
+The commercial object may be wagon/service capacity rather than a locomotive.
+
+---
+
+# PART F — AIR CARGO
+
+# 37. AIR CARGO
+
+Support both:
+
+DEDICATED FREIGHTER CAPACITY
+
+and:
+
+PASSENGER BELLY CAPACITY
+
+For commercial matching, the key object is often:
+
+FLIGHT_CAPACITY
+
+rather than the aircraft itself.
+
+---
+
+# 38. AIR CARGO CAPACITY
+
+Potential fields:
+
+flight number
+
+operating carrier
+
+origin airport
+
+destination airport
+
+departure datetime
+
+arrival datetime
+
+aircraft type
+
+available weight kg
+
+available volume m3
+
+ULD compatibility
+
+cargo categories
+
+dangerous goods capability
+
+temperature capability
+
+special handling
+
+cutoff time
+
+commercial availability
+
+visibility
+
+---
+
+# 39. AIR DATA CONNECTORS
+
+Prepare provider-independent architecture:
+
+AviationDataProvider
+
+Potential connector types:
+
+FlightDataConnector
+
+AirlineCapacityConnector
+
+CargoBookingConnector
+
+FutureAviationConnector
+
+Do not tightly couple CargoMatch to one aviation-data provider.
+
+---
+
+# 40. FLIGHT TRACKING ≠ CARGO CAPACITY
+
+Flight tracking may tell CargoMatch:
+
+aircraft position
+
+flight status
+
+route
+
+departure
+
+arrival
+
+aircraft type
+
+It does NOT prove:
+
+available cargo kg
+
+available m3
+
+commercial booking authority.
+
+Commercial capacity must come from authorized:
+
+airline
+
+cargo operator
+
+GSSA/GSA
+
+forwarder
+
+capacity system
+
+booking system
+
+or authorized manual input.
+
+---
+
+# 41. AIR ELIGIBILITY
+
+Before scoring exclude:
+
+insufficient weight capacity
+
+insufficient volume
+
+dimension incompatibility
+
+origin incompatibility
+
+destination incompatibility
+
+missed cutoff
+
+DG incompatibility
+
+temperature incompatibility
+
+ULD incompatibility
+
+special handling incompatibility
+
+expired flight capacity
+
+unauthorized visibility
+
+---
+
+# 42. AIR MATCHING
+
+Possible scoring dimensions:
+
+origin fit
+
+destination fit
+
+departure timing
+
+arrival timing
+
+weight utilization
+
+volume utilization
+
+handling compatibility
+
+cargo type
+
+route fit
+
+transshipment requirements
+
+Use:
+
+AirCargoEligibilityStrategy
+
+AirCargoMatchingStrategy
+
+Do NOT reuse vessel/truck matching formulas.
+
+---
+
+# 43. AIR EXAMPLE
+
+Flight:
+
+AMS → DXB
+
+Tomorrow 21:30
+
+Aircraft:
+B777F
+
+Remaining commercial capacity:
+
+4,800 kg
+
+28 m³
+
+↓
+
+CargoMatch
+
+↓
+
+Shipment:
+
+3,600 kg
+
+Schiphol region → Dubai
+
+Ready:
+15:00
+
+↓
+
+ELIGIBILITY
+
+↓
+
+MATCH
+
+↓
+
+AIR CARGO OPERATOR ↔ SHIPPER/FORWARDER
+
+---
+
+# PART G — UNIVERSAL CARGO
+
+# 44. CARGO REQUIREMENT
+
+Prepare generic:
+
+CargoRequirement
+
+Common fields:
+
+origin
+
+destination
+
+ready_from
+
+ready_until
+
+weight
+
+volume
+
+cargo type
+
+special requirements
+
+allowed transport modes
+
+preferred transport mode
+
+visibility
+
+company
+
+Then create mode-specific extensions.
+
+Do not force a Capesize cargo order and a palletized truck shipment into exactly the same data structure.
+
+---
+
+# 45. MODE-SPECIFIC ELIGIBILITY
+
+Use:
+
+InlandWaterwayEligibility
+
+DeepseaBulkEligibility
+
+LinerEligibility
+
+RoadEligibility
+
+RailEligibility
+
+AirCargoEligibility
+
+Eligibility must always occur before scoring.
+
+---
+
+# 46. MODE-SPECIFIC MATCHING
+
+Use:
+
+InlandWaterwayMatching
+
+DeepseaBulkMatching
+
+LinerMatching
+
+RoadMatching
+
+RailMatching
+
+AirCargoMatching
+
+Do not create one simplistic universal scoring formula.
+
+---
+
+# PART H — MULTIMODAL FUTURE
+
+# 47. ALLOWED TRANSPORT MODES
+
+Cargo may eventually specify:
+
+REQUIRED MODE
+
+PREFERRED MODE
+
+ALLOWED MODES
+
+Example:
+
+Rotterdam → Munich
+
+Allowed:
+
+ROAD
+
+RAIL
+
+Future CargoMatch may compare compatible capacity.
+
+Do not implement automatic mode recommendation unless the required routing/cost/service data exists.
+
+---
+
+# 48. MULTIMODAL JOURNEYS
+
+Future architecture may support:
+
+SHIP → TRUCK
+
+SHIP → RAIL
+
+RAIL → TRUCK
+
+AIR → TRUCK
+
+SHIP → RAIL → TRUCK
+
+Do NOT build multimodal orchestration during the first commercial validation phase.
+
+Prepare the data architecture only.
+
+---
+
+# PART I — DATA PROVIDER LAYER
+
+# 49. PROVIDER-INDEPENDENT ARCHITECTURE
+
+External data providers must sit behind interfaces.
+
+Conceptually:
+
+TRANSPORT DATA PROVIDER LAYER
+
+├── WATER
+│   ├── VesselFinderConnector
+│   ├── MarineTrafficConnector
+│   └── FutureAISConnector
+│
+├── ROAD
+│   ├── WebfleetConnector
+│   ├── SamsaraConnector
+│   ├── TrimbleConnector
+│   └── FutureTelematicsConnector
+│
+├── RAIL
+│   ├── RailOperatorConnector
+│   ├── TerminalConnector
+│   └── RailDataConnector
+│
+└── AIR
+├── FlightDataConnector
+├── AirlineCapacityConnector
+└── CargoBookingConnector
+
+CargoMatch business logic must never depend directly on one external provider.
+
+---
+
+# 50. DATA NORMALIZATION
+
+Provider data should be normalized before reaching business logic.
+
+Store:
+
+provider
+
+external identifier
+
+observation time
+
+received time
+
+freshness
+
+data provenance
+
+normalized fields
+
+provider-specific raw reference where legally permitted
+
+Never invent missing external data.
+
+---
+
+# 51. PROVIDER FAILURE
+
+CargoMatch must continue functioning if an external tracking provider fails.
+
+Tracking enhancement may become unavailable.
+
+Manual/commercial marketplace workflows must continue.
+
+---
+
+# PART J — PRIVACY & COMMERCIAL WORKFLOW
+
+# 52. PRIVACY
+
+Preserve the existing CargoMatch privacy model:
+
+OWNER VIEW
+
+ANONYMOUS MARKETPLACE VIEW
+
+CONNECTED VIEW
+
+Protect:
+
+identity
+
+exact location where sensitive
+
+exact capacity where sensitive
+
+commercial notes
+
+counterparty information
+
+contact details
+
+Protect both cargo and capacity owners.
+
+---
+
+# 53. INTEREST STATES
+
+Preserve:
+
+NEW
+
+↓
+
+INTEREST_SENT
+
+↓
+
+CONNECTED
+
+or
+
+DECLINED
+
+or
+
+EXPIRED
+
+Mutual consent is required before protected counterparty information is revealed.
+
+---
+
+# 54. CONNECTION IS NOT BOOKING
+
+CargoMatch facilitates:
+
+DISCOVERY
+
+INTRODUCTION
+
+COMMUNICATION
+
+Do not describe:
+
+CONNECTED
+
+as:
+
+BOOKED
+
+FIXED
+
+TRANSPORT CONFIRMED
+
+or:
+
+CONTRACTED.
+
+---
+
+# PART K — SUSTAINABILITY
+
+# 55. SUSTAINABILITY OBJECTIVE
+
+CargoMatch is designed to increase transport-capacity utilization and potentially reduce unnecessary empty repositioning.
+
+Examples:
+
+ballast voyages
+
+empty truck kilometres
+
+unused rail capacity
+
+unused flight cargo capacity
+
+However:
+
+Do NOT claim achieved:
+
+CO2 savings
+
+fuel savings
+
+cost savings
+
+kilometres avoided
+
+nautical miles avoided
+
+unless CargoMatch has:
+
+actual route data
+
+baseline methodology
+
+verified outcome
+
+documented calculation
+
+Until then use wording such as:
+
+POTENTIAL REPOSITIONING OPPORTUNITY
+
+POTENTIAL CAPACITY UTILIZATION
+
+APPROXIMATE POSITIONING
+
+---
+
+# PART L — CARGOMATCH IMPORT
+
+# 56. SEPARATE IMPORT MODULE
+
+Create a future separate module:
+
+CARGOMATCH IMPORT
+
+This module addresses:
+
+LCL
+
+GROUPAGE
+
+CONSOLIDATED IMPORT CARGO
+
+Do not mix this workflow directly into capacity matching.
+
+Shared infrastructure may include:
+
+companies
+
+users
+
+authentication
+
+permissions
+
+documents
+
+notifications
+
+payments
+
+audit logging
+
+---
+
+# 57. IMPORT PROBLEM
+
+Groupage containers may contain shipments for many receivers.
+
+Destination-side parties need information to:
+
+identify shipment
+
+receive arrival information
+
+understand required actions
+
+handle documents
+
+complete applicable customs processes
+
+understand local charges
+
+pay authorized charges
+
+obtain release
+
+collect cargo
+
+CargoMatch Import should digitize and simplify this workflow where legally and operationally possible.
+
+Do NOT assume all agents/intermediaries can legally or practically be removed.
+
+---
+
+# 58. CONSOLIDATION MODEL
+
+Model:
+
+MASTER CONSOLIDATION
+
+↓
+
+CONTAINER
+
+↓
+
+HOUSE SHIPMENT
+
+↓
+
+CONSIGNEE
+
+Example:
+
+Container ABCD1234567
+
+↓
+
+Shipment A → Consignee A
+
+Shipment B → Consignee B
+
+Shipment C → Consignee C
+
+Each consignee only sees its own authorized shipment.
+
+---
+
+# 59. ORIGIN DATA
+
+Allow authorized origin parties to populate:
+
+master reference
+
+house reference
+
+container
+
+seal
+
+shipper
+
+consignee
+
+notify party
+
+origin
+
+destination
+
+vessel/voyage
+
+ETA
+
+packages
+
+weight
+
+volume
+
+commodity
+
+documents
+
+authorized destination charges
+
+---
+
+# 60. CONSIGNEE PORTAL
+
+Provide:
+
+shipment overview
+
+arrival status
+
+documents
+
+required actions
+
+charges
+
+payment
+
+customs/release status
+
+warehouse information
+
+pickup information
+
+notifications
+
+support/contact
+
+---
+
+# 61. CHARGES
+
+Show destination charges transparently.
+
+Each charge should contain:
+
+description
+
+charging party
+
+amount
+
+currency
+
+tax where applicable
+
+payment status
+
+Examples may include:
+
+warehouse handling
+
+documentation
+
+terminal handling
+
+release charges
+
+storage
+
+customs service where requested
+
+other authorized charges
+
+---
+
+# 62. PAYMENTS
+
+Prepare for integration with regulated payment service providers.
+
+Potential methods:
+
+credit/debit card
+
+bank transfer
+
+future local payment methods
+
+CargoMatch must never store raw card details.
+
+Statuses:
+
+PENDING
+
+PAID
+
+FAILED
+
+REFUNDED
+
+DISPUTED
+
+---
+
+# 63. CUSTOMS
+
+CargoMatch must NOT claim to be a customs authority or automatically replace licensed customs representatives.
+
+Initially provide:
+
+INFORMATION
+
+DOCUMENTS
+
+WORKFLOW
+
+PAYMENT
+
+INTEGRATION
+
+Future authorized integrations may connect:
+
+customs brokers
+
+customs software
+
+government customs systems
+
+terminal systems
+
+warehouse systems
+
+---
+
+# 64. RELEASE WORKFLOW
+
+SHIPMENT CREATED AT ORIGIN
+
+↓
+
+CONSIGNEE INVITED
+
+↓
+
+ARRIVAL INFORMATION
+
+↓
+
+REQUIRED DOCUMENTS / ACTIONS
+
+↓
+
+AUTHORIZED CHARGES
+
+↓
+
+PAYMENT
+
+↓
+
+CUSTOMS / RELEASE REQUIREMENTS
+
+↓
+
+AUTHORIZED RELEASE
+
+↓
+
+PICKUP INFORMATION
+
+↓
+
+COLLECTED
+
+Audit important state changes.
+
+---
+
+# PART M — PRODUCT ARCHITECTURE
+
+# 65. LONG-TERM PRODUCT STRUCTURE
+
+CARGOMATCH
+
+├── CAPACITY INTELLIGENCE
+│
+├── CARGO MARKETPLACE
+│
+├── MATCHING
+│
+├── NETWORKS
+│
+├── COMMUNICATION
+│
+├── PRIVACY & AUTHORIZATION
+│
+├── DATA CONNECTORS
+│
+└── IMPORT
+│
+├── WATER
+│   ├── Inland Waterway
+│   ├── Deepsea Bulk
+│   ├── Conventional
+│   └── Liner
+│
+├── ROAD
+│
+├── RAIL
+│
+└── AIR CARGO
+
+---
+
+# 66. TRANSPORT CAPACITY INTELLIGENCE LAYER
+
+The central intelligence architecture should become:
+
+```
+                CARGOMATCH
+
+                    │
+
+       TRANSPORT CAPACITY
+         INTELLIGENCE
+
+                    │
+
+  ┌─────────┬───────┼───────┬─────────┐
+  │         │       │       │         │
+  ↓         ↓       ↓       ↓         ↓
+INLAND   DEEPSEA   ROAD    RAIL      AIR
+
+  │         │       │       │         │
+ AIS       AIS     GPS    RAIL     FLIGHT
+                   /TMS    DATA      DATA
+
+  └─────────┴───────┼───────┴─────────┘
+                    │
+                    ↓
+         EXPECTED AVAILABILITY
+                    │
+                    ↓
+         COMMERCIAL CONFIRMATION
+                    │
+                    ↓
+              ELIGIBILITY
+                    │
+                    ↓
+                MATCHING
+                    │
+                    ↓
+             NEXT CARGO
+```
+
+---
+
+# 67. DEVELOPMENT STRATEGY
+
+Do NOT build every feature simultaneously.
+
+Recommended sequence:
+
+PHASE 1
+
+Preserve and stabilize existing CargoMatch.
+
+PHASE 2
+
+Deepsea open-position + cargo vertical slice.
+
+PHASE 3
+
+Expected availability engine.
+
+PHASE 4
+
+AIS-assisted deepsea/inland intelligence.
+
+PHASE 5
+
+Conventional/liner proof of concept.
+
+PHASE 6
+
+Road-freight proof of concept.
+
+PHASE 7
+
+Rail-capacity proof of concept.
+
+PHASE 8
+
+Air-cargo proof of concept.
+
+PHASE 9
+
+CargoMatch Import proof of concept.
+
+PHASE 10
+
+Only after commercial validation:
+
+multimodal orchestration.
+
+---
+
+# 68. DO NOT OVERBUILD
+
+For every new transport mode:
+
+FIRST build one vertical scenario that works end-to-end.
+
+Example Deepsea:
+
+OWNER
+
+↓
+
+VESSEL
+
+↓
+
+OPEN POSITION
+
+↓
+
+CARGO
+
+↓
+
+ELIGIBILITY
+
+↓
+
+MATCH
+
+↓
+
+INTEREST
+
+↓
+
+ACCEPT
+
+↓
+
+CONNECTED
+
+Only after that works should additional deepsea complexity be added.
+
+Use the same principle for:
+
+ROAD
+
+RAIL
+
+AIR
+
+LINER
+
+IMPORT.
+
+---
+
+# 69. ARCHITECTURAL REQUIREMENT
+
+The codebase must remain modular.
+
+Use:
+
+shared core services
+
+*
+
+mode-specific domain services
+
+*
+
+provider adapters
+
+*
+
+shared commercial workflow
+
+Avoid:
+
+giant conditional statements such as:
+
+if transportMode == ...
+
+throughout the entire application.
+
+Prefer explicit strategies/interfaces.
+
+---
+
+# 70. CURRENT MVP VS FUTURE
+
+Clearly distinguish in code and UI:
+
+ACTIVE MVP
+
+PILOT FEATURE
+
+FUTURE FEATURE
+
+Do not expose unfinished workflows as if they are production-ready.
+
+Use feature flags where appropriate.
+
+---
+
+# 71. FINAL PRODUCT PRINCIPLE
+
+CargoMatch is NOT fundamentally:
+
+a vessel tracker
+
+a truck tracker
+
+a train tracker
+
+a flight tracker
+
+or simply another freight exchange.
+
+Tracking systems answer:
+
+**Where is the asset?**
+
+CargoMatch should answer:
+
+**Where and when will commercially usable transport capacity become available?**
+
+↓
+
+**What cargo is compatible with it?**
+
+↓
+
+**Can the right authorized parties discover each other?**
+
+↓
+
+**Can they connect without prematurely exposing commercially sensitive information?**
+
+---
+
+# 72. FINAL VISION
+
+For deepsea:
+
+**Find the next cargo before the vessel opens.**
+
+For inland:
+
+**Find the next cargo before the vessel becomes empty.**
+
+For road:
+
+**Find the next load before the truck finishes delivery.**
+
+For rail:
+
+**Find cargo before rail capacity remains unused.**
+
+For air:
+
+**Find cargo before flight capacity departs unused.**
+
+Across CargoMatch:
+
+CURRENT JOB
+
+↓
+
+EXPECTED COMPLETION
+
+↓
+
+EXPECTED AVAILABLE CAPACITY
+
+↓
+
+SUITABLE NEXT CARGO
+
+↓
+
+MATCH
+
+↓
+
+COMMERCIAL CONNECTION
+
+The long-term positioning is:
+
+# CARGOMATCH
+
+## THE TRANSPORT CAPACITY INTELLIGENCE NETWORK
+
+Design globally.
+
+Build modularly.
+
+Validate one commercial vertical at a time.

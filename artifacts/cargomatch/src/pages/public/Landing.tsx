@@ -1,7 +1,53 @@
 import { useDemoEntry } from "@/demo/entry";
-import { Button } from "@/components/ui/primitives";
+import { Button, Card, CardHeader, CardTitle, CardContent } from "@/components/ui/primitives";
 import { t } from "@/lib/i18n";
-import { Ship, Lock, Globe, ShieldCheck } from "lucide-react";
+import { Ship, Lock, Globe, ShieldCheck, User, Building, LogIn, ArrowRight } from "lucide-react";
+import { WORLD_PERSONAS } from "@/demo/world";
+
+const DEMO_CARDS = [
+  {
+    id: WORLD_PERSONAS.andy,
+    company: "Demo Transportplanning",
+    name: "Andy Kers",
+    role: "Transportorganisator / charteraar",
+    desc: "Maak oefenlading aan, zoek passend vervoer en verbind met een vervoerder.",
+  },
+  {
+    id: WORLD_PERSONAS.shipper,
+    company: "Northstar Materials",
+    name: "Nora Northstar",
+    role: "Verlader",
+    desc: "Zoek capaciteit voor binnenvaart, deepsea, breakbulk en wegtransport.",
+  },
+  {
+    id: WORLD_PERSONAS.inland,
+    company: "Delta Barge Logistics",
+    name: "Ivo Delta",
+    role: "Binnenvaart Vervoerder",
+    desc: "Beheert schepen en biedt capaciteit aan op de rivier.",
+  },
+  {
+    id: WORLD_PERSONAS.deepsea,
+    company: "BlueHarbor Bulk",
+    name: "Dani BlueHarbor",
+    role: "Deepsea Vervoerder",
+    desc: "Beheert zeeschepen voor grote volumes.",
+  },
+  {
+    id: WORLD_PERSONAS.liner,
+    company: "Atlas Conventional Lines",
+    name: "Lina Atlas",
+    role: "Breakbulk / lijndienstvervoerder",
+    desc: "Pas een afvaart en breakbulkcapaciteit aan en ontvang interesse.",
+  },
+  {
+    id: WORLD_PERSONAS.roadPlanner,
+    company: "Rijnland Road Freight",
+    name: "Ruben Planner",
+    role: "Wegtransport Planner",
+    desc: "Plant trucks en chauffeurs. (Rosa is chauffeur)",
+  },
+];
 
 export default function Landing() {
   const { startDemo, loginReal } = useDemoEntry();
@@ -13,32 +59,55 @@ export default function Landing() {
           <Ship className="h-6 w-6 text-accent" />
           {t("app.name")}
         </div>
-        <div className="ml-auto">
-           <Button variant="outline" onClick={loginReal}>{t("landing.login")}</Button>
+        <div className="ml-auto flex items-center gap-4">
+          <Button variant="outline" onClick={loginReal} className="gap-2">
+            <LogIn className="w-4 h-4" />
+            {t("landing.login")}
+          </Button>
         </div>
       </header>
 
-      <main className="flex-1 flex flex-col items-center justify-center px-4 py-24 bg-gradient-to-b from-background to-muted">
-        <div className="max-w-3xl text-center space-y-8">
-          <Badge className="bg-accent/10 text-accent hover:bg-accent/20 border-accent/20 mb-4 inline-flex">
-             {t("landing.badge")}
+      <main className="flex-1 flex flex-col items-center justify-start px-4 py-12 md:py-24 bg-gradient-to-b from-background to-muted/30">
+        <div className="max-w-4xl text-center space-y-6 mb-16">
+          <Badge className="bg-accent/10 text-accent hover:bg-accent/20 border-accent/20 inline-flex">
+            Proberen met demobedrijf
           </Badge>
-          <h1 className="text-4xl md:text-6xl font-bold tracking-tight text-foreground">
-            {t("app.tagline")}
+          <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-foreground">
+            Ontdek CargoMatch vanuit elk perspectief
           </h1>
-          <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto">
-            {t("app.description")}
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+            Kies een fictieve rol om het platform te ervaren. Schakel tussen bedrijven om te zien hoe matches, interesse en verbindingen aan beide kanten werken. Alles blijft lokaal in deze browser.
           </p>
-          
-          <div className="flex flex-col sm:flex-row gap-4 justify-center pt-8">
-            <Button size="lg" onClick={startDemo} className="text-base px-8">
-              Start demo als Andy Kers
-            </Button>
-          </div>
-          <p className="text-sm text-muted-foreground">
-            Geen account nodig. Probeer CargoMatch met fictieve ladingen en schepen.
-            Alles blijft lokaal in deze browser; er worden geen echte berichten of boekingen verstuurd.
-          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl w-full mx-auto">
+          {DEMO_CARDS.map((card) => (
+            <Card key={card.id} className="flex flex-col hover:border-primary/50 transition-colors">
+              <CardHeader>
+                <div className="flex items-start justify-between">
+                  <div className="space-y-1">
+                    <CardTitle className="text-xl flex items-center gap-2">
+                      <Building className="w-5 h-5 text-muted-foreground" />
+                      {card.company}
+                    </CardTitle>
+                    <div className="flex items-center gap-2 text-sm font-medium text-primary">
+                      <User className="w-4 h-4" />
+                      {card.name} ({card.role})
+                    </div>
+                  </div>
+                </div>
+              </CardHeader>
+              <CardContent className="flex-1 flex flex-col">
+                <p className="text-sm text-muted-foreground mb-6 flex-1">
+                  {card.desc}
+                </p>
+                <p className="text-xs text-muted-foreground mb-3">{card.id}@example.com · fictief contact</p>
+                <Button onClick={() => startDemo(card.id)} className="w-full gap-2">
+                  Speel als {card.name} <ArrowRight className="w-4 h-4" />
+                </Button>
+              </CardContent>
+            </Card>
+          ))}
         </div>
 
         <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto mt-24">

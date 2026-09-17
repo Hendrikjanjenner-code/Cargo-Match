@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
+import { Button, Card, CardHeader, CardTitle, CardContent, Badge, Select } from "@/components/ui/primitives";
+import { AlertTriangle, LogOut, RefreshCcw, MapPin, Plus, Building, User, LogIn } from "lucide-react";
 import { 
-  Button, Card, CardHeader, CardTitle, CardContent, Badge 
-} from "@/components/ui/primitives";
-import { AlertTriangle, LogOut, RefreshCcw, MapPin } from "lucide-react";
-import { 
-  getInitialDemoState, loadDemoState, saveDemoState, clearDemoState, evaluateDemo,
-  type DemoCargo, type DemoState 
-} from "./model";
+  WORLD_PERSONAS, type WorldPersonaId, type WorldState,
+  loadWorldState, saveWorldState, resetWorldStorage,
+   startDemo as createDemo,
+  worldPermissions, buildWorldMatches
+} from "./world";
 
 import { DemoOverview } from "./components/DemoOverview";
 import { DemoCargoForm } from "./components/DemoCargoForm";
@@ -14,6 +14,8 @@ import { DemoMatchDetail } from "./components/DemoMatchDetail";
 
 interface DemoAppProps {
   onExit: () => void;
+  initialPersonaId?: string;
+  onLoginReal?: () => void;
 }
 
 class DemoErrorBoundary extends React.Component<{ onReset: () => void, onExit: () => void, children: React.ReactNode }, { hasError: boolean }> {
@@ -21,11 +23,7 @@ class DemoErrorBoundary extends React.Component<{ onReset: () => void, onExit: (
     super(props);
     this.state = { hasError: false };
   }
-
-  static getDerivedStateFromError() {
-    return { hasError: true };
-  }
-
+  static getDerivedStateFromError() { return { hasError: true }; }
   render() {
     if (this.state.hasError) {
       return (
@@ -33,13 +31,10 @@ class DemoErrorBoundary extends React.Component<{ onReset: () => void, onExit: (
           <AlertTriangle className="w-12 h-12 text-destructive mx-auto" />
           <h2 className="text-xl font-bold">Demo status gecorrumpeerd</h2>
           <p className="text-muted-foreground text-sm">
-            Er is een fout opgetreden bij het lezen of schrijven van de lokale demo data (bijv. quota bereikt of onverwachte datastructuur).
+            Er is een fout opgetreden bij het lezen of schrijven van de lokale demo data.
           </p>
           <div className="flex gap-4 justify-center">
-            <Button onClick={() => {
-              this.setState({ hasError: false });
-              this.props.onReset();
-            }} variant="outline">Reset Demo</Button>
+            <Button onClick={() => { this.setState({ hasError: false }); this.props.onReset(); }} variant="outline">Reset Demo</Button>
             <Button onClick={this.props.onExit}>Demo afsluiten</Button>
           </div>
         </div>
@@ -49,288 +44,279 @@ class DemoErrorBoundary extends React.Component<{ onReset: () => void, onExit: (
   }
 }
 
-export default function DemoApp({ onExit }: DemoAppProps) {
-  const [state, setState] = useState<DemoState | null>(null);
-  const [view, setView] = useState<"overview" | "cargo_form" | "match_detail">("overview");
-  const [selectedCargo, setSelectedCargo] = useState<DemoCargo | null>(null);
-  const [selectedShipId, setSelectedShipId] = useState<string | null>(null);
-  const [storageError, setStorageError] = useState(false);
-  const [now, setNow] = useState(new Date());
+export default function DemoApp({ onExit, initialPersonaId, onLoginReal }: DemoAppProps) {
+  const [state, setState] = useState<WorldState | null>(null);
 
-  // Clock for periodic re-evaluations
+  const [personaId, setPersonaId] = useState<string>(initialPersonaId || WORLD_PERSONAS.andy);
+
+  const [view, setView] = useState<"overview" | "cargo_form" | "match_detail" | "asset_form">("overview");
+  const [selectedEntityId, setSelectedEntityId] = useState<string | null>(null); // entity id or "new_..."
+
+  const [storageStatus, setStorageStatus] = useState<"LOADING" | "ERROR" | "READY" | "LEGACY" | "CORRUPT">("LOADING");
+  const [storageErrorMsg, setStorageErrorMsg] = useState("");
+  const isVolatileRef = useRef(false);
+
+  const [now, setNow] = useState(() => new Date());
   useEffect(() => {
-    const timer = setInterval(() => setNow(new Date()), 60000);
-    return () => clearInterval(timer);
+    const timer = window.setInterval(() => {
+      const current = new Date();
+      setNow(current);
+      setState(previous => {
+        if (!previous) return previous;
+        const next = structuredClone(previous);
+        buildWorldMatches(next, current);
+        return next;
+      });
+    }, 60_000);
+    return () => window.clearInterval(timer);
   }, []);
 
-  // Load state from local storage or init
+  const initRef = useRef(false);
+
   useEffect(() => {
-    try {
-      const saved = loadDemoState();
-      if (saved) {
-        setState(saved);
-      } else {
-        const fresh = getInitialDemoState();
-        saveDemoState(fresh);
-        setState(fresh);
-      }
-    } catch (err) {
-      setStorageError(true);
-    }
-  }, []);
+    if (initRef.current) return;
+    initRef.current = true;
 
-  const hasExpiredData = state?.cargos.some(c => c.loadingUntil && new Date(c.loadingUntil) < now) || 
-                         state?.capacityOffers.some(o => o.availableUntil && new Date(o.availableUntil) < now);
-
-  const handleReset = () => {
-    try {
-      const fresh = getInitialDemoState();
-      saveDemoState(fresh);
+    const loaded = loadWorldState();
+    if (loaded.status === "UNAVAILABLE") {
+      setStorageStatus("ERROR");
+      setStorageErrorMsg(loaded.error);
+      isVolatileRef.current = true;
+    } else if (loaded.status === "LEGACY" || loaded.status === "CORRUPT") {
+      setStorageStatus(loaded.status);
+      setStorageErrorMsg(loaded.status === "CORRUPT" ? loaded.error : "Verouderde opslag");
+    } else if (loaded.status === "EMPTY") {
+      const fresh = createDemo(personaId as WorldPersonaId);
+      buildWorldMatches(fresh, new Date());
+      const s = saveWorldState(fresh);
+      if (!s.ok) isVolatileRef.current = true;
       setState(fresh);
+      setStorageStatus("READY");
+    } else if (loaded.status === "LOADED") {
+      // One time matches rebuild on load
+      const st = loaded.state;
+      const chosen = initialPersonaId || st.activePersonaId || WORLD_PERSONAS.andy;
+      const validPersona = st.users.some(user => user.id === chosen) ? chosen : WORLD_PERSONAS.andy;
+      st.activePersonaId = validPersona;
+      setPersonaId(validPersona);
+      buildWorldMatches(st, now);
+      const saved = saveWorldState(st);
+      if (!saved.ok) isVolatileRef.current = true;
+      setState(st);
+      setStorageStatus("READY");
+    }
+  }, [personaId, now]);
+
+  const updateState = useCallback((newState: WorldState) => {
+    // Fresh matching recomputed after every mutation
+    buildWorldMatches(newState, new Date());
+    
+    if (!isVolatileRef.current) {
+      const res = saveWorldState(newState);
+      if (!res.ok) {
+        isVolatileRef.current = true;
+        setStorageErrorMsg("Opslaan is mislukt. Je wijzigingen blijven tijdelijk in dit tabblad, maar gaan verloren bij vernieuwen.");
+      }
+    }
+    setState({ ...newState }); // clone reference
+  }, []);
+
+  const handleResetStorage = (choice: "RESET_LEGACY" | "RESET_CORRUPT") => {
+    if (window.confirm("Weet je zeker dat je alle lokale demo data wilt verwijderen en opnieuw wilt beginnen?")) {
+      const reset = resetWorldStorage(choice);
+      if (!reset.ok) {
+        setStorageErrorMsg("De oude opslag kon niet worden gewist. Sluit de demo of sta browseropslag toe en probeer opnieuw.");
+        return;
+      }
+      const fresh = createDemo(personaId as WorldPersonaId);
+      isVolatileRef.current = false;
+      updateState(fresh);
       setView("overview");
-      setSelectedCargo(null);
-      setSelectedShipId(null);
-      setStorageError(false);
-    } catch (err) {
-      setStorageError(true);
+      setSelectedEntityId(null);
+      setStorageStatus("READY");
     }
   };
 
-  const updateState = (newState: DemoState) => {
-    try {
-      saveDemoState(newState);
-      setState(newState);
-    } catch (err) {
-      setStorageError(true);
+  const handleResetDemo = () => {
+    if (window.confirm("Weet je zeker dat je de demo wilt resetten? Alle huidige fictieve data gaat verloren.")) {
+      const fresh = createDemo(personaId as WorldPersonaId);
+      updateState(fresh);
+      setView("overview");
+      setSelectedEntityId(null);
     }
   };
 
-  const handleSaveCargo = (cargo: DemoCargo) => {
-    if (!state) return;
-    const isNew = !state.cargos.find(c => c.id === cargo.id);
-    const newCargos = isNew 
-      ? [...state.cargos, cargo]
-      : state.cargos.map(c => c.id === cargo.id ? cargo : c);
-    
-    // Clear matches for this cargo so they are recomputed
-    const newMatches = { ...state.matches };
-    delete newMatches[cargo.id];
-
-    updateState({ ...state, cargos: newCargos, matches: newMatches });
+  const handlePersonaSwitch = (newPersonaId: string) => {
+    if (!state?.users.some(user => user.id === newPersonaId)) return;
+    setPersonaId(newPersonaId);
+    updateState({ ...structuredClone(state), activePersonaId: newPersonaId });
+    // clear details on switch
     setView("overview");
+    setSelectedEntityId(null);
   };
 
-  const handleSendInterest = (cargoId: string, shipId: string) => {
-    if (!state) return;
-    const ship = state.ships.find(s => s.id === shipId);
-    if (!ship) return;
+  if (storageStatus === "LOADING") return <div className="p-8 text-center">Laden...</div>;
 
-    // Check idempotency
-    if (state.interests.some(i => i.cargoId === cargoId && i.capacityOfferId === ship.capacityOfferId)) {
-      return;
-    }
-
-    // Re-evaluate eligibility
-    const report = evaluateDemo(state, cargoId);
-    if (!report.matches.some(m => m.shipId === shipId)) {
-      return; // Not eligible
-    }
-    
-    const newInterest = {
-      id: `int-${Date.now()}`,
-      cargoId,
-      capacityOfferId: ship.capacityOfferId,
-      status: "PENDING" as const,
-      createdAt: now.toISOString(),
-    };
-
-    updateState({ ...state, interests: [...state.interests, newInterest] });
-  };
-
-  const handleSimulateConsent = (cargoId: string, shipId: string) => {
-    if (!state) return;
-    const ship = state.ships.find(s => s.id === shipId);
-    if (!ship) return;
-    
-    // Validate prerequisites
-    const interest = state.interests.find(i => i.cargoId === cargoId && i.capacityOfferId === ship.capacityOfferId);
-    if (!interest || interest.status !== "PENDING") return;
-
-    if (state.connections.some(c => c.cargoId === cargoId && c.capacityOfferId === ship.capacityOfferId)) {
-      return; // Already connected
-    }
-
-    // Re-evaluate eligibility
-    const report = evaluateDemo(state, cargoId);
-    if (!report.matches.some(m => m.shipId === shipId)) {
-      return; // Not eligible anymore
-    }
-
-    const newConnection = {
-      id: `conn-${Date.now()}`,
-      cargoId,
-      capacityOfferId: ship.capacityOfferId,
-      status: "CONNECTED" as const,
-      createdAt: now.toISOString(),
-      connectedAt: now.toISOString(),
-    };
-
-    // Auto-generate acceptance message
-    const autoMessage = {
-      id: `msg-${Date.now()}`,
-      connectionId: newConnection.id,
-      cargoId,
-      capacityOfferId: ship.capacityOfferId,
-      sender: "carrier" as const,
-      body: `(Gesimuleerd) Akkoord, wij hebben ruimte beschikbaar op de ${ship.realName}. Laten we de details bespreken.`,
-      createdAt: now.toISOString(),
-    };
-
-    updateState({
-      ...state,
-      interests: state.interests.map(item => item.id === interest.id ? { ...item, status: "ACCEPTED" as const } : item),
-      connections: [...state.connections, newConnection],
-      messages: [...state.messages, autoMessage]
-    });
-  };
-
-  const handleSendMessage = (cargoId: string, shipId: string, text: string) => {
-    if (!state) return;
-    if (!text.trim()) return;
-
-    const ship = state.ships.find(s => s.id === shipId);
-    if (!ship) return;
-    const connection = state.connections.find(c => c.cargoId === cargoId && c.capacityOfferId === ship.capacityOfferId);
-    if (!connection) return; // Must have connection
-    
-    const newMessage = {
-      id: `msg-${Date.now()}`,
-      connectionId: connection.id,
-      cargoId,
-      capacityOfferId: ship.capacityOfferId,
-      sender: "andy" as const,
-      body: text.trim(),
-      createdAt: now.toISOString(),
-    };
-
-    updateState({ ...state, messages: [...state.messages, newMessage] });
-  };
-
-  const handleExit = () => {
-    try {
-      clearDemoState();
-    } catch {
-      // Storage may have become unavailable; never trap someone in demo mode.
-    } finally {
-      onExit();
-    }
-  };
-
-  if (storageError) {
+  if (storageStatus === "ERROR") {
     return (
       <div className="p-8 max-w-md mx-auto text-center space-y-4 h-screen flex flex-col justify-center">
         <AlertTriangle className="w-12 h-12 text-destructive mx-auto" />
         <h2 className="text-xl font-bold">Lokale Opslag Fout</h2>
         <p className="text-muted-foreground text-sm">
-          Er kon niet naar de lokale opslag geschreven worden (quota overschreden of privacy instellingen).
+          {storageErrorMsg || "Er kon niet naar de lokale opslag geschreven worden."}
         </p>
-        <div className="flex gap-4 justify-center">
-          <Button onClick={handleReset} variant="outline">Forceer Reset</Button>
-          <Button onClick={handleExit}>Demo afsluiten</Button>
+        <p className="text-xs text-muted-foreground">Je bevindt je in een omgeving zonder permanente opslag (bijv. incognito). Data wordt niet bewaard na herladen.</p>
+        <div className="flex gap-4 justify-center mt-4">
+          <Button onClick={() => {
+            const fresh = createDemo(personaId as WorldPersonaId);
+             buildWorldMatches(fresh, new Date());
+            setState(fresh);
+            setStorageStatus("READY");
+          }}>Doorgaan zonder opslag</Button>
+          <Button onClick={onExit} variant="outline">Demo afsluiten</Button>
         </div>
       </div>
     );
   }
 
-  if (!state) return <div className="p-8 text-center">Laden...</div>;
+  if (storageStatus === "LEGACY" || storageStatus === "CORRUPT") {
+    return (
+      <div className="p-8 max-w-md mx-auto text-center space-y-4 h-screen flex flex-col justify-center">
+        <AlertTriangle className="w-12 h-12 text-destructive mx-auto" />
+        <h2 className="text-xl font-bold">Opslag conflict</h2>
+        <p className="text-muted-foreground text-sm">
+          {storageStatus === "LEGACY" ? "Er is een oudere Andy-demo gevonden. Deze gegevens worden niet automatisch overgenomen." : "De opgeslagen demo is beschadigd of onvolledig."} Alleen na jouw bevestiging worden deze fictieve oefengegevens vervangen.
+          {storageErrorMsg && <span className="block mt-2">{storageErrorMsg}</span>}
+        </p>
+        <div className="flex gap-4 justify-center">
+          <Button onClick={() => handleResetStorage(storageStatus === "LEGACY" ? "RESET_LEGACY" : "RESET_CORRUPT")} variant="destructive">Reset Opslag</Button>
+          <Button onClick={onExit} variant="outline">Annuleren</Button>
+        </div>
+      </div>
+    );
+  }
+
+  if (!state) return null;
+
+  const activeUser = state.users.find(u => u.id === personaId);
+  const activeCompany = activeUser ? state.companies.find(c => c.id === activeUser.companyId) : null;
+  const permissions = worldPermissions(state, personaId);
 
   return (
-    <DemoErrorBoundary onReset={handleReset} onExit={handleExit}>
+    <DemoErrorBoundary onReset={handleResetDemo} onExit={onExit}>
       <div className="min-h-[100dvh] bg-muted/20 flex flex-col font-sans text-foreground">
-        {/* Demo Banner */}
-        <div className="bg-amber-100 dark:bg-amber-900/40 border-b border-amber-200 dark:border-amber-800 p-3 flex flex-col sm:flex-row items-center justify-between gap-4 sticky top-0 z-50">
-          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 text-amber-900 dark:text-amber-200 text-sm font-medium">
-            <div className="flex items-center gap-2">
-              <AlertTriangle className="w-4 h-4" />
-              <span>Demonstratie — fictieve gegevens. Deze data is lokaal.</span>
-            </div>
-            {hasExpiredData && (
-              <span className="text-destructive font-bold ml-0 sm:ml-4 flex items-center gap-1">
-                Data verouderd! <button className="p-0 h-auto text-destructive underline hover:text-destructive/80 hover:bg-transparent" onClick={handleReset}>Reset demo</button>
-              </span>
-            )}
+        {/* Banner exact match required */}
+        <div className="bg-amber-100 dark:bg-amber-900/40 border-b border-amber-200 dark:border-amber-800 p-3 flex flex-col md:flex-row items-center justify-between gap-4 sticky top-0 z-50">
+          <div className="flex items-center gap-2 text-amber-900 dark:text-amber-200 text-sm font-medium">
+            <AlertTriangle className="w-4 h-4 shrink-0" />
+            <span>Demo — alleen fictieve gegevens in deze browser</span>
           </div>
-          <div className="flex items-center gap-2 w-full sm:w-auto">
-            <Button variant="outline" size="sm" onClick={handleReset} className="flex-1 sm:flex-none border-amber-300 dark:border-amber-700 bg-transparent hover:bg-amber-200 dark:hover:bg-amber-800 text-amber-900 dark:text-amber-200">
+          <div className="flex flex-wrap items-center gap-2 w-full md:w-auto">
+            <div className="flex items-center gap-2 mr-4 bg-background/50 rounded-md px-2 py-1">
+              <span className="text-xs text-amber-900/70 dark:text-amber-200/70">Rol:</span>
+              <Select aria-label="Wissel demoprofiel" value={personaId} onChange={(e) => handlePersonaSwitch(e.target.value)} className="h-7 text-xs border-none bg-transparent focus:ring-0 max-w-[300px]">
+                {state.users.map(u => (
+                  <option key={u.id} value={u.id}>{u.name} — {state.companies.find(c => c.id === u.companyId)?.name}</option>
+                ))}
+              </Select>
+            </div>
+            {onLoginReal && (
+               <Button variant="outline" size="sm" onClick={onLoginReal} className="flex-1 md:flex-none">
+                 <LogIn className="w-4 h-4 mr-2" /> Echte app
+               </Button>
+            )}
+            <Button variant="outline" size="sm" onClick={handleResetDemo} className="flex-1 md:flex-none border-amber-300 dark:border-amber-700 bg-transparent hover:bg-amber-200 dark:hover:bg-amber-800 text-amber-900 dark:text-amber-200">
               <RefreshCcw className="w-4 h-4 mr-2" />
               Demo opnieuw beginnen
             </Button>
-            <Button variant="outline" size="sm" onClick={handleExit} className="flex-1 sm:flex-none border-amber-300 dark:border-amber-700 bg-transparent hover:bg-amber-200 dark:hover:bg-amber-800 text-amber-900 dark:text-amber-200">
+            <Button variant="outline" size="sm" onClick={onExit} className="flex-1 md:flex-none border-amber-300 dark:border-amber-700 bg-transparent hover:bg-amber-200 dark:hover:bg-amber-800 text-amber-900 dark:text-amber-200">
               <LogOut className="w-4 h-4 mr-2" />
-              Demo afsluiten
+              Afsluiten
             </Button>
           </div>
         </div>
+        {isVolatileRef.current && <div role="alert" className="bg-amber-50 border-b p-3 text-sm text-amber-950">Tijdelijke demo zonder opslag. {storageErrorMsg || "Wijzigingen blijven tijdens profielwissels bewaard, maar gaan verloren bij vernieuwen of afsluiten."}</div>}
+        <p className="max-w-7xl w-full mx-auto px-6 pt-4 text-sm text-muted-foreground">Fictieve rechtenoefening, geen beveiligingsgrens voor gevoelige gegevens. Afstanden en tijden zijn schattingen, zonder live AIS/GPS. Verbonden zijn is geen boeking of reservering.</p>
 
-        <div className="flex-1 max-w-6xl mx-auto w-full p-4 md:p-6 grid grid-cols-1 md:grid-cols-4 gap-6">
-          {/* Sidebar Profile */}
-          <div className="md:col-span-1 space-y-6">
+        <div className="flex-1 max-w-7xl mx-auto w-full p-4 md:p-6 grid grid-cols-1 lg:grid-cols-4 gap-6">
+          <div className="lg:col-span-1 space-y-6">
             <Card>
               <CardHeader className="pb-4">
                 <CardTitle className="text-lg flex items-center gap-2">
                   <div className="w-8 h-8 rounded-full bg-primary/10 text-primary flex items-center justify-center font-bold">
-                    AK
+                    <User className="w-4 h-4" />
                   </div>
-                  Andy Kers
+                  {activeUser?.name}
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4 text-sm">
                 <div>
+                  <div className="text-muted-foreground text-xs mb-1 flex items-center gap-1"><Building className="w-3 h-3"/> Bedrijf</div>
+                  <div className="font-medium">{activeCompany?.name}</div>
+                </div>
+                <div>
                   <div className="text-muted-foreground text-xs mb-1">Rol</div>
-                  <div className="font-medium">Transportorganisator / charteraar</div>
+                  <div className="font-medium">{activeUser?.role}</div>
                 </div>
-                <div>
-                  <div className="text-muted-foreground text-xs mb-1">Bedrijf</div>
-                  <div className="font-medium">Demo Transportplanning</div>
-                </div>
-                <div>
-                  <div className="text-muted-foreground text-xs mb-1">Activiteit</div>
-                  <Badge variant="secondary">CHARTERER</Badge>
+                <div className="pt-2 flex flex-wrap gap-2">
+                  {activeCompany?.activities.map(act => (
+                    <Badge key={act} variant="secondary" className="text-[10px]">{act}</Badge>
+                  ))}
                 </div>
               </CardContent>
             </Card>
 
-            {/* Navigation for mobile/desktop */}
             <Card>
-              <CardContent className="p-2">
+              <CardContent className="p-2 space-y-1">
                 <Button 
                   variant={view === "overview" ? "default" : "ghost"} 
                   className="w-full justify-start"
-                  onClick={() => { setView("overview"); setSelectedCargo(null); }}
+                  onClick={() => { setView("overview"); setSelectedEntityId(null); }}
                 >
                   <MapPin className="w-4 h-4 mr-2" />
-                  Mijn Ladingen
+                  Mijn Overzicht
                 </Button>
+
+                <div className="pt-2 border-t mt-2"></div>
+
+                {permissions.canCreateCargo && (
+                  <Button variant="ghost" className="w-full justify-start" onClick={() => { setView("cargo_form"); setSelectedEntityId("new_cargo"); }}>
+                    <Plus className="w-4 h-4 mr-2" /> Nieuwe Lading
+                  </Button>
+                )}
+                {permissions.canCreateAsset && (
+                  <Button variant="ghost" className="w-full justify-start" onClick={() => { setView("asset_form"); setSelectedEntityId("new_asset"); }}>
+                    <Plus className="w-4 h-4 mr-2" /> {activeCompany?.mode === "ROAD" ? "Nieuw voertuig" : "Nieuw schip"}
+                  </Button>
+                )}
+                {permissions.canCreateOffer && (
+                  <Button variant="ghost" className="w-full justify-start" onClick={() => { setView("cargo_form"); setSelectedEntityId("new_offer"); }}>
+                    <Plus className="w-4 h-4 mr-2" /> Nieuwe Capaciteit
+                  </Button>
+                )}
+                {/* Specifically LINER planner */}
+                {activeCompany?.activities.includes("LINER") && permissions.canPublish && (
+                  <Button variant="ghost" className="w-full justify-start" onClick={() => { setView("cargo_form"); setSelectedEntityId("new_departure"); }}>
+                    <Plus className="w-4 h-4 mr-2" /> Nieuwe Afvaart
+                  </Button>
+                )}
               </CardContent>
             </Card>
           </div>
 
-          {/* Main Content */}
-          <div className="md:col-span-3 space-y-6">
+          <div key={personaId} className="lg:col-span-3 space-y-6">
             {view === "overview" && (
               <DemoOverview 
                 state={state}
-                onCreate={() => {
-                  setSelectedCargo(null);
-                  setView("cargo_form");
+                activeUserId={personaId}
+                updateState={updateState}
+                now={now}
+                onEdit={(id, type) => {
+                  setSelectedEntityId(id);
+                  setView(type === "ASSET" ? "asset_form" : "cargo_form");
                 }}
-                onEdit={(cargo) => {
-                  setSelectedCargo(cargo);
-                  setView("cargo_form");
-                }}
-                onViewMatches={(cargo) => {
-                  setSelectedCargo(cargo);
-                  setSelectedShipId(null);
+                onViewMatches={(id) => {
+                  setSelectedEntityId(id);
                   setView("match_detail");
                 }}
               />
@@ -338,23 +324,37 @@ export default function DemoApp({ onExit }: DemoAppProps) {
 
             {view === "cargo_form" && (
               <DemoCargoForm 
-                initialData={selectedCargo || undefined}
+                key={selectedEntityId}
                 state={state}
-                onSave={handleSaveCargo}
+                actorId={personaId}
+                entityId={selectedEntityId || undefined}
+                updateState={updateState}
                 onCancel={() => setView("overview")}
+                now={now}
               />
             )}
 
-            {view === "match_detail" && selectedCargo && (
-              <DemoMatchDetail 
-                cargo={selectedCargo}
+            {view === "asset_form" && (
+              <DemoCargoForm
+                key={selectedEntityId}
                 state={state}
-                selectedShipId={selectedShipId}
-                onSelectShip={setSelectedShipId}
+                actorId={personaId}
+                entityId={selectedEntityId || undefined}
+                forceType="ASSET"
+                updateState={updateState}
+                onCancel={() => setView("overview")}
+                now={now}
+              />
+            )}
+
+            {view === "match_detail" && selectedEntityId && (
+              <DemoMatchDetail 
+                state={state}
+                actorId={personaId}
+                entityId={selectedEntityId}
+                updateState={updateState}
                 onBack={() => setView("overview")}
-                onSendInterest={(shipId) => handleSendInterest(selectedCargo.id, shipId)}
-                onSimulateConsent={(shipId) => handleSimulateConsent(selectedCargo.id, shipId)}
-                onSendMessage={(shipId, text) => handleSendMessage(selectedCargo.id, shipId, text)}
+                now={now}
               />
             )}
           </div>

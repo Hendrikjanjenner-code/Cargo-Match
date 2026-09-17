@@ -27,6 +27,7 @@ import DeepseaMatchDetail from "./pages/deepsea/DeepseaMatchDetail";
 
 import DemoApp from "./demo/DemoApp";
 import { DemoEntryContext } from "./demo/entry";
+import { ENTRY_STORAGE_KEY, resolveEntryMode, entryUrl } from "./demo/entry-mode";
 import { t } from "./lib/i18n";
 import { useGetMyCompany, getGetMyCompanyQueryKey, CompanyActivity } from "@workspace/api-client-react";
 import LinerServices from "./pages/liner/LinerServices";
@@ -157,29 +158,28 @@ const queryClient = new QueryClient({
 
 export default function App() {
   const [mode, setMode] = useState<"landing" | "demo" | "real">(() => {
-    try {
-      const saved = sessionStorage.getItem("cargomatch.entry");
-      if (saved === "demo" || saved === "real" || saved === "landing") return saved;
-    } catch { /* Storage errors are shown when starting the demo. */ }
-    return window.location.pathname === import.meta.env.BASE_URL ? "landing" : "real";
+    // The URL marker also preserves the local entry choice when session storage
+    // is unavailable. It never represents authentication as a real account.
+    return resolveEntryMode(new URL(window.location.href), import.meta.env.BASE_URL,
+      () => sessionStorage.getItem(ENTRY_STORAGE_KEY));
   });
+  const [demoPersonaId, setDemoPersonaId] = useState<string>();
   const [entryError, setEntryError] = useState("");
-  const changeMode = async (next: "landing" | "demo" | "real") => {
+  const changeMode = (next: "landing" | "demo" | "real", personaId?: string) => {
+    let warning = "";
     try {
-      sessionStorage.setItem("cargomatch.entry", next);
+      sessionStorage.setItem(ENTRY_STORAGE_KEY, next);
     } catch {
-      if (next !== "landing") {
-        setEntryError(t("error.storage"));
-        return;
-      }
-      // Exiting must remain possible even when storage permissions changed.
-      try { sessionStorage.removeItem("cargomatch.entry"); } catch { /* Unavailable storage. */ }
+      warning = "Sessieopslag is niet beschikbaar. De demokeuze blijft in dit tabblad via de URL behouden.";
+      try { sessionStorage.removeItem(ENTRY_STORAGE_KEY); } catch { /* Unavailable storage. */ }
     }
-    await queryClient.cancelQueries();
+    // Unmount real consumers immediately; no auth hook is mounted in the demo.
+    void queryClient.cancelQueries();
     queryClient.clear();
-    window.history.replaceState(null, "", import.meta.env.BASE_URL);
+    window.history.replaceState(null, "", entryUrl(import.meta.env.BASE_URL, next));
+    setDemoPersonaId(next === "demo" ? personaId : undefined);
     setMode(next);
-    setEntryError("");
+    setEntryError(warning);
     if (next === "real") {
       window.location.assign(`/api/login?returnTo=${encodeURIComponent(import.meta.env.BASE_URL)}`);
     }
@@ -187,11 +187,11 @@ export default function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <DemoEntryContext.Provider value={{
-        startDemo: () => { void changeMode("demo"); },
+        startDemo: (personaId?: string) => { changeMode("demo", personaId); },
         loginReal: () => { void changeMode("real"); },
       }}>
         {entryError && <div role="alert" className="p-4 bg-destructive/10 text-destructive">{entryError}</div>}
-        {mode === "demo" ? <DemoApp onExit={() => { void changeMode("landing"); }} /> :
+        {mode === "demo" ? <DemoApp initialPersonaId={demoPersonaId} onLoginReal={() => changeMode("real")} onExit={() => { changeMode("landing"); }} /> :
           <Router base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
             {mode === "landing" ? <Landing /> : <AppRouter />}
           </Router>}

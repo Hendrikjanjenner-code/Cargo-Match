@@ -1,7 +1,7 @@
 import { createContext, useContext } from "react";
 
 export const DemoEntryContext = createContext({
-  startDemo: () => {},
+  startDemo: (personaId?: string) => {},
   loginReal: () => {},
 });
 

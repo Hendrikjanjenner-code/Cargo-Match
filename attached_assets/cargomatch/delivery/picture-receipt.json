@@ -1,0 +1,486 @@
+{
+  "duration": 168,
+  "fps": 24,
+  "screenReplacement": "Per-frame measured physical device planes",
+  "screensAreStaticCaptures": true,
+  "sources": {
+    "attached_assets/cargomatch/source/air.mp4": "945bc8b442d405d3e2f0a2afc1830848456792c06e90c4ceae455d4afb9323f2",
+    "attached_assets/cargomatch/source/captain.mp4": "bf191b8a4c4db60607172463096a620d7b54c60922f86c589cca8d0ae9b2f5c5",
+    "attached_assets/cargomatch/source/collaboration.mp4": "bc81fc57da692d0c3411ea71e554cc775c679dbef248425d89383e6e5a0c7837",
+    "attached_assets/cargomatch/source/empty-trailer.mp4": "e9514ab3d73903c60089b9ad232a8ab9f7a5ce059e37baa7cfac61323a92f16d",
+    "attached_assets/cargomatch/source/plate-monitor.mp4": "2b8ac9fded6aec7aa99063fa3abf80f976c0b93f4a3a1e5ba647136d89c29382",
+    "attached_assets/cargomatch/source/plate-phone.mp4": "cbb09438e6fd9fa5fccb80d5e27b738ec89b19dff58dd088d0eeac6be98eafdf",
+    "attached_assets/cargomatch/source/plate-planner.mp4": "105b3d2f8e4b6ad12b60e7e8d37fdaba93753e565a76939320601ae49643e62b",
+    "attached_assets/cargomatch/source/plate-tablet.mp4": "99fd9befef69981a254cc94215d1de68c3b61266fc47f9cc5f2f887669c43c9a",
+    "attached_assets/cargomatch/source/port.mp4": "a2f1f7d8c21e6e322f595fc688a3596177bd4dc923d1c72aad47c020a9b620cd",
+    "attached_assets/cargomatch/source/rail.mp4": "8b6cfb594789854a2b9d02897d07c8f20cf0705966b1ce8fe3f48ce4ee2c7c60",
+    "attached_assets/cargomatch/source/truck.mp4": "7e0707bddb17933cf8b9940d0b4d4a18d9174fb5b630f798f79c6ff7131d9575",
+    "attached_assets/cargomatch/source/unloading.mp4": "54d2f975f09de23186b60d1834d41df65be261aace44115fa2b6d1cdc6feba50",
+    "attached_assets/cargomatch/source/vessel.mp4": "e1c3d235cb827a0a7f05dc1eab47e899fb25c61e7a2350ac03c19ecaad60d5fc"
+  },
+  "scenes": [
+    {
+      "id": 1,
+      "start": 0,
+      "duration": 7,
+      "label": [
+        "GLOBAL LOGISTICS",
+        "A WORLD IN MOTION"
+      ],
+      "parts": [
+        [
+          "source",
+          "port",
+          0.2,
+          5.5
+        ],
+        [
+          "source",
+          "vessel",
+          0.2,
+          1.5
+        ]
+      ]
+    },
+    {
+      "id": 2,
+      "start": 7,
+      "duration": 7,
+      "label": [
+        "SEA / ROAD / RAIL / AIR",
+        ""
+      ],
+      "parts": [
+        [
+          "source",
+          "vessel",
+          2,
+          1.5
+        ],
+        [
+          "source",
+          "truck",
+          0.2,
+          1.5
+        ],
+        [
+          "source",
+          "rail",
+          0.2,
+          1.5
+        ],
+        [
+          "source",
+          "air",
+          0.2,
+          2.5
+        ]
+      ]
+    },
+    {
+      "id": 3,
+      "start": 14,
+      "duration": 7,
+      "label": [
+        "THE NEXT JOB",
+        "WHAT COMES NEXT?"
+      ],
+      "parts": [
+        [
+          "source",
+          "unloading",
+          0.25,
+          7
+        ]
+      ]
+    },
+    {
+      "id": 4,
+      "start": 21,
+      "duration": 7,
+      "label": [
+        "EMPTY CAPACITY",
+        "TIME. FUEL. OPPORTUNITY."
+      ],
+      "parts": [
+        [
+          "source",
+          "empty-trailer",
+          0.25,
+          7
+        ]
+      ]
+    },
+    {
+      "id": 5,
+      "start": 28,
+      "duration": 7,
+      "label": [
+        "CARGOMATCH",
+        "ACTUAL PRODUCT DEMO"
+      ],
+      "parts": [
+        [
+          "device",
+          "planner",
+          0,
+          7
+        ]
+      ]
+    },
+    {
+      "id": 6,
+      "start": 35,
+      "duration": 7,
+      "label": [
+        "DEEPSEA / EXPECTED OPEN POSITION",
+        "MALAYSIA"
+      ],
+      "parts": [
+        [
+          "device",
+          "capacity",
+          0,
+          7
+        ]
+      ]
+    },
+    {
+      "id": 7,
+      "start": 42,
+      "duration": 7,
+      "label": [
+        "OPERATOR ESTIMATES",
+        "PEOPLE PROVIDE THE CONTEXT"
+      ],
+      "parts": [
+        [
+          "source",
+          "captain",
+          0.25,
+          7
+        ]
+      ]
+    },
+    {
+      "id": 8,
+      "start": 49,
+      "duration": 7,
+      "label": [
+        "DEEPSEA / CARGO ORDER",
+        "INDONESIA \u2192 CHINA / 75,000 MT"
+      ],
+      "parts": [
+        [
+          "device",
+          "cargo",
+          0,
+          7
+        ]
+      ]
+    },
+    {
+      "id": 9,
+      "start": 56,
+      "duration": 7,
+      "label": [
+        "DEEPSEA / MATCH OPPORTUNITY",
+        "PRIVATE UNTIL BOTH PARTIES AGREE"
+      ],
+      "parts": [
+        [
+          "device",
+          "opportunity",
+          0,
+          7
+        ]
+      ]
+    },
+    {
+      "id": 10,
+      "start": 63,
+      "duration": 7,
+      "label": [
+        "MUTUAL CONSENT",
+        "INTEREST \u2192 CONNECTION"
+      ],
+      "parts": [
+        [
+          "device",
+          "consent",
+          0,
+          7
+        ]
+      ]
+    },
+    {
+      "id": 11,
+      "start": 70,
+      "duration": 7,
+      "label": [
+        "A COMMERCIAL CONVERSATION",
+        "AN INTRODUCTION. NOT A BOOKING."
+      ],
+      "parts": [
+        [
+          "device",
+          "messages",
+          0,
+          7
+        ]
+      ]
+    },
+    {
+      "id": 12,
+      "start": 77,
+      "duration": 7,
+      "label": [
+        "ROAD TRANSPORT",
+        "PLAN BEYOND THE CURRENT DELIVERY"
+      ],
+      "parts": [
+        [
+          "source",
+          "truck",
+          0.25,
+          7
+        ]
+      ]
+    },
+    {
+      "id": 13,
+      "start": 84,
+      "duration": 7,
+      "label": [
+        "ASSIGNED AVAILABILITY",
+        "DRIVER CONFIRMATION / ROAD PILOT"
+      ],
+      "parts": [
+        [
+          "device",
+          "driver",
+          0,
+          7
+        ]
+      ]
+    },
+    {
+      "id": 14,
+      "start": 91,
+      "duration": 7,
+      "label": [
+        "NEXT-LOAD OPPORTUNITIES",
+        "DRIVER \u2192 PLANNER / ROAD PILOT"
+      ],
+      "parts": [
+        [
+          "device",
+          "nextload",
+          0,
+          7
+        ]
+      ]
+    },
+    {
+      "id": 15,
+      "start": 98,
+      "duration": 7,
+      "label": [
+        "THE PLANNER DECIDES",
+        "COMMERCIAL AUTHORITY / ROAD PILOT"
+      ],
+      "parts": [
+        [
+          "device",
+          "referral",
+          0,
+          7
+        ]
+      ]
+    },
+    {
+      "id": 16,
+      "start": 105,
+      "duration": 7,
+      "label": [
+        "PEOPLE IN CONTROL",
+        "CHECK AVAILABILITY AND REQUIREMENTS"
+      ],
+      "parts": [
+        [
+          "source",
+          "collaboration",
+          0.25,
+          7
+        ]
+      ]
+    },
+    {
+      "id": 17,
+      "start": 112,
+      "duration": 7,
+      "label": [
+        "RAIL / AVAILABLE WAGONS",
+        "FUNCTIONAL DEMO PILOT"
+      ],
+      "parts": [
+        [
+          "source",
+          "rail",
+          1,
+          2.5
+        ],
+        [
+          "device",
+          "rail",
+          2.5,
+          4.5
+        ]
+      ]
+    },
+    {
+      "id": 18,
+      "start": 119,
+      "duration": 7,
+      "label": [
+        "AIR CARGO / REMAINING CAPACITY",
+        "FUNCTIONAL DEMO PILOT"
+      ],
+      "parts": [
+        [
+          "source",
+          "air",
+          0.25,
+          7
+        ]
+      ]
+    },
+    {
+      "id": 19,
+      "start": 126,
+      "duration": 7,
+      "label": [
+        "FLIGHT CAPACITY / AMS \u2192 DXB",
+        "FUNCTIONAL DEMO PILOT"
+      ],
+      "parts": [
+        [
+          "device",
+          "air",
+          0,
+          7
+        ]
+      ]
+    },
+    {
+      "id": 20,
+      "start": 133,
+      "duration": 7,
+      "label": [
+        "EXPLORING RAIL AND AIR",
+        "FICTIONAL PILOTS / NOT LIVE BOOKINGS"
+      ],
+      "parts": [
+        [
+          "source",
+          "rail",
+          3.5,
+          3.5
+        ],
+        [
+          "source",
+          "air",
+          3.5,
+          3.5
+        ]
+      ]
+    },
+    {
+      "id": 21,
+      "start": 140,
+      "duration": 7,
+      "label": [
+        "EARLIER CONVERSATIONS",
+        "A NETWORK OF PROFESSIONALS"
+      ],
+      "parts": [
+        [
+          "device",
+          "map",
+          3.5,
+          3.5
+        ],
+        [
+          "source",
+          "collaboration",
+          4,
+          3.5
+        ]
+      ]
+    },
+    {
+      "id": 22,
+      "start": 147,
+      "duration": 7,
+      "label": [
+        "SEE THE NEXT OPPORTUNITY",
+        ""
+      ],
+      "parts": [
+        [
+          "source",
+          "vessel",
+          3,
+          2.5
+        ],
+        [
+          "source",
+          "truck",
+          3,
+          2.5
+        ],
+        [
+          "source",
+          "port",
+          5,
+          2
+        ]
+      ]
+    },
+    {
+      "id": 23,
+      "start": 154,
+      "duration": 7,
+      "label": [
+        "",
+        ""
+      ],
+      "parts": [
+        [
+          "source",
+          "port",
+          0.25,
+          7
+        ]
+      ]
+    },
+    {
+      "id": 24,
+      "start": 161,
+      "duration": 7,
+      "label": [
+        "",
+        ""
+      ],
+      "parts": [
+        [
+          "source",
+          "port",
+          0.75,
+          7
+        ]
+      ]
+    }
+  ],
+  "masterSha256": "b1cdfffed5829fe2fb2ee9e9e57e757e9975105718ad50978392949442ae8807"
+}

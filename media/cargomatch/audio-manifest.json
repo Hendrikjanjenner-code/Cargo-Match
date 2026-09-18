@@ -1,0 +1,216 @@
+{
+  "production": "CargoMatch — Find the next load",
+  "language": "en",
+  "slotDurationSeconds": 7,
+  "totalDurationSeconds": 168,
+  "provenance": {
+    "provider": "ElevenLabs via Replit-managed media generation tools",
+    "authorization": "Replit-managed billing; no separate paid account",
+    "generatedFor": "CargoMatch film",
+    "originalGeneration": true
+  },
+  "narration": {
+    "provider": "ElevenLabs via Replit textToSpeech",
+    "modelId": "eleven_multilingual_v2",
+    "outputFormat": "mp3_44100_192",
+    "voice": {
+      "voiceId": "q6yHKBAKIOAAW8dwPWhO",
+      "name": "Kubz — Warm Northern British Narrator",
+      "category": "professional",
+      "description": "Warm, grounded Northern British male voice; clear, trustworthy and conversational, with calm authority and strong articulation.",
+      "labels": {
+        "accent": "yorkshire",
+        "age": "middle_aged",
+        "descriptive": "calm",
+        "gender": "male",
+        "language": "en",
+        "use_case": "narrative_story"
+      }
+    },
+    "voiceSettings": {
+      "stability": 0.65,
+      "similarity_boost": 0.8,
+      "style": 0.12,
+      "use_speaker_boost": true,
+      "speed": 1.1
+    },
+    "clips": [
+      {
+        "id": 1,
+        "file": "attached_assets/cargomatch/audio/voice-01.mp3",
+        "text": "Every day, millions of tonnes of cargo move across the world.",
+        "durationSeconds": 3.108571
+      },
+      {
+        "id": 2,
+        "file": "attached_assets/cargomatch/audio/voice-02.mp3",
+        "text": "By sea. By road. By rail. By air.",
+        "durationSeconds": 2.45551
+      },
+      {
+        "id": 3,
+        "file": "attached_assets/cargomatch/audio/voice-03.mp3",
+        "text": "A voyage ends. A vessel is nearly empty. What comes next?",
+        "durationSeconds": 3.369796
+      },
+      {
+        "id": 4,
+        "file": "attached_assets/cargomatch/audio/voice-04.mp3",
+        "text": "For a truck, an empty return means more than distance. It means time and fuel.",
+        "durationSeconds": 4.545306
+      },
+      {
+        "id": 5,
+        "file": "attached_assets/cargomatch/audio/voice-05.mp3",
+        "text": "The next suitable cargo may already be waiting. The right people need to see it.",
+        "durationSeconds": 4.597551
+      },
+      {
+        "id": 6,
+        "file": "attached_assets/cargomatch/audio/voice-06.mp3",
+        "text": "In Malaysia, a vessel is expected to become available. Its operator records that future position.",
+        "durationSeconds": 5.511837
+      },
+      {
+        "id": 7,
+        "file": "attached_assets/cargomatch/audio/voice-07.mp3",
+        "text": "Not a live tracking promise. An operational estimate, ready for the next commercial conversation.",
+        "durationSeconds": 5.459592
+      },
+      {
+        "id": 8,
+        "file": "attached_assets/cargomatch/audio/voice-08.mp3",
+        "text": "Meanwhile, seventy-five thousand tonnes need to move from Indonesia to China.",
+        "durationSeconds": 4.440816
+      },
+      {
+        "id": 9,
+        "file": "attached_assets/cargomatch/audio/voice-09.mp3",
+        "text": "CargoMatch brings the opportunity into view, while protecting each party's commercial details.",
+        "durationSeconds": 5.041633
+      },
+      {
+        "id": 10,
+        "file": "attached_assets/cargomatch/audio/voice-10.mp3",
+        "text": "One party sends interest. The other decides whether to connect. Permission comes first.",
+        "durationSeconds": 5.250612
+      },
+      {
+        "id": 11,
+        "file": "attached_assets/cargomatch/audio/voice-11.mp3",
+        "text": "Only after mutual consent does the conversation open. An introduction, not a booking.",
+        "durationSeconds": 4.963265
+      },
+      {
+        "id": 12,
+        "file": "attached_assets/cargomatch/audio/voice-12.mp3",
+        "text": "On the road, the same question begins before the current delivery is complete.",
+        "durationSeconds": 3.84
+      },
+      {
+        "id": 13,
+        "file": "attached_assets/cargomatch/audio/voice-13.mp3",
+        "text": "The driver confirms when the assigned truck is expected to be empty.",
+        "durationSeconds": 3.474286
+      },
+      {
+        "id": 14,
+        "file": "attached_assets/cargomatch/audio/voice-14.mp3",
+        "text": "A suitable next load appears. The driver sends the opportunity to the planner.",
+        "durationSeconds": 4.362449
+      },
+      {
+        "id": 15,
+        "file": "attached_assets/cargomatch/audio/voice-15.mp3",
+        "text": "The planner reviews it and makes the commercial decision. The driver focuses on the operation.",
+        "durationSeconds": 5.511837
+      },
+      {
+        "id": 16,
+        "file": "attached_assets/cargomatch/audio/voice-16.mp3",
+        "text": "Availability, timing, and practical requirements still need checking. People remain in control.",
+        "durationSeconds": 5.799184
+      },
+      {
+        "id": 17,
+        "file": "attached_assets/cargomatch/audio/voice-17.mp3",
+        "text": "Functional rail pilots explore the same approach, starting with available wagons in Duisburg.",
+        "durationSeconds": 5.250612
+      },
+      {
+        "id": 18,
+        "file": "attached_assets/cargomatch/audio/voice-18.mp3",
+        "text": "In the air cargo demo pilot, the question is unused space on a scheduled flight.",
+        "durationSeconds": 4.205714
+      },
+      {
+        "id": 19,
+        "file": "attached_assets/cargomatch/audio/voice-19.mp3",
+        "text": "Amsterdam to Dubai. Remaining weight and volume shown together, so suitable cargo can be considered.",
+        "durationSeconds": 5.877551
+      },
+      {
+        "id": 20,
+        "file": "attached_assets/cargomatch/audio/voice-20.mp3",
+        "text": "These are fictional pilot scenarios, not live airline bookings or fully released rail services.",
+        "durationSeconds": 5.564082
+      },
+      {
+        "id": 21,
+        "file": "attached_assets/cargomatch/audio/voice-21.mp3",
+        "text": "Across the network, better visibility gives professionals a chance to start the conversation earlier.",
+        "durationSeconds": 5.041633
+      },
+      {
+        "id": 22,
+        "file": "attached_assets/cargomatch/audio/voice-22.mp3",
+        "text": "Before the vessel sails empty. Before the truck heads back. Before an opportunity passes.",
+        "durationSeconds": 5.041633
+      },
+      {
+        "id": 23,
+        "file": "attached_assets/cargomatch/audio/voice-23.mp3",
+        "text": "CargoMatch. Find the next load before capacity becomes empty.",
+        "durationSeconds": 3.657143
+      },
+      {
+        "id": 24,
+        "file": "attached_assets/cargomatch/audio/voice-24.mp3",
+        "text": "The transport capacity intelligence network. Discover CargoMatch.",
+        "durationSeconds": 3.996735
+      }
+    ],
+    "durationValidation": {
+      "method": "ffprobe format.duration",
+      "maximumFlagThresholdSeconds": 7.3,
+      "clipsOverThreshold": []
+    }
+  },
+  "music": {
+    "provider": "ElevenLabs via Replit generateMusic",
+    "model": "Replit-managed ElevenLabs music generation",
+    "file": "attached_assets/cargomatch/audio/music.mp3",
+    "durationSeconds": 168.045708,
+    "description": "Original cinematic documentary score with subtle ambient electronic pulse, restrained warm strings and sparse piano, a gentle build, premium global-logistics confidence, and an elegant resolved ending; no vocals or brass bombast.",
+    "forceInstrumental": true,
+    "outputFormat": "mp3_44100_192"
+  },
+  "soundEffects": [
+    {
+      "provider": "ElevenLabs via Replit generateSoundEffect",
+      "model": "Replit-managed ElevenLabs sound generation",
+      "file": "attached_assets/cargomatch/audio/port.mp3",
+      "durationSeconds": 8.045714,
+      "description": "Subtle modern container-port ambience with distant ship-engine hum, soft water movement and faint crane movement; no voices, alarms or music.",
+      "outputFormat": "mp3_44100_192"
+    },
+    {
+      "provider": "ElevenLabs via Replit generateSoundEffect",
+      "model": "Replit-managed ElevenLabs sound generation",
+      "file": "attached_assets/cargomatch/audio/road.mp3",
+      "durationSeconds": 8.045714,
+      "description": "Subtle European logistics-road ambience with smooth distant truck tire wash and light air movement; no horns, voices or music.",
+      "outputFormat": "mp3_44100_192"
+    }
+  ]
+}

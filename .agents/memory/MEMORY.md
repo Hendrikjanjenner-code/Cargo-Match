@@ -8,3 +8,4 @@
 - [Form contract verification](form-contract-verification.md) — test actual form serialization; valid hand-written API fixtures can miss broken create/edit payloads.
 - [Media dispatch limits](media-generation-limits.md) — bound audio-generation batches and retain successful jobs when retrying transient failures.
 - [Laptop-shot geometry](media-screen-compositing.md) — generated framing and settling times need measurement; finish one moving screen composite before batching.
+- [Media verification boundaries](media-verification.md) — distinguish player-probe failures from damaged media before repeating expensive renders.

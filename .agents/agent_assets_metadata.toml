@@ -424,3 +424,233 @@ mtime_ms = 1789676325529
 storage_uri = "gcs://replit-rams-assets-worf/rams/assets/repl:929794db-e72d-4439-9aa2-c5d927c149ce/a0b8d600-6fa2-4bdd-8f7f-5ad5ed818eae/b076ad9f-5b8d-4323-a877-87e10f71097b"
 storage_version_token = "1789676391722347"
 content_type = "application/octet-stream"
+
+[[outputs]]
+id = "jXJ8ADsRu6sMQfc1La-W5"
+uri = "file://attached_assets/cargomatch/audio/port.mp3"
+type = "audio"
+title = "subtle port ambience"
+description = "Generated sound effect: Subtle realistic modern container port ambience: distant ship engine hum, soft water movement, one faint crane movement, spacious and calm, no voices, no alarms, no music"
+logical_id = "d3edc5cf-cbdf-45e7-a2c5-10e6cb140369"
+
+[[outputs]]
+id = "T2rme6HTD71CkCQE2mTN6"
+uri = "file://attached_assets/cargomatch/audio/road.mp3"
+type = "audio"
+title = "subtle road ambience"
+description = "Generated sound effect: Subtle realistic European logistics road ambience: smooth truck tire wash passing at moderate distance, light air movement, calm controlled environment, no horns, no voices, n…"
+logical_id = "c99a9f0e-bf41-40d4-bfc4-f510c9df7a4a"
+
+[[outputs]]
+id = "v91hyeEP0eUqx0t_Hp0v9"
+uri = "file://attached_assets/cargomatch/audio/music.mp3"
+type = "audio"
+title = "CargoMatch cinematic documentary score"
+description = "Generated music: Original cinematic documentary score for a premium global logistics brand film. Exactly 168 seconds. Subtle ambient electronic pulse, restrained warm strings and sparse piano, modern…"
+logical_id = "a5800a70-46d6-4623-b88a-8df5f82c721d"
+
+[[outputs]]
+id = "gp1Bz9x_vjxEgbZjVWD1b"
+uri = "file://attached_assets/cargomatch/audio/voice-02.mp3"
+type = "audio"
+title = "CargoMatch narration segment 2"
+description = "Text-to-speech audio: By sea. By road. By rail. By air."
+logical_id = "b6e4124a-6f37-430a-a8b0-1da8779662ba"
+
+[[outputs]]
+id = "AVtxStT38cQcVN7ERjEk5"
+uri = "file://attached_assets/cargomatch/audio/voice-01.mp3"
+type = "audio"
+title = "CargoMatch narration segment 1"
+description = "Text-to-speech audio: Every day, millions of tonnes of cargo move across the world."
+logical_id = "a3ba9352-c69f-4366-8cc8-cca908ed95c5"
+
+[[outputs]]
+id = "OnXnjH6Zl1VyIqFX9AA61"
+uri = "file://attached_assets/cargomatch/audio/voice-03.mp3"
+type = "audio"
+title = "CargoMatch narration segment 3"
+description = "Text-to-speech audio: A voyage ends. A vessel is nearly empty. What comes next?"
+logical_id = "2b01f9ce-f03f-4bc2-b898-90a72866bd68"
+
+[[outputs]]
+id = "d2MlGX56eBdIjZIDawWtM"
+uri = "file://attached_assets/cargomatch/audio/voice-04.mp3"
+type = "audio"
+title = "CargoMatch narration segment 4"
+description = "Text-to-speech audio: For a truck, an empty return means more than distance. It means time and fuel."
+logical_id = "10d9f4d3-c1b9-43e0-838a-3d6562698999"
+
+[[outputs]]
+id = "O48ilutwUkUb5KMNdVjd9"
+uri = "file://attached_assets/cargomatch/audio/voice-05.mp3"
+type = "audio"
+title = "CargoMatch narration segment 5"
+description = "Text-to-speech audio: The next suitable cargo may already be waiting. The right people need to see it."
+logical_id = "1da4ad58-6255-4c44-9564-3c2f6bb1d568"
+
+[[outputs]]
+id = "zaptGcSY2ymfSKNqmWWJt"
+uri = "file://attached_assets/cargomatch/audio/voice-06.mp3"
+type = "audio"
+title = "CargoMatch narration segment 6"
+description = "Text-to-speech audio: In Malaysia, a vessel is expected to become available. Its operator records that future position."
+logical_id = "aa14cae5-059b-46be-a76a-3fbc1af6e221"
+
+[[outputs]]
+id = "UhNDae5ILKAThtnh-IY6d"
+uri = "file://attached_assets/cargomatch/audio/voice-07.mp3"
+type = "audio"
+title = "CargoMatch narration segment 7"
+description = "Text-to-speech audio: Not a live tracking promise. An operational estimate, ready for the next commercial conversation."
+logical_id = "f70e2338-90ce-4b37-90da-235fb39022ce"
+
+[[outputs]]
+id = "R-D52mKVrUl6H2mqdhkmM"
+uri = "file://attached_assets/cargomatch/audio/voice-08.mp3"
+type = "audio"
+title = "CargoMatch narration segment 8"
+description = "Text-to-speech audio: Meanwhile, seventy-five thousand tonnes need to move from Indonesia to China."
+logical_id = "a13ac2f1-862f-432d-81a6-325101ee14f7"
+
+[[outputs]]
+id = "a3ts7vEBRnBP0KvMHSedB"
+uri = "file://attached_assets/cargomatch/audio/voice-09.mp3"
+type = "audio"
+title = "CargoMatch narration segment 9"
+description = "Text-to-speech audio: CargoMatch brings the opportunity into view, while protecting each party's commercial details."
+logical_id = "70d56416-3bde-4c5f-a31f-7b6b4faa67bd"
+
+[[outputs]]
+id = "7MUmW5ACXf9pIhFqS6r_3"
+uri = "file://attached_assets/cargomatch/audio/voice-11.mp3"
+type = "audio"
+title = "CargoMatch narration segment 11"
+description = "Text-to-speech audio: Only after mutual consent does the conversation open. An introduction, not a booking."
+logical_id = "88096659-7aa9-4fe1-b879-c160b294d86d"
+
+[[outputs]]
+id = "B3QU-D_Do9BPDpg82yKg-"
+uri = "file://attached_assets/cargomatch/audio/voice-12.mp3"
+type = "audio"
+title = "CargoMatch narration segment 12"
+description = "Text-to-speech audio: On the road, the same question begins before the current delivery is complete."
+logical_id = "5160b418-c440-4799-8ad7-c61e8d6c6ac5"
+
+[[outputs]]
+id = "chBzEgEcAnh1AV-ZkIt5Y"
+uri = "file://attached_assets/cargomatch/audio/voice-10.mp3"
+type = "audio"
+title = "CargoMatch narration segment 10"
+description = "Text-to-speech audio: One party sends interest. The other decides whether to connect. Permission comes first."
+logical_id = "9e05e079-7f41-45d0-ab44-69dcfaa7d0c7"
+
+[[outputs]]
+id = "_NUB1aU1dg8B0t7sUt7zR"
+uri = "file://attached_assets/cargomatch/audio/voice-13.mp3"
+type = "audio"
+title = "CargoMatch narration segment 13"
+description = "Text-to-speech audio: The driver confirms when the assigned truck is expected to be empty."
+logical_id = "52c11a98-1159-4e77-9022-ca7aeca56400"
+
+[[outputs]]
+id = "yFn_7x_9-gAPcRILAN0ql"
+uri = "file://attached_assets/cargomatch/audio/voice-14.mp3"
+type = "audio"
+title = "CargoMatch narration segment 14"
+description = "Text-to-speech audio: A suitable next load appears. The driver sends the opportunity to the planner."
+logical_id = "dd5623bb-3c48-4ed3-b222-12b68253142a"
+
+[[outputs]]
+id = "f40n4kSp5zJYciJyDvdjw"
+uri = "file://attached_assets/cargomatch/audio/voice-15.mp3"
+type = "audio"
+title = "CargoMatch narration segment 15"
+description = "Text-to-speech audio: The planner reviews it and makes the commercial decision. The driver focuses on the operation."
+logical_id = "a67867f8-d253-46d0-9844-c7d2f40677e5"
+
+[[outputs]]
+id = "cfgBM7sxAu8z3CB7KXfBE"
+uri = "file://attached_assets/cargomatch/audio/voice-18.mp3"
+type = "audio"
+title = "CargoMatch narration segment 18"
+description = "Text-to-speech audio: In the air cargo demo pilot, the question is unused space on a scheduled flight."
+logical_id = "b28b98bb-4255-4ec3-aa1f-fb1fc41ea60f"
+
+[[outputs]]
+id = "jLGew7ae958QAgidkC1Qy"
+uri = "file://attached_assets/cargomatch/audio/voice-16.mp3"
+type = "audio"
+title = "CargoMatch narration segment 16"
+description = "Text-to-speech audio: Availability, timing, and practical requirements still need checking. People remain in control."
+logical_id = "575152db-cc28-4cfc-9583-ec9389ca8cef"
+
+[[outputs]]
+id = "w6TisuCCni0v4eQA3i0GO"
+uri = "file://attached_assets/cargomatch/audio/voice-17.mp3"
+type = "audio"
+title = "CargoMatch narration segment 17"
+description = "Text-to-speech audio: Functional rail pilots explore the same approach, starting with available wagons in Duisburg."
+logical_id = "ed2885ed-6f94-42b1-b553-3722ea8044e7"
+
+[[outputs]]
+id = "vXOnoIjQn75xO3fskyz8Z"
+uri = "file://attached_assets/cargomatch/audio/voice-19.mp3"
+type = "audio"
+title = "CargoMatch narration segment 19"
+description = "Text-to-speech audio: Amsterdam to Dubai. Remaining weight and volume shown together, so suitable cargo can be considered."
+logical_id = "7977095e-5b37-47bf-be5c-6ec440f4e2f3"
+
+[[outputs]]
+id = "RxF1HnM5JpyGl7O0ILuVg"
+uri = "file://attached_assets/cargomatch/audio/voice-20.mp3"
+type = "audio"
+title = "CargoMatch narration segment 20"
+description = "Text-to-speech audio: These are fictional pilot scenarios, not live airline bookings or fully released rail services."
+logical_id = "70db9c6b-db01-4940-800a-41b819fa3bd9"
+
+[[outputs]]
+id = "3xDrkW8yHfyXKATWhCxhJ"
+uri = "file://attached_assets/cargomatch/audio/voice-21.mp3"
+type = "audio"
+title = "CargoMatch narration segment 21"
+description = "Text-to-speech audio: Across the network, better visibility gives professionals a chance to start the conversation earlier."
+logical_id = "fc885438-589f-4241-8b08-01261f4e7b12"
+
+[[outputs]]
+id = "nVyJuVk5GIpaA0ZVdRu1f"
+uri = "file://attached_assets/cargomatch/audio/voice-23.mp3"
+type = "audio"
+title = "CargoMatch narration segment 23"
+description = "Text-to-speech audio: CargoMatch. Find the next load before capacity becomes empty."
+logical_id = "98c1f739-c4fc-438a-81e5-ae1facce7e17"
+
+[[outputs]]
+id = "vnNxU87k1XejvUg7GwZWT"
+uri = "file://attached_assets/cargomatch/audio/voice-22.mp3"
+type = "audio"
+title = "CargoMatch narration segment 22"
+description = "Text-to-speech audio: Before the vessel sails empty. Before the truck heads back. Before an opportunity passes."
+logical_id = "421e1d0c-7983-4807-acde-29a6c26b5448"
+
+[[outputs]]
+id = "UPf4m7rATUptKEeHs5fkY"
+uri = "file://attached_assets/cargomatch/audio/voice-24.mp3"
+type = "audio"
+title = "CargoMatch narration segment 24"
+description = "Text-to-speech audio: The transport capacity intelligence network. Discover CargoMatch."
+logical_id = "8e77af3f-84e1-4ab3-adfb-6ea3ee47fd92"
+
+[[outputs]]
+id = "o1rHqAvLortuwDlDGFObs"
+uri = "file://attached_assets/cargomatch/delivery/cargomatch-en-nl-1080p.mp4"
+type = "video"
+title = "CargoMatch — salesfilm · 2:48 · Full HD"
+description = "Downloadbare H.264-MP4 met Engelse voice-over, ingebakken Nederlandse ondertitels, muziek en omgevingsgeluid. Filmische AI-beelden met echte CargoMatch-democaptures op apparaten; spoor en luchtvracht zijn herkenbaar als pilots."
+logical_id = "ee186b4b-7e68-48a9-a1b7-ff68d15b8487"
+content_hash = "sha256:d8b90e58666522aeebdbaba753beb299f9c487e908e4a9ef73a0771741cc48cc"
+size = 84086191
+mtime_ms = 1789721313318
+storage_uri = "gcs://replit-rams-assets-worf/rams/assets/repl:929794db-e72d-4439-9aa2-c5d927c149ce/ee186b4b-7e68-48a9-a1b7-ff68d15b8487/f06435ce-388a-4f72-9bcf-62eb7f080ca4"
+storage_version_token = "1789721362100719"
+content_type = "video/mp4"

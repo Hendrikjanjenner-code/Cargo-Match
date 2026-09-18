@@ -1,0 +1,53 @@
+[Script Info]
+Title: CargoMatch Dutch subtitles
+ScriptType: v4.00+
+PlayResX: 1920
+PlayResY: 1080
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Dutch,DejaVu Sans,36,&H00FFFFFF,&H00FFFFFF,&HCC000000,&H00000000,0,0,0,0,100,100,0,0,1,3,0,2,70,70,22,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.60,0:00:03.43,Dutch,,0,0,0,,Elke dag worden wereldwijd miljoenen tonnen vracht\Nvervoerd.
+Dialogue: 0,0:00:07.60,0:00:09.79,Dutch,,0,0,0,,Over zee. Over de weg. Over het spoor. Door de lucht.
+Dialogue: 0,0:00:14.60,0:00:17.70,Dutch,,0,0,0,,Een reis eindigt. Een schip is bijna leeg. Wat volgt\Ndaarna?
+Dialogue: 0,0:00:21.60,0:00:24.61,Dutch,,0,0,0,,Voor een truck betekent leeg terugrijden meer dan afstand.
+Dialogue: 0,0:00:24.61,0:00:25.88,Dutch,,0,0,0,,Het kost tijd en brandstof.
+Dialogue: 0,0:00:28.60,0:00:31.34,Dutch,,0,0,0,,De volgende passende lading wacht misschien al.
+Dialogue: 0,0:00:31.34,0:00:32.82,Dutch,,0,0,0,,De juiste mensen moeten die kunnen vinden.
+Dialogue: 0,0:00:35.60,0:00:38.68,Dutch,,0,0,0,,In Maleisië komt naar verwachting een schip vrij.
+Dialogue: 0,0:00:38.68,0:00:40.83,Dutch,,0,0,0,,De operator legt die toekomstige positie vast.
+Dialogue: 0,0:00:42.60,0:00:44.24,Dutch,,0,0,0,,Geen belofte van live tracking.
+Dialogue: 0,0:00:44.24,0:00:47.75,Dutch,,0,0,0,,Een operationele inschatting voor het volgende commerciële\Ngesprek.
+Dialogue: 0,0:00:49.60,0:00:53.77,Dutch,,0,0,0,,Intussen moet vijfenzeventigduizend ton van Indonesië naar\NChina worden vervoerd.
+Dialogue: 0,0:00:56.60,0:01:01.39,Dutch,,0,0,0,,CargoMatch maakt de kans zichtbaar en beschermt de\Ncommerciële gegevens van beide partijen.
+Dialogue: 0,0:01:03.60,0:01:05.12,Dutch,,0,0,0,,Eén partij toont interesse.
+Dialogue: 0,0:01:05.12,0:01:07.24,Dutch,,0,0,0,,De ander beslist over de verbinding.
+Dialogue: 0,0:01:07.24,0:01:08.52,Dutch,,0,0,0,,Toestemming komt eerst.
+Dialogue: 0,0:01:10.60,0:01:13.50,Dutch,,0,0,0,,Pas na wederzijdse toestemming begint het gesprek.
+Dialogue: 0,0:01:13.50,0:01:15.33,Dutch,,0,0,0,,Een kennismaking, geen boeking.
+Dialogue: 0,0:01:17.60,0:01:21.12,Dutch,,0,0,0,,Op de weg speelt dezelfde vraag al voordat de huidige\Nlevering is afgerond.
+Dialogue: 0,0:01:24.60,0:01:27.78,Dutch,,0,0,0,,De chauffeur bevestigt wanneer de toegewezen truck naar\Nverwachting leeg is.
+Dialogue: 0,0:01:31.60,0:01:33.37,Dutch,,0,0,0,,Een passende volgende lading verschijnt.
+Dialogue: 0,0:01:33.37,0:01:35.66,Dutch,,0,0,0,,De chauffeur stuurt de kans naar de planner.
+Dialogue: 0,0:01:38.60,0:01:41.64,Dutch,,0,0,0,,De planner beoordeelt de kans en beslist commercieel.
+Dialogue: 0,0:01:41.64,0:01:43.77,Dutch,,0,0,0,,De chauffeur richt zich op de operatie.
+Dialogue: 0,0:01:45.60,0:01:49.84,Dutch,,0,0,0,,Beschikbaarheid, timing en praktische eisen moeten nog\Nworden gecontroleerd.
+Dialogue: 0,0:01:49.84,0:01:51.08,Dutch,,0,0,0,,Mensen houden de regie.
+Dialogue: 0,0:01:52.60,0:01:57.47,Dutch,,0,0,0,,Functionele spoorpilots verkennen dezelfde aanpak, met\Nbeschikbare wagons in Duisburg.
+Dialogue: 0,0:01:59.60,0:02:03.42,Dutch,,0,0,0,,In de luchtvrachtdemopilot draait het om onbenutte ruimte\Nop een geplande vlucht.
+Dialogue: 0,0:02:06.60,0:02:08.02,Dutch,,0,0,0,,Amsterdam naar Dubai.
+Dialogue: 0,0:02:08.02,0:02:12.22,Dutch,,0,0,0,,Resterend gewicht en volume samen in beeld om passende\Nlading te beoordelen.
+Dialogue: 0,0:02:13.60,0:02:18.84,Dutch,,0,0,0,,Dit zijn fictieve pilotscenario's, geen live\Nvliegboekingen of volledig uitgerolde spoordiensten.
+Dialogue: 0,0:02:20.60,0:02:25.37,Dutch,,0,0,0,,Meer inzicht geeft professionals in het netwerk de kans om\Neerder het gesprek te beginnen.
+Dialogue: 0,0:02:27.60,0:02:29.21,Dutch,,0,0,0,,Voordat het schip leeg vertrekt.
+Dialogue: 0,0:02:29.21,0:02:30.63,Dutch,,0,0,0,,Voordat de truck terugrijdt.
+Dialogue: 0,0:02:30.63,0:02:32.32,Dutch,,0,0,0,,Voordat een kans voorbijgaat.
+Dialogue: 0,0:02:34.60,0:02:37.94,Dutch,,0,0,0,,CargoMatch. Vind de volgende lading voordat capaciteit\Nleeg komt te staan.
+Dialogue: 0,0:02:41.60,0:02:44.10,Dutch,,0,0,0,,Het informatienetwerk voor transportcapaciteit.
+Dialogue: 0,0:02:44.10,0:02:45.27,Dutch,,0,0,0,,Ontdek CargoMatch.

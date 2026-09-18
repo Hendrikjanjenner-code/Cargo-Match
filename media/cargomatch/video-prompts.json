@@ -1,0 +1,58 @@
+{
+  "resolution": "1080p",
+  "fps": 24,
+  "aspectRatio": "16:9",
+  "durationSeconds": 8,
+  "highQuality": true,
+  "style": "Photorealistic premium cinematic live-action B2B logistics film. Natural convincing physics and materials, restrained navy and warm daylight color palette, fine photographic detail, professional cinema camera movement, 16:9. No captions, no text, no watermarks, no brand logos, no holograms, no CGI animation appearance. No spoken dialogue. ",
+  "prompts": [
+    {
+      "name": "port",
+      "prompt": "An expansive believable Chinese commercial container port at sunrise, long orderly rows of gantry cranes and container stacks, a deepsea vessel moored and tiny terminal trucks operating safely on the quays. Sweeping slow elevated drone move forward over still water toward terminal, first light catching crane silhouettes, faint golden haze, immense scale. Continuous8second shot."
+    },
+    {
+      "name": "vessel",
+      "prompt": "A large realistic gearless Kamsarmax dry bulk carrier underway on calm turquoise Southeast Asian coastal sea, long rust-red lower hull and dark navy upper hull, seven closed rectangular hatch covers, white superstructure at stern. Tracking drone alongside port bow at medium-high altitude, ship moves steadily leaving physically plausible wake, green distant island hills. Elegant serious maritime photography, no identifying names."
+    },
+    {
+      "name": "unloading",
+      "prompt": "A huge dry bulk vessel berthed beside a Malaysian industrial bulk terminal, crane grab carefully lifts dark bulk material from an open hold, conveyors and covered stockpiles in background. Slow lateral drone movement, credible heavy maritime machinery and rigging, bright soft morning light. Focus on ship nearing completion of unloading, no workers in dangerous positions."
+    },
+    {
+      "name": "truck",
+      "prompt": "Modern unbranded navy European cab-over articulated tractor and white box trailer driving safely along a divided Dutch highway through flat green countryside at early morning. Stable tracking vehicle camera side front three-quarter view, wheels rotate correctly, one continuous shot, distant wind turbines and clean overcast sunlight."
+    },
+    {
+      "name": "empty-trailer",
+      "prompt": "An unbranded European semi trailer parked securely at a distribution centre yard, rear doors already completely open showing an empty clean straight rectangular trailer interior, no cargo. Adult male driver wearing simple navy jacket and orange safety vest stands beside the rear left edge, considering the next job while checking a paper delivery receipt, no readable text. Gentle low dolly forward toward empty trailer, realistic symmetric wheels and doors."
+    },
+    {
+      "name": "rail",
+      "prompt": "A realistic long European freight train carrying intermodal containers moving slowly through an industrial rail terminal near Duisburg, Germany. Correct parallel rail tracks, a modern freight locomotive, overhead catenary infrastructure, gantry cranes in distance. Smooth low tracking shot parallel to train, warm afternoon sidelight, premium industrial documentary."
+    },
+    {
+      "name": "air",
+      "prompt": "A realistic unbranded white twin-engine widebody cargo aircraft resembling a Boeing777 freighter parked on an airport freight apron, large side cargo door open, raised high-loader with a single pallet aligned safely at the cargo door. Adult ground crew in high-visibility vests stand clear in safe positions. Slow elegant lateral camera move past the nose, late-afternoon sunlight, no aircraft airline logos or readable markings."
+    },
+    {
+      "name": "captain",
+      "prompt": "An adult merchant ship captain with short greying hair in a simple light-blue short-sleeved shirt stands on a real cargo ship bridge, looking through broad windows toward a busy tropical port, charts and navigation consoles below the frame with no readable UI. Three-quarter portrait medium close-up, calm thoughtful expression, subtle head movement, slowly tracking left, believable human hands resting on rail below frame."
+    },
+    {
+      "name": "collaboration",
+      "prompt": "Two adult logistics professionals, a woman with dark shoulder-length hair and a man with short hair, working in a refined modest European transport planning office overlooking warehouse loading bays. Medium close-up of faces, listening then sharing a small nod while discussing a paper shipment plan below frame. No readable screens visible, not a handshake or staged camera smile. Slow sideways cinema dolly, natural daylight, sincere focused teamwork."
+    },
+    {
+      "name": "plate-monitor",
+      "prompt": "One continuous close-up of an elegant large matte black 16:10 desktop monitor on a navy logistics-office desk. Camera is almost EXACTLY PERPENDICULAR to the monitor screen, tiny3degree horizontal perspective only. The physical screen is WIDE LANDSCAPE RECTANGULAR with width1.6times height. Screen display fills75percent of image width and65percent of image height, all four straight corners fully inside frame, centered horizontally and vertically in the upper80percent of frame. It displays a completely uniform matte MAGENTA chroma surface, no text, no cursor, no graphics or reflections. Thin rigid black bezel and small stand below. Background deeply blurred port operations office, adult male planner shoulder barely visible on far left edge. Hands NOT in frame. Camera very slowly moves5centimeters sideways over8seconds, keeping readable screen close-up with all corners fully visible and no zoom change."
+    },
+    {
+      "name": "plate-phone",
+      "prompt": "One continuous photorealistic close-up of a single modern smartphone held vertically in the LEFT hand of an adult male truck driver wearing a navy sleeve, seated safely in a parked European truck cab. Camera nearly perpendicular to display, screen fully visible with all four straight corners and rounded bezel within frame. The portrait display is perfectly uniform matte MAGENTA, no text or icons. Phone is centred at x55percent and y45percent of image, phone height75percent of frame, width36percent of its height, normal realistic smartphone proportions. Fingers grip only OUTSIDE left side and bottom back of phone, never across display. No tapping hand. Gentle natural tiny hand movement and subtle2centimeter camera push, stable screen plane always sharp; blurred steering wheel and green logistics yard outside in background. No vehicle movement."
+    },
+    {
+      "name": "plate-tablet",
+      "prompt": "One continuous close-up of a single realistic black tablet LANDSCAPE4:3 in a slim desk stand inside a European rail terminal operations room. Tablet display fills68percent image width and70percent image height, centred x50percent y44percent with all four straight edges visible; thin rectangular bezel, camera exactly perpendicular with tiny5degree perspective. Display uniformly solid matte MAGENTA, no words icons reflections or cursor. Adult female rail operator in simple navy clothing visible only shoulder at far right, hands below and outside screen. Background softly blurred freight train through window. Slow tiny lateral camera slide, mostly locked off sharp readable device close-up, no cuts."
+    }
+  ]
+}

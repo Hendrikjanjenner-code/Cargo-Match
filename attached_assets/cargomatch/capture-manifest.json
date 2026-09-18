@@ -1,0 +1,230 @@
+{
+  "createdAt": "2026-09-18T08:28:15.912Z",
+  "source": "Current already-running CargoMatch secure isolated server demo, captured through Chromium CDP.",
+  "safeProvenance": "Fresh ephemeral browser profile and isolated visitor sandbox; authentic projected UI and real demo actions. No cookies, CSRF tokens, credentials, or production records retained.",
+  "mainProofViewport": {
+    "width": 1280,
+    "height": 800
+  },
+  "screenshots": [
+    {
+      "filename": "deepsea-capacity.png",
+      "viewport": {
+        "width": 1280,
+        "height": 800
+      },
+      "route": "?entry=demo&demoView=capacity&demoMode=DEEPSEA",
+      "persona": "Sophie van Dijk",
+      "consentStatus": "NEW / no mutual consent",
+      "intendedNarration": "Sophie manages the expected-open Kamsarmax capacity from Malaysia."
+    },
+    {
+      "filename": "capacity-tablet.png",
+      "viewport": {
+        "width": 1024,
+        "height": 768
+      },
+      "route": "?entry=demo&demoView=capacity&demoMode=DEEPSEA",
+      "persona": "Sophie van Dijk",
+      "consentStatus": "NEW / no mutual consent",
+      "intendedNarration": "CargoMatch capacity remains usable at tablet width."
+    },
+    {
+      "filename": "deepsea-capacity-detail.png",
+      "viewport": {
+        "width": 1280,
+        "height": 800
+      },
+      "route": "?entry=demo&demoView=assets&demoMode=DEEPSEA",
+      "persona": "Sophie van Dijk",
+      "consentStatus": "NEW / owner-side asset display / no mutation",
+      "intendedNarration": "The read-only fleet view shows MV OceanBridge Atlas as an 82,000-ton Kamsarmax expected open in Malaysia."
+    },
+    {
+      "filename": "deepsea-cargo.png",
+      "viewport": {
+        "width": 1280,
+        "height": 800
+      },
+      "route": "?entry=demo&demoView=cargos&demoMode=DEEPSEA",
+      "persona": "Andy Kers",
+      "consentStatus": "NEW / no mutual consent",
+      "intendedNarration": "Andy owns the 75,000 mt Indonesia–China cargo order."
+    },
+    {
+      "filename": "deepsea-opportunity.png",
+      "viewport": {
+        "width": 1280,
+        "height": 800
+      },
+      "route": "?entry=demo&demoView=match_detail&demoMode=DEEPSEA&entityId=match-deepsea",
+      "persona": "Andy Kers",
+      "consentStatus": "NEW / counterparty identity redacted",
+      "intendedNarration": "A suitable opportunity is visible while the counterparty remains protected."
+    },
+    {
+      "filename": "deepsea-interest.png",
+      "viewport": {
+        "width": 1280,
+        "height": 800
+      },
+      "route": "?entry=demo&demoView=match_detail&demoMode=DEEPSEA&entityId=match-deepsea",
+      "persona": "Sophie van Dijk",
+      "consentStatus": "INTEREST_SENT / incoming interest / identity redacted",
+      "intendedNarration": "Sophie receives Andy’s interest and controls her own consent."
+    },
+    {
+      "filename": "deepsea-connected.png",
+      "viewport": {
+        "width": 1280,
+        "height": 800
+      },
+      "route": "?entry=demo&demoView=match_detail&demoMode=DEEPSEA&entityId=match-deepsea",
+      "persona": "Sophie van Dijk",
+      "consentStatus": "CONNECTED / real mutual demo consent completed",
+      "intendedNarration": "Only mutual consent reveals the authorized company and contact projection."
+    },
+    {
+      "filename": "deepsea-messages.png",
+      "viewport": {
+        "width": 1280,
+        "height": 800
+      },
+      "route": "?entry=demo&demoView=match_detail&demoMode=DEEPSEA&entityId=match-deepsea",
+      "persona": "Andy Kers",
+      "consentStatus": "CONNECTED / messaging authorized",
+      "intendedNarration": "Connected participants exchange a short fictional planning message."
+    },
+    {
+      "filename": "road-availability.png",
+      "viewport": {
+        "width": 1280,
+        "height": 800
+      },
+      "route": "?entry=demo&demoView=assets&demoMode=ROAD",
+      "persona": "Jan Müller",
+      "consentStatus": "Operational assignment only / no commercial consent",
+      "intendedNarration": "Jan sees only assigned Truck 42 and its expected Eindhoven availability."
+    },
+    {
+      "filename": "road-availability-mobile.png",
+      "viewport": {
+        "width": 430,
+        "height": 860
+      },
+      "route": "?entry=demo&demoView=assets&demoMode=ROAD",
+      "persona": "Jan Müller",
+      "consentStatus": "Operational assignment only / no commercial consent",
+      "intendedNarration": "Assigned-truck availability remains clear on mobile."
+    },
+    {
+      "filename": "road-next-load.png",
+      "viewport": {
+        "width": 1280,
+        "height": 800
+      },
+      "route": "?entry=demo&demoView=match_detail&demoMode=ROAD&entityId=match-road",
+      "persona": "Jan Müller",
+      "consentStatus": "NEW / operational referral permitted / commercial consent denied",
+      "intendedNarration": "Jan reviews a suitable next load without commercial authority."
+    },
+    {
+      "filename": "road-next-load-mobile.png",
+      "viewport": {
+        "width": 430,
+        "height": 860
+      },
+      "route": "?entry=demo&demoView=match_detail&demoMode=ROAD&entityId=match-road",
+      "persona": "Jan Müller",
+      "consentStatus": "NEW / operational referral permitted / commercial consent denied",
+      "intendedNarration": "The next-load opportunity and planner action are available on mobile."
+    },
+    {
+      "filename": "road-referral.png",
+      "viewport": {
+        "width": 1280,
+        "height": 800
+      },
+      "route": "?entry=demo&demoView=dashboard&demoMode=ROAD",
+      "persona": "Thomas Becker",
+      "consentStatus": "Referral SENT / planner has not yet given commercial consent",
+      "intendedNarration": "Thomas receives Jan’s actual server-stored planner referral."
+    },
+    {
+      "filename": "rail-capacity.png",
+      "viewport": {
+        "width": 1280,
+        "height": 800
+      },
+      "route": "?entry=demo&demoView=capacity&demoMode=RAIL",
+      "persona": "Anna Schmidt",
+      "consentStatus": "NEW / Rail demo pilot",
+      "intendedNarration": "Anna manages twelve compatible wagons available at Duisburg."
+    },
+    {
+      "filename": "rail-capacity-tablet.png",
+      "viewport": {
+        "width": 1024,
+        "height": 768
+      },
+      "route": "?entry=demo&demoView=capacity&demoMode=RAIL",
+      "persona": "Anna Schmidt",
+      "consentStatus": "NEW / Rail demo pilot",
+      "intendedNarration": "Anna’s twelve-wagon Duisburg capacity remains clear on a 4:3 tablet."
+    },
+    {
+      "filename": "air-capacity.png",
+      "viewport": {
+        "width": 1280,
+        "height": 800
+      },
+      "route": "?entry=demo&demoView=capacity&demoMode=AIR",
+      "persona": "Sarah Williams",
+      "consentStatus": "NEW / Air Cargo demo pilot",
+      "intendedNarration": "Sarah manages B777F AMS–DXB capacity with 4,800 kg and 28 m³ remaining."
+    },
+    {
+      "filename": "air-flight-detail.png",
+      "viewport": {
+        "width": 1280,
+        "height": 800
+      },
+      "route": "?entry=demo&demoView=assets&demoMode=AIR",
+      "persona": "Sarah Williams",
+      "consentStatus": "NEW / owner-side asset display / no mutation / Air Cargo demo pilot",
+      "intendedNarration": "The actual flight asset shows B777F AMS–DXB with 4,800 kg and 28 m³ together."
+    },
+    {
+      "filename": "regional-map.png",
+      "viewport": {
+        "width": 1280,
+        "height": 800
+      },
+      "route": "?entry=demo&demoView=map&demoMode=DEEPSEA",
+      "persona": "Sophie van Dijk",
+      "consentStatus": "CONNECTED chain retained / projected map data",
+      "intendedNarration": "The actual demo regional map places projected deepsea capacity and opportunities in context."
+    },
+    {
+      "filename": "regional-map-tablet.png",
+      "viewport": {
+        "width": 1024,
+        "height": 768
+      },
+      "route": "?entry=demo&demoView=map&demoMode=DEEPSEA",
+      "persona": "Sophie van Dijk",
+      "consentStatus": "CONNECTED chain retained / projected map data",
+      "intendedNarration": "The actual demo regional map remains useful on a 4:3 tablet."
+    }
+  ],
+  "logo": {
+    "filename": "logo.png",
+    "viewport": {
+      "width": 1440,
+      "height": 900
+    },
+    "route": "?entry=landing",
+    "persona": "Public app header",
+    "intendedNarration": "High-resolution crop of the exact CargoMatch branding rendered by the app landing header."
+  }
+}

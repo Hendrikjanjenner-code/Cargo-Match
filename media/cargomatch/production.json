@@ -1,0 +1,42 @@
+{
+  "title": "CargoMatch — Find the next load",
+  "duration": 168,
+  "fps": 24,
+  "width": 1920,
+  "height": 1080,
+  "slot": 7,
+  "narration": [
+    {"id":1,"en":"Every day, millions of tonnes of cargo move across the world.","nl":"Elke dag worden wereldwijd miljoenen tonnen vracht vervoerd.","visual":"Chinese port sunrise, then bulk vessel"},
+    {"id":2,"en":"By sea. By road. By rail. By air.","nl":"Over zee. Over de weg. Over het spoor. Door de lucht.","visual":"Vessel, European truck, freight train, cargo aircraft"},
+    {"id":3,"en":"A voyage ends. A vessel is nearly empty. What comes next?","nl":"Een reis eindigt. Een schip is bijna leeg. Wat volgt daarna?","visual":"Bulk terminal unloading, uncertainty"},
+    {"id":4,"en":"For a truck, an empty return means more than distance. It means time and fuel.","nl":"Voor een truck betekent leeg terugrijden meer dan afstand. Het kost tijd en brandstof.","visual":"European truck and empty trailer"},
+    {"id":5,"en":"The next suitable cargo may already be waiting. The right people need to see it.","nl":"De volgende passende lading wacht misschien al. De juiste mensen moeten die kunnen vinden.","visual":"Human maritime planner, laptop introduction"},
+    {"id":6,"en":"In Malaysia, a vessel is expected to become available. Its operator records that future position.","nl":"In Maleisië komt naar verwachting een schip vrij. De operator legt die toekomstige positie vast.","visual":"Sophie own expected Malaysia availability"},
+    {"id":7,"en":"Not a live tracking promise. An operational estimate, ready for the next commercial conversation.","nl":"Geen belofte van live tracking. Een operationele inschatting voor het volgende commerciële gesprek.","visual":"Vessel captain on bridge and vessel underway"},
+    {"id":8,"en":"Meanwhile, seventy-five thousand tonnes need to move from Indonesia to China.","nl":"Intussen moet vijfenzeventigduizend ton van Indonesië naar China worden vervoerd.","visual":"Andy own 75000 MT cargo order on actual laptop display"},
+    {"id":9,"en":"CargoMatch brings the opportunity into view, while protecting each party's commercial details.","nl":"CargoMatch maakt de kans zichtbaar en beschermt de commerciële gegevens van beide partijen.","visual":"Actual anonymous deepsea opportunity"},
+    {"id":10,"en":"One party sends interest. The other decides whether to connect. Permission comes first.","nl":"Eén partij toont interesse. De ander beslist over de verbinding. Toestemming komt eerst.","visual":"Actual incoming interest followed by mutually connected state"},
+    {"id":11,"en":"Only after mutual consent does the conversation open. An introduction, not a booking.","nl":"Pas na wederzijdse toestemming begint het gesprek. Een kennismaking, geen boeking.","visual":"Actual demo conversation on desktop"},
+    {"id":12,"en":"On the road, the same question begins before the current delivery is complete.","nl":"Op de weg speelt dezelfde vraag al voordat de huidige levering is afgerond.","visual":"Truck arrives at European distribution centre"},
+    {"id":13,"en":"The driver confirms when the assigned truck is expected to be empty.","nl":"De chauffeur bevestigt wanneer de toegewezen truck naar verwachting leeg is.","visual":"Jan assigned Truck42 availability on phone"},
+    {"id":14,"en":"A suitable next load appears. The driver sends the opportunity to the planner.","nl":"Een passende volgende lading verschijnt. De chauffeur stuurt de kans naar de planner.","visual":"Jan next-load opportunity on phone"},
+    {"id":15,"en":"The planner reviews it and makes the commercial decision. The driver focuses on the operation.","nl":"De planner beoordeelt de kans en beslist commercieel. De chauffeur richt zich op de operatie.","visual":"Thomas actual planner referral on office display"},
+    {"id":16,"en":"Availability, timing, and practical requirements still need checking. People remain in control.","nl":"Beschikbaarheid, timing en praktische eisen moeten nog worden gecontroleerd. Mensen houden de regie.","visual":"Logistics professionals discussing the operation"},
+    {"id":17,"en":"Functional rail pilots explore the same approach, starting with available wagons in Duisburg.","nl":"Functionele spoorpilots verkennen dezelfde aanpak, met beschikbare wagons in Duisburg.","visual":"Freight rail then actual Anna rail capacity on tablet; PILOT label"},
+    {"id":18,"en":"In the air cargo demo pilot, the question is unused space on a scheduled flight.","nl":"In de luchtvrachtdemopilot draait het om onbenutte ruimte op een geplande vlucht.","visual":"Cargo aircraft loading; DEMO PILOT label"},
+    {"id":19,"en":"Amsterdam to Dubai. Remaining weight and volume shown together, so suitable cargo can be considered.","nl":"Amsterdam naar Dubai. Resterend gewicht en volume samen in beeld om passende lading te beoordelen.","visual":"Actual Sarah B777F flight capacity; DEMO PILOT label"},
+    {"id":20,"en":"These are fictional pilot scenarios, not live airline bookings or fully released rail services.","nl":"Dit zijn fictieve pilotscenario's, geen live vliegboekingen of volledig uitgerolde spoordiensten.","visual":"Rail and air montage with explicit pilot disclosure"},
+    {"id":21,"en":"Across the network, better visibility gives professionals a chance to start the conversation earlier.","nl":"Meer inzicht geeft professionals in het netwerk de kans om eerder het gesprek te beginnen.","visual":"Actual regional map then professionals collaborating"},
+    {"id":22,"en":"Before the vessel sails empty. Before the truck heads back. Before an opportunity passes.","nl":"Voordat het schip leeg vertrekt. Voordat de truck terugrijdt. Voordat een kans voorbijgaat.","visual":"Vessel, truck, and human planner montage"},
+    {"id":23,"en":"CargoMatch. Find the next load before capacity becomes empty.","nl":"CargoMatch. Vind de volgende lading voordat capaciteit leeg komt te staan.","visual":"Actual CargoMatch logo and core message"},
+    {"id":24,"en":"The transport capacity intelligence network. Discover CargoMatch.","nl":"Het informatienetwerk voor transportcapaciteit. Ontdek CargoMatch.","visual":"Brand close over cinematic seaport, fade to black"}
+  ],
+  "disclosures": [
+    "All people and location footage are photorealistic AI-generated scenes, not actual customers or evidence of customer results.",
+    "Screens are captured from the current isolated CargoMatch server demo using fictional personas and records.",
+    "Mutual consent permits an introduction and discussion only; it is not a booking or reservation.",
+    "Availability is manually estimated, not independently verified live AIS, telemetry or licensed routing.",
+    "Rail and air are functional fictional demo pilots, not released production modules or external airline booking integrations.",
+    "Narration, music and ambient effects are generated through Replit-managed media tools; no additional paid external account is required."
+  ]
+}

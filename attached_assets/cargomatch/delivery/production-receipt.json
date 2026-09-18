@@ -1,0 +1,1046 @@
+{
+  "production": "CargoMatch — Find the next load",
+  "output": "attached_assets/cargomatch/delivery/cargomatch-en-nl-1080p.mp4",
+  "durationSeconds": 168.0,
+  "pictureSource": "media/cargomatch/build/picture-master.mp4",
+  "pictureProbe": {
+    "streams": [
+      {
+        "index": 0,
+        "codec_name": "h264",
+        "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+        "profile": "High",
+        "codec_type": "video",
+        "codec_tag_string": "avc1",
+        "codec_tag": "0x31637661",
+        "width": 1920,
+        "height": 1080,
+        "coded_width": 1920,
+        "coded_height": 1080,
+        "closed_captions": 0,
+        "film_grain": 0,
+        "has_b_frames": 2,
+        "sample_aspect_ratio": "1:1",
+        "display_aspect_ratio": "16:9",
+        "pix_fmt": "yuv420p",
+        "level": 40,
+        "chroma_location": "left",
+        "field_order": "progressive",
+        "refs": 1,
+        "is_avc": "true",
+        "nal_length_size": "4",
+        "id": "0x1",
+        "r_frame_rate": "24/1",
+        "avg_frame_rate": "24/1",
+        "time_base": "1/12288",
+        "start_pts": 0,
+        "start_time": "0.000000",
+        "duration_ts": 2064384,
+        "duration": "168.000000",
+        "bit_rate": "11929404",
+        "bits_per_raw_sample": "8",
+        "nb_frames": "4032",
+        "extradata_size": 48,
+        "disposition": {
+          "default": 1,
+          "dub": 0,
+          "original": 0,
+          "comment": 0,
+          "lyrics": 0,
+          "karaoke": 0,
+          "forced": 0,
+          "hearing_impaired": 0,
+          "visual_impaired": 0,
+          "clean_effects": 0,
+          "attached_pic": 0,
+          "timed_thumbnails": 0,
+          "non_diegetic": 0,
+          "captions": 0,
+          "descriptions": 0,
+          "metadata": 0,
+          "dependent": 0,
+          "still_image": 0
+        },
+        "tags": {
+          "language": "und",
+          "handler_name": "VideoHandler",
+          "vendor_id": "[0][0][0][0]",
+          "encoder": "Lavc60.31.102 libx264"
+        }
+      }
+    ],
+    "format": {
+      "filename": "/home/runner/workspace/media/cargomatch/build/picture-master.mp4",
+      "nb_streams": 1,
+      "nb_programs": 0,
+      "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+      "format_long_name": "QuickTime / MOV",
+      "start_time": "0.000000",
+      "duration": "168.000000",
+      "size": "250569804",
+      "bit_rate": "11931895",
+      "probe_score": 100,
+      "tags": {
+        "major_brand": "isom",
+        "minor_version": "512",
+        "compatible_brands": "isomiso2avc1mp41",
+        "encoder": "Lavf60.16.100"
+      }
+    }
+  },
+  "outputProbe": {
+    "streams": [
+      {
+        "index": 0,
+        "codec_name": "h264",
+        "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+        "profile": "High",
+        "codec_type": "video",
+        "codec_tag_string": "avc1",
+        "codec_tag": "0x31637661",
+        "width": 1920,
+        "height": 1080,
+        "coded_width": 1920,
+        "coded_height": 1080,
+        "closed_captions": 0,
+        "film_grain": 0,
+        "has_b_frames": 2,
+        "sample_aspect_ratio": "1:1",
+        "display_aspect_ratio": "16:9",
+        "pix_fmt": "yuv420p",
+        "level": 40,
+        "chroma_location": "left",
+        "field_order": "progressive",
+        "refs": 1,
+        "is_avc": "true",
+        "nal_length_size": "4",
+        "id": "0x1",
+        "r_frame_rate": "24/1",
+        "avg_frame_rate": "24/1",
+        "time_base": "1/12288",
+        "start_pts": 0,
+        "start_time": "0.000000",
+        "duration_ts": 2064384,
+        "duration": "168.000000",
+        "bit_rate": "3800573",
+        "bits_per_raw_sample": "8",
+        "nb_frames": "4032",
+        "extradata_size": 48,
+        "disposition": {
+          "default": 1,
+          "dub": 0,
+          "original": 0,
+          "comment": 0,
+          "lyrics": 0,
+          "karaoke": 0,
+          "forced": 0,
+          "hearing_impaired": 0,
+          "visual_impaired": 0,
+          "clean_effects": 0,
+          "attached_pic": 0,
+          "timed_thumbnails": 0,
+          "non_diegetic": 0,
+          "captions": 0,
+          "descriptions": 0,
+          "metadata": 0,
+          "dependent": 0,
+          "still_image": 0
+        },
+        "tags": {
+          "language": "eng",
+          "handler_name": "VideoHandler",
+          "vendor_id": "[0][0][0][0]",
+          "encoder": "Lavc60.31.102 libx264"
+        }
+      },
+      {
+        "index": 1,
+        "codec_name": "aac",
+        "codec_long_name": "AAC (Advanced Audio Coding)",
+        "profile": "LC",
+        "codec_type": "audio",
+        "codec_tag_string": "mp4a",
+        "codec_tag": "0x6134706d",
+        "sample_fmt": "fltp",
+        "sample_rate": "48000",
+        "channels": 2,
+        "channel_layout": "stereo",
+        "bits_per_sample": 0,
+        "initial_padding": 0,
+        "id": "0x2",
+        "r_frame_rate": "0/0",
+        "avg_frame_rate": "0/0",
+        "time_base": "1/48000",
+        "start_pts": 0,
+        "start_time": "0.000000",
+        "duration_ts": 8064000,
+        "duration": "168.000000",
+        "bit_rate": "197870",
+        "nb_frames": "7876",
+        "extradata_size": 5,
+        "disposition": {
+          "default": 1,
+          "dub": 0,
+          "original": 0,
+          "comment": 0,
+          "lyrics": 0,
+          "karaoke": 0,
+          "forced": 0,
+          "hearing_impaired": 0,
+          "visual_impaired": 0,
+          "clean_effects": 0,
+          "attached_pic": 0,
+          "timed_thumbnails": 0,
+          "non_diegetic": 0,
+          "captions": 0,
+          "descriptions": 0,
+          "metadata": 0,
+          "dependent": 0,
+          "still_image": 0
+        },
+        "tags": {
+          "language": "eng",
+          "handler_name": "SoundHandler",
+          "vendor_id": "[0][0][0][0]"
+        }
+      }
+    ],
+    "format": {
+      "filename": "/home/runner/workspace/attached_assets/cargomatch/delivery/cargomatch-en-nl-1080p.mp4",
+      "nb_streams": 2,
+      "nb_programs": 0,
+      "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+      "format_long_name": "QuickTime / MOV",
+      "start_time": "0.000000",
+      "duration": "168.000000",
+      "size": "84086191",
+      "bit_rate": "4004104",
+      "probe_score": 100,
+      "tags": {
+        "major_brand": "isom",
+        "minor_version": "512",
+        "compatible_brands": "isomiso2avc1mp41",
+        "title": "CargoMatch — Find the next load",
+        "encoder": "Lavf60.16.100",
+        "comment": "AI-generated people/location footage and generated narration, music and ambience; product screens use fictional demo personas/records. Introduction only, not booking. Availability is estimated; rail and air are fictional demo pilots.",
+        "description": "AI-generated people/location footage and generated narration, music and ambience; product screens use fictional demo personas/records. Introduction only, not booking. Availability is estimated; rail and air are fictional demo pilots."
+      }
+    }
+  },
+  "hashesSha256": {
+    "media/cargomatch/build/picture-master.mp4": "b1cdfffed5829fe2fb2ee9e9e57e757e9975105718ad50978392949442ae8807",
+    "attached_assets/cargomatch/audio/voice-01.mp3": "6e9777fdebda09ec6b21edecdd3b4c4c15bf973f8d1ef2815581679f94b64194",
+    "attached_assets/cargomatch/audio/voice-02.mp3": "732b45369abd80b5b908ebf84e8892fd57891faa53f4a084fdad8ea9fc9294c4",
+    "attached_assets/cargomatch/audio/voice-03.mp3": "9b044a9956e05dde0ce70ed92c1422e1b6236d4c8a8c63b3277ce76377ed70b3",
+    "attached_assets/cargomatch/audio/voice-04.mp3": "e555be8a571c844ad5ffe1d6a0073ae30cff725dbc8289b2a28185b09e25c72c",
+    "attached_assets/cargomatch/audio/voice-05.mp3": "10e22848553614498f1c4d85137fd744aef15532b29e083b49f0331184cc36b8",
+    "attached_assets/cargomatch/audio/voice-06.mp3": "bc119cdbc84b32e7313d7877f0a8ad29fa91560bc75d91e8c785227e781961e7",
+    "attached_assets/cargomatch/audio/voice-07.mp3": "f2e7b894eb9351de2ab596e1273c701f16bf87c8b4174b466c22a462df5b6387",
+    "attached_assets/cargomatch/audio/voice-08.mp3": "23e0e2a627399abec824f4a305cf8002ce78ddfe73bd653119d84283697d7035",
+    "attached_assets/cargomatch/audio/voice-09.mp3": "332a1ea5c9ab9f15dec1540c43212f236195595611d96715cea52c15efddc38c",
+    "attached_assets/cargomatch/audio/voice-10.mp3": "19460a74f86a1805e03e0e96d930bfcff9919d70015b382a75dfdcd53ca1e650",
+    "attached_assets/cargomatch/audio/voice-11.mp3": "6033581f478a386b8722cb7fc0e0f4c64b385a80f0163ae048430554bd06d1a5",
+    "attached_assets/cargomatch/audio/voice-12.mp3": "c7b84c2ddba4913acd87e4100e81ccfa2c72847cc8b233e7084297e95fffdac9",
+    "attached_assets/cargomatch/audio/voice-13.mp3": "306b8a61c2a71b6d688f8fb8675d57ca74334bca6d44f4be9ef67c122abe376f",
+    "attached_assets/cargomatch/audio/voice-14.mp3": "82f3b41aae6b7a0480a0cb3da5c9cbf670ceeb36d60c2371afb88cd49a11cfba",
+    "attached_assets/cargomatch/audio/voice-15.mp3": "1666640e5d6f2fffbd81b90c871d3d7a4147074cc4469ba26e91aa22cf38f99e",
+    "attached_assets/cargomatch/audio/voice-16.mp3": "04be25c2383723a1e4f1282fe862229098dae3b82e83d526749691dcefc4d492",
+    "attached_assets/cargomatch/audio/voice-17.mp3": "07cb37cb35737274a5d984e2f6015fbad34a4b36f6daab6c67df3ac0ed3b17a0",
+    "attached_assets/cargomatch/audio/voice-18.mp3": "bb64f49fdb537e5d3a31647ed3b7a83eee35e43c69f98ae709b666718001c9af",
+    "attached_assets/cargomatch/audio/voice-19.mp3": "2c767c5d50568c3c863455a6da4fb6b9b6dae4feec22b228dc377dd247e3a9af",
+    "attached_assets/cargomatch/audio/voice-20.mp3": "d8044dd626cc4daefc4ce91c07e35c9ea032e9a63d08af728c8bd75aad8c0cda",
+    "attached_assets/cargomatch/audio/voice-21.mp3": "203f30c243b5d99d1c12662ea71fcc50518e3db6f198be4caa48e40f3db34566",
+    "attached_assets/cargomatch/audio/voice-22.mp3": "c6672eaba91a385acdced6bb1d886f8ed2fe5e165e0379d9b3e60f3e45857697",
+    "attached_assets/cargomatch/audio/voice-23.mp3": "f550dcc2cb813a7991315584303c561736547e7ec82a0173959455c0315ed544",
+    "attached_assets/cargomatch/audio/voice-24.mp3": "cc00c2f2bb2a117df1c8079c5b14cfe159ce3299bda8198499f1ea720ab77c8a",
+    "attached_assets/cargomatch/audio/music.mp3": "2db66d92e297fcdfbda87dd6a70e8507c17bf65c5a22908ced7684799da4c38b",
+    "attached_assets/cargomatch/audio/port.mp3": "3f43d84dac1523185a3df7abcf7470ce3171e34dab0ecd35b0399f3dc9251c94",
+    "attached_assets/cargomatch/audio/road.mp3": "f1482715c4a3b018dd7576aec0a80287560af7cc5e74eb5836317d0e0d14a1b0",
+    "attached_assets/cargomatch/delivery/cargomatch-nl.srt": "719347f664575946439fe15e953964cace5fce1a097d7755a4e7eb2b98b7ca09",
+    "attached_assets/cargomatch/delivery/cargomatch-nl.ass": "b2ff026bcbb50005568ab2cea8366abe4beef959bdc48ceaffde22cbb0ea34ad",
+    "attached_assets/cargomatch/delivery/subtitle-cues.json": "2f3270a1be9c93bc975e6f0ee22d95abdafbf081a038606840279f85a046e8a4",
+    "attached_assets/cargomatch/delivery/cargomatch-en-nl-1080p.mp4": "d8b90e58666522aeebdbaba753beb299f9c487e908e4a9ef73a0771741cc48cc"
+  },
+  "voiceProcessing": [
+    {
+      "id": 1,
+      "source": "attached_assets/cargomatch/audio/voice-01.mp3",
+      "sourceDurationSeconds": 3.108571,
+      "trimmedDurationSeconds": 2.646729,
+      "tempo": 1.0,
+      "processedDurationSeconds": 2.646729,
+      "timelineStartSeconds": 0.6,
+      "detectedSilenceCentresSeconds": [],
+      "normalizationTarget": {
+        "integratedLUFS": -18,
+        "truePeakDbTP": -3
+      },
+      "normalizationInputMeasurement": {
+        "input_i": "-19.20",
+        "input_tp": "-5.02",
+        "input_lra": "0.00",
+        "input_thresh": "-29.20",
+        "output_i": "-18.00",
+        "output_tp": "-3.82",
+        "output_lra": "0.00",
+        "output_thresh": "-28.00",
+        "normalization_type": "linear",
+        "target_offset": "0.00"
+      }
+    },
+    {
+      "id": 2,
+      "source": "attached_assets/cargomatch/audio/voice-02.mp3",
+      "sourceDurationSeconds": 2.45551,
+      "trimmedDurationSeconds": 2.006396,
+      "tempo": 1.0,
+      "processedDurationSeconds": 2.006396,
+      "timelineStartSeconds": 7.6,
+      "detectedSilenceCentresSeconds": [],
+      "normalizationTarget": {
+        "integratedLUFS": -18,
+        "truePeakDbTP": -3
+      },
+      "normalizationInputMeasurement": {
+        "input_i": "-18.03",
+        "input_tp": "-6.28",
+        "input_lra": "0.00",
+        "input_thresh": "-28.03",
+        "output_i": "-18.03",
+        "output_tp": "-6.26",
+        "output_lra": "0.00",
+        "output_thresh": "-28.03",
+        "normalization_type": "linear",
+        "target_offset": "0.03"
+      }
+    },
+    {
+      "id": 3,
+      "source": "attached_assets/cargomatch/audio/voice-03.mp3",
+      "sourceDurationSeconds": 3.369796,
+      "trimmedDurationSeconds": 2.925458,
+      "tempo": 1.0,
+      "processedDurationSeconds": 2.925458,
+      "timelineStartSeconds": 14.6,
+      "detectedSilenceCentresSeconds": [
+        2.1017
+      ],
+      "normalizationTarget": {
+        "integratedLUFS": -18,
+        "truePeakDbTP": -3
+      },
+      "normalizationInputMeasurement": {
+        "input_i": "-17.26",
+        "input_tp": "-5.17",
+        "input_lra": "0.00",
+        "input_thresh": "-27.26",
+        "output_i": "-17.99",
+        "output_tp": "-5.91",
+        "output_lra": "0.00",
+        "output_thresh": "-27.99",
+        "normalization_type": "linear",
+        "target_offset": "-0.01"
+      }
+    },
+    {
+      "id": 4,
+      "source": "attached_assets/cargomatch/audio/voice-04.mp3",
+      "sourceDurationSeconds": 4.545306,
+      "trimmedDurationSeconds": 4.104771,
+      "tempo": 1.0,
+      "processedDurationSeconds": 4.104771,
+      "timelineStartSeconds": 21.6,
+      "detectedSilenceCentresSeconds": [
+        0.6994,
+        2.8265
+      ],
+      "normalizationTarget": {
+        "integratedLUFS": -18,
+        "truePeakDbTP": -3
+      },
+      "normalizationInputMeasurement": {
+        "input_i": "-17.60",
+        "input_tp": "-4.40",
+        "input_lra": "0.90",
+        "input_thresh": "-27.99",
+        "output_i": "-18.06",
+        "output_tp": "-5.06",
+        "output_lra": "0.70",
+        "output_thresh": "-28.51",
+        "normalization_type": "dynamic",
+        "target_offset": "0.06"
+      }
+    },
+    {
+      "id": 5,
+      "source": "attached_assets/cargomatch/audio/voice-05.mp3",
+      "sourceDurationSeconds": 4.597551,
+      "trimmedDurationSeconds": 4.043833,
+      "tempo": 1.0,
+      "processedDurationSeconds": 4.043833,
+      "timelineStartSeconds": 28.6,
+      "detectedSilenceCentresSeconds": [
+        2.5645
+      ],
+      "normalizationTarget": {
+        "integratedLUFS": -18,
+        "truePeakDbTP": -3
+      },
+      "normalizationInputMeasurement": {
+        "input_i": "-18.14",
+        "input_tp": "-4.77",
+        "input_lra": "1.60",
+        "input_thresh": "-28.68",
+        "output_i": "-18.12",
+        "output_tp": "-5.11",
+        "output_lra": "1.20",
+        "output_thresh": "-28.60",
+        "normalization_type": "dynamic",
+        "target_offset": "0.12"
+      }
+    },
+    {
+      "id": 6,
+      "source": "attached_assets/cargomatch/audio/voice-06.mp3",
+      "sourceDurationSeconds": 5.511837,
+      "trimmedDurationSeconds": 5.050208,
+      "tempo": 1.0,
+      "processedDurationSeconds": 5.050208,
+      "timelineStartSeconds": 35.6,
+      "detectedSilenceCentresSeconds": [
+        0.7435,
+        2.8968
+      ],
+      "normalizationTarget": {
+        "integratedLUFS": -18,
+        "truePeakDbTP": -3
+      },
+      "normalizationInputMeasurement": {
+        "input_i": "-18.41",
+        "input_tp": "-4.47",
+        "input_lra": "2.00",
+        "input_thresh": "-28.86",
+        "output_i": "-18.37",
+        "output_tp": "-4.70",
+        "output_lra": "1.80",
+        "output_thresh": "-28.74",
+        "normalization_type": "dynamic",
+        "target_offset": "0.37"
+      }
+    },
+    {
+      "id": 7,
+      "source": "attached_assets/cargomatch/audio/voice-07.mp3",
+      "sourceDurationSeconds": 5.459592,
+      "trimmedDurationSeconds": 4.966021,
+      "tempo": 1.0,
+      "processedDurationSeconds": 4.966021,
+      "timelineStartSeconds": 42.6,
+      "detectedSilenceCentresSeconds": [
+        1.4556,
+        2.9802
+      ],
+      "normalizationTarget": {
+        "integratedLUFS": -18,
+        "truePeakDbTP": -3
+      },
+      "normalizationInputMeasurement": {
+        "input_i": "-19.87",
+        "input_tp": "-5.00",
+        "input_lra": "2.10",
+        "input_thresh": "-30.04",
+        "output_i": "-18.81",
+        "output_tp": "-4.43",
+        "output_lra": "1.40",
+        "output_thresh": "-29.09",
+        "normalization_type": "dynamic",
+        "target_offset": "0.81"
+      }
+    },
+    {
+      "id": 8,
+      "source": "attached_assets/cargomatch/audio/voice-08.mp3",
+      "sourceDurationSeconds": 4.440816,
+      "trimmedDurationSeconds": 3.992813,
+      "tempo": 1.0,
+      "processedDurationSeconds": 3.992813,
+      "timelineStartSeconds": 49.6,
+      "detectedSilenceCentresSeconds": [
+        2.074
+      ],
+      "normalizationTarget": {
+        "integratedLUFS": -18,
+        "truePeakDbTP": -3
+      },
+      "normalizationInputMeasurement": {
+        "input_i": "-19.27",
+        "input_tp": "-6.06",
+        "input_lra": "1.60",
+        "input_thresh": "-29.27",
+        "output_i": "-18.60",
+        "output_tp": "-5.76",
+        "output_lra": "0.00",
+        "output_thresh": "-28.60",
+        "normalization_type": "dynamic",
+        "target_offset": "0.60"
+      }
+    },
+    {
+      "id": 9,
+      "source": "attached_assets/cargomatch/audio/voice-09.mp3",
+      "sourceDurationSeconds": 5.041633,
+      "trimmedDurationSeconds": 4.608563,
+      "tempo": 1.0,
+      "processedDurationSeconds": 4.608563,
+      "timelineStartSeconds": 56.6,
+      "detectedSilenceCentresSeconds": [
+        2.2413
+      ],
+      "normalizationTarget": {
+        "integratedLUFS": -18,
+        "truePeakDbTP": -3
+      },
+      "normalizationInputMeasurement": {
+        "input_i": "-20.88",
+        "input_tp": "-4.21",
+        "input_lra": "3.00",
+        "input_thresh": "-30.88",
+        "output_i": "-19.27",
+        "output_tp": "-3.22",
+        "output_lra": "2.20",
+        "output_thresh": "-29.27",
+        "normalization_type": "dynamic",
+        "target_offset": "1.27"
+      }
+    },
+    {
+      "id": 10,
+      "source": "attached_assets/cargomatch/audio/voice-10.mp3",
+      "sourceDurationSeconds": 5.250612,
+      "trimmedDurationSeconds": 4.738604,
+      "tempo": 1.0,
+      "processedDurationSeconds": 4.738604,
+      "timelineStartSeconds": 63.6,
+      "detectedSilenceCentresSeconds": [
+        1.3438,
+        1.482,
+        3.1384,
+        3.4557,
+        3.709
+      ],
+      "normalizationTarget": {
+        "integratedLUFS": -18,
+        "truePeakDbTP": -3
+      },
+      "normalizationInputMeasurement": {
+        "input_i": "-20.02",
+        "input_tp": "-4.73",
+        "input_lra": "1.90",
+        "input_thresh": "-30.78",
+        "output_i": "-18.43",
+        "output_tp": "-3.29",
+        "output_lra": "1.70",
+        "output_thresh": "-29.16",
+        "normalization_type": "dynamic",
+        "target_offset": "0.43"
+      }
+    },
+    {
+      "id": 11,
+      "source": "attached_assets/cargomatch/audio/voice-11.mp3",
+      "sourceDurationSeconds": 4.963265,
+      "trimmedDurationSeconds": 4.547667,
+      "tempo": 1.0,
+      "processedDurationSeconds": 4.547667,
+      "timelineStartSeconds": 70.6,
+      "detectedSilenceCentresSeconds": [
+        2.7223,
+        3.8809
+      ],
+      "normalizationTarget": {
+        "integratedLUFS": -18,
+        "truePeakDbTP": -3
+      },
+      "normalizationInputMeasurement": {
+        "input_i": "-18.68",
+        "input_tp": "-4.98",
+        "input_lra": "1.30",
+        "input_thresh": "-28.92",
+        "output_i": "-17.93",
+        "output_tp": "-4.60",
+        "output_lra": "1.20",
+        "output_thresh": "-28.13",
+        "normalization_type": "dynamic",
+        "target_offset": "-0.07"
+      }
+    },
+    {
+      "id": 12,
+      "source": "attached_assets/cargomatch/audio/voice-12.mp3",
+      "sourceDurationSeconds": 3.84,
+      "trimmedDurationSeconds": 3.337063,
+      "tempo": 1.0,
+      "processedDurationSeconds": 3.337063,
+      "timelineStartSeconds": 77.6,
+      "detectedSilenceCentresSeconds": [],
+      "normalizationTarget": {
+        "integratedLUFS": -18,
+        "truePeakDbTP": -3
+      },
+      "normalizationInputMeasurement": {
+        "input_i": "-21.13",
+        "input_tp": "-5.55",
+        "input_lra": "2.00",
+        "input_thresh": "-31.13",
+        "output_i": "-18.55",
+        "output_tp": "-3.62",
+        "output_lra": "0.00",
+        "output_thresh": "-28.55",
+        "normalization_type": "dynamic",
+        "target_offset": "0.55"
+      }
+    },
+    {
+      "id": 13,
+      "source": "attached_assets/cargomatch/audio/voice-13.mp3",
+      "sourceDurationSeconds": 3.474286,
+      "trimmedDurationSeconds": 2.998708,
+      "tempo": 1.0,
+      "processedDurationSeconds": 2.998708,
+      "timelineStartSeconds": 84.6,
+      "detectedSilenceCentresSeconds": [],
+      "normalizationTarget": {
+        "integratedLUFS": -18,
+        "truePeakDbTP": -3
+      },
+      "normalizationInputMeasurement": {
+        "input_i": "-18.70",
+        "input_tp": "-4.87",
+        "input_lra": "0.00",
+        "input_thresh": "-28.70",
+        "output_i": "-18.00",
+        "output_tp": "-4.17",
+        "output_lra": "0.00",
+        "output_thresh": "-28.00",
+        "normalization_type": "linear",
+        "target_offset": "0.00"
+      }
+    },
+    {
+      "id": 14,
+      "source": "attached_assets/cargomatch/audio/voice-14.mp3",
+      "sourceDurationSeconds": 4.362449,
+      "trimmedDurationSeconds": 3.878063,
+      "tempo": 1.0,
+      "processedDurationSeconds": 3.878063,
+      "timelineStartSeconds": 91.6,
+      "detectedSilenceCentresSeconds": [
+        1.5867,
+        1.8194
+      ],
+      "normalizationTarget": {
+        "integratedLUFS": -18,
+        "truePeakDbTP": -3
+      },
+      "normalizationInputMeasurement": {
+        "input_i": "-18.81",
+        "input_tp": "-5.61",
+        "input_lra": "1.50",
+        "input_thresh": "-29.08",
+        "output_i": "-17.94",
+        "output_tp": "-5.28",
+        "output_lra": "0.00",
+        "output_thresh": "-28.19",
+        "normalization_type": "dynamic",
+        "target_offset": "-0.06"
+      }
+    },
+    {
+      "id": 15,
+      "source": "attached_assets/cargomatch/audio/voice-15.mp3",
+      "sourceDurationSeconds": 5.511837,
+      "trimmedDurationSeconds": 4.987021,
+      "tempo": 1.0,
+      "processedDurationSeconds": 4.987021,
+      "timelineStartSeconds": 98.6,
+      "detectedSilenceCentresSeconds": [
+        1.0575,
+        2.8608
+      ],
+      "normalizationTarget": {
+        "integratedLUFS": -18,
+        "truePeakDbTP": -3
+      },
+      "normalizationInputMeasurement": {
+        "input_i": "-19.39",
+        "input_tp": "-5.47",
+        "input_lra": "1.70",
+        "input_thresh": "-29.87",
+        "output_i": "-17.59",
+        "output_tp": "-4.44",
+        "output_lra": "1.50",
+        "output_thresh": "-28.08",
+        "normalization_type": "dynamic",
+        "target_offset": "-0.41"
+      }
+    },
+    {
+      "id": 16,
+      "source": "attached_assets/cargomatch/audio/voice-16.mp3",
+      "sourceDurationSeconds": 5.799184,
+      "trimmedDurationSeconds": 5.301208,
+      "tempo": 1.0,
+      "processedDurationSeconds": 5.301208,
+      "timelineStartSeconds": 105.6,
+      "detectedSilenceCentresSeconds": [
+        3.7431,
+        4.0546
+      ],
+      "normalizationTarget": {
+        "integratedLUFS": -18,
+        "truePeakDbTP": -3
+      },
+      "normalizationInputMeasurement": {
+        "input_i": "-18.43",
+        "input_tp": "-4.56",
+        "input_lra": "2.90",
+        "input_thresh": "-29.14",
+        "output_i": "-18.46",
+        "output_tp": "-5.03",
+        "output_lra": "2.10",
+        "output_thresh": "-29.01",
+        "normalization_type": "dynamic",
+        "target_offset": "0.46"
+      }
+    },
+    {
+      "id": 17,
+      "source": "attached_assets/cargomatch/audio/voice-17.mp3",
+      "sourceDurationSeconds": 5.250612,
+      "trimmedDurationSeconds": 4.689375,
+      "tempo": 1.0,
+      "processedDurationSeconds": 4.689375,
+      "timelineStartSeconds": 112.6,
+      "detectedSilenceCentresSeconds": [
+        2.5034
+      ],
+      "normalizationTarget": {
+        "integratedLUFS": -18,
+        "truePeakDbTP": -3
+      },
+      "normalizationInputMeasurement": {
+        "input_i": "-17.65",
+        "input_tp": "-4.60",
+        "input_lra": "0.80",
+        "input_thresh": "-27.89",
+        "output_i": "-17.63",
+        "output_tp": "-4.91",
+        "output_lra": "0.50",
+        "output_thresh": "-27.83",
+        "normalization_type": "dynamic",
+        "target_offset": "-0.37"
+      }
+    },
+    {
+      "id": 18,
+      "source": "attached_assets/cargomatch/audio/voice-18.mp3",
+      "sourceDurationSeconds": 4.205714,
+      "trimmedDurationSeconds": 3.638083,
+      "tempo": 1.0,
+      "processedDurationSeconds": 3.638083,
+      "timelineStartSeconds": 119.6,
+      "detectedSilenceCentresSeconds": [
+        1.3718
+      ],
+      "normalizationTarget": {
+        "integratedLUFS": -18,
+        "truePeakDbTP": -3
+      },
+      "normalizationInputMeasurement": {
+        "input_i": "-20.08",
+        "input_tp": "-5.72",
+        "input_lra": "2.10",
+        "input_thresh": "-30.08",
+        "output_i": "-18.53",
+        "output_tp": "-4.78",
+        "output_lra": "0.00",
+        "output_thresh": "-28.53",
+        "normalization_type": "dynamic",
+        "target_offset": "0.53"
+      }
+    },
+    {
+      "id": 19,
+      "source": "attached_assets/cargomatch/audio/voice-19.mp3",
+      "sourceDurationSeconds": 5.877551,
+      "trimmedDurationSeconds": 5.440792,
+      "tempo": 1.0,
+      "processedDurationSeconds": 5.440792,
+      "timelineStartSeconds": 126.6,
+      "detectedSilenceCentresSeconds": [
+        1.2401,
+        3.4796,
+        3.6137
+      ],
+      "normalizationTarget": {
+        "integratedLUFS": -18,
+        "truePeakDbTP": -3
+      },
+      "normalizationInputMeasurement": {
+        "input_i": "-19.12",
+        "input_tp": "-4.50",
+        "input_lra": "2.80",
+        "input_thresh": "-29.18",
+        "output_i": "-18.86",
+        "output_tp": "-4.89",
+        "output_lra": "1.80",
+        "output_thresh": "-29.02",
+        "normalization_type": "dynamic",
+        "target_offset": "0.86"
+      }
+    },
+    {
+      "id": 20,
+      "source": "attached_assets/cargomatch/audio/voice-20.mp3",
+      "sourceDurationSeconds": 5.564082,
+      "trimmedDurationSeconds": 5.057854,
+      "tempo": 1.0,
+      "processedDurationSeconds": 5.057854,
+      "timelineStartSeconds": 133.6,
+      "detectedSilenceCentresSeconds": [
+        1.7302,
+        1.9128,
+        3.4021
+      ],
+      "normalizationTarget": {
+        "integratedLUFS": -18,
+        "truePeakDbTP": -3
+      },
+      "normalizationInputMeasurement": {
+        "input_i": "-18.27",
+        "input_tp": "-5.31",
+        "input_lra": "0.60",
+        "input_thresh": "-28.49",
+        "output_i": "-18.46",
+        "output_tp": "-5.29",
+        "output_lra": "0.60",
+        "output_thresh": "-28.73",
+        "normalization_type": "dynamic",
+        "target_offset": "0.46"
+      }
+    },
+    {
+      "id": 21,
+      "source": "attached_assets/cargomatch/audio/voice-21.mp3",
+      "sourceDurationSeconds": 5.041633,
+      "trimmedDurationSeconds": 4.593833,
+      "tempo": 1.0,
+      "processedDurationSeconds": 4.593833,
+      "timelineStartSeconds": 140.6,
+      "detectedSilenceCentresSeconds": [
+        0.9623,
+        1.0723
+      ],
+      "normalizationTarget": {
+        "integratedLUFS": -18,
+        "truePeakDbTP": -3
+      },
+      "normalizationInputMeasurement": {
+        "input_i": "-20.58",
+        "input_tp": "-5.16",
+        "input_lra": "3.80",
+        "input_thresh": "-30.58",
+        "output_i": "-18.99",
+        "output_tp": "-4.53",
+        "output_lra": "2.00",
+        "output_thresh": "-28.99",
+        "normalization_type": "dynamic",
+        "target_offset": "0.99"
+      }
+    },
+    {
+      "id": 22,
+      "source": "attached_assets/cargomatch/audio/voice-22.mp3",
+      "sourceDurationSeconds": 5.041633,
+      "trimmedDurationSeconds": 4.536875,
+      "tempo": 1.0,
+      "processedDurationSeconds": 4.536875,
+      "timelineStartSeconds": 147.6,
+      "detectedSilenceCentresSeconds": [
+        1.4264,
+        2.8538
+      ],
+      "normalizationTarget": {
+        "integratedLUFS": -18,
+        "truePeakDbTP": -3
+      },
+      "normalizationInputMeasurement": {
+        "input_i": "-17.89",
+        "input_tp": "-4.82",
+        "input_lra": "0.50",
+        "input_thresh": "-28.38",
+        "output_i": "-17.12",
+        "output_tp": "-4.12",
+        "output_lra": "0.20",
+        "output_thresh": "-27.76",
+        "normalization_type": "dynamic",
+        "target_offset": "-0.88"
+      }
+    },
+    {
+      "id": 23,
+      "source": "attached_assets/cargomatch/audio/voice-23.mp3",
+      "sourceDurationSeconds": 3.657143,
+      "trimmedDurationSeconds": 3.159458,
+      "tempo": 1.0,
+      "processedDurationSeconds": 3.159458,
+      "timelineStartSeconds": 154.6,
+      "detectedSilenceCentresSeconds": [
+        0.747
+      ],
+      "normalizationTarget": {
+        "integratedLUFS": -18,
+        "truePeakDbTP": -3
+      },
+      "normalizationInputMeasurement": {
+        "input_i": "-17.48",
+        "input_tp": "-4.00",
+        "input_lra": "1.30",
+        "input_thresh": "-27.79",
+        "output_i": "-18.20",
+        "output_tp": "-5.04",
+        "output_lra": "0.00",
+        "output_thresh": "-28.52",
+        "normalization_type": "dynamic",
+        "target_offset": "0.20"
+      }
+    },
+    {
+      "id": 24,
+      "source": "attached_assets/cargomatch/audio/voice-24.mp3",
+      "sourceDurationSeconds": 3.996735,
+      "trimmedDurationSeconds": 3.487417,
+      "tempo": 1.0,
+      "processedDurationSeconds": 3.487417,
+      "timelineStartSeconds": 161.6,
+      "detectedSilenceCentresSeconds": [
+        2.0928,
+        2.3163
+      ],
+      "normalizationTarget": {
+        "integratedLUFS": -18,
+        "truePeakDbTP": -3
+      },
+      "normalizationInputMeasurement": {
+        "input_i": "-19.57",
+        "input_tp": "-4.64",
+        "input_lra": "0.50",
+        "input_thresh": "-30.18",
+        "output_i": "-17.25",
+        "output_tp": "-3.00",
+        "output_lra": "0.00",
+        "output_thresh": "-27.83",
+        "normalization_type": "dynamic",
+        "target_offset": "-0.75"
+      }
+    }
+  ],
+  "subtitleFiles": {
+    "srt": "attached_assets/cargomatch/delivery/cargomatch-nl.srt",
+    "ass": "attached_assets/cargomatch/delivery/cargomatch-nl.ass",
+    "editableCues": "attached_assets/cargomatch/delivery/subtitle-cues.json",
+    "cueCount": 38,
+    "lastCueEndSeconds": 165.267,
+    "maximumLines": 2,
+    "maximumCharactersPerLine": 58
+  },
+  "audio": {
+    "music": {
+      "timelineStartSeconds": 0,
+      "normalizationTargetLUFS": -30,
+      "inputMeasurement": {
+        "input_i": "-15.40",
+        "input_tp": "-1.16",
+        "input_lra": "15.70",
+        "input_thresh": "-26.26",
+        "output_i": "-28.45",
+        "output_tp": "-10.48",
+        "output_lra": "5.20",
+        "output_thresh": "-38.66",
+        "normalization_type": "dynamic",
+        "target_offset": "-1.55"
+      }
+    },
+    "portSfx": {
+      "timelineStartSeconds": 0.2,
+      "normalizationTargetLUFS": -38,
+      "inputMeasurement": {
+        "input_i": "-40.83",
+        "input_tp": "-23.91",
+        "input_lra": "0.40",
+        "input_thresh": "-50.83",
+        "output_i": "-38.02",
+        "output_tp": "-21.15",
+        "output_lra": "0.20",
+        "output_thresh": "-48.02",
+        "normalization_type": "dynamic",
+        "target_offset": "0.02"
+      }
+    },
+    "roadSfx": {
+      "timelineStartSeconds": [
+        77.2,
+        147.2
+      ],
+      "normalizationTargetLUFS": -38,
+      "inputMeasurement": {
+        "input_i": "-20.75",
+        "input_tp": "-5.34",
+        "input_lra": "12.40",
+        "input_thresh": "-32.44",
+        "output_i": "-38.33",
+        "output_tp": "-24.49",
+        "output_lra": "5.40",
+        "output_thresh": "-49.74",
+        "normalization_type": "dynamic",
+        "target_offset": "0.33"
+      }
+    },
+    "finalTarget": {
+      "integratedLUFS": -16,
+      "truePeakDbTP": -1.5
+    },
+    "finalMeasurement": {
+      "input_i": "-16.32",
+      "input_tp": "-1.37",
+      "input_lra": "6.90",
+      "input_thresh": "-27.54",
+      "output_i": "-16.17",
+      "output_tp": "-1.50",
+      "output_lra": "6.90",
+      "output_thresh": "-27.26",
+      "normalization_type": "dynamic",
+      "target_offset": "0.17"
+    },
+    "sampleRateHz": 48000,
+    "channels": 2
+  },
+  "video": {
+    "matte": {
+      "x": 0,
+      "y": 930,
+      "width": 1920,
+      "height": 150,
+      "color": "0x061421@0.95"
+    },
+    "fadeInSeconds": 0.8,
+    "fadeOutSeconds": 1.0,
+    "codec": "H.264",
+    "crf": 20,
+    "maximumBitrateKbps": 4200,
+    "bufferSizeKbits": 8400,
+    "preset": "fast",
+    "threads": 2,
+    "pixelFormat": "yuv420p"
+  }
+}

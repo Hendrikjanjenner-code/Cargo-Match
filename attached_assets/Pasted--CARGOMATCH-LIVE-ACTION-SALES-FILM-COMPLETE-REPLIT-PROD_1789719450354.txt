@@ -1,0 +1,437 @@
+# CARGOMATCH — LIVE-ACTION SALES FILM
+
+## COMPLETE REPLIT PRODUCTION PROMPT
+
+Create a complete premium live-action B2B sales film for CargoMatch.
+
+You are responsible for producing the complete final video, not merely a storyboard, script or concept.
+
+Use the existing CargoMatch application and its existing UI as the visual reference for every CargoMatch screen shown in the film.
+
+You MAY independently generate, render, animate and integrate CargoMatch screens into phones, tablets, laptops and desktop monitors.
+
+Do not wait for separately supplied screen recordings if the required CargoMatch interface already exists in the project.
+
+The final result must be a downloadable MP4.
+
+---
+
+# 1. HARD PRODUCTION REQUIREMENTS
+
+TARGET LENGTH:
+
+Approximately 2 minutes 40 seconds to 2 minutes 55 seconds.
+
+ABSOLUTE MAXIMUM:
+
+3 minutes.
+
+OUTPUT:
+
+1920 × 1080
+
+Full HD
+
+16:9
+
+High-quality MP4
+
+H.264 or another widely compatible MP4 codec.
+
+LANGUAGE:
+
+English professional voice-over.
+
+SUBTITLES:
+
+Dutch subtitles.
+
+The subtitles must be synchronized with the English narration.
+
+FINAL DELIVERABLE:
+
+One complete downloadable MP4 file.
+
+Also preserve intermediate project assets where useful so the film can later be regenerated or edited.
+
+---
+
+# 2. COST REQUIREMENT
+
+IMPORTANT:
+
+Do NOT require paid third-party:
+
+video-generation subscriptions
+
+stock-video subscriptions
+
+voice-over subscriptions
+
+music subscriptions
+
+image subscriptions
+
+editing SaaS subscriptions
+
+commercial API subscriptions
+
+or other separately billed external services.
+
+Prefer:
+
+existing project resources
+
+open-source tools
+
+freely usable tools
+
+free assets with appropriate usage rights
+
+locally executable tools
+
+and functionality available within the Replit environment.
+
+Replit credits MAY be used.
+
+If Replit provides functionality that consumes Replit credits, this is allowed.
+
+Do not require the user to create a new paid account with an external provider just to generate the film.
+
+If an optional external service exists but requires separate payment, do not make the film dependent on it.
+
+---
+
+# 3. USE THE EXISTING CARGOMATCH APPLICATION
+
+The CargoMatch application already exists.
+
+Inspect it before producing the film.
+
+Use the actual application as the source of truth for:
+
+logo
+
+branding
+
+colors
+
+sidebar
+
+navigation
+
+maps
+
+cargo cards
+
+capacity cards
+
+open positions
+
+matches
+
+messages
+
+buttons
+
+typography
+
+dashboard structure
+
+mobile layout
+
+tablet layout
+
+desktop layout.
+
+Do NOT unnecessarily invent a second unrelated CargoMatch design.
+
+The CargoMatch UI appearing in the film should visually correspond to the actual product.
+
+---
+
+# 4. YOU MAY GENERATE THE DEVICE UI YOURSELF
+
+You are explicitly authorized to independently create and integrate the CargoMatch UI shown on:
+
+smartphones
+
+tablets
+
+laptops
+
+desktop monitors.
+
+This may include:
+
+rendering existing application screens
+
+capturing existing application screens
+
+animating UI
+
+generating device compositions
+
+perspective transformation
+
+screen replacement
+
+motion tracking
+
+zooming
+
+or another technically appropriate method.
+
+Choose the approach that produces the cleanest result.
+
+The objective is NOT to prescribe a particular compositing workflow.
+
+The objective is:
+
+THE CARGOMATCH UI MUST LOOK CORRECT.
+
+---
+
+# 5. DEVICE SCREEN QUALITY
+
+Whenever CargoMatch appears on a device:
+
+the screen must be properly aligned.
+
+The interface must remain inside the physical screen boundaries.
+
+Perspective must match the device.
+
+UI must not float outside the device.
+
+Text should remain readable when intended.
+
+Buttons must not be distorted.
+
+Avoid:
+
+warped text
+
+nonsense text
+
+duplicate navigation
+
+random icons
+
+incorrect CargoMatch branding
+
+broken maps
+
+impossible screen perspective
+
+floating interface elements
+
+incorrect hands
+
+extra fingers
+
+deformed devices.
+
+Use the existing CargoMatch application whenever this produces a more accurate result.
+
+---
+
+# 6. SCREEN CONTENT MUST MATCH THE STORY
+
+This is critical.
+
+The application screen shown must correspond to what the narrator is talking about.
+
+Examples:
+
+When narration discusses:
+
+FUTURE OPEN POSITION
+
+show:
+
+Expected Open Position.
+
+When narration discusses:
+
+75,000 MT Indonesia → China
+
+show that cargo order.
+
+When narration discusses:
+
+the next truck load
+
+show:
+
+Expected Empty + Next Load.
+
+When narration discusses:
+
+air cargo
+
+show:
+
+Flight Capacity.
+
+Do NOT show random generic dashboards simply because they look attractive.
+
+---
+
+# 7. VISUAL STYLE
+
+Create a premium cinematic live-action B2B sales film.
+
+The visual world should feel:
+
+international
+
+large-scale
+
+professional
+
+modern
+
+credible
+
+technologically advanced
+
+logistics-focused
+
+commercial
+
+human.
+
+Avoid:
+
+cartoon aesthetics
+
+overly futuristic holograms
+
+science-fiction interfaces
+
+cheap corporate-stock-video feeling
+
+excessive visual effects.
+
+CargoMatch should feel like serious software for the global transport industry.
+
+---
+
+# 8. CENTRAL STORY
+
+The film is NOT primarily a product-feature tour.
+
+Tell one clear commercial story.
+
+The problem:
+
+Transport assets complete jobs around the world.
+
+Their next cargo is not always known.
+
+As a result:
+
+vessels reposition in ballast
+
+trucks drive empty kilometres
+
+rail capacity remains unused
+
+aircraft depart with unused cargo capacity.
+
+This costs:
+
+time
+
+fuel
+
+money
+
+capacity utilization.
+
+The opportunity:
+
+The next suitable cargo may already exist nearby.
+
+The problem is that the relevant parties do not always know about each other early enough.
+
+CargoMatch connects:
+
+EXPECTED AVAILABLE CAPACITY
+
+with:
+
+SUITABLE CARGO
+
+before unnecessary empty repositioning occurs.
+
+---
+
+# 9. CORE MESSAGE
+
+The viewer should remember:
+
+**FIND THE NEXT LOAD BEFORE CAPACITY BECOMES EMPTY.**
+
+CargoMatch is:
+
+**THE TRANSPORT CAPACITY INTELLIGENCE NETWORK.**
+
+---
+
+# SCENE 1 — GLOBAL LOGISTICS
+
+TIME:
+
+00:00–00:12
+
+VISUAL:
+
+Begin with black.
+
+Cinematic sound rises.
+
+Fade into sunrise over a huge Chinese commercial port.
+
+Show:
+
+massive container terminal
+
+container cranes
+
+deepsea vessels
+
+containers
+
+terminal trucks.
+
+Use a believable Chinese port environment.
+
+Then:
+
+huge deepsea bulk vessel underway.
+
+Freight train.
+
+Cargo aircraft.
+
+European trucks.
+
+Fast but elegant montage.
+
+VOICE-OVER:
+
+"Every day, millions of tonnes of cargo move across the world."
+
+DUTCH SUBTITLE:
+
+"Elke dag worden wereldwijd miljoenen tonnen vracht vervoerd."
+
+VOICE-OVER:
+
+"By sea. By road. By rail. By air."
+
+DUTCH SUBTITLE:
+
+"Over zee. Over de weg.

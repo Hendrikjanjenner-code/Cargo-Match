@@ -1,0 +1,99 @@
+{
+  "language": "nl",
+  "generatedFrom": "media/cargomatch/production.json",
+  "timingBasis": "Audition estimates: continuous read weighted by sentence length and snapped to voice silences; subject to final alignment",
+  "cueCount": 8,
+  "cues": [
+    {
+      "slotId": 5,
+      "sentence": 1,
+      "start": 0.35,
+      "end": 2.631,
+      "english": "The next suitable cargo may already be waiting.",
+      "dutch": "De volgende passende lading wacht misschien al.",
+      "lines": [
+        "De volgende passende lading wacht misschien al."
+      ]
+    },
+    {
+      "slotId": 5,
+      "sentence": 2,
+      "start": 2.631,
+      "end": 4.766,
+      "english": "The right people need to see it.",
+      "dutch": "De juiste mensen moeten die kunnen vinden.",
+      "lines": [
+        "De juiste mensen moeten die kunnen vinden."
+      ]
+    },
+    {
+      "slotId": 6,
+      "sentence": 3,
+      "start": 4.766,
+      "end": 7.974,
+      "english": "In Malaysia, a vessel is expected to become available.",
+      "dutch": "In Maleisië komt naar verwachting een schip vrij.",
+      "lines": [
+        "In Maleisië komt naar verwachting een schip vrij."
+      ]
+    },
+    {
+      "slotId": 6,
+      "sentence": 4,
+      "start": 7.974,
+      "end": 10.476,
+      "english": "Its operator records that future position.",
+      "dutch": "De operator legt die toekomstige positie vast.",
+      "lines": [
+        "De operator legt die toekomstige positie vast."
+      ]
+    },
+    {
+      "slotId": 7,
+      "sentence": 5,
+      "start": 10.476,
+      "end": 12.572,
+      "english": "Not a live tracking promise.",
+      "dutch": "Geen belofte van live tracking.",
+      "lines": [
+        "Geen belofte van live tracking."
+      ]
+    },
+    {
+      "slotId": 7,
+      "sentence": 6,
+      "start": 12.572,
+      "end": 16.356,
+      "english": "An operational estimate, ready for the next commercial conversation.",
+      "dutch": "Een operationele inschatting voor het volgende commerciële gesprek.",
+      "lines": [
+        "Een operationele inschatting voor het volgende commerciële",
+        "gesprek."
+      ]
+    },
+    {
+      "slotId": 8,
+      "sentence": 7,
+      "start": 16.356,
+      "end": 21.139,
+      "english": "Meanwhile, seventy-five thousand tonnes need to move from Indonesia to China.",
+      "dutch": "Intussen moet vijfenzeventigduizend ton van Indonesië naar China worden vervoerd.",
+      "lines": [
+        "Intussen moet vijfenzeventigduizend ton van Indonesië naar",
+        "China worden vervoerd."
+      ]
+    },
+    {
+      "slotId": 9,
+      "sentence": 8,
+      "start": 21.139,
+      "end": 26.292,
+      "english": "CargoMatch brings the opportunity into view, while protecting each party's commercial details.",
+      "dutch": "CargoMatch maakt de kans zichtbaar en beschermt de commerciële gegevens van beide partijen.",
+      "lines": [
+        "CargoMatch maakt de kans zichtbaar en beschermt de",
+        "commerciële gegevens van beide partijen."
+      ]
+    }
+  ]
+}

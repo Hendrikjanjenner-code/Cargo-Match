@@ -1,0 +1,23 @@
+[Script Info]
+Title: CargoMatch Dutch subtitles
+ScriptType: v4.00+
+PlayResX: 1920
+PlayResY: 1080
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Dutch,DejaVu Sans,36,&H00FFFFFF,&H00FFFFFF,&HCC000000,&H00000000,0,0,0,0,100,100,0,0,1,3,0,2,70,70,22,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.35,0:00:02.63,Dutch,,0,0,0,,De volgende passende lading wacht misschien al.
+Dialogue: 0,0:00:02.63,0:00:04.77,Dutch,,0,0,0,,De juiste mensen moeten die kunnen vinden.
+Dialogue: 0,0:00:04.77,0:00:07.97,Dutch,,0,0,0,,In Maleisië komt naar verwachting een schip vrij.
+Dialogue: 0,0:00:07.97,0:00:10.48,Dutch,,0,0,0,,De operator legt die toekomstige positie vast.
+Dialogue: 0,0:00:10.48,0:00:12.57,Dutch,,0,0,0,,Geen belofte van live tracking.
+Dialogue: 0,0:00:12.57,0:00:16.36,Dutch,,0,0,0,,Een operationele inschatting voor het volgende commerciële\Ngesprek.
+Dialogue: 0,0:00:16.36,0:00:21.14,Dutch,,0,0,0,,Intussen moet vijfenzeventigduizend ton van Indonesië naar\NChina worden vervoerd.
+Dialogue: 0,0:00:21.14,0:00:26.29,Dutch,,0,0,0,,CargoMatch maakt de kans zichtbaar en beschermt de\Ncommerciële gegevens van beide partijen.

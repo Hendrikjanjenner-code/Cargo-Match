@@ -654,3 +654,25 @@ mtime_ms = 1789721313318
 storage_uri = "gcs://replit-rams-assets-worf/rams/assets/repl:929794db-e72d-4439-9aa2-c5d927c149ce/ee186b4b-7e68-48a9-a1b7-ff68d15b8487/f06435ce-388a-4f72-9bcf-62eb7f080ca4"
 storage_version_token = "1789721362100719"
 content_type = "video/mp4"
+
+[[outputs]]
+id = "Pe33-cKRakEOM_JyZhg-8"
+uri = "file://attached_assets/cargomatch/audition/john-continuous.mp3"
+type = "audio"
+title = "CargoMatch original Irish narrator audition"
+description = "Text-to-speech audio: The next suitable cargo may already be waiting. The right people need to see it. In Malaysia, a vessel is expected to become available. Its operator records that future position…"
+logical_id = "4a8da65e-0fb4-471a-9553-7903aba23979"
+
+[[outputs]]
+id = "7obz1x1oeayYtCa6d78i4"
+uri = "file://attached_assets/cargomatch/audition/cargomatch-stem-montageproef.mp4"
+type = "video"
+title = "CargoMatch — proef met Ierse stem en vloeiende montage"
+description = "27 seconden in Full HD: originele bibliotheekstem John, doorlopende vertelling en zachtere overgangen. Proef voor beoordeling, nog niet de volledige vernieuwde film. Nederlandse ondertitels zijn voorlopig getimed."
+logical_id = "d8d7e09b-e75a-4c2e-801c-45c9be1a25a6"
+content_hash = "sha256:52b141f5451b8272da5454adefa33d263a66305141081fbc352455be36dc58df"
+size = 12969089
+mtime_ms = 1789722228289
+storage_uri = "gcs://replit-rams-assets-worf/rams/assets/repl:929794db-e72d-4439-9aa2-c5d927c149ce/d8d7e09b-e75a-4c2e-801c-45c9be1a25a6/e3524f84-4f73-4dc4-96b7-c0599ee53bb7"
+storage_version_token = "1789722283143213"
+content_type = "video/mp4"

@@ -1,0 +1,3005 @@
+{
+  "model": "base.en",
+  "fasterWhisperVersion": "1.2.1",
+  "source": "normalized WAV files",
+  "manifestSha256": "526d28017287ebd797a0b47e0f21e5bbd0218d54de31f0cd74fd6abc2161c45d",
+  "scriptSha256": "b49f381e9902409e628acf315e84269e24d21afb1fb3d70ba9e499c7bdc0841d",
+  "groups": [
+    {
+      "id": "opening",
+      "normalizedSha256": "7c6e75c0fd41d8690c055cf02562a7da0c37c48a06195b6f7991da98dac373ed",
+      "duration": 16.209,
+      "items": [
+        {
+          "id": 1,
+          "start": 0.0,
+          "end": 3.07,
+          "sentences": [
+            {
+              "english": "Every day, millions of tonnes of cargo move across the world.",
+              "dutch": "Elke dag worden wereldwijd miljoenen tonnen vracht vervoerd.",
+              "start": 0.0,
+              "end": 3.07
+            }
+          ]
+        },
+        {
+          "id": 2,
+          "start": 3.07,
+          "end": 6.56,
+          "sentences": [
+            {
+              "english": "By sea.",
+              "dutch": "Over zee.",
+              "start": 3.07,
+              "end": 4.0
+            },
+            {
+              "english": "By road.",
+              "dutch": "Over de weg.",
+              "start": 4.0,
+              "end": 4.77
+            },
+            {
+              "english": "By rail.",
+              "dutch": "Over het spoor.",
+              "start": 4.77,
+              "end": 5.53
+            },
+            {
+              "english": "By air.",
+              "dutch": "Door de lucht.",
+              "start": 5.53,
+              "end": 6.56
+            }
+          ]
+        },
+        {
+          "id": 3,
+          "start": 6.56,
+          "end": 10.96,
+          "sentences": [
+            {
+              "english": "A voyage ends.",
+              "dutch": "Een reis eindigt.",
+              "start": 6.56,
+              "end": 7.83
+            },
+            {
+              "english": "A vessel is nearly empty.",
+              "dutch": "Een schip is bijna leeg.",
+              "start": 7.83,
+              "end": 9.46
+            },
+            {
+              "english": "What comes next?",
+              "dutch": "Wat volgt daarna?",
+              "start": 9.46,
+              "end": 10.96
+            }
+          ]
+        },
+        {
+          "id": 4,
+          "start": 10.96,
+          "end": 16.209,
+          "sentences": [
+            {
+              "english": "For a truck, an empty return means more than distance.",
+              "dutch": "Voor een truck betekent leeg terugrijden meer dan afstand.",
+              "start": 10.96,
+              "end": 14.47
+            },
+            {
+              "english": "It means time and fuel.",
+              "dutch": "Het kost tijd en brandstof.",
+              "start": 14.47,
+              "end": 16.209
+            }
+          ]
+        }
+      ],
+      "confidence": {
+        "matchedScriptWords": 45,
+        "scriptWords": 45,
+        "lexicalMatchRatio": 1.0,
+        "meanRecognizerWordProbability": 0.9716
+      },
+      "recognizedText": "Every day millions of tons of cargo move across the world. By sea, by road, by rail, by air. A voyage ends, a vessel is nearly empty. What comes next? For a truck, an empty return means more than distance. It means time and fuel.",
+      "evidenceWords": [
+        {
+          "scriptIndex": 0,
+          "script": "every",
+          "heard": "Every",
+          "start": 0.0,
+          "end": 0.12,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 1,
+          "script": "day",
+          "heard": "day",
+          "start": 0.12,
+          "end": 0.34,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 2,
+          "script": "millions",
+          "heard": "millions",
+          "start": 0.34,
+          "end": 0.56,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 3,
+          "script": "of",
+          "heard": "of",
+          "start": 0.56,
+          "end": 0.94,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 4,
+          "script": "ton",
+          "heard": "tons",
+          "start": 0.94,
+          "end": 1.08,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 5,
+          "script": "of",
+          "heard": "of",
+          "start": 1.08,
+          "end": 1.36,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 6,
+          "script": "cargo",
+          "heard": "cargo",
+          "start": 1.36,
+          "end": 1.52,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 7,
+          "script": "move",
+          "heard": "move",
+          "start": 1.52,
+          "end": 2.0,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 8,
+          "script": "across",
+          "heard": "across",
+          "start": 2.0,
+          "end": 2.26,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 9,
+          "script": "the",
+          "heard": "the",
+          "start": 2.26,
+          "end": 2.5,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 10,
+          "script": "world",
+          "heard": "world.",
+          "start": 2.5,
+          "end": 2.72,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 11,
+          "script": "by",
+          "heard": "By",
+          "start": 3.42,
+          "end": 3.5,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 12,
+          "script": "sea",
+          "heard": "sea,",
+          "start": 3.5,
+          "end": 3.76,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 13,
+          "script": "by",
+          "heard": "by",
+          "start": 4.24,
+          "end": 4.28,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 14,
+          "script": "road",
+          "heard": "road,",
+          "start": 4.28,
+          "end": 4.54,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 15,
+          "script": "by",
+          "heard": "by",
+          "start": 5.0,
+          "end": 5.1,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 16,
+          "script": "rail",
+          "heard": "rail,",
+          "start": 5.1,
+          "end": 5.36,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 17,
+          "script": "by",
+          "heard": "by",
+          "start": 5.7,
+          "end": 5.84,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 18,
+          "script": "air",
+          "heard": "air.",
+          "start": 5.84,
+          "end": 6.1,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 19,
+          "script": "a",
+          "heard": "A",
+          "start": 7.02,
+          "end": 7.04,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 20,
+          "script": "voyage",
+          "heard": "voyage",
+          "start": 7.04,
+          "end": 7.32,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 21,
+          "script": "ends",
+          "heard": "ends,",
+          "start": 7.32,
+          "end": 7.58,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 22,
+          "script": "a",
+          "heard": "a",
+          "start": 8.08,
+          "end": 8.12,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 23,
+          "script": "vessel",
+          "heard": "vessel",
+          "start": 8.12,
+          "end": 8.32,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 24,
+          "script": "is",
+          "heard": "is",
+          "start": 8.32,
+          "end": 8.58,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 25,
+          "script": "nearly",
+          "heard": "nearly",
+          "start": 8.58,
+          "end": 8.74,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 26,
+          "script": "empty",
+          "heard": "empty.",
+          "start": 8.74,
+          "end": 9.06,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 27,
+          "script": "what",
+          "heard": "What",
+          "start": 9.86,
+          "end": 10.0,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 28,
+          "script": "comes",
+          "heard": "comes",
+          "start": 10.0,
+          "end": 10.16,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 29,
+          "script": "next",
+          "heard": "next?",
+          "start": 10.16,
+          "end": 10.46,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 30,
+          "script": "for",
+          "heard": "For",
+          "start": 11.46,
+          "end": 11.62,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 31,
+          "script": "a",
+          "heard": "a",
+          "start": 11.62,
+          "end": 11.74,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 32,
+          "script": "truck",
+          "heard": "truck,",
+          "start": 11.74,
+          "end": 11.94,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 33,
+          "script": "an",
+          "heard": "an",
+          "start": 12.28,
+          "end": 12.34,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 34,
+          "script": "empty",
+          "heard": "empty",
+          "start": 12.34,
+          "end": 12.56,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 35,
+          "script": "return",
+          "heard": "return",
+          "start": 12.56,
+          "end": 12.9,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 36,
+          "script": "means",
+          "heard": "means",
+          "start": 12.9,
+          "end": 13.28,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 37,
+          "script": "more",
+          "heard": "more",
+          "start": 13.28,
+          "end": 13.56,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 38,
+          "script": "than",
+          "heard": "than",
+          "start": 13.56,
+          "end": 13.76,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 39,
+          "script": "distance",
+          "heard": "distance.",
+          "start": 13.76,
+          "end": 14.02,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 40,
+          "script": "it",
+          "heard": "It",
+          "start": 14.92,
+          "end": 15.0,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 41,
+          "script": "means",
+          "heard": "means",
+          "start": 15.0,
+          "end": 15.16,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 42,
+          "script": "time",
+          "heard": "time",
+          "start": 15.16,
+          "end": 15.52,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 43,
+          "script": "and",
+          "heard": "and",
+          "start": 15.52,
+          "end": 15.86,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 44,
+          "script": "fuel",
+          "heard": "fuel.",
+          "start": 15.86,
+          "end": 16.04,
+          "match": "exact"
+        }
+      ],
+      "warnings": []
+    },
+    {
+      "id": "deepsea",
+      "normalizedSha256": "f2f70dde05434099966c01b7dcaf70252fba61196b5ec5326cbd3fb0795393c5",
+      "duration": 25.942,
+      "items": [
+        {
+          "id": 5,
+          "start": 0.0,
+          "end": 4.07,
+          "sentences": [
+            {
+              "english": "The next suitable cargo may already be waiting.",
+              "dutch": "De volgende passende lading wacht misschien al.",
+              "start": 0.0,
+              "end": 2.18
+            },
+            {
+              "english": "The right people need to see it.",
+              "dutch": "De juiste mensen moeten die kunnen vinden.",
+              "start": 2.18,
+              "end": 4.07
+            }
+          ]
+        },
+        {
+          "id": 6,
+          "start": 4.07,
+          "end": 10.0,
+          "sentences": [
+            {
+              "english": "In Malaysia, a vessel is expected to become available.",
+              "dutch": "In Maleisië komt naar verwachting een schip vrij.",
+              "start": 4.07,
+              "end": 7.33
+            },
+            {
+              "english": "Its operator records that future position.",
+              "dutch": "De operator legt die toekomstige positie vast.",
+              "start": 7.33,
+              "end": 10.0
+            }
+          ]
+        },
+        {
+          "id": 7,
+          "start": 10.0,
+          "end": 15.99,
+          "sentences": [
+            {
+              "english": "Not a live tracking promise.",
+              "dutch": "Geen belofte van live tracking.",
+              "start": 10.0,
+              "end": 12.07
+            },
+            {
+              "english": "An operational estimate, ready for the next commercial conversation.",
+              "dutch": "Een operationele inschatting voor het volgende commerciële gesprek.",
+              "start": 12.07,
+              "end": 15.99
+            }
+          ]
+        },
+        {
+          "id": 8,
+          "start": 15.99,
+          "end": 20.71,
+          "sentences": [
+            {
+              "english": "Meanwhile, seventy-five thousand tonnes need to move from Indonesia to China.",
+              "dutch": "Intussen moet vijfenzeventigduizend ton van Indonesië naar China worden vervoerd.",
+              "start": 15.99,
+              "end": 20.71
+            }
+          ]
+        },
+        {
+          "id": 9,
+          "start": 20.71,
+          "end": 25.942,
+          "sentences": [
+            {
+              "english": "CargoMatch brings the opportunity into view, while protecting each party's commercial details.",
+              "dutch": "CargoMatch maakt de kans zichtbaar en beschermt de commerciële gegevens van beide partijen.",
+              "start": 20.71,
+              "end": 25.942
+            }
+          ]
+        }
+      ],
+      "confidence": {
+        "matchedScriptWords": 69,
+        "scriptWords": 70,
+        "lexicalMatchRatio": 0.9857,
+        "meanRecognizerWordProbability": 0.9622
+      },
+      "recognizedText": "The next suitable cargo may already be waiting, the right people need to see it. In Malaysia, a vessel is expected to become available. Its operator records that future position, not a live tracking promise, an operational estimate ready for the next commercial conversation. Meanwhile, 75,000 tons need to move from Indonesia to China. Cargo match brings the opportunity into view, while protecting each party's commercial",
+      "evidenceWords": [
+        {
+          "scriptIndex": 0,
+          "script": "the",
+          "heard": "The",
+          "start": 0.0,
+          "end": 0.18,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 1,
+          "script": "next",
+          "heard": "next",
+          "start": 0.18,
+          "end": 0.181,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 2,
+          "script": "suitable",
+          "heard": "suitable",
+          "start": 0.18,
+          "end": 0.46,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 3,
+          "script": "cargo",
+          "heard": "cargo",
+          "start": 0.46,
+          "end": 0.76,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 4,
+          "script": "may",
+          "heard": "may",
+          "start": 0.76,
+          "end": 1.16,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 5,
+          "script": "already",
+          "heard": "already",
+          "start": 1.16,
+          "end": 1.4,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 6,
+          "script": "be",
+          "heard": "be",
+          "start": 1.4,
+          "end": 1.64,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 7,
+          "script": "waiting",
+          "heard": "waiting,",
+          "start": 1.64,
+          "end": 1.92,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 8,
+          "script": "the",
+          "heard": "the",
+          "start": 2.44,
+          "end": 2.54,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 9,
+          "script": "right",
+          "heard": "right",
+          "start": 2.54,
+          "end": 2.7,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 10,
+          "script": "people",
+          "heard": "people",
+          "start": 2.7,
+          "end": 2.92,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 11,
+          "script": "need",
+          "heard": "need",
+          "start": 2.92,
+          "end": 3.2,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 12,
+          "script": "to",
+          "heard": "to",
+          "start": 3.2,
+          "end": 3.34,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 13,
+          "script": "see",
+          "heard": "see",
+          "start": 3.34,
+          "end": 3.54,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 14,
+          "script": "it",
+          "heard": "it.",
+          "start": 3.54,
+          "end": 3.7,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 15,
+          "script": "in",
+          "heard": "In",
+          "start": 4.44,
+          "end": 4.58,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 16,
+          "script": "malaysia",
+          "heard": "Malaysia,",
+          "start": 4.58,
+          "end": 4.82,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 17,
+          "script": "a",
+          "heard": "a",
+          "start": 5.24,
+          "end": 5.26,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 18,
+          "script": "vessel",
+          "heard": "vessel",
+          "start": 5.26,
+          "end": 5.46,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 19,
+          "script": "is",
+          "heard": "is",
+          "start": 5.46,
+          "end": 5.74,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 20,
+          "script": "expected",
+          "heard": "expected",
+          "start": 5.74,
+          "end": 6.04,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 21,
+          "script": "to",
+          "heard": "to",
+          "start": 6.04,
+          "end": 6.3,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 22,
+          "script": "become",
+          "heard": "become",
+          "start": 6.3,
+          "end": 6.46,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 23,
+          "script": "available",
+          "heard": "available.",
+          "start": 6.46,
+          "end": 6.88,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 24,
+          "script": "its",
+          "heard": "Its",
+          "start": 7.78,
+          "end": 7.92,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 25,
+          "script": "operator",
+          "heard": "operator",
+          "start": 7.92,
+          "end": 8.28,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 26,
+          "script": "records",
+          "heard": "records",
+          "start": 8.28,
+          "end": 8.72,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 27,
+          "script": "that",
+          "heard": "that",
+          "start": 8.72,
+          "end": 9.08,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 28,
+          "script": "future",
+          "heard": "future",
+          "start": 9.08,
+          "end": 9.28,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 29,
+          "script": "position",
+          "heard": "position,",
+          "start": 9.28,
+          "end": 9.74,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 30,
+          "script": "not",
+          "heard": "not",
+          "start": 10.26,
+          "end": 10.7,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 31,
+          "script": "a",
+          "heard": "a",
+          "start": 10.7,
+          "end": 10.82,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 32,
+          "script": "live",
+          "heard": "live",
+          "start": 10.82,
+          "end": 10.98,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 33,
+          "script": "tracking",
+          "heard": "tracking",
+          "start": 10.98,
+          "end": 11.24,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 34,
+          "script": "promise",
+          "heard": "promise,",
+          "start": 11.24,
+          "end": 11.74,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 35,
+          "script": "an",
+          "heard": "an",
+          "start": 12.4,
+          "end": 12.48,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 36,
+          "script": "operational",
+          "heard": "operational",
+          "start": 12.48,
+          "end": 12.9,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 37,
+          "script": "estimate",
+          "heard": "estimate",
+          "start": 12.9,
+          "end": 13.28,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 38,
+          "script": "ready",
+          "heard": "ready",
+          "start": 13.28,
+          "end": 13.92,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 39,
+          "script": "for",
+          "heard": "for",
+          "start": 13.92,
+          "end": 14.2,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 40,
+          "script": "the",
+          "heard": "the",
+          "start": 14.2,
+          "end": 14.3,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 41,
+          "script": "next",
+          "heard": "next",
+          "start": 14.3,
+          "end": 14.5,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 42,
+          "script": "commercial",
+          "heard": "commercial",
+          "start": 14.5,
+          "end": 14.72,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 43,
+          "script": "conversation",
+          "heard": "conversation.",
+          "start": 14.72,
+          "end": 15.58,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 44,
+          "script": "meanwhile",
+          "heard": "Meanwhile,",
+          "start": 16.4,
+          "end": 16.76,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 45,
+          "script": "seventy",
+          "heard": "75,000",
+          "start": 17.0,
+          "end": 17.307,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 46,
+          "script": "five",
+          "heard": "75,000",
+          "start": 17.307,
+          "end": 17.613,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 47,
+          "script": "thousand",
+          "heard": "75,000",
+          "start": 17.613,
+          "end": 17.92,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 48,
+          "script": "ton",
+          "heard": "tons",
+          "start": 17.92,
+          "end": 18.12,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 49,
+          "script": "need",
+          "heard": "need",
+          "start": 18.12,
+          "end": 18.48,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 50,
+          "script": "to",
+          "heard": "to",
+          "start": 18.48,
+          "end": 18.62,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 51,
+          "script": "move",
+          "heard": "move",
+          "start": 18.62,
+          "end": 18.8,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 52,
+          "script": "from",
+          "heard": "from",
+          "start": 18.8,
+          "end": 18.98,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 53,
+          "script": "indonesia",
+          "heard": "Indonesia",
+          "start": 18.98,
+          "end": 19.32,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 54,
+          "script": "to",
+          "heard": "to",
+          "start": 19.32,
+          "end": 19.92,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 55,
+          "script": "china",
+          "heard": "China.",
+          "start": 19.92,
+          "end": 20.32,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 56,
+          "script": "cargo",
+          "heard": "Cargo",
+          "start": 21.1,
+          "end": 21.38,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 57,
+          "script": "match",
+          "heard": "match",
+          "start": 21.38,
+          "end": 21.66,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 58,
+          "script": "brings",
+          "heard": "brings",
+          "start": 21.66,
+          "end": 21.94,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 59,
+          "script": "the",
+          "heard": "the",
+          "start": 21.94,
+          "end": 22.16,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 60,
+          "script": "opportunity",
+          "heard": "opportunity",
+          "start": 22.16,
+          "end": 22.46,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 61,
+          "script": "into",
+          "heard": "into",
+          "start": 22.46,
+          "end": 22.9,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 62,
+          "script": "view",
+          "heard": "view,",
+          "start": 22.9,
+          "end": 23.2,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 63,
+          "script": "while",
+          "heard": "while",
+          "start": 23.62,
+          "end": 23.78,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 64,
+          "script": "protecting",
+          "heard": "protecting",
+          "start": 23.78,
+          "end": 24.12,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 65,
+          "script": "each",
+          "heard": "each",
+          "start": 24.12,
+          "end": 24.44,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 66,
+          "script": "party",
+          "heard": "party's",
+          "start": 24.44,
+          "end": 24.7,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 67,
+          "script": "s",
+          "heard": "party's",
+          "start": 24.7,
+          "end": 24.96,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 68,
+          "script": "commercial",
+          "heard": "commercial",
+          "start": 24.96,
+          "end": 25.18,
+          "match": "exact"
+        }
+      ],
+      "warnings": [
+        "Unmatched supplied-script words: details."
+      ]
+    },
+    {
+      "id": "consent",
+      "normalizedSha256": "3332494ab5f08b1ecdae51e42ad7736baaf81a14b0fd3c17134cb48c07c981ea",
+      "duration": 9.805,
+      "items": [
+        {
+          "id": 10,
+          "start": 0.0,
+          "end": 4.99,
+          "sentences": [
+            {
+              "english": "One party sends interest.",
+              "dutch": "Eén partij toont interesse.",
+              "start": 0.0,
+              "end": 1.29
+            },
+            {
+              "english": "The other decides whether to connect.",
+              "dutch": "De ander beslist over de verbinding.",
+              "start": 1.29,
+              "end": 3.36
+            },
+            {
+              "english": "Permission comes first.",
+              "dutch": "Toestemming komt eerst.",
+              "start": 3.36,
+              "end": 4.99
+            }
+          ]
+        },
+        {
+          "id": 11,
+          "start": 4.99,
+          "end": 9.805,
+          "sentences": [
+            {
+              "english": "Only after mutual consent does the conversation open.",
+              "dutch": "Pas na wederzijdse toestemming begint het gesprek.",
+              "start": 4.99,
+              "end": 8.02
+            },
+            {
+              "english": "An introduction, not a booking.",
+              "dutch": "Een kennismaking, geen boeking.",
+              "start": 8.02,
+              "end": 9.805
+            }
+          ]
+        }
+      ],
+      "confidence": {
+        "matchedScriptWords": 25,
+        "scriptWords": 26,
+        "lexicalMatchRatio": 0.9615,
+        "meanRecognizerWordProbability": 0.9377
+      },
+      "recognizedText": "One party sends interest, the other decides whether to connect. Permission comes first, only after mutual consent as the conversation open. An introduction, not a book.",
+      "evidenceWords": [
+        {
+          "scriptIndex": 0,
+          "script": "one",
+          "heard": "One",
+          "start": 0.0,
+          "end": 0.1,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 1,
+          "script": "party",
+          "heard": "party",
+          "start": 0.1,
+          "end": 0.38,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 2,
+          "script": "sends",
+          "heard": "sends",
+          "start": 0.38,
+          "end": 0.64,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 3,
+          "script": "interest",
+          "heard": "interest,",
+          "start": 0.64,
+          "end": 1.04,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 4,
+          "script": "the",
+          "heard": "the",
+          "start": 1.54,
+          "end": 1.6,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 5,
+          "script": "other",
+          "heard": "other",
+          "start": 1.6,
+          "end": 1.74,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 6,
+          "script": "decides",
+          "heard": "decides",
+          "start": 1.74,
+          "end": 2.06,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 7,
+          "script": "whether",
+          "heard": "whether",
+          "start": 2.06,
+          "end": 2.42,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 8,
+          "script": "to",
+          "heard": "to",
+          "start": 2.42,
+          "end": 2.66,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 9,
+          "script": "connect",
+          "heard": "connect.",
+          "start": 2.66,
+          "end": 2.96,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 10,
+          "script": "permission",
+          "heard": "Permission",
+          "start": 3.76,
+          "end": 4.24,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 11,
+          "script": "comes",
+          "heard": "comes",
+          "start": 4.24,
+          "end": 4.46,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 12,
+          "script": "first",
+          "heard": "first,",
+          "start": 4.46,
+          "end": 4.76,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 13,
+          "script": "only",
+          "heard": "only",
+          "start": 5.22,
+          "end": 5.48,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 14,
+          "script": "after",
+          "heard": "after",
+          "start": 5.48,
+          "end": 5.7,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 15,
+          "script": "mutual",
+          "heard": "mutual",
+          "start": 5.7,
+          "end": 5.96,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 16,
+          "script": "consent",
+          "heard": "consent",
+          "start": 5.96,
+          "end": 6.44,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 18,
+          "script": "the",
+          "heard": "the",
+          "start": 6.7,
+          "end": 6.82,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 19,
+          "script": "conversation",
+          "heard": "conversation",
+          "start": 6.82,
+          "end": 7.2,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 20,
+          "script": "open",
+          "heard": "open.",
+          "start": 7.2,
+          "end": 7.66,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 21,
+          "script": "an",
+          "heard": "An",
+          "start": 8.38,
+          "end": 8.5,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 22,
+          "script": "introduction",
+          "heard": "introduction,",
+          "start": 8.5,
+          "end": 8.74,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 23,
+          "script": "not",
+          "heard": "not",
+          "start": 9.24,
+          "end": 9.46,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 24,
+          "script": "a",
+          "heard": "a",
+          "start": 9.46,
+          "end": 9.54,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 25,
+          "script": "booking",
+          "heard": "book.",
+          "start": 9.54,
+          "end": 9.66,
+          "match": "fuzzy",
+          "similarity": 0.727
+        }
+      ],
+      "warnings": [
+        "Unmatched supplied-script words: does."
+      ]
+    },
+    {
+      "id": "road",
+      "normalizedSha256": "cffdaa2b0d162c9a38520d7c85d0e05f553ac0e447b52da361763ab41c03fe74",
+      "duration": 24.144,
+      "items": [
+        {
+          "id": 12,
+          "start": 0.0,
+          "end": 3.61,
+          "sentences": [
+            {
+              "english": "On the road, the same question begins before the current delivery is complete.",
+              "dutch": "Op de weg speelt dezelfde vraag al voordat de huidige levering is afgerond.",
+              "start": 0.0,
+              "end": 3.61
+            }
+          ]
+        },
+        {
+          "id": 13,
+          "start": 3.61,
+          "end": 7.47,
+          "sentences": [
+            {
+              "english": "The driver confirms when the assigned truck is expected to be empty.",
+              "dutch": "De chauffeur bevestigt wanneer de toegewezen truck naar verwachting leeg is.",
+              "start": 3.61,
+              "end": 7.47
+            }
+          ]
+        },
+        {
+          "id": 14,
+          "start": 7.47,
+          "end": 12.55,
+          "sentences": [
+            {
+              "english": "A suitable next load appears.",
+              "dutch": "Een passende volgende lading verschijnt.",
+              "start": 7.47,
+              "end": 9.6
+            },
+            {
+              "english": "The driver sends the opportunity to the planner.",
+              "dutch": "De chauffeur stuurt de kans naar de planner.",
+              "start": 9.6,
+              "end": 12.55
+            }
+          ]
+        },
+        {
+          "id": 15,
+          "start": 12.55,
+          "end": 18.1,
+          "sentences": [
+            {
+              "english": "The planner reviews it and makes the commercial decision.",
+              "dutch": "De planner beoordeelt de kans en beslist commercieel.",
+              "start": 12.55,
+              "end": 15.78
+            },
+            {
+              "english": "The driver focuses on the operation.",
+              "dutch": "De chauffeur richt zich op de operatie.",
+              "start": 15.78,
+              "end": 18.1
+            }
+          ]
+        },
+        {
+          "id": 16,
+          "start": 18.1,
+          "end": 24.144,
+          "sentences": [
+            {
+              "english": "Availability, timing, and practical requirements still need checking.",
+              "dutch": "Beschikbaarheid, timing en praktische eisen moeten nog worden gecontroleerd.",
+              "start": 18.1,
+              "end": 22.15
+            },
+            {
+              "english": "People remain in control.",
+              "dutch": "Mensen houden de regie.",
+              "start": 22.15,
+              "end": 24.144
+            }
+          ]
+        }
+      ],
+      "confidence": {
+        "matchedScriptWords": 65,
+        "scriptWords": 65,
+        "lexicalMatchRatio": 1.0,
+        "meanRecognizerWordProbability": 0.962
+      },
+      "recognizedText": "On the road, the same question begins before the current delivery is complete. The driver confirms when the assigned truck is expected to be empty. A suitable next load appears. The driver sends the opportunity to the planner. The planner reviews it and makes the commercial decision. The driver focuses on the operation, availability, timing and practical requirements still need checking. People remain in control.",
+      "evidenceWords": [
+        {
+          "scriptIndex": 0,
+          "script": "on",
+          "heard": "On",
+          "start": 0.0,
+          "end": 0.08,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 1,
+          "script": "the",
+          "heard": "the",
+          "start": 0.08,
+          "end": 0.16,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 2,
+          "script": "road",
+          "heard": "road,",
+          "start": 0.16,
+          "end": 0.36,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 3,
+          "script": "the",
+          "heard": "the",
+          "start": 0.56,
+          "end": 0.58,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 4,
+          "script": "same",
+          "heard": "same",
+          "start": 0.58,
+          "end": 0.76,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 5,
+          "script": "question",
+          "heard": "question",
+          "start": 0.76,
+          "end": 1.08,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 6,
+          "script": "begins",
+          "heard": "begins",
+          "start": 1.08,
+          "end": 1.46,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 7,
+          "script": "before",
+          "heard": "before",
+          "start": 1.46,
+          "end": 1.86,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 8,
+          "script": "the",
+          "heard": "the",
+          "start": 1.86,
+          "end": 2.02,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 9,
+          "script": "current",
+          "heard": "current",
+          "start": 2.02,
+          "end": 2.28,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 10,
+          "script": "delivery",
+          "heard": "delivery",
+          "start": 2.28,
+          "end": 2.6,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 11,
+          "script": "is",
+          "heard": "is",
+          "start": 2.6,
+          "end": 2.88,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 12,
+          "script": "complete",
+          "heard": "complete.",
+          "start": 2.88,
+          "end": 3.16,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 13,
+          "script": "the",
+          "heard": "The",
+          "start": 4.06,
+          "end": 4.14,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 14,
+          "script": "driver",
+          "heard": "driver",
+          "start": 4.14,
+          "end": 4.32,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 15,
+          "script": "confirms",
+          "heard": "confirms",
+          "start": 4.32,
+          "end": 4.8,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 16,
+          "script": "when",
+          "heard": "when",
+          "start": 4.8,
+          "end": 5.18,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 17,
+          "script": "the",
+          "heard": "the",
+          "start": 5.18,
+          "end": 5.3,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 18,
+          "script": "assigned",
+          "heard": "assigned",
+          "start": 5.3,
+          "end": 5.5,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 19,
+          "script": "truck",
+          "heard": "truck",
+          "start": 5.5,
+          "end": 5.88,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 20,
+          "script": "is",
+          "heard": "is",
+          "start": 5.88,
+          "end": 6.12,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 21,
+          "script": "expected",
+          "heard": "expected",
+          "start": 6.12,
+          "end": 6.44,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 22,
+          "script": "to",
+          "heard": "to",
+          "start": 6.44,
+          "end": 6.68,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 23,
+          "script": "be",
+          "heard": "be",
+          "start": 6.68,
+          "end": 6.8,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 24,
+          "script": "empty",
+          "heard": "empty.",
+          "start": 6.8,
+          "end": 7.02,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 25,
+          "script": "a",
+          "heard": "A",
+          "start": 7.92,
+          "end": 7.94,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 26,
+          "script": "suitable",
+          "heard": "suitable",
+          "start": 7.94,
+          "end": 8.22,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 27,
+          "script": "next",
+          "heard": "next",
+          "start": 8.22,
+          "end": 8.48,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 28,
+          "script": "load",
+          "heard": "load",
+          "start": 8.48,
+          "end": 8.82,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 29,
+          "script": "appears",
+          "heard": "appears.",
+          "start": 8.82,
+          "end": 9.06,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 30,
+          "script": "the",
+          "heard": "The",
+          "start": 10.14,
+          "end": 10.24,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 31,
+          "script": "driver",
+          "heard": "driver",
+          "start": 10.24,
+          "end": 10.46,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 32,
+          "script": "sends",
+          "heard": "sends",
+          "start": 10.46,
+          "end": 10.82,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 33,
+          "script": "the",
+          "heard": "the",
+          "start": 10.82,
+          "end": 11.04,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 34,
+          "script": "opportunity",
+          "heard": "opportunity",
+          "start": 11.04,
+          "end": 11.36,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 35,
+          "script": "to",
+          "heard": "to",
+          "start": 11.36,
+          "end": 11.8,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 36,
+          "script": "the",
+          "heard": "the",
+          "start": 11.8,
+          "end": 11.9,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 37,
+          "script": "planner",
+          "heard": "planner.",
+          "start": 11.9,
+          "end": 12.12,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 38,
+          "script": "the",
+          "heard": "The",
+          "start": 12.98,
+          "end": 13.08,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 39,
+          "script": "planner",
+          "heard": "planner",
+          "start": 13.08,
+          "end": 13.34,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 40,
+          "script": "reviews",
+          "heard": "reviews",
+          "start": 13.34,
+          "end": 13.66,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 41,
+          "script": "it",
+          "heard": "it",
+          "start": 13.66,
+          "end": 14.02,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 42,
+          "script": "and",
+          "heard": "and",
+          "start": 14.02,
+          "end": 14.18,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 43,
+          "script": "makes",
+          "heard": "makes",
+          "start": 14.18,
+          "end": 14.34,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 44,
+          "script": "the",
+          "heard": "the",
+          "start": 14.34,
+          "end": 14.54,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 45,
+          "script": "commercial",
+          "heard": "commercial",
+          "start": 14.54,
+          "end": 14.8,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 46,
+          "script": "decision",
+          "heard": "decision.",
+          "start": 14.8,
+          "end": 15.28,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 47,
+          "script": "the",
+          "heard": "The",
+          "start": 16.28,
+          "end": 16.32,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 48,
+          "script": "driver",
+          "heard": "driver",
+          "start": 16.32,
+          "end": 16.52,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 49,
+          "script": "focuses",
+          "heard": "focuses",
+          "start": 16.52,
+          "end": 17.04,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 50,
+          "script": "on",
+          "heard": "on",
+          "start": 17.04,
+          "end": 17.34,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 51,
+          "script": "the",
+          "heard": "the",
+          "start": 17.34,
+          "end": 17.44,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 52,
+          "script": "operation",
+          "heard": "operation,",
+          "start": 17.44,
+          "end": 17.74,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 53,
+          "script": "availability",
+          "heard": "availability,",
+          "start": 18.46,
+          "end": 18.74,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 54,
+          "script": "timing",
+          "heard": "timing",
+          "start": 19.64,
+          "end": 19.66,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 55,
+          "script": "and",
+          "heard": "and",
+          "start": 19.66,
+          "end": 19.98,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 56,
+          "script": "practical",
+          "heard": "practical",
+          "start": 19.98,
+          "end": 20.3,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 57,
+          "script": "requirements",
+          "heard": "requirements",
+          "start": 20.3,
+          "end": 20.96,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 58,
+          "script": "still",
+          "heard": "still",
+          "start": 20.96,
+          "end": 21.28,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 59,
+          "script": "need",
+          "heard": "need",
+          "start": 21.28,
+          "end": 21.5,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 60,
+          "script": "checking",
+          "heard": "checking.",
+          "start": 21.5,
+          "end": 21.76,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 61,
+          "script": "people",
+          "heard": "People",
+          "start": 22.54,
+          "end": 23.02,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 62,
+          "script": "remain",
+          "heard": "remain",
+          "start": 23.02,
+          "end": 23.42,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 63,
+          "script": "in",
+          "heard": "in",
+          "start": 23.42,
+          "end": 23.66,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 64,
+          "script": "control",
+          "heard": "control.",
+          "start": 23.66,
+          "end": 23.88,
+          "match": "exact"
+        }
+      ],
+      "warnings": []
+    },
+    {
+      "id": "pilots",
+      "normalizedSha256": "2ba2aae3fea74e62ca78030b8dafe571cb326ad5e0d745033efbc1ced610a978",
+      "duration": 23.241,
+      "items": [
+        {
+          "id": 17,
+          "start": 0.0,
+          "end": 5.28,
+          "sentences": [
+            {
+              "english": "Functional rail pilots explore the same approach, starting with available wagons in Duisburg.",
+              "dutch": "Functionele spoorpilots verkennen dezelfde aanpak, met beschikbare wagons in Duisburg.",
+              "start": 0.0,
+              "end": 5.28
+            }
+          ]
+        },
+        {
+          "id": 18,
+          "start": 5.28,
+          "end": 10.67,
+          "sentences": [
+            {
+              "english": "In the air cargo demo pilot, the question is unused space on a scheduled flight.",
+              "dutch": "In de luchtvrachtdemopilot draait het om onbenutte ruimte op een geplande vlucht.",
+              "start": 5.28,
+              "end": 10.67
+            }
+          ]
+        },
+        {
+          "id": 19,
+          "start": 10.67,
+          "end": 17.34,
+          "sentences": [
+            {
+              "english": "Amsterdam to Dubai.",
+              "dutch": "Amsterdam naar Dubai.",
+              "start": 10.67,
+              "end": 12.49
+            },
+            {
+              "english": "Remaining weight and volume shown together, so suitable cargo can be considered.",
+              "dutch": "Resterend gewicht en volume samen in beeld om passende lading te beoordelen.",
+              "start": 12.49,
+              "end": 17.34
+            }
+          ]
+        },
+        {
+          "id": 20,
+          "start": 17.34,
+          "end": 23.241,
+          "sentences": [
+            {
+              "english": "These are fictional pilot scenarios, not live airline bookings or fully released rail services.",
+              "dutch": "Dit zijn fictieve pilotscenario's, geen live vliegboekingen of volledig uitgerolde spoordiensten.",
+              "start": 17.34,
+              "end": 23.241
+            }
+          ]
+        }
+      ],
+      "confidence": {
+        "matchedScriptWords": 57,
+        "scriptWords": 57,
+        "lexicalMatchRatio": 1.0,
+        "meanRecognizerWordProbability": 0.9535
+      },
+      "recognizedText": "Functional rail pilots explore the same approach, starting with available wagons in Duesburg. In the air cargo demo pilot, the question is unused space on a scheduled flight. Amsterdam to Dubai. Remaining weight and volume shown together, so suitable cargo can be considered. These are fictional pilot scenarios, not live airline bookings or fully released rail services.",
+      "evidenceWords": [
+        {
+          "scriptIndex": 0,
+          "script": "functional",
+          "heard": "Functional",
+          "start": 0.0,
+          "end": 0.28,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 1,
+          "script": "rail",
+          "heard": "rail",
+          "start": 0.28,
+          "end": 0.48,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 2,
+          "script": "pilots",
+          "heard": "pilots",
+          "start": 0.48,
+          "end": 0.78,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 3,
+          "script": "explore",
+          "heard": "explore",
+          "start": 0.78,
+          "end": 1.26,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 4,
+          "script": "the",
+          "heard": "the",
+          "start": 1.26,
+          "end": 1.52,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 5,
+          "script": "same",
+          "heard": "same",
+          "start": 1.52,
+          "end": 1.74,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 6,
+          "script": "approach",
+          "heard": "approach,",
+          "start": 1.74,
+          "end": 2.1,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 7,
+          "script": "starting",
+          "heard": "starting",
+          "start": 2.74,
+          "end": 3.06,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 8,
+          "script": "with",
+          "heard": "with",
+          "start": 3.06,
+          "end": 3.28,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 9,
+          "script": "available",
+          "heard": "available",
+          "start": 3.28,
+          "end": 3.58,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 10,
+          "script": "wagons",
+          "heard": "wagons",
+          "start": 3.58,
+          "end": 4.1,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 11,
+          "script": "in",
+          "heard": "in",
+          "start": 4.1,
+          "end": 4.34,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 12,
+          "script": "duisburg",
+          "heard": "Duesburg.",
+          "start": 4.34,
+          "end": 4.76,
+          "match": "fuzzy",
+          "similarity": 0.875
+        },
+        {
+          "scriptIndex": 13,
+          "script": "in",
+          "heard": "In",
+          "start": 5.8,
+          "end": 5.98,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 14,
+          "script": "the",
+          "heard": "the",
+          "start": 5.98,
+          "end": 6.08,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 15,
+          "script": "air",
+          "heard": "air",
+          "start": 6.08,
+          "end": 6.28,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 16,
+          "script": "cargo",
+          "heard": "cargo",
+          "start": 6.28,
+          "end": 6.54,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 17,
+          "script": "demo",
+          "heard": "demo",
+          "start": 6.54,
+          "end": 6.98,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 18,
+          "script": "pilot",
+          "heard": "pilot,",
+          "start": 6.98,
+          "end": 7.4,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 19,
+          "script": "the",
+          "heard": "the",
+          "start": 7.74,
+          "end": 7.8,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 20,
+          "script": "question",
+          "heard": "question",
+          "start": 7.8,
+          "end": 8.02,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 21,
+          "script": "is",
+          "heard": "is",
+          "start": 8.02,
+          "end": 8.34,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 22,
+          "script": "unused",
+          "heard": "unused",
+          "start": 8.34,
+          "end": 8.52,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 23,
+          "script": "space",
+          "heard": "space",
+          "start": 8.52,
+          "end": 9.02,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 24,
+          "script": "on",
+          "heard": "on",
+          "start": 9.02,
+          "end": 9.4,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 25,
+          "script": "a",
+          "heard": "a",
+          "start": 9.4,
+          "end": 9.48,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 26,
+          "script": "scheduled",
+          "heard": "scheduled",
+          "start": 9.48,
+          "end": 9.72,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 27,
+          "script": "flight",
+          "heard": "flight.",
+          "start": 9.72,
+          "end": 10.14,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 28,
+          "script": "amsterdam",
+          "heard": "Amsterdam",
+          "start": 11.2,
+          "end": 11.26,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 29,
+          "script": "to",
+          "heard": "to",
+          "start": 11.26,
+          "end": 11.8,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 30,
+          "script": "dubai",
+          "heard": "Dubai.",
+          "start": 11.8,
+          "end": 11.96,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 31,
+          "script": "remaining",
+          "heard": "Remaining",
+          "start": 13.02,
+          "end": 13.26,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 32,
+          "script": "weight",
+          "heard": "weight",
+          "start": 13.26,
+          "end": 13.5,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 33,
+          "script": "and",
+          "heard": "and",
+          "start": 13.5,
+          "end": 13.7,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 34,
+          "script": "volume",
+          "heard": "volume",
+          "start": 13.7,
+          "end": 13.98,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 35,
+          "script": "shown",
+          "heard": "shown",
+          "start": 13.98,
+          "end": 14.3,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 36,
+          "script": "together",
+          "heard": "together,",
+          "start": 14.3,
+          "end": 14.68,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 37,
+          "script": "so",
+          "heard": "so",
+          "start": 14.96,
+          "end": 15.16,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 38,
+          "script": "suitable",
+          "heard": "suitable",
+          "start": 15.16,
+          "end": 15.54,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 39,
+          "script": "cargo",
+          "heard": "cargo",
+          "start": 15.54,
+          "end": 15.88,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 40,
+          "script": "can",
+          "heard": "can",
+          "start": 15.88,
+          "end": 16.36,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 41,
+          "script": "be",
+          "heard": "be",
+          "start": 16.36,
+          "end": 16.48,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 42,
+          "script": "considered",
+          "heard": "considered.",
+          "start": 16.48,
+          "end": 16.88,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 43,
+          "script": "these",
+          "heard": "These",
+          "start": 17.8,
+          "end": 17.84,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 44,
+          "script": "are",
+          "heard": "are",
+          "start": 17.84,
+          "end": 18.02,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 45,
+          "script": "fictional",
+          "heard": "fictional",
+          "start": 18.02,
+          "end": 18.36,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 46,
+          "script": "pilot",
+          "heard": "pilot",
+          "start": 18.36,
+          "end": 18.72,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 47,
+          "script": "scenarios",
+          "heard": "scenarios,",
+          "start": 18.72,
+          "end": 19.26,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 48,
+          "script": "not",
+          "heard": "not",
+          "start": 19.9,
+          "end": 20.08,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 49,
+          "script": "live",
+          "heard": "live",
+          "start": 20.08,
+          "end": 20.34,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 50,
+          "script": "airline",
+          "heard": "airline",
+          "start": 20.34,
+          "end": 20.88,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 51,
+          "script": "bookings",
+          "heard": "bookings",
+          "start": 20.88,
+          "end": 21.46,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 52,
+          "script": "or",
+          "heard": "or",
+          "start": 21.46,
+          "end": 21.68,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 53,
+          "script": "fully",
+          "heard": "fully",
+          "start": 21.68,
+          "end": 21.94,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 54,
+          "script": "released",
+          "heard": "released",
+          "start": 21.94,
+          "end": 22.4,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 55,
+          "script": "rail",
+          "heard": "rail",
+          "start": 22.4,
+          "end": 22.64,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 56,
+          "script": "services",
+          "heard": "services.",
+          "start": 22.64,
+          "end": 22.94,
+          "match": "exact"
+        }
+      ],
+      "warnings": []
+    },
+    {
+      "id": "closing",
+      "normalizedSha256": "1aa883c0f204093b2075f6d7a366f9d26e96abf07d7bd34e21c12cabacf61376",
+      "duration": 21.474,
+      "items": [
+        {
+          "id": 21,
+          "start": 0.0,
+          "end": 5.14,
+          "sentences": [
+            {
+              "english": "Across the network, better visibility gives professionals a chance to start the conversation earlier.",
+              "dutch": "Meer inzicht geeft professionals in het netwerk de kans om eerder het gesprek te beginnen.",
+              "start": 0.0,
+              "end": 5.14
+            }
+          ]
+        },
+        {
+          "id": 22,
+          "start": 5.14,
+          "end": 11.8,
+          "sentences": [
+            {
+              "english": "Before the vessel sails empty.",
+              "dutch": "Voordat het schip leeg vertrekt.",
+              "start": 5.14,
+              "end": 7.31
+            },
+            {
+              "english": "Before the truck heads back.",
+              "dutch": "Voordat de truck terugrijdt.",
+              "start": 7.31,
+              "end": 9.4
+            },
+            {
+              "english": "Before an opportunity passes.",
+              "dutch": "Voordat een kans voorbijgaat.",
+              "start": 9.4,
+              "end": 11.8
+            }
+          ]
+        },
+        {
+          "id": 23,
+          "start": 11.8,
+          "end": 16.76,
+          "sentences": [
+            {
+              "english": "CargoMatch.",
+              "dutch": "CargoMatch.",
+              "start": 11.8,
+              "end": 13.53
+            },
+            {
+              "english": "Find the next load before capacity becomes empty.",
+              "dutch": "Vind de volgende lading voordat capaciteit leeg komt te staan.",
+              "start": 13.53,
+              "end": 16.76
+            }
+          ]
+        },
+        {
+          "id": 24,
+          "start": 16.76,
+          "end": 21.474,
+          "sentences": [
+            {
+              "english": "The transport capacity intelligence network.",
+              "dutch": "Het informatienetwerk voor transportcapaciteit.",
+              "start": 16.76,
+              "end": 19.94
+            },
+            {
+              "english": "Discover CargoMatch.",
+              "dutch": "Ontdek CargoMatch.",
+              "start": 19.94,
+              "end": 21.474
+            }
+          ]
+        }
+      ],
+      "confidence": {
+        "matchedScriptWords": 46,
+        "scriptWords": 46,
+        "lexicalMatchRatio": 1.0,
+        "meanRecognizerWordProbability": 0.9439
+      },
+      "recognizedText": "Across the network, better visibility gives professionals a chance to start the conversation earlier, before the vessel sails empty, before the truck heads back, before an opportunity passes, cargo match. Find the next load before capacity becomes empty. The transport capacity intelligence network, discover cargo match.",
+      "evidenceWords": [
+        {
+          "scriptIndex": 0,
+          "script": "across",
+          "heard": "Across",
+          "start": 0.0,
+          "end": 0.1,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 1,
+          "script": "the",
+          "heard": "the",
+          "start": 0.1,
+          "end": 0.4,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 2,
+          "script": "network",
+          "heard": "network,",
+          "start": 0.4,
+          "end": 0.68,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 3,
+          "script": "better",
+          "heard": "better",
+          "start": 0.92,
+          "end": 1.06,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 4,
+          "script": "visibility",
+          "heard": "visibility",
+          "start": 1.06,
+          "end": 1.42,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 5,
+          "script": "gives",
+          "heard": "gives",
+          "start": 1.42,
+          "end": 1.96,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 6,
+          "script": "professionals",
+          "heard": "professionals",
+          "start": 1.96,
+          "end": 2.2,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 7,
+          "script": "a",
+          "heard": "a",
+          "start": 2.2,
+          "end": 2.78,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 8,
+          "script": "chance",
+          "heard": "chance",
+          "start": 2.78,
+          "end": 3.0,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 9,
+          "script": "to",
+          "heard": "to",
+          "start": 3.0,
+          "end": 3.28,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 10,
+          "script": "start",
+          "heard": "start",
+          "start": 3.28,
+          "end": 3.52,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 11,
+          "script": "the",
+          "heard": "the",
+          "start": 3.52,
+          "end": 3.66,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 12,
+          "script": "conversation",
+          "heard": "conversation",
+          "start": 3.66,
+          "end": 4.22,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 13,
+          "script": "earlier",
+          "heard": "earlier,",
+          "start": 4.22,
+          "end": 4.54,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 14,
+          "script": "before",
+          "heard": "before",
+          "start": 5.74,
+          "end": 5.76,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 15,
+          "script": "the",
+          "heard": "the",
+          "start": 5.76,
+          "end": 5.96,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 16,
+          "script": "vessel",
+          "heard": "vessel",
+          "start": 5.96,
+          "end": 6.18,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 17,
+          "script": "sails",
+          "heard": "sails",
+          "start": 6.18,
+          "end": 6.66,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 18,
+          "script": "empty",
+          "heard": "empty,",
+          "start": 6.66,
+          "end": 6.88,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 19,
+          "script": "before",
+          "heard": "before",
+          "start": 7.74,
+          "end": 8.0,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 20,
+          "script": "the",
+          "heard": "the",
+          "start": 8.0,
+          "end": 8.18,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 21,
+          "script": "truck",
+          "heard": "truck",
+          "start": 8.18,
+          "end": 8.38,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 22,
+          "script": "heads",
+          "heard": "heads",
+          "start": 8.38,
+          "end": 8.7,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 23,
+          "script": "back",
+          "heard": "back,",
+          "start": 8.7,
+          "end": 9.04,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 24,
+          "script": "before",
+          "heard": "before",
+          "start": 9.76,
+          "end": 10.14,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 25,
+          "script": "an",
+          "heard": "an",
+          "start": 10.14,
+          "end": 10.34,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 26,
+          "script": "opportunity",
+          "heard": "opportunity",
+          "start": 10.34,
+          "end": 10.8,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 27,
+          "script": "passes",
+          "heard": "passes,",
+          "start": 10.8,
+          "end": 11.28,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 28,
+          "script": "cargo",
+          "heard": "cargo",
+          "start": 12.32,
+          "end": 12.54,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 29,
+          "script": "match",
+          "heard": "match.",
+          "start": 12.54,
+          "end": 12.96,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 30,
+          "script": "find",
+          "heard": "Find",
+          "start": 14.1,
+          "end": 14.4,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 31,
+          "script": "the",
+          "heard": "the",
+          "start": 14.4,
+          "end": 14.58,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 32,
+          "script": "next",
+          "heard": "next",
+          "start": 14.58,
+          "end": 14.78,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 33,
+          "script": "load",
+          "heard": "load",
+          "start": 14.78,
+          "end": 15.06,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 34,
+          "script": "before",
+          "heard": "before",
+          "start": 15.06,
+          "end": 15.4,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 35,
+          "script": "capacity",
+          "heard": "capacity",
+          "start": 15.4,
+          "end": 15.84,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 36,
+          "script": "becomes",
+          "heard": "becomes",
+          "start": 15.84,
+          "end": 16.36,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 37,
+          "script": "empty",
+          "heard": "empty.",
+          "start": 16.36,
+          "end": 16.76,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 38,
+          "script": "the",
+          "heard": "The",
+          "start": 16.76,
+          "end": 17.78,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 39,
+          "script": "transport",
+          "heard": "transport",
+          "start": 17.78,
+          "end": 18.06,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 40,
+          "script": "capacity",
+          "heard": "capacity",
+          "start": 18.06,
+          "end": 18.7,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 41,
+          "script": "intelligence",
+          "heard": "intelligence",
+          "start": 18.7,
+          "end": 18.96,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 42,
+          "script": "network",
+          "heard": "network,",
+          "start": 18.96,
+          "end": 19.78,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 43,
+          "script": "discover",
+          "heard": "discover",
+          "start": 20.1,
+          "end": 20.46,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 44,
+          "script": "cargo",
+          "heard": "cargo",
+          "start": 20.46,
+          "end": 20.92,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 45,
+          "script": "match",
+          "heard": "match.",
+          "start": 20.92,
+          "end": 21.32,
+          "match": "exact"
+        }
+      ],
+      "warnings": []
+    }
+  ]
+}

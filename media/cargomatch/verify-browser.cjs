@@ -13,19 +13,29 @@ const path = require('path');
 const { URL } = require('url');
 const { spawn } = require('child_process');
 
-const ROOT = path.resolve(__dirname, '../../attached_assets/cargomatch/delivery');
+const DEFAULT_ROOT = path.resolve(__dirname, '../../attached_assets/cargomatch/delivery');
+const deliveryArg = process.argv.indexOf('--delivery-dir');
+const deliveryValue = deliveryArg >= 0 ? process.argv[deliveryArg + 1] : null;
+const ROOT = path.resolve(deliveryValue || DEFAULT_ROOT);
 const VIDEO = 'cargomatch-en-nl-1080p.mp4';
 const VIDEO_PATH = path.join(ROOT, VIDEO);
-const BUILD = path.resolve(__dirname, 'build/browser');
+const timelinePath = path.join(ROOT, 'edit-timeline.json');
+const timeline = fs.existsSync(timelinePath) ? JSON.parse(fs.readFileSync(timelinePath, 'utf8')) : null;
+const expectedDuration = timeline ? Number(timeline.durationSeconds) : 168;
+const seekTimes = timeline && Array.isArray(timeline.scenes) && timeline.scenes.length
+  ? [0, Math.floor(timeline.scenes.length * .25), Math.floor(timeline.scenes.length * .5),
+    Math.floor(timeline.scenes.length * .75), timeline.scenes.length - 1]
+      .map(index => (Number(timeline.scenes[index].start) + Number(timeline.scenes[index].end)) / 2)
+  : [50, 90, 122, 155, 165];
+const BUILD = path.resolve(__dirname, timeline ? 'build/revised-browser' : 'build/browser');
 const REPORT = path.join(ROOT, 'browser-verification.json');
-const SEEK_TIMES = [50, 90, 122, 155, 165];
 const HTML = `<!doctype html><meta charset="utf-8"><title>CargoMatch final film verification</title>
 <style>
 html,body{margin:0;background:#020617;color:#f8fafc;font:16px system-ui,sans-serif}
 main{width:min(100vw,1280px);margin:auto;padding:18px;box-sizing:border-box}
 h1{font-size:20px;font-weight:600}video{display:block;width:100%;background:#000}
 #state{margin-top:10px;color:#cbd5e1}
-</style><main><h1>CargoMatch — final 168-second film browser check</h1>
+</style><main><h1>CargoMatch — final film browser check</h1>
 <video id="player" controls muted playsinline preload="auto">
 <source src="/${VIDEO}" type="video/mp4">
 </video><div id="state">Loading final delivery…</div></main>`;
@@ -164,6 +174,9 @@ class CDP {
 }
 
 async function main() {
+  if (deliveryArg >= 0 && (!process.argv[deliveryArg + 1] || process.argv[deliveryArg + 1].startsWith('--'))) {
+    throw Error('--delivery-dir requires a path');
+  }
   if (!fs.existsSync(VIDEO_PATH)) {
     throw Error(`Final delivery is not ready; missing ${VIDEO_PATH}`);
   }
@@ -188,7 +201,7 @@ async function main() {
     started: new Date().toISOString(),
     baseURL: `http://127.0.0.1:${port}`,
     file: VIDEO,
-    expected: { width: 1920, height: 1080, durationSeconds: 168, videoCodec: 'H.264', browserTextTracks: 0 },
+    expected: { width: 1920, height: 1080, durationSeconds: expectedDuration, videoCodec: 'H.264', browserTextTracks: 0 },
     assertions: {},
     screenshots: [],
   };
@@ -260,8 +273,8 @@ async function main() {
     if (metadata.width !== 1920 || metadata.height !== 1080) {
       throw Error(`Expected 1920x1080, got ${metadata.width}x${metadata.height}`);
     }
-    if (!Number.isFinite(metadata.duration) || Math.abs(metadata.duration - 168) > 0.75) {
-      throw Error(`Expected approximately 168 seconds, got ${metadata.duration}`);
+    if (!Number.isFinite(metadata.duration) || Math.abs(metadata.duration - expectedDuration) > 0.75) {
+      throw Error(`Expected approximately ${expectedDuration} seconds, got ${metadata.duration}`);
     }
     if (metadata.textTracks !== 0) {
       throw Error(`Burned-subtitle delivery must have no browser text tracks; found ${metadata.textTracks}`);
@@ -323,7 +336,7 @@ async function main() {
     }
     report.assertions.decodedPlaybackProgression = progression;
 
-    for (const seconds of SEEK_TIMES) {
+    for (const seconds of seekTimes) {
       const seek = await evaluate(`new Promise((resolve, reject) => {
         const video = document.querySelector('#player');
         const target = ${seconds};

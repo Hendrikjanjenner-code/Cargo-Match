@@ -676,3 +676,57 @@ mtime_ms = 1789722228289
 storage_uri = "gcs://replit-rams-assets-worf/rams/assets/repl:929794db-e72d-4439-9aa2-c5d927c149ce/d8d7e09b-e75a-4c2e-801c-45c9be1a25a6/e3524f84-4f73-4dc4-96b7-c0599ee53bb7"
 storage_version_token = "1789722283143213"
 content_type = "video/mp4"
+
+[[outputs]]
+id = "CtgEtxW2iRNHFKLSxNukz"
+uri = "file://attached_assets/cargomatch/revised/audio/consent.mp3"
+type = "audio"
+title = "CargoMatch John continuous consent"
+description = "Text-to-speech audio: One party sends interest. The other decides whether to connect. Permission comes first. Only after mutual consent does the conversation open. An introduction, not a booking."
+logical_id = "e57fdda3-1257-4332-af17-0a597a904de6"
+
+[[outputs]]
+id = "yqT-zI0rTrzqmeiJ3c8U0"
+uri = "file://attached_assets/cargomatch/revised/audio/opening.mp3"
+type = "audio"
+title = "CargoMatch John continuous opening"
+description = "Text-to-speech audio: Every day, millions of tonnes of cargo move across the world. By sea. By road. By rail. By air. A voyage ends. A vessel is nearly empty. What comes next? For a truck, an empty r…"
+logical_id = "7307b0ec-8a9d-49e5-b58e-11ecf4b98274"
+
+[[outputs]]
+id = "1VZTNMIe1k6Q8PME4v8gJ"
+uri = "file://attached_assets/cargomatch/revised/audio/closing.mp3"
+type = "audio"
+title = "CargoMatch John continuous closing"
+description = "Text-to-speech audio: Across the network, better visibility gives professionals a chance to start the conversation earlier. Before the vessel sails empty. Before the truck heads back. Before an oppor…"
+logical_id = "0a1f5378-f11e-4fce-8708-a66006872273"
+
+[[outputs]]
+id = "ydkjgkFszeEkZgMpL4BQx"
+uri = "file://attached_assets/cargomatch/revised/audio/pilots.mp3"
+type = "audio"
+title = "CargoMatch John continuous pilots"
+description = "Text-to-speech audio: Functional rail pilots explore the same approach, starting with available wagons in Duisburg. In the air cargo demo pilot, the question is unused space on a scheduled flight. Am…"
+logical_id = "e5579d60-4cc9-424d-bcec-4c013fcf0560"
+
+[[outputs]]
+id = "ZmN117WQtqBBk7QAXsAUi"
+uri = "file://attached_assets/cargomatch/revised/audio/road.mp3"
+type = "audio"
+title = "CargoMatch John continuous road"
+description = "Text-to-speech audio: On the road, the same question begins before the current delivery is complete. The driver confirms when the assigned truck is expected to be empty. A suitable next load appears.…"
+logical_id = "49eb6493-71ae-4251-aba0-0154d1adebe2"
+
+[[outputs]]
+id = "VKGy6Y5b72iljQFOGyjgO"
+uri = "file://attached_assets/cargomatch/revised/cargomatch-en-nl-1080p.mp4"
+type = "video"
+title = "CargoMatch — vernieuwde film · 2:06"
+description = "Full HD MP4 met de goedgekeurde originele Ierse vertelstem John, doorlopende vertelling, zachtere overgangen en opnieuw gesynchroniseerde Nederlandse ondertitels. Alle 24 tekstpassages behouden. De oorspronkelijke film is niet overschreven."
+logical_id = "50076be1-7026-49c7-b5b4-24e22af68776"
+content_hash = "sha256:78ac4b7b9542c66ecda3ffe1df821066fa733de57cfd83866378f7897d0f6d5b"
+size = 64799019
+mtime_ms = 1789723514604
+storage_uri = "gcs://replit-rams-assets-worf/rams/assets/repl:929794db-e72d-4439-9aa2-c5d927c149ce/50076be1-7026-49c7-b5b4-24e22af68776/396478f5-9efb-4a99-90cd-43aaa2eb6be4"
+storage_version_token = "1789723635640218"
+content_type = "video/mp4"

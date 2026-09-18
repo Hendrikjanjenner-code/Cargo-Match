@@ -1,0 +1,98 @@
+[
+  {
+    "id": "opening",
+    "duration": 16.209313,
+    "normalizationInput": {
+      "input_i": "-21.51",
+      "input_tp": "-4.08",
+      "input_lra": "4.30",
+      "input_thresh": "-32.10",
+      "output_i": "-18.95",
+      "output_tp": "-3.00",
+      "output_lra": "3.60",
+      "output_thresh": "-29.56",
+      "normalization_type": "dynamic",
+      "target_offset": "0.95"
+    }
+  },
+  {
+    "id": "deepsea",
+    "duration": 25.942208,
+    "normalizationInput": {
+      "input_i": "-21.09",
+      "input_tp": "-3.84",
+      "input_lra": "4.60",
+      "input_thresh": "-31.74",
+      "output_i": "-19.16",
+      "output_tp": "-3.00",
+      "output_lra": "3.80",
+      "output_thresh": "-29.85",
+      "normalization_type": "dynamic",
+      "target_offset": "1.16"
+    }
+  },
+  {
+    "id": "consent",
+    "duration": 9.804979,
+    "normalizationInput": {
+      "input_i": "-22.08",
+      "input_tp": "-3.97",
+      "input_lra": "5.00",
+      "input_thresh": "-32.79",
+      "output_i": "-19.27",
+      "output_tp": "-3.00",
+      "output_lra": "3.30",
+      "output_thresh": "-29.95",
+      "normalization_type": "dynamic",
+      "target_offset": "1.27"
+    }
+  },
+  {
+    "id": "road",
+    "duration": 24.144146,
+    "normalizationInput": {
+      "input_i": "-19.68",
+      "input_tp": "-3.97",
+      "input_lra": "4.60",
+      "input_thresh": "-30.66",
+      "output_i": "-18.97",
+      "output_tp": "-3.60",
+      "output_lra": "4.20",
+      "output_thresh": "-29.87",
+      "normalization_type": "dynamic",
+      "target_offset": "0.97"
+    }
+  },
+  {
+    "id": "pilots",
+    "duration": 23.240833,
+    "normalizationInput": {
+      "input_i": "-22.29",
+      "input_tp": "-4.19",
+      "input_lra": "3.10",
+      "input_thresh": "-32.78",
+      "output_i": "-18.40",
+      "output_tp": "-3.00",
+      "output_lra": "3.30",
+      "output_thresh": "-28.96",
+      "normalization_type": "dynamic",
+      "target_offset": "0.40"
+    }
+  },
+  {
+    "id": "closing",
+    "duration": 21.473708,
+    "normalizationInput": {
+      "input_i": "-20.89",
+      "input_tp": "-3.91",
+      "input_lra": "4.60",
+      "input_thresh": "-31.73",
+      "output_i": "-18.76",
+      "output_tp": "-3.00",
+      "output_lra": "3.10",
+      "output_thresh": "-29.66",
+      "normalization_type": "dynamic",
+      "target_offset": "0.76"
+    }
+  }
+]

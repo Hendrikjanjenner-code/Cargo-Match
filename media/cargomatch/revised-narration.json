@@ -1,0 +1,84 @@
+{
+  "voice": {
+    "voiceId": "GFyWqnwcF2mv6dWlo3u1",
+    "name": "John - Irish Man",
+    "modelId": "eleven_multilingual_v2",
+    "outputFormat": "mp3_44100_192",
+    "voiceSettings": {
+      "stability": 0.62,
+      "similarity_boost": 0.75,
+      "style": 0.1,
+      "use_speaker_boost": true,
+      "speed": 1
+    }
+  },
+  "groups": [
+    {
+      "id": "opening",
+      "ids": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "text": "Every day, millions of tonnes of cargo move across the world. By sea. By road. By rail. By air. A voyage ends. A vessel is nearly empty. What comes next? For a truck, an empty return means more than distance. It means time and fuel.",
+      "path": "attached_assets/cargomatch/revised/audio/opening.mp3"
+    },
+    {
+      "id": "deepsea",
+      "ids": [
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "reuse": "attached_assets/cargomatch/audition/john-continuous.mp3",
+      "text": "The next suitable cargo may already be waiting. The right people need to see it. In Malaysia, a vessel is expected to become available. Its operator records that future position. Not a live tracking promise. An operational estimate, ready for the next commercial conversation. Meanwhile, seventy-five thousand tonnes need to move from Indonesia to China. CargoMatch brings the opportunity into view, while protecting each party's commercial details.",
+      "path": "attached_assets/cargomatch/audition/john-continuous.mp3"
+    },
+    {
+      "id": "consent",
+      "ids": [
+        10,
+        11
+      ],
+      "text": "One party sends interest. The other decides whether to connect. Permission comes first. Only after mutual consent does the conversation open. An introduction, not a booking.",
+      "path": "attached_assets/cargomatch/revised/audio/consent.mp3"
+    },
+    {
+      "id": "road",
+      "ids": [
+        12,
+        13,
+        14,
+        15,
+        16
+      ],
+      "text": "On the road, the same question begins before the current delivery is complete. The driver confirms when the assigned truck is expected to be empty. A suitable next load appears. The driver sends the opportunity to the planner. The planner reviews it and makes the commercial decision. The driver focuses on the operation. Availability, timing, and practical requirements still need checking. People remain in control.",
+      "path": "attached_assets/cargomatch/revised/audio/road.mp3"
+    },
+    {
+      "id": "pilots",
+      "ids": [
+        17,
+        18,
+        19,
+        20
+      ],
+      "text": "Functional rail pilots explore the same approach, starting with available wagons in Duisburg. In the air cargo demo pilot, the question is unused space on a scheduled flight. Amsterdam to Dubai. Remaining weight and volume shown together, so suitable cargo can be considered. These are fictional pilot scenarios, not live airline bookings or fully released rail services.",
+      "path": "attached_assets/cargomatch/revised/audio/pilots.mp3"
+    },
+    {
+      "id": "closing",
+      "ids": [
+        21,
+        22,
+        23,
+        24
+      ],
+      "text": "Across the network, better visibility gives professionals a chance to start the conversation earlier. Before the vessel sails empty. Before the truck heads back. Before an opportunity passes. CargoMatch. Find the next load before capacity becomes empty. The transport capacity intelligence network. Discover CargoMatch.",
+      "path": "attached_assets/cargomatch/revised/audio/closing.mp3"
+    }
+  ]
+}

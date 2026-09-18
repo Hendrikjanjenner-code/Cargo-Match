@@ -9,3 +9,5 @@
 - [Media dispatch limits](media-generation-limits.md) — bound audio-generation batches and retain successful jobs when retrying transient failures.
 - [Laptop-shot geometry](media-screen-compositing.md) — generated framing and settling times need measurement; finish one moving screen composite before batching.
 - [Media verification boundaries](media-verification.md) — distinguish player-probe failures from damaged media before repeating expensive renders.
+- [Film editing direction](film-editing-direction.md) — approved original Irish narration; natural pacing may shorten the film instead of preserving empty pauses.
+- [Media helper dependencies](media-helper-dependencies.md) — shared package changes need one owner; parallel temporary-install cleanup can remove another worker's dependency.

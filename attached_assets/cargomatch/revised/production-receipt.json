@@ -1,0 +1,353 @@
+{
+  "production": "CargoMatch \u2014 Find the next load",
+  "revision": "Approved original Irish narrator and speech-led edit",
+  "output": "attached_assets/cargomatch/revised/cargomatch-en-nl-1080p.mp4",
+  "durationSeconds": 125.5,
+  "voice": {
+    "voiceId": "GFyWqnwcF2mv6dWlo3u1",
+    "name": "John - Irish Man",
+    "modelId": "eleven_multilingual_v2",
+    "outputFormat": "mp3_44100_192",
+    "voiceSettings": {
+      "stability": 0.62,
+      "similarity_boost": 0.75,
+      "style": 0.1,
+      "use_speaker_boost": true,
+      "speed": 1
+    }
+  },
+  "voiceGroups": [
+    {
+      "id": "opening",
+      "ids": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "start": 0.65,
+      "end": 16.859313,
+      "path": "attached_assets/cargomatch/revised/audio/opening-normalized.wav",
+      "sourcePath": "attached_assets/cargomatch/revised/audio/opening.mp3",
+      "normalizedSha256": "7c6e75c0fd41d8690c055cf02562a7da0c37c48a06195b6f7991da98dac373ed"
+    },
+    {
+      "id": "deepsea",
+      "ids": [
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "start": 17.409313,
+      "end": 43.351521000000005,
+      "path": "attached_assets/cargomatch/revised/audio/deepsea-normalized.wav",
+      "sourcePath": "attached_assets/cargomatch/audition/john-continuous.mp3",
+      "normalizedSha256": "f2f70dde05434099966c01b7dcaf70252fba61196b5ec5326cbd3fb0795393c5"
+    },
+    {
+      "id": "consent",
+      "ids": [
+        10,
+        11
+      ],
+      "start": 43.901521,
+      "end": 53.706500000000005,
+      "path": "attached_assets/cargomatch/revised/audio/consent-normalized.wav",
+      "sourcePath": "attached_assets/cargomatch/revised/audio/consent.mp3",
+      "normalizedSha256": "3332494ab5f08b1ecdae51e42ad7736baaf81a14b0fd3c17134cb48c07c981ea"
+    },
+    {
+      "id": "road",
+      "ids": [
+        12,
+        13,
+        14,
+        15,
+        16
+      ],
+      "start": 54.2565,
+      "end": 78.400646,
+      "path": "attached_assets/cargomatch/revised/audio/road-normalized.wav",
+      "sourcePath": "attached_assets/cargomatch/revised/audio/road.mp3",
+      "normalizedSha256": "cffdaa2b0d162c9a38520d7c85d0e05f553ac0e447b52da361763ab41c03fe74"
+    },
+    {
+      "id": "pilots",
+      "ids": [
+        17,
+        18,
+        19,
+        20
+      ],
+      "start": 78.950646,
+      "end": 102.191479,
+      "path": "attached_assets/cargomatch/revised/audio/pilots-normalized.wav",
+      "sourcePath": "attached_assets/cargomatch/revised/audio/pilots.mp3",
+      "normalizedSha256": "2ba2aae3fea74e62ca78030b8dafe571cb326ad5e0d745033efbc1ced610a978"
+    },
+    {
+      "id": "closing",
+      "ids": [
+        21,
+        22,
+        23,
+        24
+      ],
+      "start": 102.741479,
+      "end": 124.215187,
+      "path": "attached_assets/cargomatch/revised/audio/closing-normalized.wav",
+      "sourcePath": "attached_assets/cargomatch/revised/audio/closing.mp3",
+      "normalizedSha256": "1aa883c0f204093b2075f6d7a366f9d26e96abf07d7bd34e21c12cabacf61376"
+    }
+  ],
+  "voiceTimeStretch": 1.0,
+  "originalsPreserved": {
+    "attached_assets/cargomatch/delivery/cargomatch-en-nl-1080p.mp4": "d8b90e58666522aeebdbaba753beb299f9c487e908e4a9ef73a0771741cc48cc",
+    "attached_assets/cargomatch/audition/cargomatch-stem-montageproef.mp4": "52b141f5451b8272da5454adefa33d263a66305141081fbc352455be36dc58df"
+  },
+  "outputSha256": "78ac4b7b9542c66ecda3ffe1df821066fa733de57cfd83866378f7897d0f6d5b",
+  "outputProbe": {
+    "streams": [
+      {
+        "index": 0,
+        "codec_name": "h264",
+        "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+        "profile": "High",
+        "codec_type": "video",
+        "codec_tag_string": "avc1",
+        "codec_tag": "0x31637661",
+        "width": 1920,
+        "height": 1080,
+        "coded_width": 1920,
+        "coded_height": 1080,
+        "closed_captions": 0,
+        "film_grain": 0,
+        "has_b_frames": 2,
+        "sample_aspect_ratio": "1:1",
+        "display_aspect_ratio": "16:9",
+        "pix_fmt": "yuv420p",
+        "level": 40,
+        "chroma_location": "left",
+        "field_order": "progressive",
+        "refs": 1,
+        "is_avc": "true",
+        "nal_length_size": "4",
+        "id": "0x1",
+        "r_frame_rate": "24/1",
+        "avg_frame_rate": "24/1",
+        "time_base": "1/12288",
+        "start_pts": 0,
+        "start_time": "0.000000",
+        "duration_ts": 1542144,
+        "duration": "125.500000",
+        "bit_rate": "3927816",
+        "bits_per_raw_sample": "8",
+        "nb_frames": "3012",
+        "extradata_size": 48,
+        "disposition": {
+          "default": 1,
+          "dub": 0,
+          "original": 0,
+          "comment": 0,
+          "lyrics": 0,
+          "karaoke": 0,
+          "forced": 0,
+          "hearing_impaired": 0,
+          "visual_impaired": 0,
+          "clean_effects": 0,
+          "attached_pic": 0,
+          "timed_thumbnails": 0,
+          "non_diegetic": 0,
+          "captions": 0,
+          "descriptions": 0,
+          "metadata": 0,
+          "dependent": 0,
+          "still_image": 0
+        },
+        "tags": {
+          "language": "und",
+          "handler_name": "VideoHandler",
+          "vendor_id": "[0][0][0][0]",
+          "encoder": "Lavc60.31.102 libx264"
+        }
+      },
+      {
+        "index": 1,
+        "codec_name": "aac",
+        "codec_long_name": "AAC (Advanced Audio Coding)",
+        "profile": "LC",
+        "codec_type": "audio",
+        "codec_tag_string": "mp4a",
+        "codec_tag": "0x6134706d",
+        "sample_fmt": "fltp",
+        "sample_rate": "48000",
+        "channels": 2,
+        "channel_layout": "stereo",
+        "bits_per_sample": 0,
+        "initial_padding": 0,
+        "id": "0x2",
+        "r_frame_rate": "0/0",
+        "avg_frame_rate": "0/0",
+        "time_base": "1/48000",
+        "start_pts": 0,
+        "start_time": "0.000000",
+        "duration_ts": 6024000,
+        "duration": "125.500000",
+        "bit_rate": "197103",
+        "nb_frames": "5884",
+        "extradata_size": 5,
+        "disposition": {
+          "default": 1,
+          "dub": 0,
+          "original": 0,
+          "comment": 0,
+          "lyrics": 0,
+          "karaoke": 0,
+          "forced": 0,
+          "hearing_impaired": 0,
+          "visual_impaired": 0,
+          "clean_effects": 0,
+          "attached_pic": 0,
+          "timed_thumbnails": 0,
+          "non_diegetic": 0,
+          "captions": 0,
+          "descriptions": 0,
+          "metadata": 0,
+          "dependent": 0,
+          "still_image": 0
+        },
+        "tags": {
+          "language": "und",
+          "handler_name": "SoundHandler",
+          "vendor_id": "[0][0][0][0]"
+        }
+      }
+    ],
+    "format": {
+      "filename": "/home/runner/workspace/attached_assets/cargomatch/revised/cargomatch-en-nl-1080p.mp4",
+      "nb_streams": 2,
+      "nb_programs": 0,
+      "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+      "format_long_name": "QuickTime / MOV",
+      "start_time": "0.000000",
+      "duration": "125.500000",
+      "size": "64799019",
+      "bit_rate": "4130614",
+      "probe_score": 100,
+      "tags": {
+        "major_brand": "isom",
+        "minor_version": "512",
+        "compatible_brands": "isomiso2avc1mp41",
+        "title": "CargoMatch - Find the next load",
+        "encoder": "Lavf60.16.100",
+        "comment": "AI-generated people/location footage; original library narrator John, generated score/ambience; actual fictional CargoMatch demo screens. Introduction, not booking. Availability estimated, not live tracking. Rail and air are fictional demo pilots.",
+        "description": "AI-generated people/location footage; original library narrator John, generated score/ambience; actual fictional CargoMatch demo screens. Introduction, not booking. Availability estimated, not live tracking. Rail and air are fictional demo pilots."
+      }
+    }
+  },
+  "audio": {
+    "mixInputMeasurement": {
+      "input_i": "-18.08",
+      "input_tp": "-2.20",
+      "input_lra": "3.50",
+      "input_thresh": "-28.74",
+      "output_i": "-16.26",
+      "output_tp": "-1.50",
+      "output_lra": "3.40",
+      "output_thresh": "-26.86",
+      "normalization_type": "dynamic",
+      "target_offset": "0.26"
+    },
+    "finalMeasurement": {
+      "input_i": "-16.09",
+      "input_tp": "-1.36",
+      "input_lra": "3.30",
+      "input_thresh": "-26.72",
+      "output_i": "-16.06",
+      "output_tp": "-1.50",
+      "output_lra": "3.20",
+      "output_thresh": "-26.65",
+      "normalization_type": "dynamic",
+      "target_offset": "0.06"
+    }
+  },
+  "pacing": {
+    "oldGapMedianSeconds": 2.463125,
+    "oldGapMaximumSeconds": 4.9936039999999995,
+    "newChapterGapSeconds": 0.55,
+    "newInternalPauseSeconds": {
+      "opening": [
+        0.56675,
+        0.179521,
+        0.243667,
+        0.687312,
+        0.169458,
+        0.707458,
+        0.828417,
+        0.482187
+      ],
+      "deepsea": [
+        0.455146,
+        0.547479,
+        0.185146,
+        0.338542,
+        0.416563,
+        0.314896,
+        0.345792,
+        0.436083,
+        0.253479,
+        0.632729,
+        0.287729,
+        0.246188,
+        0.838917,
+        0.410396
+      ],
+      "consent": [
+        0.193354,
+        0.78875,
+        0.250688,
+        0.562667
+      ],
+      "road": [
+        0.341354,
+        0.31225,
+        0.715354,
+        0.736437,
+        0.740521,
+        0.8105,
+        0.357167,
+        0.669438,
+        0.185271
+      ],
+      "pilots": [
+        0.425854,
+        0.978979,
+        0.770604,
+        0.617521,
+        0.636333,
+        0.197854
+      ],
+      "closing": [
+        0.794271,
+        0.399958,
+        0.352917,
+        0.677812,
+        0.738604,
+        0.903625,
+        0.873312,
+        0.293167
+      ]
+    },
+    "subtitleAlignment": "Local word-level ASR aligned to approved bilingual script; evidence in alignment.json"
+  },
+  "disclosures": [
+    "All people and location footage are photorealistic AI-generated scenes, not actual customers or evidence of customer results.",
+    "Screens are captured from the current isolated CargoMatch server demo using fictional personas and records.",
+    "Mutual consent permits an introduction and discussion only; it is not a booking or reservation.",
+    "Availability is manually estimated, not independently verified live AIS, telemetry or licensed routing.",
+    "Rail and air are functional fictional demo pilots, not released production modules or external airline booking integrations.",
+    "Narration, music and ambient effects are generated through Replit-managed media tools; no additional paid external account is required."
+  ]
+}

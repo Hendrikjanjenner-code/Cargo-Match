@@ -1,5 +1,57 @@
 # CargoMatch sales film production
 
+## Current speech-led revision
+
+The revised film lives separately at
+`attached_assets/cargomatch/revised/cargomatch-en-nl-1080p.mp4`.
+The original delivery and the approved 27-second audition remain unchanged.
+The user approved the original Irish library narrator John and explicitly chose
+natural pacing over keeping the old 168-second runtime. The revised timeline is
+125.5 seconds, preserving all 24 bilingual script passages.
+
+`revised-narration.json` records the six continuous reads and voice settings.
+The approved deepsea read is reused directly from the audition; five other
+passages were generated with the same voice, at normal speed. There is no
+celebrity voice clone or asserted endorsement.
+
+`align_narration.py` uses the declared `faster-whisper` Python dependency and the
+public `base.en` model locally on CPU. First use downloads that model to the
+local model cache; no hosted speech-recognition account is needed. The resulting
+`alignment.json` contains word-level recognition evidence, explicitly retained
+recognizer warnings, and hashes of the exact script, manifest and normalized
+WAVs. Recognition evidence helps time subtitles; it is not a human listening
+assessment. Do not change the script/audio and reuse old alignment.
+
+To rebuild this revision from its preserved generated speech:
+
+```bash
+python3 media/cargomatch/revise.py --prepare-audio
+python3 media/cargomatch/align_narration.py --model base.en
+python3 media/cargomatch/revise.py
+python3 media/cargomatch/verify.py --delivery-dir attached_assets/cargomatch/revised
+node media/cargomatch/verify-browser.cjs --delivery-dir attached_assets/cargomatch/revised
+```
+
+`revised_picture.py` retimes the measured device composites and source footage,
+uses brief context dissolves, and uses only four-frame transitions between
+adjacent same-device UI states. Montage inserts also dissolve. It skips some
+initial wide device framing where a shorter read would otherwise leave too
+little close-up time. The narration is never time-stretched. Short 0.55-second
+chapter gaps replace the previous fixed seven-second narration grid.
+
+`edit-timeline.json` is the revision's source of truth for picture timing,
+duration, narration offsets and transition lengths. Verification derives its
+frame count and review positions from that timeline rather than assuming the
+original runtime. Normalized music, modest port/road ambience, burned-in Dutch
+captions, audio loudness receipts and the original content disclosures are
+retained. Disposable encodes are cached separately in `build/revised/`; their
+fingerprints include source files and renderer code.
+Generated source MP3s remain tracked. Normalized WAVs and intermediate mixes
+are ignored rather than adding large reproducible PCM files to the repository;
+`--prepare-audio` recreates the exact narration inputs before alignment.
+
+## Original 168-second delivery
+
 `assemble.py` creates the final 168-second, 1920×1080, 24 fps CargoMatch film after the silent picture master is ready. It uses Python’s standard library plus the existing FFmpeg and FFprobe executables; no additional Python packages or external accounts are required.
 
 `picture.py` builds that master from the preserved AI-generated live-action clips
@@ -40,7 +92,8 @@ assembly; never reuse an old exported master after changing a screenshot.
 
 Sources are preserved in `attached_assets/cargomatch/source/`, `screens/` and
 `audio/`. The actual rendered app logo is `attached_assets/cargomatch/logo.png`.
-`production.json` holds the bilingual script/storyboard, `video-prompts.json`
+`production.json` holds the bilingual script/storyboard (its fixed-slot metadata
+applies only to the original export), `video-prompts.json`
 the clip directions, `audio-manifest.json` the voice/score provenance, and
 `capture-manifest.json` the UI routes, personas and disclosure states.
 Disposable encodes and review frames live under ignored `media/cargomatch/build/`.

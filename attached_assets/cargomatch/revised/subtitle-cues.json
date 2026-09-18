@@ -1,0 +1,473 @@
+{
+  "language": "nl",
+  "generatedFrom": "media/cargomatch/production.json",
+  "timingBasis": "Local faster-whisper base.en word timestamps aligned to the original bilingual script; aligned against exact normalized continuous WAVs",
+  "cueCount": 41,
+  "cues": [
+    {
+      "slotId": 1,
+      "sentence": 1,
+      "start": 0.65,
+      "end": 3.72,
+      "english": "Every day, millions of tonnes of cargo move across the world.",
+      "dutch": "Elke dag worden wereldwijd miljoenen tonnen vracht vervoerd.",
+      "lines": [
+        "Elke dag worden wereldwijd miljoenen tonnen vracht",
+        "vervoerd."
+      ]
+    },
+    {
+      "slotId": 2,
+      "sentence": 1,
+      "start": 3.72,
+      "end": 7.21,
+      "english": "By sea. By road. By rail. By air.",
+      "dutch": "Over zee. Over de weg. Over het spoor. Door de lucht.",
+      "lines": [
+        "Over zee. Over de weg. Over het spoor. Door de lucht."
+      ]
+    },
+    {
+      "slotId": 3,
+      "sentence": 1,
+      "start": 7.21,
+      "end": 8.48,
+      "english": "A voyage ends.",
+      "dutch": "Een reis eindigt.",
+      "lines": [
+        "Een reis eindigt."
+      ]
+    },
+    {
+      "slotId": 3,
+      "sentence": 2,
+      "start": 8.48,
+      "end": 10.11,
+      "english": "A vessel is nearly empty.",
+      "dutch": "Een schip is bijna leeg.",
+      "lines": [
+        "Een schip is bijna leeg."
+      ]
+    },
+    {
+      "slotId": 3,
+      "sentence": 3,
+      "start": 10.11,
+      "end": 11.61,
+      "english": "What comes next?",
+      "dutch": "Wat volgt daarna?",
+      "lines": [
+        "Wat volgt daarna?"
+      ]
+    },
+    {
+      "slotId": 4,
+      "sentence": 1,
+      "start": 11.61,
+      "end": 15.12,
+      "english": "For a truck, an empty return means more than distance.",
+      "dutch": "Voor een truck betekent leeg terugrijden meer dan afstand.",
+      "lines": [
+        "Voor een truck betekent leeg terugrijden meer dan afstand."
+      ]
+    },
+    {
+      "slotId": 4,
+      "sentence": 2,
+      "start": 15.12,
+      "end": 16.859,
+      "english": "It means time and fuel.",
+      "dutch": "Het kost tijd en brandstof.",
+      "lines": [
+        "Het kost tijd en brandstof."
+      ]
+    },
+    {
+      "slotId": 5,
+      "sentence": 1,
+      "start": 17.409,
+      "end": 19.589,
+      "english": "The next suitable cargo may already be waiting.",
+      "dutch": "De volgende passende lading wacht misschien al.",
+      "lines": [
+        "De volgende passende lading wacht misschien al."
+      ]
+    },
+    {
+      "slotId": 5,
+      "sentence": 2,
+      "start": 19.589,
+      "end": 21.479,
+      "english": "The right people need to see it.",
+      "dutch": "De juiste mensen moeten die kunnen vinden.",
+      "lines": [
+        "De juiste mensen moeten die kunnen vinden."
+      ]
+    },
+    {
+      "slotId": 6,
+      "sentence": 1,
+      "start": 21.479,
+      "end": 24.739,
+      "english": "In Malaysia, a vessel is expected to become available.",
+      "dutch": "In Maleisië komt naar verwachting een schip vrij.",
+      "lines": [
+        "In Maleisië komt naar verwachting een schip vrij."
+      ]
+    },
+    {
+      "slotId": 6,
+      "sentence": 2,
+      "start": 24.739,
+      "end": 27.409,
+      "english": "Its operator records that future position.",
+      "dutch": "De operator legt die toekomstige positie vast.",
+      "lines": [
+        "De operator legt die toekomstige positie vast."
+      ]
+    },
+    {
+      "slotId": 7,
+      "sentence": 1,
+      "start": 27.409,
+      "end": 29.479,
+      "english": "Not a live tracking promise.",
+      "dutch": "Geen belofte van live tracking.",
+      "lines": [
+        "Geen belofte van live tracking."
+      ]
+    },
+    {
+      "slotId": 7,
+      "sentence": 2,
+      "start": 29.479,
+      "end": 33.399,
+      "english": "An operational estimate, ready for the next commercial conversation.",
+      "dutch": "Een operationele inschatting voor het volgende commerciële gesprek.",
+      "lines": [
+        "Een operationele inschatting voor het volgende commerciële",
+        "gesprek."
+      ]
+    },
+    {
+      "slotId": 8,
+      "sentence": 1,
+      "start": 33.399,
+      "end": 38.119,
+      "english": "Meanwhile, seventy-five thousand tonnes need to move from Indonesia to China.",
+      "dutch": "Intussen moet vijfenzeventigduizend ton van Indonesië naar China worden vervoerd.",
+      "lines": [
+        "Intussen moet vijfenzeventigduizend ton van Indonesië naar",
+        "China worden vervoerd."
+      ]
+    },
+    {
+      "slotId": 9,
+      "sentence": 1,
+      "start": 38.119,
+      "end": 43.351,
+      "english": "CargoMatch brings the opportunity into view, while protecting each party's commercial details.",
+      "dutch": "CargoMatch maakt de kans zichtbaar en beschermt de commerciële gegevens van beide partijen.",
+      "lines": [
+        "CargoMatch maakt de kans zichtbaar en beschermt de",
+        "commerciële gegevens van beide partijen."
+      ]
+    },
+    {
+      "slotId": 10,
+      "sentence": 1,
+      "start": 43.902,
+      "end": 45.192,
+      "english": "One party sends interest.",
+      "dutch": "Eén partij toont interesse.",
+      "lines": [
+        "Eén partij toont interesse."
+      ]
+    },
+    {
+      "slotId": 10,
+      "sentence": 2,
+      "start": 45.192,
+      "end": 47.262,
+      "english": "The other decides whether to connect.",
+      "dutch": "De ander beslist over de verbinding.",
+      "lines": [
+        "De ander beslist over de verbinding."
+      ]
+    },
+    {
+      "slotId": 10,
+      "sentence": 3,
+      "start": 47.262,
+      "end": 48.892,
+      "english": "Permission comes first.",
+      "dutch": "Toestemming komt eerst.",
+      "lines": [
+        "Toestemming komt eerst."
+      ]
+    },
+    {
+      "slotId": 11,
+      "sentence": 1,
+      "start": 48.892,
+      "end": 51.922,
+      "english": "Only after mutual consent does the conversation open.",
+      "dutch": "Pas na wederzijdse toestemming begint het gesprek.",
+      "lines": [
+        "Pas na wederzijdse toestemming begint het gesprek."
+      ]
+    },
+    {
+      "slotId": 11,
+      "sentence": 2,
+      "start": 51.922,
+      "end": 53.707,
+      "english": "An introduction, not a booking.",
+      "dutch": "Een kennismaking, geen boeking.",
+      "lines": [
+        "Een kennismaking, geen boeking."
+      ]
+    },
+    {
+      "slotId": 12,
+      "sentence": 1,
+      "start": 54.257,
+      "end": 57.867,
+      "english": "On the road, the same question begins before the current delivery is complete.",
+      "dutch": "Op de weg speelt dezelfde vraag al voordat de huidige levering is afgerond.",
+      "lines": [
+        "Op de weg speelt dezelfde vraag al voordat de huidige",
+        "levering is afgerond."
+      ]
+    },
+    {
+      "slotId": 13,
+      "sentence": 1,
+      "start": 57.867,
+      "end": 61.727,
+      "english": "The driver confirms when the assigned truck is expected to be empty.",
+      "dutch": "De chauffeur bevestigt wanneer de toegewezen truck naar verwachting leeg is.",
+      "lines": [
+        "De chauffeur bevestigt wanneer de toegewezen truck naar",
+        "verwachting leeg is."
+      ]
+    },
+    {
+      "slotId": 14,
+      "sentence": 1,
+      "start": 61.727,
+      "end": 63.857,
+      "english": "A suitable next load appears.",
+      "dutch": "Een passende volgende lading verschijnt.",
+      "lines": [
+        "Een passende volgende lading verschijnt."
+      ]
+    },
+    {
+      "slotId": 14,
+      "sentence": 2,
+      "start": 63.857,
+      "end": 66.806,
+      "english": "The driver sends the opportunity to the planner.",
+      "dutch": "De chauffeur stuurt de kans naar de planner.",
+      "lines": [
+        "De chauffeur stuurt de kans naar de planner."
+      ]
+    },
+    {
+      "slotId": 15,
+      "sentence": 1,
+      "start": 66.806,
+      "end": 70.037,
+      "english": "The planner reviews it and makes the commercial decision.",
+      "dutch": "De planner beoordeelt de kans en beslist commercieel.",
+      "lines": [
+        "De planner beoordeelt de kans en beslist commercieel."
+      ]
+    },
+    {
+      "slotId": 15,
+      "sentence": 2,
+      "start": 70.037,
+      "end": 72.357,
+      "english": "The driver focuses on the operation.",
+      "dutch": "De chauffeur richt zich op de operatie.",
+      "lines": [
+        "De chauffeur richt zich op de operatie."
+      ]
+    },
+    {
+      "slotId": 16,
+      "sentence": 1,
+      "start": 72.357,
+      "end": 76.406,
+      "english": "Availability, timing, and practical requirements still need checking.",
+      "dutch": "Beschikbaarheid, timing en praktische eisen moeten nog worden gecontroleerd.",
+      "lines": [
+        "Beschikbaarheid, timing en praktische eisen moeten nog",
+        "worden gecontroleerd."
+      ]
+    },
+    {
+      "slotId": 16,
+      "sentence": 2,
+      "start": 76.406,
+      "end": 78.4,
+      "english": "People remain in control.",
+      "dutch": "Mensen houden de regie.",
+      "lines": [
+        "Mensen houden de regie."
+      ]
+    },
+    {
+      "slotId": 17,
+      "sentence": 1,
+      "start": 78.951,
+      "end": 84.231,
+      "english": "Functional rail pilots explore the same approach, starting with available wagons in Duisburg.",
+      "dutch": "Functionele spoorpilots verkennen dezelfde aanpak, met beschikbare wagons in Duisburg.",
+      "lines": [
+        "Functionele spoorpilots verkennen dezelfde aanpak, met",
+        "beschikbare wagons in Duisburg."
+      ]
+    },
+    {
+      "slotId": 18,
+      "sentence": 1,
+      "start": 84.231,
+      "end": 89.621,
+      "english": "In the air cargo demo pilot, the question is unused space on a scheduled flight.",
+      "dutch": "In de luchtvrachtdemopilot draait het om onbenutte ruimte op een geplande vlucht.",
+      "lines": [
+        "In de luchtvrachtdemopilot draait het om onbenutte ruimte",
+        "op een geplande vlucht."
+      ]
+    },
+    {
+      "slotId": 19,
+      "sentence": 1,
+      "start": 89.621,
+      "end": 91.441,
+      "english": "Amsterdam to Dubai.",
+      "dutch": "Amsterdam naar Dubai.",
+      "lines": [
+        "Amsterdam naar Dubai."
+      ]
+    },
+    {
+      "slotId": 19,
+      "sentence": 2,
+      "start": 91.441,
+      "end": 96.291,
+      "english": "Remaining weight and volume shown together, so suitable cargo can be considered.",
+      "dutch": "Resterend gewicht en volume samen in beeld om passende lading te beoordelen.",
+      "lines": [
+        "Resterend gewicht en volume samen in beeld om passende",
+        "lading te beoordelen."
+      ]
+    },
+    {
+      "slotId": 20,
+      "sentence": 1,
+      "start": 96.291,
+      "end": 102.192,
+      "english": "These are fictional pilot scenarios, not live airline bookings or fully released rail services.",
+      "dutch": "Dit zijn fictieve pilotscenario's, geen live vliegboekingen of volledig uitgerolde spoordiensten.",
+      "lines": [
+        "Dit zijn fictieve pilotscenario's, geen live",
+        "vliegboekingen of volledig uitgerolde spoordiensten."
+      ]
+    },
+    {
+      "slotId": 21,
+      "sentence": 1,
+      "start": 102.741,
+      "end": 107.881,
+      "english": "Across the network, better visibility gives professionals a chance to start the conversation earlier.",
+      "dutch": "Meer inzicht geeft professionals in het netwerk de kans om eerder het gesprek te beginnen.",
+      "lines": [
+        "Meer inzicht geeft professionals in het netwerk de kans om",
+        "eerder het gesprek te beginnen."
+      ]
+    },
+    {
+      "slotId": 22,
+      "sentence": 1,
+      "start": 107.881,
+      "end": 110.051,
+      "english": "Before the vessel sails empty.",
+      "dutch": "Voordat het schip leeg vertrekt.",
+      "lines": [
+        "Voordat het schip leeg vertrekt."
+      ]
+    },
+    {
+      "slotId": 22,
+      "sentence": 2,
+      "start": 110.051,
+      "end": 112.141,
+      "english": "Before the truck heads back.",
+      "dutch": "Voordat de truck terugrijdt.",
+      "lines": [
+        "Voordat de truck terugrijdt."
+      ]
+    },
+    {
+      "slotId": 22,
+      "sentence": 3,
+      "start": 112.141,
+      "end": 114.541,
+      "english": "Before an opportunity passes.",
+      "dutch": "Voordat een kans voorbijgaat.",
+      "lines": [
+        "Voordat een kans voorbijgaat."
+      ]
+    },
+    {
+      "slotId": 23,
+      "sentence": 1,
+      "start": 114.541,
+      "end": 116.271,
+      "english": "CargoMatch.",
+      "dutch": "CargoMatch.",
+      "lines": [
+        "CargoMatch."
+      ]
+    },
+    {
+      "slotId": 23,
+      "sentence": 2,
+      "start": 116.271,
+      "end": 119.501,
+      "english": "Find the next load before capacity becomes empty.",
+      "dutch": "Vind de volgende lading voordat capaciteit leeg komt te staan.",
+      "lines": [
+        "Vind de volgende lading voordat capaciteit leeg komt te",
+        "staan."
+      ]
+    },
+    {
+      "slotId": 24,
+      "sentence": 1,
+      "start": 119.501,
+      "end": 122.681,
+      "english": "The transport capacity intelligence network.",
+      "dutch": "Het informatienetwerk voor transportcapaciteit.",
+      "lines": [
+        "Het informatienetwerk voor transportcapaciteit."
+      ]
+    },
+    {
+      "slotId": 24,
+      "sentence": 2,
+      "start": 122.681,
+      "end": 124.215,
+      "english": "Discover CargoMatch.",
+      "dutch": "Ontdek CargoMatch.",
+      "lines": [
+        "Ontdek CargoMatch."
+      ]
+    }
+  ],
+  "alignmentEvidence": "attached_assets/cargomatch/revised/alignment.json"
+}

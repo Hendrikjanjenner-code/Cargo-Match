@@ -51,3 +51,5 @@ Thumbs.db
 # Reproducible intermediate media renders (delivery/source assets remain tracked)
 /media/closa/build/
 /media/closa/build-screens/
+/media/cargomatch/build/
+/attached_assets/cargomatch/revised/audio/*.wav

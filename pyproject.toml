@@ -4,6 +4,7 @@ version = "0.1.0"
 description = "Image preparation and screen tracking for the Closa film exports."
 requires-python = ">=3.13"
 dependencies = [
+    "faster-whisper==1.2.1",
     "numpy>=2.5.3",
     "opencv-python-headless>=5.0.0.93",
     "pillow>=12.3.0",

@@ -1,0 +1,184 @@
+{
+  "output": "attached_assets/cargomatch/revised/cargomatch-en-nl-1080p.mp4",
+  "sha256": "78ac4b7b9542c66ecda3ffe1df821066fa733de57cfd83866378f7897d0f6d5b",
+  "seconds": 125.5,
+  "resolution": [
+    1920,
+    1080
+  ],
+  "fps": 24.0,
+  "frames": 3012,
+  "codec": "H.264/yuv420p + AAC stereo 48kHz",
+  "wholeFileDecodesWithoutWarnings": true,
+  "firstFrameMean": 0.0,
+  "lastFrameMean": 0.0,
+  "subtitleCueCount": 41,
+  "subtitleMatteTop": 930,
+  "allDeviceScreensClearOfMatteAndHeader": true,
+  "deviceGeometry": {
+    "device-air": {
+      "outputFrames": 168,
+      "screenBottomMax": 821.342839652265,
+      "minimumWidthAfterThreeSeconds": 1122.0311830937244,
+      "originalCaptureHashesMatch": true
+    },
+    "device-capacity": {
+      "outputFrames": 168,
+      "screenBottomMax": 821.342839652265,
+      "minimumWidthAfterThreeSeconds": 1122.0311830937244,
+      "originalCaptureHashesMatch": true
+    },
+    "device-cargo": {
+      "outputFrames": 168,
+      "screenBottomMax": 821.342839652265,
+      "minimumWidthAfterThreeSeconds": 1122.0311830937244,
+      "originalCaptureHashesMatch": true
+    },
+    "device-consent": {
+      "outputFrames": 168,
+      "screenBottomMax": 821.342839652265,
+      "minimumWidthAfterThreeSeconds": 1122.0311830937244,
+      "originalCaptureHashesMatch": true
+    },
+    "device-driver": {
+      "outputFrames": 168,
+      "screenBottomMax": 861.1217261851746,
+      "minimumWidthAfterThreeSeconds": 454.2138150868632,
+      "originalCaptureHashesMatch": true
+    },
+    "device-map": {
+      "outputFrames": 168,
+      "screenBottomMax": 916.0,
+      "minimumWidthAfterThreeSeconds": 1021.3510326897085,
+      "originalCaptureHashesMatch": true
+    },
+    "device-messages": {
+      "outputFrames": 168,
+      "screenBottomMax": 887.4899291992188,
+      "minimumWidthAfterThreeSeconds": 920.3604736328125,
+      "originalCaptureHashesMatch": true
+    },
+    "device-nextload": {
+      "outputFrames": 168,
+      "screenBottomMax": 861.1217261851746,
+      "minimumWidthAfterThreeSeconds": 454.2138150868632,
+      "originalCaptureHashesMatch": true
+    },
+    "device-opportunity": {
+      "outputFrames": 168,
+      "screenBottomMax": 821.342839652265,
+      "minimumWidthAfterThreeSeconds": 1122.0311830937244,
+      "originalCaptureHashesMatch": true
+    },
+    "device-planner": {
+      "outputFrames": 168,
+      "screenBottomMax": 887.4899291992188,
+      "minimumWidthAfterThreeSeconds": 920.3604736328125,
+      "originalCaptureHashesMatch": true
+    },
+    "device-rail": {
+      "outputFrames": 168,
+      "screenBottomMax": 916.0,
+      "minimumWidthAfterThreeSeconds": 1021.3510326897085,
+      "originalCaptureHashesMatch": true
+    },
+    "device-referral": {
+      "outputFrames": 168,
+      "screenBottomMax": 821.342839652265,
+      "minimumWidthAfterThreeSeconds": 1122.0311830937244,
+      "originalCaptureHashesMatch": true
+    }
+  },
+  "loudness": {
+    "input_i": "-16.09",
+    "input_tp": "-1.36",
+    "input_lra": "3.30",
+    "input_thresh": "-26.72",
+    "output_i": "-16.06",
+    "output_tp": "-1.50",
+    "output_lra": "3.20",
+    "output_thresh": "-26.65",
+    "normalization_type": "dynamic",
+    "target_offset": "0.06"
+  },
+  "reviewSheets": [
+    "media/cargomatch/build/revised-review/contact-start.jpg",
+    "media/cargomatch/build/revised-review/contact-middle.jpg",
+    "media/cargomatch/build/revised-review/contact-end.jpg"
+  ],
+  "sampledFrameMeans": {
+    "0.77": 92.677,
+    "4.53": 115.181,
+    "8.22": 112.24,
+    "12.91": 91.812,
+    "18.35": 132.913,
+    "22.77": 133.424,
+    "28.73": 107.87,
+    "34.45": 134.656,
+    "39.41": 134.146,
+    "45.03": 129.055,
+    "50.08": 133.185,
+    "55.1": 117.443,
+    "58.77": 99.469,
+    "62.85": 99.26,
+    "68.03": 138.757,
+    "73.78": 99.521,
+    "80.13": 81.103,
+    "85.42": 102.956,
+    "91.08": 130.305,
+    "97.71": 93.79,
+    "103.9": 111.368,
+    "109.33": 110.231,
+    "115.66": 53.835,
+    "120.8": 53.519,
+    "1.92": 89.951,
+    "5.58": 87.617,
+    "9.54": 114.888,
+    "14.65": 90.358,
+    "19.56": 140.908,
+    "24.56": 131.631,
+    "30.52": 106.827,
+    "35.88": 132.988,
+    "41.15": 132.604,
+    "46.52": 133.198,
+    "51.69": 141.293,
+    "56.19": 119.074,
+    "59.92": 98.055,
+    "64.38": 97.832,
+    "69.69": 137.04,
+    "75.77": 103.79,
+    "81.71": 111.817,
+    "87.04": 99.98,
+    "93.08": 133.066,
+    "99.65": 94.154,
+    "105.44": 107.084,
+    "111.33": 119.448,
+    "117.15": 54.166,
+    "122.56": 53.285,
+    "3.07": 88.703,
+    "6.63": 105.019,
+    "10.87": 115.513,
+    "16.38": 101.247,
+    "20.77": 146.074,
+    "26.35": 129.661,
+    "32.31": 106.39,
+    "37.3": 130.788,
+    "42.88": 130.283,
+    "48.01": 131.075,
+    "53.3": 146.321,
+    "57.27": 119.88,
+    "61.07": 99.646,
+    "65.9": 98.937,
+    "71.35": 134.725,
+    "77.76": 103.273,
+    "83.28": 111.462,
+    "88.67": 106.534,
+    "95.08": 130.601,
+    "101.58": 106.04,
+    "106.97": 104.585,
+    "113.33": 86.857,
+    "118.63": 54.068,
+    "124.33": 52.807
+  },
+  "reviewLimits": "Human-style visual review is sampled throughout all chapters, not every frame; no independent human listening session or external-player certification."
+}

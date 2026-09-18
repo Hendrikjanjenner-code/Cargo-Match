@@ -1,0 +1,2806 @@
+# CARGOMATCH — SIDEBAR, DEMO USERS & ROLE-BASED UX EXTENSION V2
+
+Extend the EXISTING CargoMatch application.
+
+IMPORTANT:
+
+Do NOT rebuild the application from scratch.
+
+Do NOT remove or break existing CargoMatch functionality.
+
+This prompt builds on the existing CargoMatch Master Specification and the Deepsea + Multimodal Master Extension.
+
+The objective is to create:
+
+1. A professional persistent LEFT SIDEBAR
+2. ROLE-AWARE navigation
+3. TRANSPORT-MODE-AWARE navigation
+4. Multiple DEMO USERS
+5. Multiple DEMO COMPANIES
+6. Secure DEMO USER SWITCHING
+7. ROLE-SPECIFIC dashboards
+8. Cross-persona demo scenarios
+9. A clear distinction between company roles, operational profiles and security permissions
+10. A demo environment suitable for testing and presenting CargoMatch
+
+CargoMatch must no longer behave as if Andy Kers is the only user.
+
+The application must be demonstrable from BOTH SIDES of the marketplace.
+
+---
+
+# 1. CORE UX PRINCIPLE
+
+CargoMatch is one platform with multiple perspectives.
+
+The application must adapt to:
+
+WHO IS LOGGED IN
+
+*
+
+WHICH COMPANY THEY REPRESENT
+
+*
+
+WHICH TRANSPORT MODE THEY WORK IN
+
+*
+
+WHICH OPERATIONAL PROFILE THEY HAVE
+
+*
+
+WHAT THEY ARE AUTHORIZED TO DO
+
+Do not give every user the same dashboard.
+
+Do not give every user the same navigation.
+
+Do not confuse operational profile with security permissions.
+
+---
+
+# 2. DESKTOP LEFT SIDEBAR
+
+Implement a persistent navigation sidebar on the LEFT side of the application.
+
+Desktop target width:
+
+approximately 240–280 px.
+
+The sidebar should be:
+
+persistent
+
+collapsible
+
+responsive
+
+clean
+
+professional
+
+appropriate for B2B logistics software.
+
+The main application content appears to the RIGHT of the sidebar.
+
+The sidebar should remain visible while navigating between pages.
+
+---
+
+# 3. SIDEBAR VISUAL STYLE
+
+Use the existing CargoMatch visual identity.
+
+Preferred style:
+
+dark navy / marine background
+
+clear typography
+
+simple professional icons
+
+subtle active-state indicator
+
+clear section grouping
+
+compact but readable spacing
+
+Avoid:
+
+consumer-app styling
+
+oversized icons
+
+excessive gradients
+
+cartoonish graphics
+
+unnecessary animations
+
+The product should visually feel suitable for:
+
+shipowners
+
+charterers
+
+carriers
+
+forwarders
+
+planners
+
+logistics companies
+
+air-cargo operators
+
+rail operators.
+
+---
+
+# 4. SIDEBAR STRUCTURE
+
+Conceptual structure:
+
+CARGOMATCH LOGO
+
+↓
+
+ACTIVE COMPANY / WORKSPACE
+
+↓
+
+TRANSPORT MODE / MODULE
+
+↓
+
+PRIMARY NAVIGATION
+
+↓
+
+NETWORK / COMMUNICATION
+
+↓
+
+COMPANY / SETTINGS
+
+↓
+
+CURRENT USER
+
+Example:
+
+CARGOMATCH
+
+OceanBridge Bulk Demo
+
+[ Maritime ▾ ]
+
+OVERVIEW
+
+Dashboard
+Map
+
+COMMERCIAL
+
+Fleet
+Open Positions
+Cargo Opportunities
+Matches
+
+NETWORK
+
+Partners
+Messages
+Notifications
+
+COMPANY
+
+Team
+Company
+Settings
+
+────────────────────
+
+SV
+Sophie van Dijk
+Owner Representative
+
+---
+
+# 5. COLLAPSIBLE SIDEBAR
+
+Allow the desktop sidebar to collapse.
+
+Expanded:
+
+icons + labels
+
+Collapsed:
+
+icons only
+
+Provide tooltips for collapsed icons.
+
+Remember the user's sidebar preference where technically appropriate.
+
+---
+
+# 6. MOBILE NAVIGATION
+
+Do not permanently display a 250px sidebar on mobile.
+
+On smaller screens convert navigation into:
+
+drawer
+
+or
+
+compact mobile navigation.
+
+Operational mobile users such as:
+
+SKIPPER
+
+DRIVER
+
+should have particularly simple navigation.
+
+---
+
+# 7. BASE NAVIGATION
+
+Prepare shared navigation groups.
+
+OVERVIEW
+
+Dashboard
+Map
+
+MARKETPLACE
+
+Cargo
+Capacity
+Matches
+
+OPERATIONS
+
+My Assets
+Expected Availability
+
+NETWORK
+
+Partners / Network
+Messages
+Notifications
+
+MANAGEMENT
+
+Company
+Team
+Settings
+
+Only show pages relevant to the current user's permissions and active mode.
+
+---
+
+# 8. TRANSPORT MODE SWITCHER
+
+Prepare a transport-mode switcher.
+
+Potential modes:
+
+MARITIME
+
+ROAD
+
+RAIL
+
+AIR CARGO
+
+Do NOT display a mode as fully available if its functionality is not implemented.
+
+Use feature flags.
+
+Possible states:
+
+ACTIVE
+
+PILOT
+
+COMING LATER
+
+HIDDEN
+
+Do not send users to broken placeholder screens.
+
+---
+
+# 9. MARITIME SUBMODE SWITCHER
+
+Within Maritime support conceptual submodes:
+
+INLAND WATERWAY
+
+DEEPSEA BULK
+
+CONVENTIONAL / LINER
+
+Navigation terminology should change appropriately.
+
+INLAND:
+
+Vessels
+Capacity
+Nearby Cargo
+Expected Availability
+
+DEEPSEA:
+
+Fleet
+Open Positions
+Cargo Orders
+Cargo Opportunities
+
+LINER:
+
+Services
+Sailings
+Trade Lanes
+Cargo Opportunities
+
+Do not use inland terminology for deepsea shipping.
+
+---
+
+# 10. ROAD NAVIGATION
+
+Example:
+
+Dashboard
+
+Map
+
+Fleet
+
+Vehicles
+
+Trailers
+
+Expected Empty
+
+Cargo Opportunities
+
+Matches
+
+Messages
+
+Network
+
+Company
+
+Settings
+
+---
+
+# 11. RAIL NAVIGATION
+
+Example:
+
+Dashboard
+
+Rail Capacity
+
+Wagons / Services
+
+Terminals
+
+Cargo Opportunities
+
+Matches
+
+Messages
+
+Network
+
+Company
+
+Settings
+
+---
+
+# 12. AIR CARGO NAVIGATION
+
+Example:
+
+Dashboard
+
+Flights
+
+Flight Capacity
+
+Cargo Opportunities
+
+Matches
+
+Messages
+
+Network
+
+Company
+
+Settings
+
+---
+
+# 13. CARGOMATCH IMPORT NAVIGATION
+
+If CargoMatch Import is feature-enabled, show it as a clearly separate module.
+
+IMPORT
+
+Dashboard
+
+Shipments
+
+Containers
+
+Documents
+
+Charges
+
+Payments
+
+Releases
+
+Pickup
+
+Do not mix these pages into transport-capacity matching navigation.
+
+---
+
+# 14. CURRENT USER AREA
+
+At the bottom of the sidebar display:
+
+avatar or initials
+
+user name
+
+company
+
+operational profile
+
+Example:
+
+AK
+
+Andy Kers
+
+NorthSea Chartering Demo
+
+Charterer
+
+Clicking the user area should open a menu containing:
+
+Profile
+
+Company/workspace switch if authorized
+
+Switch Demo User — demo mode only
+
+Settings
+
+Logout
+
+---
+
+# 15. DEMO MODE
+
+Create a safe:
+
+DEVELOPMENT / DEMO MODE
+
+CargoMatch must be demonstrable from multiple marketplace perspectives.
+
+Do NOT depend on one user.
+
+Seed multiple fictional:
+
+users
+
+companies
+
+assets
+
+cargo listings
+
+capacity opportunities
+
+matches
+
+interests
+
+connections
+
+messages
+
+notifications
+
+networks.
+
+The demo environment should feel populated immediately.
+
+---
+
+# 16. DEMO MODE INDICATOR
+
+When demo mode is active, show a subtle but visible:
+
+DEMO MODE
+
+indicator.
+
+Do not make it visually distracting.
+
+Users must be able to distinguish demo data from production data.
+
+---
+
+# 17. DEMO LOGIN
+
+In DEMO / DEVELOPMENT environments, provide:
+
+STANDARD LOGIN
+
+and:
+
+EXPLORE DEMO
+
+Selecting:
+
+EXPLORE DEMO
+
+shows persona cards.
+
+Example:
+
+CHARTERER
+Andy Kers
+
+DEEPSEA OWNER
+Sophie van Dijk
+
+SKIPPER
+Mark de Jong
+
+SHIPPER
+Laura Peters
+
+TRUCK PLANNER
+Thomas Becker
+
+DRIVER
+Jan Müller
+
+RAIL OPERATOR
+Anna Schmidt
+
+AIR CARGO OPERATOR
+Sarah Williams
+
+FORWARDER / LINER
+David Chen
+
+PLATFORM ADMIN
+Emma de Vries
+
+Selecting a persona should create a secure demo session for that persona.
+
+---
+
+# 18. DEMO USER SWITCHER
+
+While in demo mode provide:
+
+SWITCH DEMO USER
+
+This should allow switching persona without manually logging out and entering credentials again.
+
+Example menu:
+
+Andy Kers
+Charterer
+
+Sophie van Dijk
+Deepsea Owner
+
+Mark de Jong
+Skipper
+
+Laura Peters
+Shipper
+
+Thomas Becker
+Truck Planner
+
+Jan Müller
+Driver
+
+Anna Schmidt
+Rail Operator
+
+Sarah Williams
+Air Cargo Operator
+
+David Chen
+Forwarder / Liner
+
+Emma de Vries
+Platform Admin
+
+After switching:
+
+company context must change
+
+permissions must change
+
+sidebar must change
+
+dashboard must change
+
+data access must change
+
+notifications must change
+
+messages must change
+
+mode must change where appropriate.
+
+---
+
+# 19. DEMO SECURITY
+
+Demo switching must NOT be implemented as only changing a frontend variable.
+
+The backend authorization context must change.
+
+Every demo persona must have real demo permissions.
+
+API authorization must continue to apply.
+
+Demo shortcuts must be disabled in production.
+
+Never expose:
+
+production credentials
+
+admin secrets
+
+API keys
+
+provider credentials
+
+through demo functionality.
+
+---
+
+# 20. USER / COMPANY / PERMISSION MODEL
+
+Keep these concepts separate.
+
+## COMPANY ACTIVITIES
+
+Examples:
+
+SHIPPER
+
+CARRIER
+
+CHARTERER
+
+FORWARDER
+
+LINER_OPERATOR
+
+RAIL_OPERATOR
+
+AIR_CARGO_OPERATOR
+
+A company may have multiple activities.
+
+## COMPANY MEMBERSHIP ROLE
+
+OWNER
+
+ADMIN
+
+MEMBER
+
+## OPERATIONAL PROFILE
+
+SKIPPER
+
+DRIVER
+
+PLANNER
+
+CHARTERER
+
+SHIPPER
+
+OWNER_REPRESENTATIVE
+
+FORWARDER
+
+RAIL_OPERATOR
+
+AIR_CARGO_OPERATOR
+
+AGENT
+
+COMPANY_MANAGER
+
+## PLATFORM ROLE
+
+USER
+
+PLATFORM_ADMIN
+
+Do not use one single "role" field for all these concepts.
+
+---
+
+# 21. EXPLICIT PERMISSIONS
+
+Use explicit permissions for important actions.
+
+Examples:
+
+VIEW_CARGO
+
+CREATE_CARGO
+
+EDIT_OWN_CARGO
+
+VIEW_CAPACITY
+
+CREATE_CAPACITY
+
+MANAGE_CAPACITY
+
+VIEW_MATCHES
+
+SHOW_INTEREST
+
+ACCEPT_CONNECTION
+
+DECLINE_CONNECTION
+
+MESSAGE_CONNECTED_COMPANIES
+
+VIEW_ASSIGNED_ASSET
+
+MANAGE_ASSIGNED_ASSET_AVAILABILITY
+
+SEND_TO_PLANNER
+
+MANAGE_VESSELS
+
+MANAGE_VEHICLES
+
+MANAGE_RAIL_CAPACITY
+
+MANAGE_FLIGHT_CAPACITY
+
+MANAGE_COMPANY
+
+MANAGE_TEAM
+
+VIEW_ADMIN
+
+Do not infer all authorization purely from operational profile.
+
+---
+
+# 22. DEMO USER 1 — ANDY KERS
+
+Name:
+
+Andy Kers
+
+Company:
+
+NorthSea Chartering Demo
+
+Operational profile:
+
+CHARTERER
+
+Company activities:
+
+CHARTERER
+
+Primary mode:
+
+MARITIME / DEEPSEA
+
+Andy should be able to:
+
+create cargo orders
+
+edit own cargo
+
+search eligible vessels
+
+view privacy-safe open positions
+
+view matches
+
+show interest
+
+accept/decline relevant connections
+
+message connected companies
+
+Seed several cargo orders for Andy.
+
+Example:
+
+75,000 mt bulk cargo
+
+Indonesia → China
+
+Laycan:
+22–25 October
+
+This cargo should match one or more seeded deepsea open positions.
+
+---
+
+# 23. DEMO USER 2 — SOPHIE VAN DIJK
+
+Name:
+
+Sophie van Dijk
+
+Company:
+
+OceanBridge Bulk Demo
+
+Operational profile:
+
+OWNER_REPRESENTATIVE
+
+Company activity:
+
+CARRIER
+
+Primary mode:
+
+MARITIME / DEEPSEA
+
+Seed fleet:
+
+MV OceanBridge Atlas
+
+Kamsarmax
+
+82,000 DWT
+
+Expected open:
+Malaysia
+
+20–23 October
+
+Also seed:
+
+one Panamax
+
+one Supramax
+
+Sophie should be able to:
+
+manage fleet
+
+create/edit open positions
+
+confirm expected availability
+
+view cargo opportunities
+
+view matches
+
+show interest
+
+accept/decline connections
+
+message connected charterers.
+
+---
+
+# 24. DEMO USER 3 — MARK DE JONG
+
+Name:
+
+Mark de Jong
+
+Company:
+
+RhineFlow Shipping Demo
+
+Operational profile:
+
+SKIPPER
+
+Primary mode:
+
+MARITIME / INLAND WATERWAY
+
+Assigned vessel:
+
+MS RhineFlow One
+
+Mark should be able to:
+
+view assigned vessel
+
+view AIS/operational status where available
+
+confirm availability
+
+view nearby cargo
+
+view future cargo opportunities
+
+view relevant matches
+
+SEND TO PLANNER
+
+message where authorized.
+
+Mark should NOT automatically have authority to:
+
+accept commercial connections
+
+manage the entire company
+
+edit unrelated vessels.
+
+---
+
+# 25. ADD INLAND PLANNER DEMO USER
+
+Create:
+
+Name:
+
+Eva Jansen
+
+Company:
+
+RhineFlow Shipping Demo
+
+Operational profile:
+
+PLANNER
+
+Primary mode:
+
+MARITIME / INLAND WATERWAY
+
+Eva is the planner for Mark de Jong.
+
+She should be able to:
+
+manage relevant company vessels
+
+review skipper availability
+
+receive opportunities sent by Mark
+
+view cargo matches
+
+show commercial interest
+
+accept/decline connections
+
+message connected parties.
+
+This creates an important demo workflow:
+
+SKIPPER
+
+↓
+
+FINDS OPPORTUNITY
+
+↓
+
+SEND TO PLANNER
+
+↓
+
+PLANNER REVIEWS
+
+↓
+
+SHOW INTEREST
+
+↓
+
+CONNECTION
+
+---
+
+# 26. DEMO USER 4 — LAURA PETERS
+
+Name:
+
+Laura Peters
+
+Company:
+
+EuroCommodities Demo
+
+Operational profile:
+
+SHIPPER
+
+Company activity:
+
+SHIPPER
+
+Laura can:
+
+create cargo
+
+edit own cargo
+
+view eligible capacity
+
+view matches
+
+show interest where permitted
+
+communicate with connected companies.
+
+Seed realistic fictional cargo:
+
+grain
+
+minerals
+
+steel
+
+project cargo
+
+Do not use confidential real-world commercial data.
+
+---
+
+# 27. DEMO USER 5 — THOMAS BECKER
+
+Name:
+
+Thomas Becker
+
+Company:
+
+TransRoute Logistics Demo
+
+Operational profile:
+
+PLANNER
+
+Primary mode:
+
+ROAD
+
+Seed several trucks and trailers.
+
+Example:
+
+Truck 42
+
+Current delivery:
+Cologne → Eindhoven
+
+Expected delivery:
+13:30
+
+Expected available:
+Eindhoven 14:00
+
+Thomas should be able to:
+
+view fleet
+
+view current jobs
+
+confirm expected availability
+
+manage capacity
+
+view suitable next loads
+
+show interest
+
+accept/decline
+
+message connected companies.
+
+---
+
+# 28. DEMO USER 6 — JAN MÜLLER
+
+Name:
+
+Jan Müller
+
+Company:
+
+TransRoute Logistics Demo
+
+Operational profile:
+
+DRIVER
+
+Primary mode:
+
+ROAD
+
+Assigned asset:
+
+Truck 42
+
+Jan should be able to:
+
+view own truck
+
+view current delivery
+
+view expected availability
+
+confirm operational information
+
+view next-load opportunities
+
+SEND TO PLANNER
+
+message where authorized.
+
+Jan should NOT automatically have commercial authority.
+
+---
+
+# 29. DEMO USER 7 — ANNA SCHMIDT
+
+Name:
+
+Anna Schmidt
+
+Company:
+
+EuroRail Cargo Demo
+
+Operational profile:
+
+RAIL_OPERATOR
+
+Primary mode:
+
+RAIL
+
+Seed:
+
+12 compatible wagons
+
+Expected available:
+Duisburg
+
+Tomorrow 06:00
+
+Also seed at least one rail service.
+
+Anna should be able to:
+
+manage rail capacity
+
+view cargo opportunities
+
+view matches
+
+show interest
+
+accept/decline connections
+
+communicate with connected parties.
+
+---
+
+# 30. DEMO USER 8 — SARAH WILLIAMS
+
+Name:
+
+Sarah Williams
+
+Company:
+
+SkyFreight Demo
+
+Operational profile:
+
+AIR_CARGO_OPERATOR
+
+Primary mode:
+
+AIR CARGO
+
+Seed flight:
+
+AMS → DXB
+
+Departure:
+Tomorrow 21:30
+
+Aircraft:
+B777F
+
+Remaining commercial capacity:
+
+4,800 kg
+
+28 m³
+
+Sarah should be able to:
+
+view flights
+
+manage commercial flight capacity
+
+view eligible air-cargo shipments
+
+view matches
+
+show interest
+
+accept/decline
+
+message connected parties.
+
+---
+
+# 31. AIR FORWARDER DEMO SCENARIO
+
+Seed a fictional air shipment:
+
+Origin:
+Amsterdam / Schiphol region
+
+Destination:
+Dubai
+
+Weight:
+3,600 kg
+
+Ready:
+15:00
+
+Ensure it can match Sarah's seeded flight capacity.
+
+Create an appropriate fictional shipper/forwarder company as the counterparty.
+
+---
+
+# 32. DEMO USER 9 — DAVID CHEN
+
+Name:
+
+David Chen
+
+Company:
+
+GlobalLine Logistics Demo
+
+Operational profile:
+
+FORWARDER
+
+Primary modes:
+
+MARITIME_LINER
+
+IMPORT
+
+David may access, where feature-enabled:
+
+liner services
+
+sailings
+
+trade lanes
+
+cargo opportunities
+
+LCL shipments
+
+documents
+
+charges
+
+release workflows.
+
+Use this persona for future CargoMatch Import demonstrations.
+
+---
+
+# 33. DEMO USER 10 — EMMA DE VRIES
+
+Name:
+
+Emma de Vries
+
+Company:
+
+CargoMatch
+
+Platform role:
+
+PLATFORM_ADMIN
+
+Operational profile:
+
+COMPANY_MANAGER
+
+Emma should have access to an Admin section.
+
+Possible pages:
+
+Admin Dashboard
+
+Companies
+
+Users
+
+Listings
+
+Matches
+
+Connections
+
+Issues
+
+Provider Status
+
+Feature Flags
+
+Demo Data
+
+Audit Information
+
+Do not expose secrets or raw provider credentials in the admin UI.
+
+---
+
+# 34. DEMO COMPANIES
+
+Seed fictional companies representing:
+
+Deepsea owner/operator
+
+Charterer
+
+Inland carrier
+
+Shipper
+
+Road carrier
+
+Rail operator
+
+Air cargo operator
+
+Forwarder
+
+Liner operator
+
+Import/consolidation company
+
+CargoMatch platform
+
+Use fictional names.
+
+Do not present real companies as participating customers.
+
+---
+
+# 35. DEMO ASSETS
+
+Seed enough assets to make the product feel alive.
+
+DEEPSEA:
+
+Capesize
+
+Kamsarmax
+
+Panamax
+
+Supramax
+
+Handysize
+
+INLAND:
+
+multiple inland vessels
+
+ROAD:
+
+multiple tractors
+
+curtain-side trailer
+
+box trailer
+
+reefer
+
+RAIL:
+
+wagon group
+
+rail service
+
+AIR:
+
+freighter flight
+
+belly-capacity example
+
+LINER:
+
+service
+
+sailing
+
+trade lane
+
+Use realistic specifications but fictional identities.
+
+---
+
+# 36. DEMO CARGO
+
+Seed cargo across modes.
+
+Examples:
+
+DEEPSEA:
+
+iron ore
+
+coal
+
+grain
+
+fertilizer
+
+bauxite
+
+INLAND:
+
+grain
+
+minerals
+
+steel
+
+ROAD:
+
+palletized cargo
+
+temperature-controlled cargo
+
+general freight
+
+RAIL:
+
+bulk
+
+steel
+
+intermodal
+
+AIR:
+
+general air freight
+
+temperature-controlled cargo
+
+high-priority cargo
+
+CONVENTIONAL:
+
+machinery
+
+steel
+
+project cargo
+
+All examples must be fictional.
+
+---
+
+# 37. MATCHED DEMO DATA
+
+Do not seed random disconnected data only.
+
+Create intentional matches.
+
+Every important persona should have:
+
+at least one strong match
+
+at least one weaker eligible match
+
+at least one non-match due to eligibility.
+
+This allows the matching engine to be demonstrated.
+
+---
+
+# 38. CROSS-PERSONA SCENARIO A — DEEPSEA
+
+Create:
+
+Andy Kers
+
+Cargo:
+
+75,000 mt
+
+Indonesia → China
+
+Laycan:
+22–25 October
+
+and:
+
+Sophie van Dijk
+
+MV OceanBridge Atlas
+
+Kamsarmax
+
+82,000 DWT
+
+Expected open:
+Malaysia
+
+20–23 October
+
+These should produce a plausible eligible match.
+
+Demo:
+
+Andy sees anonymized vessel opportunity.
+
+↓
+
+Andy selects:
+
+SHOW INTEREST.
+
+↓
+
+Switch demo user:
+
+Sophie.
+
+↓
+
+Sophie sees incoming interest.
+
+↓
+
+Sophie accepts.
+
+↓
+
+Match becomes:
+
+CONNECTED.
+
+↓
+
+Protected identity/contact information becomes available according to CargoMatch privacy rules.
+
+↓
+
+One conversation exists.
+
+↓
+
+Switch back to Andy.
+
+↓
+
+Andy sees the same connected match and conversation.
+
+This scenario is a priority acceptance test.
+
+---
+
+# 39. CROSS-PERSONA SCENARIO B — INLAND
+
+Mark de Jong:
+
+skipper
+
+↓
+
+sees nearby/future cargo
+
+↓
+
+SEND TO PLANNER
+
+↓
+
+switch to Eva Jansen
+
+↓
+
+planner receives opportunity
+
+↓
+
+planner reviews match
+
+↓
+
+shows interest
+
+↓
+
+counterparty accepts
+
+↓
+
+connected.
+
+---
+
+# 40. CROSS-PERSONA SCENARIO C — ROAD
+
+Jan Müller:
+
+Driver
+
+Truck 42
+
+Expected empty Eindhoven 14:00
+
+↓
+
+CargoMatch finds next load nearby.
+
+↓
+
+Jan:
+
+SEND TO PLANNER
+
+↓
+
+switch to Thomas Becker
+
+↓
+
+Thomas reviews
+
+↓
+
+commercial workflow continues.
+
+---
+
+# 41. CROSS-PERSONA SCENARIO D — RAIL
+
+Anna Schmidt:
+
+12 wagons available Duisburg
+
+↓
+
+CargoMatch finds compatible cargo
+
+↓
+
+interest
+
+↓
+
+counterparty acceptance
+
+↓
+
+connected.
+
+---
+
+# 42. CROSS-PERSONA SCENARIO E — AIR
+
+Sarah Williams:
+
+AMS → DXB
+
+4,800 kg available
+
+↓
+
+CargoMatch finds:
+
+3,600 kg shipment
+
+↓
+
+eligibility
+
+↓
+
+match
+
+↓
+
+interest
+
+↓
+
+acceptance
+
+↓
+
+connected.
+
+---
+
+# 43. CROSS-PERSONA SCENARIO F — IMPORT
+
+Where CargoMatch Import is feature-enabled:
+
+David Chen manages a fictional LCL shipment.
+
+Flow:
+
+shipment created
+
+↓
+
+consignee receives access
+
+↓
+
+arrival information
+
+↓
+
+documents
+
+↓
+
+authorized local charges
+
+↓
+
+demo payment state
+
+↓
+
+release state
+
+↓
+
+pickup information.
+
+Do not perform real financial transactions in demo mode.
+
+---
+
+# 44. ROLE-AWARE DASHBOARDS
+
+Create different dashboards.
+
+## CHARTERER
+
+My Cargo Orders
+
+Potential Vessels
+
+Matches
+
+Interests
+
+Connections
+
+## DEEPSEA OWNER
+
+Fleet
+
+Open Positions
+
+Expected Open Positions
+
+Cargo Opportunities
+
+Matches
+
+Incoming Interest
+
+## SKIPPER
+
+My Vessel
+
+Current Voyage
+
+Expected Availability
+
+Next Cargo
+
+Matches
+
+Messages
+
+## INLAND PLANNER
+
+Fleet Availability
+
+Skipper Updates
+
+Opportunities Sent by Skippers
+
+Matches
+
+Connections
+
+## SHIPPER
+
+My Cargo
+
+Potential Capacity
+
+Matches
+
+Connections
+
+## ROAD PLANNER
+
+Fleet
+
+Expected Empty Vehicles
+
+Next Loads
+
+Matches
+
+Driver Updates
+
+## DRIVER
+
+My Truck
+
+Current Job
+
+Expected Empty
+
+Next Load
+
+Send to Planner
+
+## RAIL OPERATOR
+
+Rail Capacity
+
+Upcoming Availability
+
+Compatible Cargo
+
+Matches
+
+## AIR CARGO OPERATOR
+
+Flights
+
+Remaining Capacity
+
+Compatible Shipments
+
+Matches
+
+## PLATFORM ADMIN
+
+Companies
+
+Users
+
+Listings
+
+Matches
+
+Provider Health
+
+Platform Activity
+
+---
+
+# 45. ROLE-AWARE TERMINOLOGY
+
+Use correct terminology.
+
+DEEPSEA:
+
+Open Position
+
+Laycan
+
+DWT
+
+Cargo Order
+
+Ballast Positioning
+
+INLAND:
+
+Available Capacity
+
+Tonnage
+
+Nearby Cargo
+
+Expected Availability
+
+ROAD:
+
+Expected Empty
+
+Vehicle Capacity
+
+Next Load
+
+RAIL:
+
+Rail Capacity
+
+Wagons
+
+Service
+
+Terminal
+
+AIR:
+
+Flight Capacity
+
+Remaining Weight
+
+Remaining Volume
+
+Cutoff
+
+Do not display inappropriate terminology across modes.
+
+---
+
+# 46. MAP BEHAVIOR
+
+Map should also respect role, mode and privacy.
+
+Deepsea:
+
+global maritime map.
+
+Inland:
+
+regional inland-waterway map.
+
+Road:
+
+road/fleet context.
+
+Rail:
+
+terminal/corridor context.
+
+Air:
+
+airport/route context.
+
+Do not reveal exact privacy-protected positions to unauthorized users.
+
+Demo data should clearly be fictional.
+
+---
+
+# 47. NOTIFICATIONS
+
+Seed role-specific notifications.
+
+Examples:
+
+Charterer:
+
+"New vessel match for your Indonesia cargo."
+
+Owner:
+
+"New interest in your Southeast Asia open position."
+
+Skipper:
+
+"2 cargo opportunities near your expected availability."
+
+Planner:
+
+"Mark sent a cargo opportunity for review."
+
+Truck planner:
+
+"Truck 42 has a possible next load."
+
+Rail:
+
+"New cargo match for Duisburg capacity."
+
+Air:
+
+"New shipment matches AMS–DXB capacity."
+
+---
+
+# 48. USER SWITCHING MUST PRESERVE SHARED STATE
+
+This is critical.
+
+When switching from Andy to Sophie, both must see different authorized perspectives of the SAME underlying match.
+
+Do NOT create unrelated duplicate demo matches for each user.
+
+Example:
+
+ONE match record.
+
+ONE interest workflow.
+
+ONE connection.
+
+ONE conversation.
+
+Different privacy views based on user/company authorization.
+
+---
+
+# 49. PRIVACY TEST THROUGH DEMO USERS
+
+Use demo switching to test privacy.
+
+Before connection:
+
+Andy should NOT automatically see:
+
+Sophie
+
+OceanBridge Bulk Demo
+
+exact protected vessel identity
+
+private contact details.
+
+Sophie should NOT automatically see:
+
+Andy
+
+NorthSea Chartering Demo
+
+private cargo-owner details.
+
+After mutual connection:
+
+authorized identity/contact data may be revealed.
+
+This must be server-side enforced.
+
+---
+
+# 50. DIRECT API AUTHORIZATION
+
+Do not rely on hidden sidebar items for security.
+
+Test direct API access.
+
+Example:
+
+Mark cannot request Emma's admin endpoint.
+
+Jan cannot edit unrelated trucks.
+
+Andy cannot edit Sophie's vessel.
+
+Sarah cannot access private rail capacity belonging to Anna.
+
+Company isolation must remain intact.
+
+---
+
+# 51. DEMO RESET
+
+For development/admin demo environments optionally provide:
+
+RESET DEMO DATA
+
+This should restore the seeded demo state.
+
+Restrict it to authorized demo/admin users.
+
+Never expose this function in production.
+
+---
+
+# 52. GUIDED DEMO MODE
+
+After core functionality works, optionally add:
+
+GUIDED DEMO
+
+Potential scenarios:
+
+REDUCE DEEPSEA BALLAST
+
+FIND MY NEXT INLAND CARGO
+
+FIND MY TRUCK'S NEXT LOAD
+
+FILL RAIL CAPACITY
+
+FILL FLIGHT CAPACITY
+
+PROCESS LCL IMPORT
+
+The guide should highlight actual application functionality.
+
+Do NOT build fake screens purely for presentation.
+
+---
+
+# 53. DEEPSEA GUIDED DEMO
+
+Example:
+
+STEP 1
+
+Login as Andy.
+
+"Your customer has 75,000 mt loading Indonesia."
+
+↓
+
+STEP 2
+
+Open Matches.
+
+"CargoMatch found a Kamsarmax expected to open nearby."
+
+↓
+
+STEP 3
+
+Show Interest.
+
+↓
+
+STEP 4
+
+Switch to Sophie.
+
+"You have received commercial interest."
+
+↓
+
+STEP 5
+
+Accept.
+
+↓
+
+STEP 6
+
+Both parties become connected.
+
+This should be usable as a live product demonstration.
+
+---
+
+# 54. DEMO DATA DATES
+
+Avoid demo data becoming obviously expired over time.
+
+Use relative or dynamically seeded dates where appropriate.
+
+Examples:
+
+TODAY + 2 DAYS
+
+TODAY + 5 DAYS
+
+TODAY + 14 DAYS
+
+For display, convert to actual user-facing dates.
+
+Ensure demo scenarios remain usable when the application is restarted months later.
+
+---
+
+# 55. DEMO DATA LABELING
+
+Do not display ugly labels like:
+
+FAKE_DATA_001
+
+to normal demo users.
+
+Use realistic fictional names.
+
+However, maintain internal markers such as:
+
+is_demo = true
+
+or equivalent.
+
+Demo records must never be confused with production records.
+
+---
+
+# 56. SEARCH AND FILTERING
+
+Role-specific marketplace screens should include useful filters.
+
+Deepsea:
+
+vessel class
+
+DWT
+
+open region
+
+open date
+
+laycan
+
+cargo type
+
+trade lane
+
+Inland:
+
+location
+
+available date
+
+tonnage
+
+vessel type
+
+Road:
+
+location
+
+available time
+
+trailer type
+
+capacity
+
+Rail:
+
+terminal
+
+date
+
+wagon/service type
+
+Air:
+
+origin airport
+
+destination airport
+
+departure
+
+weight
+
+volume
+
+special handling
+
+Do not expose filters that have no effect.
+
+---
+
+# 57. EMPTY STATES
+
+Even though demo data is seeded, implement professional empty states.
+
+Example:
+
+"No cargo opportunities match this open position yet."
+
+Provide an appropriate action:
+
+Edit Open Position
+
+Change Filters
+
+Add Cargo
+
+depending on permissions.
+
+---
+
+# 58. LOADING / ERROR STATES
+
+Implement:
+
+loading states
+
+empty states
+
+provider unavailable states
+
+authorization errors
+
+network errors
+
+Do not show raw technical stack traces to normal users.
+
+---
+
+# 59. FEATURE FLAGS
+
+Use feature flags for:
+
+DEEPSEA
+
+INLAND
+
+LINER
+
+ROAD
+
+RAIL
+
+AIR_CARGO
+
+CARGOMATCH_IMPORT
+
+DEMO_MODE
+
+GUIDED_DEMO
+
+Only enabled functionality should appear in navigation.
+
+---
+
+# 60. DEVELOPMENT ORDER
+
+Implement this extension in this order:
+
+1. Audit current navigation/auth/user model.
+2. Implement persistent left sidebar.
+3. Implement role-aware navigation.
+4. Implement transport-mode-aware navigation.
+5. Define demo companies.
+6. Define demo users.
+7. Define explicit demo permissions.
+8. Seed assets.
+9. Seed cargo/capacity.
+10. Seed matches.
+11. Implement secure demo persona switching.
+12. Implement role-aware dashboards.
+13. Implement shared-state cross-persona scenarios.
+14. Test privacy through persona switching.
+15. Test API authorization.
+16. Add optional guided demo only after real workflows function.
+
+---
+
+# 61. DO NOT REBUILD WORKING FEATURES
+
+Before changing an existing CargoMatch feature:
+
+inspect the current implementation.
+
+Reuse existing:
+
+components
+
+services
+
+database structures
+
+authentication
+
+authorization
+
+matching
+
+messages
+
+notifications
+
+where they already satisfy the requirement.
+
+Migrate carefully where necessary.
+
+Do NOT discard functioning code merely to conform to new naming.
+
+---
+
+# 62. FIRST RESPONSE BEFORE CODING
+
+Before making major code changes:
+
+1. Inspect the current CargoMatch codebase.
+2. Identify the existing navigation system.
+3. Identify the existing user/auth model.
+4. Identify the existing Andy Kers demo implementation.
+5. Identify the existing company/role/permission model.
+6. Identify which requested demo personas already exist.
+7. Identify which transport modes are currently implemented.
+8. Identify reusable components.
+9. Identify required database migrations.
+10. Produce a concise implementation plan.
+
+Then implement incrementally.
+
+Do not generate an entirely new application.
+
+---
+
+# 63. PRIMARY ACCEPTANCE TEST
+
+The following demo must work end-to-end.
+
+START APPLICATION
+
+↓
+
+EXPLORE DEMO
+
+↓
+
+LOGIN AS:
+
+Andy Kers — Charterer
+
+↓
+
+CargoMatch shows:
+
+charterer sidebar
+
+cargo orders
+
+deepsea vessel matches
+
+↓
+
+Open:
+
+75,000 mt Indonesia → China
+
+↓
+
+View:
+
+privacy-safe Kamsarmax match
+
+↓
+
+SHOW INTEREST
+
+↓
+
+SWITCH DEMO USER
+
+↓
+
+Sophie van Dijk — Deepsea Owner
+
+↓
+
+Sophie sees:
+
+incoming interest for MV OceanBridge Atlas open position
+
+↓
+
+ACCEPT
+
+↓
+
+match becomes CONNECTED
+
+↓
+
+identity/contact information becomes visible according to permissions
+
+↓
+
+one conversation is created
+
+↓
+
+send message
+
+↓
+
+SWITCH BACK TO ANDY
+
+↓
+
+Andy sees:
+
+CONNECTED
+
+same conversation
+
+message from Sophie
+
+This entire scenario must operate on shared underlying records.
+
+---
+
+# 64. SECONDARY ACCEPTANCE TEST
+
+SKIPPER:
+
+Mark de Jong
+
+↓
+
+My Vessel
+
+↓
+
+Next Cargo
+
+↓
+
+SEND TO PLANNER
+
+↓
+
+Switch to:
+
+Eva Jansen
+
+↓
+
+Planner sees submitted opportunity
+
+↓
+
+reviews
+
+↓
+
+shows interest.
+
+---
+
+# 65. ROAD ACCEPTANCE TEST
+
+Jan Müller
+
+↓
+
+My Truck
+
+↓
+
+Expected Empty:
+Eindhoven 14:00
+
+↓
+
+Next Load
+
+↓
+
+SEND TO PLANNER
+
+↓
+
+Switch:
+
+Thomas Becker
+
+↓
+
+Planner receives opportunity.
+
+---
+
+# 66. RAIL ACCEPTANCE TEST
+
+Anna Schmidt
+
+↓
+
+Rail Capacity
+
+↓
+
+12 wagons Duisburg
+
+↓
+
+Compatible Cargo
+
+↓
+
+Match
+
+↓
+
+Interest workflow.
+
+---
+
+# 67. AIR ACCEPTANCE TEST
+
+Sarah Williams
+
+↓
+
+Flights
+
+↓
+
+AMS → DXB
+
+↓
+
+4,800 kg remaining
+
+↓
+
+Cargo Opportunities
+
+↓
+
+3,600 kg eligible shipment
+
+↓
+
+Match
+
+↓
+
+Interest workflow.
+
+---
+
+# 68. ADMIN ACCEPTANCE TEST
+
+Emma de Vries
+
+↓
+
+Admin
+
+↓
+
+can view demo companies/users/platform objects.
+
+Switch to Mark de Jong.
+
+↓
+
+Admin navigation disappears.
+
+Attempt direct admin API access.
+
+↓
+
+ACCESS DENIED.
+
+Navigation visibility is not the security boundary.
+
+---
+
+# 69. FINAL UX PRINCIPLE
+
+Every CargoMatch user should immediately understand:
+
+WHO AM I?
+
+WHICH COMPANY AM I WORKING FOR?
+
+WHICH TRANSPORT MODE AM I OPERATING IN?
+
+WHAT NEEDS MY ATTENTION?
+
+WHAT CAPACITY OR CARGO IS RELEVANT TO ME?
+
+WHAT ACTION AM I AUTHORIZED TO TAKE?
+
+---
+
+# 70. FINAL PERSONA PRINCIPLE
+
+A skipper should experience CargoMatch as:
+
+**Find my next cargo.**
+
+A deepsea owner/operator should experience CargoMatch as:
+
+**Find employment near my vessel's next open position.**
+
+A charterer should experience CargoMatch as:
+
+**Find suitable vessels near my cargo.**
+
+A shipper should experience CargoMatch as:
+
+**Find suitable transport capacity.**
+
+A truck driver should experience CargoMatch as:
+
+**See what may come after my current delivery.**
+
+A truck planner should experience CargoMatch as:
+
+**Keep my fleet productively loaded.**
+
+A rail operator should experience CargoMatch as:
+
+**Fill available rail capacity.**
+
+An air-cargo operator should experience CargoMatch as:
+
+**Fill remaining commercial flight capacity.**
+
+A platform administrator should experience CargoMatch as:
+
+**Operate the marketplace safely.**
+
+---
+
+# FINAL INSTRUCTION
+
+Do not treat this as a visual mockup exercise.
+
+The sidebar, users, permissions, companies, matches, interests, connections and conversations must operate on the actual CargoMatch application architecture.
+
+The demo environment should prove the real CargoMatch workflow from multiple perspectives.
+
+Build:
+
+ONE PLATFORM
+
+*
+
+MULTIPLE TRANSPORT MODES
+
+*
+
+MULTIPLE COMPANIES
+
+*
+
+MULTIPLE USER PERSPECTIVES
+
+*
+
+ONE SHARED COMMERCIAL MATCHING NETWORK.

@@ -7,6 +7,7 @@ import router from "./routes";
 import { logger } from "./lib/logger";
 import { authMiddleware } from "./middlewares/authMiddleware";
 import { configuredOrigins as getConfiguredOrigins } from "./lib/origins";
+import demoRouter from "./routes/demo";
 
 const app: Express = express();
 // Only the local ingress is trusted to supply client IP forwarding headers.
@@ -87,6 +88,10 @@ app.use((req, res, next) => {
   }
   next();
 });
+
+// Demo routing terminates here, before OIDC middleware can inspect, refresh
+// or mutate a real session cookie. Its storage and principal are independent.
+app.use("/api/demo", demoRouter);
 
 app.use(authMiddleware);
 

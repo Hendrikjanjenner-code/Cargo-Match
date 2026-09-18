@@ -4,6 +4,7 @@ import tailwindcss from '@tailwindcss/vite';
 import { defineConfig } from 'vite';
 
 import runtimeErrorOverlay from '@replit/vite-plugin-runtime-error-modal';
+import { demoUiEnabled } from './src/demo/demo-policy';
 
 const rawPort = process.env.PORT;
 
@@ -27,7 +28,10 @@ if (!basePath) {
   );
 }
 
-export default defineConfig({
+export default defineConfig(async ({ command }) => ({
+  define: {
+    __CARGOMATCH_DEMO_ENABLED__: JSON.stringify(demoUiEnabled(command, process.env.NODE_ENV, process.env.DEMO_ENABLED)),
+  },
   base: basePath,
   plugins: [
     react(),
@@ -78,4 +82,4 @@ export default defineConfig({
     host: '0.0.0.0',
     allowedHosts: true,
   },
-});
+}));

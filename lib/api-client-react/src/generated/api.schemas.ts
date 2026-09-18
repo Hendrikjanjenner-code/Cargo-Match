@@ -8,6 +8,429 @@
  *
  * OpenAPI spec version: 0.1.0
  */
+export type DemoMode = typeof DemoMode[keyof typeof DemoMode];
+
+
+export const DemoMode = {
+  INLAND: 'INLAND',
+  DEEPSEA: 'DEEPSEA',
+  LINER: 'LINER',
+  ROAD: 'ROAD',
+  RAIL: 'RAIL',
+  AIR: 'AIR',
+  IMPORT: 'IMPORT',
+} as const;
+
+export type DemoPersonaId = typeof DemoPersonaId[keyof typeof DemoPersonaId];
+
+
+export const DemoPersonaId = {
+  andy: 'andy',
+  sophie: 'sophie',
+  mark: 'mark',
+  eva: 'eva',
+  laura: 'laura',
+  thomas: 'thomas',
+  jan: 'jan',
+  anna: 'anna',
+  sarah: 'sarah',
+  david: 'david',
+  emma: 'emma',
+} as const;
+
+export interface DemoStartInput {
+  personaId?: DemoPersonaId;
+}
+
+export interface DemoSwitchInput {
+  personaId: DemoPersonaId;
+}
+
+export type DemoTechnicalStowage = typeof DemoTechnicalStowage[keyof typeof DemoTechnicalStowage];
+
+
+export const DemoTechnicalStowage = {
+  HOLD: 'HOLD',
+  DECK: 'DECK',
+  EITHER: 'EITHER',
+} as const;
+
+export interface DemoTechnical {
+  /** @minimum 1 */
+  wagonCount?: number;
+  wagonType?: string;
+  /**
+     * @minimum -100
+     * @maximum 100
+     */
+  temperatureMin?: number;
+  /**
+     * @minimum -100
+     * @maximum 100
+     */
+  temperatureMax?: number;
+  cargoType?: string;
+  cutoffAt?: string;
+  /** @exclusiveMinimum 0 */
+  pieceWeight?: number;
+  /** @exclusiveMinimum 0 */
+  maxPieceWeight?: number;
+  /**
+     * @minimum 0
+     * @maximum 365
+     */
+  manualPositioningDays?: number;
+  /**
+     * @minimum 0
+     * @maximum 365
+     */
+  positioningBufferDays?: number;
+  /**
+     * @minimum 0
+     * @maximum 365
+     */
+  uncertaintyDays?: number;
+  /** @exclusiveMinimum 0 */
+  draft?: number;
+  /** @exclusiveMinimum 0 */
+  maxDraft?: number;
+  gear?: string;
+  vesselClass?: string;
+  /** @exclusiveMinimum 0 */
+  loadingMetres?: number;
+  /** @minimum 1 */
+  pallets?: number;
+  adrClasses?: string[];
+  vesselType?: string;
+  requiredVesselType?: string;
+  /** @exclusiveMinimum 0 */
+  maximumPositioningDistanceKm?: number;
+  /** @exclusiveMinimum 0 */
+  minimumDwt?: number;
+  /** @exclusiveMinimum 0 */
+  maximumDwt?: number;
+  /**
+     * @minimum 0
+     * @exclusiveMaximum 100
+     */
+  quantityTolerancePercent?: number;
+  requiredTrailerType?: string;
+  /**
+     * @minimum 0
+     * @maximum 365
+     */
+  availabilityUncertaintyMinutes?: number;
+  currentDeliveryExpectedAt?: string;
+  expectedAvailabilityAt?: string;
+  preferredDirection?: string;
+  /** @minimum 1 */
+  pieceCount?: number;
+  /** @exclusiveMinimum 0 */
+  pieceLength?: number;
+  /** @exclusiveMinimum 0 */
+  pieceWidth?: number;
+  /** @exclusiveMinimum 0 */
+  pieceHeight?: number;
+  /** @exclusiveMinimum 0 */
+  maxPieceLength?: number;
+  /** @exclusiveMinimum 0 */
+  maxPieceWidth?: number;
+  /** @exclusiveMinimum 0 */
+  maxPieceHeight?: number;
+  /** @exclusiveMinimum 0 */
+  liftingCapacity?: number;
+  /** @exclusiveMinimum 0 */
+  requiredLifting?: number;
+  stowage?: DemoTechnicalStowage;
+}
+
+export type DemoListingInputKind = typeof DemoListingInputKind[keyof typeof DemoListingInputKind];
+
+
+export const DemoListingInputKind = {
+  CARGO: 'CARGO',
+  CAPACITY: 'CAPACITY',
+} as const;
+
+export type DemoListingInputVisibility = typeof DemoListingInputVisibility[keyof typeof DemoListingInputVisibility];
+
+
+export const DemoListingInputVisibility = {
+  OPEN_NETWORK: 'OPEN_NETWORK',
+  PRIVATE: 'PRIVATE',
+} as const;
+
+export interface DemoListingInput {
+  mode: DemoMode;
+  kind: DemoListingInputKind;
+  /** @maxLength 200 */
+  name: string;
+  assetId?: string;
+  origin: string;
+  destination: string;
+  /** @exclusiveMinimum 0 */
+  quantity: number;
+  /** @exclusiveMinimum 0 */
+  volume?: number;
+  equipment: string[];
+  availableFrom: string;
+  availableUntil: string;
+  visibility: DemoListingInputVisibility;
+  technical?: DemoTechnical;
+}
+
+export type DemoActionInputType = typeof DemoActionInputType[keyof typeof DemoActionInputType];
+
+
+export const DemoActionInputType = {
+  INTEREST: 'INTEREST',
+  ACCEPT: 'ACCEPT',
+  DECLINE: 'DECLINE',
+  MESSAGE: 'MESSAGE',
+  CONFIRM_AVAILABILITY: 'CONFIRM_AVAILABILITY',
+  SEND_TO_PLANNER: 'SEND_TO_PLANNER',
+  REVIEW_REFERRAL: 'REVIEW_REFERRAL',
+  SAVE_ASSET: 'SAVE_ASSET',
+  SAVE_LISTING: 'SAVE_LISTING',
+  PUBLISH_LISTING: 'PUBLISH_LISTING',
+  WITHDRAW_LISTING: 'WITHDRAW_LISTING',
+  IMPORT_STEP: 'IMPORT_STEP',
+  READ_NOTIFICATION: 'READ_NOTIFICATION',
+  RESET: 'RESET',
+} as const;
+
+export type DemoActionInputStep = typeof DemoActionInputStep[keyof typeof DemoActionInputStep];
+
+
+export const DemoActionInputStep = {
+  ARRIVED: 'ARRIVED',
+  DOCUMENTS_READY: 'DOCUMENTS_READY',
+  PAYMENT_SIMULATED: 'PAYMENT_SIMULATED',
+  RELEASED: 'RELEASED',
+  PICKUP_READY: 'PICKUP_READY',
+} as const;
+
+export type DemoActionInputConfirmation = typeof DemoActionInputConfirmation[keyof typeof DemoActionInputConfirmation];
+
+
+export const DemoActionInputConfirmation = {
+  RESET_DEMO: 'RESET DEMO',
+} as const;
+
+/**
+ * Discriminated by type; irrelevant identity/ownership fields are never trusted. SAVE_LISTING requires listing; SAVE_ASSET creates when assetId is absent and merges editable fields when present.
+ */
+export interface DemoActionInput {
+  type: DemoActionInputType;
+  matchId?: string;
+  /**
+     * @minLength 1
+     * @maxLength 2000
+     */
+  body?: string;
+  assetId?: string;
+  availableAt?: string;
+  /** @maxLength 1000 */
+  note?: string;
+  referralId?: string;
+  mode?: DemoMode;
+  name?: string;
+  assetType?: string;
+  /** @exclusiveMinimum 0 */
+  capacity?: number;
+  /** @exclusiveMinimum 0 */
+  volume?: number;
+  equipment?: string[];
+  location?: string;
+  technical?: DemoTechnical;
+  listingId?: string;
+  listing?: DemoListingInput;
+  shipmentId?: string;
+  step?: DemoActionInputStep;
+  notificationId?: string;
+  confirmation?: DemoActionInputConfirmation;
+}
+
+export type DemoPersonaMembershipRole = typeof DemoPersonaMembershipRole[keyof typeof DemoPersonaMembershipRole];
+
+
+export const DemoPersonaMembershipRole = {
+  OWNER: 'OWNER',
+  ADMIN: 'ADMIN',
+  MEMBER: 'MEMBER',
+} as const;
+
+export type DemoPersonaPlatformRole = typeof DemoPersonaPlatformRole[keyof typeof DemoPersonaPlatformRole];
+
+
+export const DemoPersonaPlatformRole = {
+  USER: 'USER',
+  DEMO_ADMIN: 'DEMO_ADMIN',
+} as const;
+
+export interface DemoPersona {
+  id: DemoPersonaId;
+  name: string;
+  companyId: string;
+  membershipRole: DemoPersonaMembershipRole;
+  operationalProfile: string;
+  platformRole: DemoPersonaPlatformRole;
+  primaryMode: DemoMode;
+  permissions: string[];
+  assignedAssetIds: string[];
+}
+
+export interface DemoCompanyView {
+  id: string;
+  name: string;
+  activities: string[];
+  modes: DemoMode[];
+  demo: true;
+}
+
+export interface DemoAssetView {
+  id: string;
+  companyId: string;
+  mode: DemoMode;
+  name: string;
+  type: string;
+  capacity: number;
+  volume?: number;
+  equipment: string[];
+  location: string;
+  availableAt: string;
+  technical?: DemoTechnical;
+  demo: true;
+}
+
+export type DemoListingViewStatus = typeof DemoListingViewStatus[keyof typeof DemoListingViewStatus];
+
+
+export const DemoListingViewStatus = {
+  DRAFT: 'DRAFT',
+  ACTIVE: 'ACTIVE',
+  WITHDRAWN: 'WITHDRAWN',
+} as const;
+
+export type DemoListingView = DemoListingInput & {
+  id: string;
+  companyId: string;
+  status: DemoListingViewStatus;
+  demo: true;
+};
+
+export type DemoOpportunityViewStatus = typeof DemoOpportunityViewStatus[keyof typeof DemoOpportunityViewStatus];
+
+
+export const DemoOpportunityViewStatus = {
+  NEW: 'NEW',
+  INTEREST_SENT: 'INTEREST_SENT',
+  CONNECTED: 'CONNECTED',
+  DECLINED: 'DECLINED',
+  STALE: 'STALE',
+} as const;
+
+export type DemoOpportunityViewOwnSide = typeof DemoOpportunityViewOwnSide[keyof typeof DemoOpportunityViewOwnSide];
+
+
+export const DemoOpportunityViewOwnSide = {
+  CARGO: 'CARGO',
+  CAPACITY: 'CAPACITY',
+} as const;
+
+export type DemoOpportunityViewSource = typeof DemoOpportunityViewSource[keyof typeof DemoOpportunityViewSource];
+
+
+export const DemoOpportunityViewSource = {
+  FICTIONAL_MANUAL: 'FICTIONAL_MANUAL',
+} as const;
+
+export type DemoOpportunityViewVerification = typeof DemoOpportunityViewVerification[keyof typeof DemoOpportunityViewVerification];
+
+
+export const DemoOpportunityViewVerification = {
+  NOT_VERIFIED: 'NOT_VERIFIED',
+} as const;
+
+export interface DemoOpportunityView {
+  id: string;
+  cargoId: string;
+  capacityId: string;
+  mode: DemoMode;
+  origin: string;
+  destination: string;
+  quantity: number;
+  score: number;
+  provisional: true;
+  status: DemoOpportunityViewStatus;
+  ownSide: DemoOpportunityViewOwnSide;
+  counterpartyName?: string;
+  assetName?: string;
+  contact?: string;
+  source: DemoOpportunityViewSource;
+  verification: DemoOpportunityViewVerification;
+}
+
+/**
+ * Demo-only projected notification, referral, evidence, import shipment or audit record as documented in docs/demo-server-contract.md. Never raw sandbox state.
+ */
+export interface DemoProjectedRecord { [key: string]: unknown }
+
+export type DemoSessionViewContextModules = {[key: string]: 'ACTIVE' | 'PILOT' | 'COMING_LATER' | 'HIDDEN'};
+
+export type DemoSessionViewContext = {
+  user: DemoPersona;
+  company: DemoCompanyView;
+  permissions: string[];
+  allowedModes: DemoMode[];
+  modules: DemoSessionViewContextModules;
+};
+
+export type DemoSessionViewCatalogue = {
+  locations: string[];
+};
+
+export type DemoSessionViewWorkspaceMatchesItem = DemoOpportunityView & {
+  leftConsent: boolean;
+  rightConsent: boolean;
+};
+
+export type DemoSessionViewWorkspaceMessagesItem = {
+  id: string;
+  matchId: string;
+  senderName: string;
+  body: string;
+  createdAt: string;
+  demo: true;
+};
+
+export type DemoSessionViewWorkspace = {
+  assets: DemoAssetView[];
+  cargos: DemoListingView[];
+  capacity: DemoListingView[];
+  opportunities: DemoOpportunityView[];
+  matches: DemoSessionViewWorkspaceMatchesItem[];
+  messages: DemoSessionViewWorkspaceMessagesItem[];
+  notifications: DemoProjectedRecord[];
+  referrals: DemoProjectedRecord[];
+  imports: DemoProjectedRecord[];
+  companies: DemoCompanyView[];
+  audit: DemoProjectedRecord[];
+  evidence: DemoProjectedRecord[];
+};
+
+export interface DemoSessionView {
+  demo: true;
+  csrfToken: string;
+  revision: number;
+  seededAt: string;
+  stale: boolean;
+  context: DemoSessionViewContext;
+  personas: DemoPersona[];
+  catalogue: DemoSessionViewCatalogue;
+  workspace: DemoSessionViewWorkspace;
+}
+
 export type AisFreshness = typeof AisFreshness[keyof typeof AisFreshness];
 
 
@@ -2294,6 +2717,16 @@ export interface RoadMatchListResponse {
 }
 
 /**
+ * Complete current privacy-projected demo workspace; replace user-scoped caches.
+ */
+export type DemoSessionResponseResponse = DemoSessionView;
+
+export type DemoFailureResponse = {
+  error: string;
+  code: string;
+};
+
+/**
  * Request validation failed.
  */
 export type BadRequestResponse = ErrorEnvelope;
@@ -2317,6 +2750,19 @@ export type NotFoundResponse = ErrorEnvelope;
  * The requested state transition conflicts with the current resource state.
  */
 export type ConflictResponse = ErrorEnvelope;
+
+export type DemoOriginParameter = string;
+
+export type DemoExplicitRequestParameter = typeof DemoExplicitRequestParameter[keyof typeof DemoExplicitRequestParameter];
+
+
+export const DemoExplicitRequestParameter = {
+  NUMBER_1: '1',
+} as const;
+
+export type DemoCsrfParameter = string;
+
+export type DemoRevisionParameter = string;
 
 /**
  * Opaque session token — `Bearer <sid>`.

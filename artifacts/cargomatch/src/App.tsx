@@ -28,6 +28,7 @@ import DeepseaMatchDetail from "./pages/deepsea/DeepseaMatchDetail";
 import DemoApp from "./demo/DemoApp";
 import { DemoEntryContext } from "./demo/entry";
 import { ENTRY_STORAGE_KEY, resolveEntryMode, entryUrl } from "./demo/entry-mode";
+import { DEMO_UI_ENABLED } from "./demo/demo-availability";
 import { t } from "./lib/i18n";
 import { useGetMyCompany, getGetMyCompanyQueryKey, CompanyActivity } from "@workspace/api-client-react";
 import LinerServices from "./pages/liner/LinerServices";
@@ -161,11 +162,15 @@ export default function App() {
     // The URL marker also preserves the local entry choice when session storage
     // is unavailable. It never represents authentication as a real account.
     return resolveEntryMode(new URL(window.location.href), import.meta.env.BASE_URL,
-      () => sessionStorage.getItem(ENTRY_STORAGE_KEY));
+      () => sessionStorage.getItem(ENTRY_STORAGE_KEY), DEMO_UI_ENABLED);
   });
   const [demoPersonaId, setDemoPersonaId] = useState<string>();
   const [entryError, setEntryError] = useState("");
   const changeMode = (next: "landing" | "demo" | "real", personaId?: string) => {
+    if (next === "demo" && !DEMO_UI_ENABLED) {
+      setEntryError("De demo is in deze omgeving uitgeschakeld. Gebruik standaard inloggen.");
+      return;
+    }
     let warning = "";
     try {
       sessionStorage.setItem(ENTRY_STORAGE_KEY, next);
@@ -191,7 +196,7 @@ export default function App() {
         loginReal: () => { void changeMode("real"); },
       }}>
         {entryError && <div role="alert" className="p-4 bg-destructive/10 text-destructive">{entryError}</div>}
-        {mode === "demo" ? <DemoApp initialPersonaId={demoPersonaId} onLoginReal={() => changeMode("real")} onExit={() => { changeMode("landing"); }} /> :
+        {mode === "demo" && DEMO_UI_ENABLED ? <DemoApp initialPersonaId={demoPersonaId} onLoginReal={() => changeMode("real")} onExit={() => { changeMode("landing"); }} /> :
           <Router base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
             {mode === "landing" ? <Landing /> : <AppRouter />}
           </Router>}

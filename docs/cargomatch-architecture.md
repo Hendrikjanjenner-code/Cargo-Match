@@ -61,6 +61,9 @@ additional guard: `SUSPENDED` or `CLOSED` companies cannot publish, show
 interest, or participate in new matches. Platform-admin controls are outside
 this first contract.
 
+The secure development demo has a richer, independent permission model; see
+`docs/demo-role-matrix.md`. Its roles do not widen this production matrix.
+
 ## Privacy and response views
 
 The API owns redaction; clients must not fetch an exact object and hide fields
@@ -168,3 +171,51 @@ Only connected match participants can list a conversation, read messages, send
 messages, or mark messages read. Read state is per user (not one shared
 company-level flag). An unrelated company receives the same not-found/forbidden
 behavior as any other unauthorized caller and never receives message content.
+
+## Secure development-demo boundary
+
+The role-based multi-persona demo is an additive application surface, not an
+authentication shortcut for this production architecture.
+
+- A demo visitor receives an opaque, secure demo session and a server-owned
+  sandbox namespace. The server derives the active persona, company, platform
+  role, permissions, and namespace; actor/company identifiers supplied by the
+  client are never authoritative.
+- Persona switching changes that server authorization context. It preserves
+  one shared exercise state inside the visitor's sandbox while incrementing or
+  replacing the principal context so stale requests and late responses cannot
+  act as a previous persona.
+- Demo persistence is physically/logically separate from real OIDC identities,
+  memberships, companies, listings, matches, conversations, notifications, and
+  provider data. A demo principal is rejected by real company routes, and a
+  real principal receives no implicit demo-admin authority.
+- Demo endpoints and shortcuts fail closed unless the server's explicit
+  development/demo environment gate is enabled. The UI flag alone is not a
+  security control. Production does not expose demo start, switch, reset, or
+  administration.
+- The server returns persona-specific projections, never the complete sandbox.
+  Before mutual consent, protected company/person/asset identity, contacts,
+  exact positions, private records, conversations, and recipient-specific
+  notifications are omitted at serialization time. UI hiding is not privacy.
+- `CONNECTED` retains its production meaning: authorized introduction and
+  communication only, never booking, capacity reservation, payment, release,
+  routing verification, or transport completion.
+- Demo administration is sandbox-scoped. Emma may inspect safe fictional
+  summaries and reset only the current visitor's demo after confirmation. Raw
+  provider credentials, secrets, external identifiers, real audit data, and
+  customer data are never part of a demo projection.
+- Rail, Air Cargo, and CargoMatch Import are functional fictional demo pilots,
+  not production modules. Import payment/release/pickup values are simulated
+  status transitions; no external payment, customs, document-delivery, or
+  physical-handling side effect exists.
+
+The previous browser-only world under
+`artifacts/cargomatch/src/demo/world*.ts` remains a legacy data format, not an
+authority source. Existing local data requires an explicit reset/transition
+choice and is never silently imported into the secure demo or real tables.
+Production OIDC behavior and existing Inland, Deepsea, Liner, and Road routes
+remain unchanged.
+
+The exact demo HTTP/session contract is documented separately in
+`docs/demo-server-contract.md`; the company/persona and module-state contract is
+in `docs/demo-role-matrix.md`.

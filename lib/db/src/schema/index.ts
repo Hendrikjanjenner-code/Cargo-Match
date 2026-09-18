@@ -21,3 +21,4 @@ export * from "./auth";
 export * from "./cargomatch";
 export * from "./availabilitySuggestions";
 export * from "./road";
+export * from "./demo";

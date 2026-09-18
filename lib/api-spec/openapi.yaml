@@ -40,6 +40,113 @@ tags:
   - name: Notifications
     description: In-app notifications for the current user.
 paths:
+  /demo/session:
+    get:
+      operationId: getDemoSession
+      tags: [Demo]
+      summary: Restore a private visitor demo, independent from OIDC
+      security: [{ demoCookie: [] }]
+      responses:
+        "200":
+          $ref: "#/components/responses/DemoSessionResponse"
+        "401":
+          $ref: "#/components/responses/DemoFailure"
+        "404":
+          $ref: "#/components/responses/DemoFailure"
+  /demo/start:
+    post:
+      operationId: startDemoSession
+      tags: [Demo]
+      summary: Create a visitor-isolated demo or resume existing unchanged
+      description: Development/test only. An existing demo cookie resumes unchanged; persona switching requires the separately CSRF- and revision-protected switch route.
+      security: []
+      parameters:
+        - $ref: "#/components/parameters/DemoOrigin"
+        - $ref: "#/components/parameters/DemoExplicitRequest"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DemoStartInput"
+      responses:
+        "200":
+          $ref: "#/components/responses/DemoSessionResponse"
+        "201":
+          $ref: "#/components/responses/DemoSessionResponse"
+        "403":
+          $ref: "#/components/responses/DemoFailure"
+        "404":
+          $ref: "#/components/responses/DemoFailure"
+  /demo/switch:
+    post:
+      operationId: switchDemoPersona
+      tags: [Demo]
+      summary: Switch only the isolated demo principal and rotate its revision
+      security: [{ demoCookie: [] }]
+      parameters:
+        - $ref: "#/components/parameters/DemoOrigin"
+        - $ref: "#/components/parameters/DemoExplicitRequest"
+        - $ref: "#/components/parameters/DemoCsrf"
+        - $ref: "#/components/parameters/DemoRevision"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DemoSwitchInput"
+      responses:
+        "200":
+          $ref: "#/components/responses/DemoSessionResponse"
+        "403":
+          $ref: "#/components/responses/DemoFailure"
+        "409":
+          $ref: "#/components/responses/DemoFailure"
+  /demo/actions:
+    post:
+      operationId: executeDemoAction
+      tags: [Demo]
+      summary: Atomically authorize and execute one isolated demo action
+      description: Explicit permissions, mode, company and assignment are rechecked server-side. Connected means introduction, never booking. RESET affects only this visitor and requires Emma plus confirmation.
+      security: [{ demoCookie: [] }]
+      parameters:
+        - $ref: "#/components/parameters/DemoOrigin"
+        - $ref: "#/components/parameters/DemoExplicitRequest"
+        - $ref: "#/components/parameters/DemoCsrf"
+        - $ref: "#/components/parameters/DemoRevision"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DemoActionInput"
+      responses:
+        "200":
+          $ref: "#/components/responses/DemoSessionResponse"
+        "400":
+          $ref: "#/components/responses/DemoFailure"
+        "403":
+          $ref: "#/components/responses/DemoFailure"
+        "409":
+          $ref: "#/components/responses/DemoFailure"
+  /demo/logout:
+    post:
+      operationId: logoutDemoSession
+      tags: [Demo]
+      summary: Delete only this demo sandbox and its cookie
+      security: [{ demoCookie: [] }]
+      parameters:
+        - $ref: "#/components/parameters/DemoOrigin"
+        - $ref: "#/components/parameters/DemoExplicitRequest"
+        - $ref: "#/components/parameters/DemoCsrf"
+        - $ref: "#/components/parameters/DemoRevision"
+      responses:
+        "204":
+          description: Demo deleted; real OIDC session unchanged.
+        "403":
+          $ref: "#/components/responses/DemoFailure"
+        "409":
+          $ref: "#/components/responses/DemoFailure"
   /healthz:
     get:
       operationId: healthCheck
@@ -1913,6 +2020,11 @@ paths:
 
 components:
   securitySchemes:
+    demoCookie:
+      type: apiKey
+      in: cookie
+      name: cargomatch_demo
+      description: Independent HttpOnly Secure SameSite=Strict cookie scoped to /api/demo; never accepted for real data.
     sessionCookie:
       type: apiKey
       in: cookie
@@ -1924,6 +2036,26 @@ components:
       bearerFormat: session
       description: Opaque mobile session token.
   parameters:
+    DemoOrigin:
+      name: Origin
+      in: header
+      required: true
+      schema: { type: string }
+    DemoExplicitRequest:
+      name: X-Demo-Request
+      in: header
+      required: true
+      schema: { type: string, enum: ["1"] }
+    DemoCsrf:
+      name: X-Demo-CSRF
+      in: header
+      required: true
+      schema: { type: string }
+    DemoRevision:
+      name: X-Demo-Revision
+      in: header
+      required: true
+      schema: { type: string }
     AuthorizationSessionHeader:
       name: Authorization
       in: header
@@ -2025,6 +2157,22 @@ components:
         type: string
         format: uuid
   responses:
+    DemoSessionResponse:
+      description: Complete current privacy-projected demo workspace; replace user-scoped caches.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/DemoSessionView"
+    DemoFailure:
+      description: Explicit safe demo error with no internal data or stack trace.
+      content:
+        application/json:
+          schema:
+            type: object
+            required: [error, code]
+            properties:
+              error: { type: string }
+              code: { type: string }
     BadRequest:
       description: Request validation failed.
       content:
@@ -2056,6 +2204,247 @@ components:
           schema:
             $ref: "#/components/schemas/ErrorEnvelope"
   schemas:
+    DemoMode:
+      type: string
+      enum: [INLAND, DEEPSEA, LINER, ROAD, RAIL, AIR, IMPORT]
+    DemoPersonaId:
+      type: string
+      enum: [andy, sophie, mark, eva, laura, thomas, jan, anna, sarah, david, emma]
+    DemoStartInput:
+      type: object
+      properties:
+        personaId: { $ref: "#/components/schemas/DemoPersonaId" }
+    DemoSwitchInput:
+      type: object
+      required: [personaId]
+      properties:
+        personaId: { $ref: "#/components/schemas/DemoPersonaId" }
+    DemoTechnical:
+      type: object
+      additionalProperties: false
+      properties:
+        wagonCount: { type: integer, minimum: 1 }
+        wagonType: { type: string }
+        temperatureMin: { type: number, minimum: -100, maximum: 100 }
+        temperatureMax: { type: number, minimum: -100, maximum: 100 }
+        cargoType: { type: string }
+        cutoffAt: { type: string, format: date-time }
+        pieceWeight: { type: number, exclusiveMinimum: 0 }
+        maxPieceWeight: { type: number, exclusiveMinimum: 0 }
+        manualPositioningDays: { type: number, minimum: 0, maximum: 365 }
+        positioningBufferDays: { type: number, minimum: 0, maximum: 365 }
+        uncertaintyDays: { type: number, minimum: 0, maximum: 365 }
+        draft: { type: number, exclusiveMinimum: 0 }
+        maxDraft: { type: number, exclusiveMinimum: 0 }
+        gear: { type: string }
+        vesselClass: { type: string }
+        loadingMetres: { type: number, exclusiveMinimum: 0 }
+        pallets: { type: integer, minimum: 1 }
+        adrClasses: { type: array, items: { type: string } }
+        vesselType: { type: string }
+        requiredVesselType: { type: string }
+        maximumPositioningDistanceKm: { type: number, exclusiveMinimum: 0 }
+        minimumDwt: { type: number, exclusiveMinimum: 0 }
+        maximumDwt: { type: number, exclusiveMinimum: 0 }
+        quantityTolerancePercent: { type: number, minimum: 0, exclusiveMaximum: 100 }
+        requiredTrailerType: { type: string }
+        availabilityUncertaintyMinutes: { type: number, minimum: 0, maximum: 365 }
+        currentDeliveryExpectedAt: { type: string, format: date-time }
+        expectedAvailabilityAt: { type: string, format: date-time }
+        preferredDirection: { type: string }
+        pieceCount: { type: integer, minimum: 1 }
+        pieceLength: { type: number, exclusiveMinimum: 0 }
+        pieceWidth: { type: number, exclusiveMinimum: 0 }
+        pieceHeight: { type: number, exclusiveMinimum: 0 }
+        maxPieceLength: { type: number, exclusiveMinimum: 0 }
+        maxPieceWidth: { type: number, exclusiveMinimum: 0 }
+        maxPieceHeight: { type: number, exclusiveMinimum: 0 }
+        liftingCapacity: { type: number, exclusiveMinimum: 0 }
+        requiredLifting: { type: number, exclusiveMinimum: 0 }
+        stowage: { type: string, enum: [HOLD, DECK, EITHER] }
+    DemoListingInput:
+      type: object
+      required: [mode, kind, name, origin, destination, quantity, equipment, availableFrom, availableUntil, visibility]
+      properties:
+        mode: { $ref: "#/components/schemas/DemoMode" }
+        kind: { type: string, enum: [CARGO, CAPACITY] }
+        name: { type: string, maxLength: 200 }
+        assetId: { type: string }
+        origin: { type: string }
+        destination: { type: string }
+        quantity: { type: number, exclusiveMinimum: 0 }
+        volume: { type: number, exclusiveMinimum: 0 }
+        equipment: { type: array, items: { type: string } }
+        availableFrom: { type: string, format: date-time }
+        availableUntil: { type: string, format: date-time }
+        visibility: { type: string, enum: [OPEN_NETWORK, PRIVATE] }
+        technical: { $ref: "#/components/schemas/DemoTechnical" }
+    DemoActionInput:
+      type: object
+      required: [type]
+      description: Discriminated by type; irrelevant identity/ownership fields are never trusted. SAVE_LISTING requires listing; SAVE_ASSET creates when assetId is absent and merges editable fields when present.
+      properties:
+        type:
+          type: string
+          enum: [INTEREST, ACCEPT, DECLINE, MESSAGE, CONFIRM_AVAILABILITY, SEND_TO_PLANNER, REVIEW_REFERRAL, SAVE_ASSET, SAVE_LISTING, PUBLISH_LISTING, WITHDRAW_LISTING, IMPORT_STEP, READ_NOTIFICATION, RESET]
+        matchId: { type: string }
+        body: { type: string, minLength: 1, maxLength: 2000 }
+        assetId: { type: string }
+        availableAt: { type: string, format: date-time }
+        note: { type: string, maxLength: 1000 }
+        referralId: { type: string }
+        mode: { $ref: "#/components/schemas/DemoMode" }
+        name: { type: string }
+        assetType: { type: string }
+        capacity: { type: number, exclusiveMinimum: 0 }
+        volume: { type: number, exclusiveMinimum: 0 }
+        equipment: { type: array, items: { type: string } }
+        location: { type: string }
+        technical: { $ref: "#/components/schemas/DemoTechnical" }
+        listingId: { type: string }
+        listing: { $ref: "#/components/schemas/DemoListingInput" }
+        shipmentId: { type: string }
+        step: { type: string, enum: [ARRIVED, DOCUMENTS_READY, PAYMENT_SIMULATED, RELEASED, PICKUP_READY] }
+        notificationId: { type: string }
+        confirmation: { type: string, enum: ["RESET DEMO"] }
+    DemoPersona:
+      type: object
+      required: [id, name, companyId, membershipRole, operationalProfile, platformRole, primaryMode, permissions, assignedAssetIds]
+      properties:
+        id: { $ref: "#/components/schemas/DemoPersonaId" }
+        name: { type: string }
+        companyId: { type: string }
+        membershipRole: { type: string, enum: [OWNER, ADMIN, MEMBER] }
+        operationalProfile: { type: string }
+        platformRole: { type: string, enum: [USER, DEMO_ADMIN] }
+        primaryMode: { $ref: "#/components/schemas/DemoMode" }
+        permissions: { type: array, items: { type: string } }
+        assignedAssetIds: { type: array, items: { type: string } }
+    DemoCompanyView:
+      type: object
+      required: [id, name, activities, modes, demo]
+      properties:
+        id: { type: string }
+        name: { type: string }
+        activities: { type: array, items: { type: string } }
+        modes: { type: array, items: { $ref: "#/components/schemas/DemoMode" } }
+        demo: { type: boolean, enum: [true] }
+    DemoAssetView:
+      type: object
+      required: [id, companyId, mode, name, type, capacity, equipment, location, availableAt, demo]
+      properties:
+        id: { type: string }
+        companyId: { type: string }
+        mode: { $ref: "#/components/schemas/DemoMode" }
+        name: { type: string }
+        type: { type: string }
+        capacity: { type: number }
+        volume: { type: number }
+        equipment: { type: array, items: { type: string } }
+        location: { type: string }
+        availableAt: { type: string, format: date-time }
+        technical: { $ref: "#/components/schemas/DemoTechnical" }
+        demo: { type: boolean, enum: [true] }
+    DemoListingView:
+      allOf:
+        - $ref: "#/components/schemas/DemoListingInput"
+        - type: object
+          required: [id, companyId, status, demo]
+          properties:
+            id: { type: string }
+            companyId: { type: string }
+            status: { type: string, enum: [DRAFT, ACTIVE, WITHDRAWN] }
+            demo: { type: boolean, enum: [true] }
+    DemoOpportunityView:
+      type: object
+      required: [id, cargoId, capacityId, mode, origin, destination, quantity, score, provisional, status, ownSide, source, verification]
+      properties:
+        id: { type: string }
+        cargoId: { type: string }
+        capacityId: { type: string }
+        mode: { $ref: "#/components/schemas/DemoMode" }
+        origin: { type: string }
+        destination: { type: string }
+        quantity: { type: number }
+        score: { type: number }
+        provisional: { type: boolean, enum: [true] }
+        status: { type: string, enum: [NEW, INTEREST_SENT, CONNECTED, DECLINED, STALE] }
+        ownSide: { type: string, enum: [CARGO, CAPACITY] }
+        counterpartyName: { type: string }
+        assetName: { type: string }
+        contact: { type: string }
+        source: { type: string, enum: [FICTIONAL_MANUAL] }
+        verification: { type: string, enum: [NOT_VERIFIED] }
+    DemoProjectedRecord:
+      type: object
+      description: Demo-only projected notification, referral, evidence, import shipment or audit record as documented in docs/demo-server-contract.md. Never raw sandbox state.
+      additionalProperties: true
+    DemoSessionView:
+      type: object
+      required: [demo, csrfToken, revision, seededAt, stale, context, personas, workspace, catalogue]
+      properties:
+        demo: { type: boolean, enum: [true] }
+        csrfToken: { type: string }
+        revision: { type: integer }
+        seededAt: { type: string, format: date-time }
+        stale: { type: boolean }
+        context:
+          type: object
+          required: [user, company, permissions, allowedModes, modules]
+          properties:
+            user: { $ref: "#/components/schemas/DemoPersona" }
+            company: { $ref: "#/components/schemas/DemoCompanyView" }
+            permissions: { type: array, items: { type: string } }
+            allowedModes: { type: array, items: { $ref: "#/components/schemas/DemoMode" } }
+            modules:
+              type: object
+              additionalProperties:
+                type: string
+                enum: [ACTIVE, PILOT, COMING_LATER, HIDDEN]
+        personas:
+          type: array
+          items: { $ref: "#/components/schemas/DemoPersona" }
+        catalogue:
+          type: object
+          required: [locations]
+          properties:
+            locations: { type: array, items: { type: string } }
+        workspace:
+          type: object
+          required: [assets, cargos, capacity, opportunities, matches, messages, notifications, referrals, imports, companies, audit, evidence]
+          properties:
+            assets: { type: array, items: { $ref: "#/components/schemas/DemoAssetView" } }
+            cargos: { type: array, items: { $ref: "#/components/schemas/DemoListingView" } }
+            capacity: { type: array, items: { $ref: "#/components/schemas/DemoListingView" } }
+            opportunities: { type: array, items: { $ref: "#/components/schemas/DemoOpportunityView" } }
+            matches:
+              type: array
+              items:
+                allOf:
+                  - $ref: "#/components/schemas/DemoOpportunityView"
+                  - type: object
+                    required: [leftConsent, rightConsent]
+                    properties:
+                      leftConsent: { type: boolean }
+                      rightConsent: { type: boolean }
+            messages:
+              type: array
+              items:
+                type: object
+                required: [id, matchId, senderName, body, createdAt, demo]
+                properties:
+                  id: { type: string }
+                  matchId: { type: string }
+                  senderName: { type: string }
+                  body: { type: string }
+                  createdAt: { type: string, format: date-time }
+                  demo: { type: boolean, enum: [true] }
+            notifications: { type: array, items: { $ref: "#/components/schemas/DemoProjectedRecord" } }
+            referrals: { type: array, items: { $ref: "#/components/schemas/DemoProjectedRecord" } }
+            imports: { type: array, items: { $ref: "#/components/schemas/DemoProjectedRecord" } }
+            companies: { type: array, items: { $ref: "#/components/schemas/DemoCompanyView" } }
+            audit: { type: array, items: { $ref: "#/components/schemas/DemoProjectedRecord" } }
+            evidence: { type: array, items: { $ref: "#/components/schemas/DemoProjectedRecord" } }
     AisFreshness:
       type: string
       enum: [FRESH, AGING, STALE, UNKNOWN]

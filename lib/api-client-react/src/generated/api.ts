@@ -46,6 +46,11 @@ import type {
   ConflictResponse,
   Conversation,
   ConversationListResponse,
+  DemoActionInput,
+  DemoFailureResponse,
+  DemoSessionResponseResponse,
+  DemoStartInput,
+  DemoSwitchInput,
   ErrorEnvelope,
   ForbiddenResponse,
   HandleBrowserLoginCallbackParams,
@@ -158,6 +163,423 @@ const withQueryKey = <T extends object, K>(query: T, queryKey: K): T & { queryKe
   }
   return result;
 };
+
+export const getGetDemoSessionUrl = () => {
+
+
+
+
+  return `/api/demo/session`
+}
+
+/**
+ * @summary Restore a private visitor demo, independent from OIDC
+ */
+export const getDemoSession = async ( options?: Parameters<typeof customFetch>[1]): Promise<DemoSessionResponseResponse> => {
+
+  return customFetch<DemoSessionResponseResponse>(getGetDemoSessionUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetDemoSessionQueryKey = () => {
+    return [
+    `/api/demo/session`
+    ] as const;
+    }
+
+
+export const getGetDemoSessionQueryOptions = <TData = Awaited<ReturnType<typeof getDemoSession>>, TError = ErrorType<DemoFailureResponse>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getDemoSession>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetDemoSessionQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getDemoSession>>> = ({ signal }) => getDemoSession({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getDemoSession>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetDemoSessionQueryResult = NonNullable<Awaited<ReturnType<typeof getDemoSession>>>
+export type GetDemoSessionQueryError = ErrorType<DemoFailureResponse>
+
+
+/**
+ * @summary Restore a private visitor demo, independent from OIDC
+ */
+
+export function useGetDemoSession<TData = Awaited<ReturnType<typeof getDemoSession>>, TError = ErrorType<DemoFailureResponse>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getDemoSession>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetDemoSessionQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getStartDemoSessionUrl = () => {
+
+
+
+
+  return `/api/demo/start`
+}
+
+/**
+ * Development/test only. An existing demo cookie resumes unchanged; persona switching requires the separately CSRF- and revision-protected switch route.
+ * @summary Create a visitor-isolated demo or resume existing unchanged
+ */
+export const startDemoSession = async (demoStartInput: DemoStartInput, options?: Parameters<typeof customFetch>[1]): Promise<DemoSessionResponseResponse> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return customFetch<DemoSessionResponseResponse>(getStartDemoSessionUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(demoStartInput)
+  }
+);}
+
+
+
+
+
+export const getStartDemoSessionMutationKey = () => ['startDemoSession'] as const;
+
+export const getStartDemoSessionMutationOptions = <TError = ErrorType<DemoFailureResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof startDemoSession>>, TError,StartDemoSessionMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof startDemoSession>>, TError,StartDemoSessionMutationVariables, TContext> => {
+
+const mutationKey = getStartDemoSessionMutationKey();
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof startDemoSession>>, StartDemoSessionMutationVariables> = (props) => {
+          const {data} = props ?? {};
+
+          return  startDemoSession(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type StartDemoSessionMutationResult = NonNullable<Awaited<ReturnType<typeof startDemoSession>>>
+    export type StartDemoSessionMutationBody = BodyType<DemoStartInput>
+    export type StartDemoSessionMutationError = ErrorType<DemoFailureResponse>
+    export type StartDemoSessionMutationVariables = {data: BodyType<DemoStartInput>}
+
+    /**
+ * @summary Create a visitor-isolated demo or resume existing unchanged
+ */
+export const useStartDemoSession = <TError = ErrorType<DemoFailureResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof startDemoSession>>, TError,StartDemoSessionMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof startDemoSession>>,
+        TError,
+        StartDemoSessionMutationVariables,
+        TContext
+      > => {
+      return useMutation(getStartDemoSessionMutationOptions(options));
+    }
+
+export const getSwitchDemoPersonaUrl = () => {
+
+
+
+
+  return `/api/demo/switch`
+}
+
+/**
+ * @summary Switch only the isolated demo principal and rotate its revision
+ */
+export const switchDemoPersona = async (demoSwitchInput: DemoSwitchInput, options?: Parameters<typeof customFetch>[1]): Promise<DemoSessionResponseResponse> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return customFetch<DemoSessionResponseResponse>(getSwitchDemoPersonaUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(demoSwitchInput)
+  }
+);}
+
+
+
+
+
+export const getSwitchDemoPersonaMutationKey = () => ['switchDemoPersona'] as const;
+
+export const getSwitchDemoPersonaMutationOptions = <TError = ErrorType<DemoFailureResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof switchDemoPersona>>, TError,SwitchDemoPersonaMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof switchDemoPersona>>, TError,SwitchDemoPersonaMutationVariables, TContext> => {
+
+const mutationKey = getSwitchDemoPersonaMutationKey();
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof switchDemoPersona>>, SwitchDemoPersonaMutationVariables> = (props) => {
+          const {data} = props ?? {};
+
+          return  switchDemoPersona(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type SwitchDemoPersonaMutationResult = NonNullable<Awaited<ReturnType<typeof switchDemoPersona>>>
+    export type SwitchDemoPersonaMutationBody = BodyType<DemoSwitchInput>
+    export type SwitchDemoPersonaMutationError = ErrorType<DemoFailureResponse>
+    export type SwitchDemoPersonaMutationVariables = {data: BodyType<DemoSwitchInput>}
+
+    /**
+ * @summary Switch only the isolated demo principal and rotate its revision
+ */
+export const useSwitchDemoPersona = <TError = ErrorType<DemoFailureResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof switchDemoPersona>>, TError,SwitchDemoPersonaMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof switchDemoPersona>>,
+        TError,
+        SwitchDemoPersonaMutationVariables,
+        TContext
+      > => {
+      return useMutation(getSwitchDemoPersonaMutationOptions(options));
+    }
+
+export const getExecuteDemoActionUrl = () => {
+
+
+
+
+  return `/api/demo/actions`
+}
+
+/**
+ * Explicit permissions, mode, company and assignment are rechecked server-side. Connected means introduction, never booking. RESET affects only this visitor and requires Emma plus confirmation.
+ * @summary Atomically authorize and execute one isolated demo action
+ */
+export const executeDemoAction = async (demoActionInput: DemoActionInput, options?: Parameters<typeof customFetch>[1]): Promise<DemoSessionResponseResponse> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return customFetch<DemoSessionResponseResponse>(getExecuteDemoActionUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(demoActionInput)
+  }
+);}
+
+
+
+
+
+export const getExecuteDemoActionMutationKey = () => ['executeDemoAction'] as const;
+
+export const getExecuteDemoActionMutationOptions = <TError = ErrorType<DemoFailureResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof executeDemoAction>>, TError,ExecuteDemoActionMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof executeDemoAction>>, TError,ExecuteDemoActionMutationVariables, TContext> => {
+
+const mutationKey = getExecuteDemoActionMutationKey();
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof executeDemoAction>>, ExecuteDemoActionMutationVariables> = (props) => {
+          const {data} = props ?? {};
+
+          return  executeDemoAction(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type ExecuteDemoActionMutationResult = NonNullable<Awaited<ReturnType<typeof executeDemoAction>>>
+    export type ExecuteDemoActionMutationBody = BodyType<DemoActionInput>
+    export type ExecuteDemoActionMutationError = ErrorType<DemoFailureResponse>
+    export type ExecuteDemoActionMutationVariables = {data: BodyType<DemoActionInput>}
+
+    /**
+ * @summary Atomically authorize and execute one isolated demo action
+ */
+export const useExecuteDemoAction = <TError = ErrorType<DemoFailureResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof executeDemoAction>>, TError,ExecuteDemoActionMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof executeDemoAction>>,
+        TError,
+        ExecuteDemoActionMutationVariables,
+        TContext
+      > => {
+      return useMutation(getExecuteDemoActionMutationOptions(options));
+    }
+
+export const getLogoutDemoSessionUrl = () => {
+
+
+
+
+  return `/api/demo/logout`
+}
+
+/**
+ * @summary Delete only this demo sandbox and its cookie
+ */
+export const logoutDemoSession = async ( options?: Parameters<typeof customFetch>[1]): Promise<void> => {
+
+  return customFetch<void>(getLogoutDemoSessionUrl(),
+  {
+    ...options,
+    method: 'POST'
+
+
+  }
+);}
+
+
+
+
+
+export const getLogoutDemoSessionMutationKey = () => ['logoutDemoSession'] as const;
+
+export const getLogoutDemoSessionMutationOptions = <TError = ErrorType<DemoFailureResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof logoutDemoSession>>, TError,void, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof logoutDemoSession>>, TError,void, TContext> => {
+
+const mutationKey = getLogoutDemoSessionMutationKey();
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof logoutDemoSession>>, void> = () => {
+
+
+          return  logoutDemoSession(requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type LogoutDemoSessionMutationResult = NonNullable<Awaited<ReturnType<typeof logoutDemoSession>>>
+
+    export type LogoutDemoSessionMutationError = ErrorType<DemoFailureResponse>
+
+
+    /**
+ * @summary Delete only this demo sandbox and its cookie
+ */
+export const useLogoutDemoSession = <TError = ErrorType<DemoFailureResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof logoutDemoSession>>, TError,void, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof logoutDemoSession>>,
+        TError,
+        void,
+        TContext
+      > => {
+      return useMutation(getLogoutDemoSessionMutationOptions(options));
+    }
 
 export const getHealthCheckUrl = () => {
 

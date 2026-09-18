@@ -5,12 +5,15 @@ export function resolveEntryMode(
   url: URL,
   basePath: string,
   readSavedMode: () => string | null,
+  demoEnabled = true,
 ): EntryMode {
   const explicit = url.searchParams.get("entry");
-  if (explicit === "demo" || explicit === "landing") return explicit;
+  if (explicit === "demo") return demoEnabled ? "demo" : "landing";
+  if (explicit === "landing") return explicit;
   try {
     const saved = readSavedMode();
-    if (saved === "demo" || saved === "real" || saved === "landing") return saved;
+    if (saved === "demo") return demoEnabled ? "demo" : "landing";
+    if (saved === "real" || saved === "landing") return saved;
   } catch { /* A blocked browser store is not permission to authenticate. */ }
   return url.pathname === basePath ? "landing" : "real";
 }

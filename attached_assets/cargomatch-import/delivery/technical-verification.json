@@ -1,0 +1,510 @@
+{
+  "passed": true,
+  "sha256": "7a2699c799894167c753e9f90def98a30b913d84b463a93189b18ea49bd848a8",
+  "durationSeconds": 142.5,
+  "bytes": 78484853,
+  "frames": 3420,
+  "wholeFileDecodesWithoutWarnings": true,
+  "deviceGeometry": {
+    "device-overview": {
+      "frames": 168,
+      "maxScreenBottom": 868.3518249518772,
+      "minCloseupWidth": 838.287472330514
+    },
+    "device-shipment": {
+      "frames": 168,
+      "maxScreenBottom": 859.3347288536424,
+      "minCloseupWidth": 804.8695681919926
+    },
+    "device-documents": {
+      "frames": 168,
+      "maxScreenBottom": 916.0,
+      "minCloseupWidth": 1096.012374130667
+    },
+    "device-exception": {
+      "frames": 168,
+      "maxScreenBottom": 916.0,
+      "minCloseupWidth": 1096.012374130667
+    },
+    "device-reviewed": {
+      "frames": 168,
+      "maxScreenBottom": 916.0,
+      "minCloseupWidth": 1096.012374130667
+    },
+    "device-partners": {
+      "frames": 168,
+      "maxScreenBottom": 859.3347288536424,
+      "minCloseupWidth": 804.8695681919926
+    },
+    "device-draft": {
+      "frames": 168,
+      "maxScreenBottom": 916.0,
+      "minCloseupWidth": 1096.012374130667
+    },
+    "device-review": {
+      "frames": 168,
+      "maxScreenBottom": 916.0,
+      "minCloseupWidth": 1096.012374130667
+    },
+    "device-customs": {
+      "frames": 168,
+      "maxScreenBottom": 916.0,
+      "minCloseupWidth": 1096.012374130667
+    },
+    "device-readiness": {
+      "frames": 168,
+      "maxScreenBottom": 859.3347288536424,
+      "minCloseupWidth": 804.8695681919926
+    },
+    "device-charges": {
+      "frames": 168,
+      "maxScreenBottom": 859.3347288536424,
+      "minCloseupWidth": 804.8695681919926
+    },
+    "device-release": {
+      "frames": 168,
+      "maxScreenBottom": 859.3347288536424,
+      "minCloseupWidth": 804.8695681919926
+    },
+    "device-payment": {
+      "frames": 168,
+      "maxScreenBottom": 859.3347288536424,
+      "minCloseupWidth": 804.8695681919926
+    },
+    "device-options": {
+      "frames": 168,
+      "maxScreenBottom": 859.3347288536424,
+      "minCloseupWidth": 804.8695681919926
+    },
+    "device-connected": {
+      "frames": 168,
+      "maxScreenBottom": 859.3347288536424,
+      "minCloseupWidth": 804.8695681919926
+    },
+    "device-planned": {
+      "frames": 168,
+      "maxScreenBottom": 859.3347288536424,
+      "minCloseupWidth": 804.8695681919926
+    },
+    "device-delivered": {
+      "frames": 168,
+      "maxScreenBottom": 859.3347288536424,
+      "minCloseupWidth": 804.8695681919926
+    },
+    "device-receiver": {
+      "frames": 168,
+      "maxScreenBottom": 870.1517724420387,
+      "minCloseupWidth": 741.3235477450653
+    },
+    "device-receiver-docs": {
+      "frames": 168,
+      "maxScreenBottom": 870.1517724420387,
+      "minCloseupWidth": 741.3235477450653
+    },
+    "device-receiver-costs": {
+      "frames": 168,
+      "maxScreenBottom": 870.1517724420387,
+      "minCloseupWidth": 741.3235477450653
+    },
+    "device-receiver-choice": {
+      "frames": 168,
+      "maxScreenBottom": 870.1517724420387,
+      "minCloseupWidth": 741.3235477450653
+    },
+    "device-map": {
+      "frames": 168,
+      "maxScreenBottom": 859.3347288536424,
+      "minCloseupWidth": 804.8695681919926
+    },
+    "device-vessel": {
+      "frames": 168,
+      "maxScreenBottom": 859.3347288536424,
+      "minCloseupWidth": 804.8695681919926
+    },
+    "device-anchorage": {
+      "frames": 168,
+      "maxScreenBottom": 859.3347288536424,
+      "minCloseupWidth": 804.8695681919926
+    }
+  },
+  "subtitleCues": 38,
+  "loudness": {
+    "input_i": "-16.06",
+    "input_tp": "-1.32",
+    "input_lra": "3.20",
+    "input_thresh": "-26.67",
+    "output_i": "-16.03",
+    "output_tp": "-1.50",
+    "output_lra": "3.10",
+    "output_thresh": "-26.59",
+    "normalization_type": "dynamic",
+    "target_offset": "0.03"
+  },
+  "sampledFrames": [
+    {
+      "scene": 1,
+      "time": 0.7333333333333334,
+      "mean": 104.18638760288066
+    },
+    {
+      "scene": 2,
+      "time": 4.875,
+      "mean": 135.921540155607
+    },
+    {
+      "scene": 3,
+      "time": 10.833333333333334,
+      "mean": 142.5164575295782
+    },
+    {
+      "scene": 4,
+      "time": 16.825,
+      "mean": 142.4039943415638
+    },
+    {
+      "scene": 5,
+      "time": 23.783333333333335,
+      "mean": 113.70793065200617
+    },
+    {
+      "scene": 6,
+      "time": 28.6,
+      "mean": 126.70350485468107
+    },
+    {
+      "scene": 7,
+      "time": 33.2,
+      "mean": 127.95531571502057
+    },
+    {
+      "scene": 8,
+      "time": 39.13333333333333,
+      "mean": 126.1243772505144
+    },
+    {
+      "scene": 9,
+      "time": 44.58333333333333,
+      "mean": 124.42307950745885
+    },
+    {
+      "scene": 10,
+      "time": 49.05833333333333,
+      "mean": 124.06013535236626
+    },
+    {
+      "scene": 11,
+      "time": 53.416666666666664,
+      "mean": 124.67224826388889
+    },
+    {
+      "scene": 12,
+      "time": 59.08333333333333,
+      "mean": 126.7124760480967
+    },
+    {
+      "scene": 13,
+      "time": 65.24166666666666,
+      "mean": 126.2197254372428
+    },
+    {
+      "scene": 14,
+      "time": 72.35833333333333,
+      "mean": 128.9242941422325
+    },
+    {
+      "scene": 15,
+      "time": 78.20833333333333,
+      "mean": 126.6608805941358
+    },
+    {
+      "scene": 16,
+      "time": 84.04166666666666,
+      "mean": 76.11646154835391
+    },
+    {
+      "scene": 17,
+      "time": 88.275,
+      "mean": 128.39296666023662
+    },
+    {
+      "scene": 18,
+      "time": 92.95833333333333,
+      "mean": 136.0052777777778
+    },
+    {
+      "scene": 19,
+      "time": 98.45,
+      "mean": 134.10731819058643
+    },
+    {
+      "scene": 20,
+      "time": 103.925,
+      "mean": 131.84113490226338
+    },
+    {
+      "scene": 21,
+      "time": 108.60833333333333,
+      "mean": 110.6751707175926
+    },
+    {
+      "scene": 22,
+      "time": 115.39166666666667,
+      "mean": 101.7321333269033
+    },
+    {
+      "scene": 23,
+      "time": 123.57499999999999,
+      "mean": 114.38326244212963
+    },
+    {
+      "scene": 24,
+      "time": 134.13333333333333,
+      "mean": 56.424244791666666
+    },
+    {
+      "scene": 1,
+      "time": 1.8333333333333333,
+      "mean": 105.57086467978395
+    },
+    {
+      "scene": 2,
+      "time": 6.6875,
+      "mean": 130.3877718299897
+    },
+    {
+      "scene": 3,
+      "time": 12.520833333333334,
+      "mean": 141.0496450617284
+    },
+    {
+      "scene": 4,
+      "time": 19.0625,
+      "mean": 140.92842062114198
+    },
+    {
+      "scene": 5,
+      "time": 25.270833333333336,
+      "mean": 116.79562950102881
+    },
+    {
+      "scene": 6,
+      "time": 29.875,
+      "mean": 129.92841194058641
+    },
+    {
+      "scene": 7,
+      "time": 35.0,
+      "mean": 130.03290043081276
+    },
+    {
+      "scene": 8,
+      "time": 40.83333333333333,
+      "mean": 122.26122588734567
+    },
+    {
+      "scene": 9,
+      "time": 45.95833333333333,
+      "mean": 127.29605774176954
+    },
+    {
+      "scene": 10,
+      "time": 50.27083333333333,
+      "mean": 127.68160542052469
+    },
+    {
+      "scene": 11,
+      "time": 55.104166666666664,
+      "mean": 126.59644772376544
+    },
+    {
+      "scene": 12,
+      "time": 60.83333333333333,
+      "mean": 122.71750578703704
+    },
+    {
+      "scene": 13,
+      "time": 67.47916666666666,
+      "mean": 121.2126334233539
+    },
+    {
+      "scene": 14,
+      "time": 74.08333333333333,
+      "mean": 122.88095791538066
+    },
+    {
+      "scene": 15,
+      "time": 80.08333333333333,
+      "mean": 121.8691864390432
+    },
+    {
+      "scene": 16,
+      "time": 85.29166666666666,
+      "mean": 98.28806648662551
+    },
+    {
+      "scene": 17,
+      "time": 89.625,
+      "mean": 122.35343203446502
+    },
+    {
+      "scene": 18,
+      "time": 94.58333333333334,
+      "mean": 130.16956114969136
+    },
+    {
+      "scene": 19,
+      "time": 100.1875,
+      "mean": 129.69589104295267
+    },
+    {
+      "scene": 20,
+      "time": 105.1875,
+      "mean": 128.1652348572531
+    },
+    {
+      "scene": 21,
+      "time": 110.58333333333334,
+      "mean": 108.46049704218107
+    },
+    {
+      "scene": 22,
+      "time": 117.66666666666666,
+      "mean": 108.68540975437243
+    },
+    {
+      "scene": 23,
+      "time": 126.75,
+      "mean": 110.57472190072016
+    },
+    {
+      "scene": 24,
+      "time": 137.27083333333331,
+      "mean": 56.544626414609056
+    },
+    {
+      "scene": 1,
+      "time": 2.9333333333333336,
+      "mean": 109.54918901105967
+    },
+    {
+      "scene": 2,
+      "time": 8.500000000000002,
+      "mean": 133.10159818672838
+    },
+    {
+      "scene": 3,
+      "time": 14.208333333333334,
+      "mean": 139.61995965149177
+    },
+    {
+      "scene": 4,
+      "time": 21.3,
+      "mean": 139.5721534207819
+    },
+    {
+      "scene": 5,
+      "time": 26.758333333333333,
+      "mean": 118.64999469521605
+    },
+    {
+      "scene": 6,
+      "time": 31.15,
+      "mean": 131.08553321116256
+    },
+    {
+      "scene": 7,
+      "time": 36.8,
+      "mean": 131.3987829539609
+    },
+    {
+      "scene": 8,
+      "time": 42.53333333333333,
+      "mean": 124.9252181391461
+    },
+    {
+      "scene": 9,
+      "time": 47.333333333333336,
+      "mean": 128.9553427211934
+    },
+    {
+      "scene": 10,
+      "time": 51.483333333333334,
+      "mean": 128.5106209812243
+    },
+    {
+      "scene": 11,
+      "time": 56.791666666666664,
+      "mean": 127.97948286394033
+    },
+    {
+      "scene": 12,
+      "time": 62.583333333333336,
+      "mean": 125.30039801954733
+    },
+    {
+      "scene": 13,
+      "time": 69.71666666666667,
+      "mean": 124.30103764789095
+    },
+    {
+      "scene": 14,
+      "time": 75.80833333333332,
+      "mean": 125.80794110082304
+    },
+    {
+      "scene": 15,
+      "time": 81.95833333333333,
+      "mean": 124.96615194187243
+    },
+    {
+      "scene": 16,
+      "time": 86.54166666666667,
+      "mean": 109.52932854295267
+    },
+    {
+      "scene": 17,
+      "time": 90.975,
+      "mean": 125.18119807741769
+    },
+    {
+      "scene": 18,
+      "time": 96.20833333333334,
+      "mean": 133.36826147762346
+    },
+    {
+      "scene": 19,
+      "time": 101.925,
+      "mean": 132.64462914737655
+    },
+    {
+      "scene": 20,
+      "time": 106.45,
+      "mean": 93.33869405864198
+    },
+    {
+      "scene": 21,
+      "time": 112.55833333333334,
+      "mean": 106.4206992669753
+    },
+    {
+      "scene": 22,
+      "time": 119.94166666666666,
+      "mean": 108.5593894675926
+    },
+    {
+      "scene": 23,
+      "time": 129.92499999999998,
+      "mean": 110.17043113425926
+    },
+    {
+      "scene": 24,
+      "time": 140.40833333333333,
+      "mean": 56.816866158693415
+    }
+  ],
+  "firstFrameMean": 0.0,
+  "lastFrameMean": 0.0,
+  "blackIntervals": [],
+  "noInternalBlackGapsDetected": true,
+  "limits": "Sampled visual review, technical full decode; browser tested separately. No independent human listening or external-player certification."
+}

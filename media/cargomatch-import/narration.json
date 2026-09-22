@@ -1,0 +1,83 @@
+{
+  "voice": {
+    "voiceId": "GFyWqnwcF2mv6dWlo3u1",
+    "name": "John - Irish Man",
+    "modelId": "eleven_multilingual_v2",
+    "outputFormat": "mp3_44100_192",
+    "voiceSettings": {
+      "stability": 0.62,
+      "similarity_boost": 0.75,
+      "style": 0.1,
+      "use_speaker_boost": true,
+      "speed": 1
+    }
+  },
+  "groups": [
+    {
+      "id": "opening",
+      "ids": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "text": "A container arrives. But its journey is not finished. From Yantian, through Rotterdam, to Eindhoven. One import journey, many people. CargoMatch brings shipments, documents and import preparation into one connected demo. Customs, charges, release and delivery follow. Control, partners and exceptions keep the wider picture in view.",
+      "path": "attached_assets/cargomatch-import/audio/opening.mp3"
+    },
+    {
+      "id": "documents",
+      "ids": [
+        5,
+        6,
+        7,
+        8
+      ],
+      "text": "The China shipment begins with its documents. Details must agree before the next step. Here, the declared weights differ by one hundred and eighty kilograms. An exception makes that difference visible. A person checks the source and reviews the correction. The record stays with the shipment. Partners work from the information their role allows.",
+      "path": "attached_assets/cargomatch-import/audio/documents.mp3"
+    },
+    {
+      "id": "customs",
+      "ids": [
+        9,
+        10,
+        11,
+        12
+      ],
+      "text": "Customs preparation is a human decision, not an invisible automatic approval. The reviewer checks the dossier and its requirements before proceeding. This demonstration simulates the customs process. It does not submit a real declaration. Clear status and responsibilities help the next professional understand what still needs attention.",
+      "path": "attached_assets/cargomatch-import/audio/customs.mp3"
+    },
+    {
+      "id": "charges",
+      "ids": [
+        13,
+        14,
+        15,
+        16
+      ],
+      "text": "Costs belong in the same conversation. The China example totals ninety-five thousand, seven hundred and seven euros. Charges and release conditions are visible together, so missing steps are not overlooked. Payments and release remain simulated. The demo explains the process without moving real money. Only then does the focus shift from the port to the onward journey.",
+      "path": "attached_assets/cargomatch-import/audio/charges.mp3"
+    },
+    {
+      "id": "road",
+      "ids": [
+        17,
+        18,
+        19,
+        20
+      ],
+      "text": "Suitable transport options support the conversation about the next leg to Eindhoven. Both parties decide whether to connect. A connection is an introduction, not a booking. Planning and delivery remain separate steps. People confirm the practical arrangements. From port to warehouse, the handover stays part of the shipment story.",
+      "path": "attached_assets/cargomatch-import/audio/road.mp3"
+    },
+    {
+      "id": "closing",
+      "ids": [
+        21,
+        22,
+        23,
+        24
+      ],
+      "text": "For the India groupage journey, Mumbai to Tilburg through Rotterdam, the receiver sees only their own house shipment. Their own documents, relevant charges and delivery choice. Shared work, without exposing another receiver's business. The Control Tower shows vessel status, route, arrival estimates and exceptions, with source and time. Synthetic demo tracking, not live A I S. CargoMatch. From arrival to delivery, with people in control. The transport capacity intelligence network. Discover CargoMatch.",
+      "path": "attached_assets/cargomatch-import/audio/closing.mp3"
+    }
+  ]
+}

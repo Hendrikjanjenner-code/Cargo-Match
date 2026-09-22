@@ -1,0 +1,36 @@
+{
+  "settings": {
+    "aspectRatio": "16:9",
+    "resolution": "1080p",
+    "durationSeconds": 8,
+    "highQuality": true
+  },
+  "style": "Photorealistic premium cinematic B2B logistics commercial, restrained navy palette warm natural daylight, physically credible detail, slow continuous camera movement, no cuts, no text or logos, no spoken dialogue. ",
+  "shots": [
+    [
+      "port",
+      "Wide aerial slow tracking shot of a large laden container vessel entering Rotterdam harbour, stacked containers, port cranes and calm grey-blue sea, morning sun and subtle haze."
+    ],
+    [
+      "truck",
+      "An unbranded navy European tractor pulling a container chassis drives safely from a Dutch container terminal onto a divided highway, stable tracking camera front three-quarter view, realistic wheels and road markings."
+    ],
+    [
+      "warehouse",
+      "A professional warehouse supervisor in reflective vest receives a container delivery at a tidy Dutch distribution centre, two adult colleagues check a paper clipboard, forklift moving slowly far in background, slow lateral camera move."
+    ],
+    [
+      "plate-customs",
+      "A male customs dossier reviewer with glasses seated at a desk in a modern European logistics office. Camera looks over his right shoulder toward a LARGE widescreen laptop. Display plane almost parallel to camera sensor, level and horizontal, 16:10 aspect ratio, all four display corners visible, no occlusion. Laptop display is solid flat vivid magenta #ff00ff, no reflections no text. Start with reviewer profile on far right and laptop occupying 65 percent of picture width. Slow gentle straight forward dolly until display fills 80 percent of width. Hands never cover screen."
+    ],
+    [
+      "plate-planner",
+      "An adult female transport planner seated at a desk in an airy distribution centre office. Camera just over left shoulder sees laptop almost exactly front on, landscape widescreen display 16:10 perfectly flat vivid magenta #ff00ff. All four screen corners stay in frame with thick black bezel. Laptop fills 65 percent frame width from start, gentle camera dolly toward 80 percent width, only subtle natural human motion at edge of frame, no hand occlusion."
+    ],
+    [
+      "plate-receiver",
+      "An adult Indian male receiving manager in a clean warehouse office reviewing a LARGE open laptop. Camera over shoulder but display almost exactly front on and horizontal, wide 16:10 screen perfectly uniform vivid magenta #ff00ff, no reflections or text. Display occupies 65 percent of entire image width, gentle smooth dolly closer to 80 percent; all four display corners visible for full shot. Face at far left edge, hands resting away from screen."
+    ]
+  ],
+  "proof": "plate-import generated first; measured and viewed at opening and four-second close-up before remaining clips dispatched"
+}

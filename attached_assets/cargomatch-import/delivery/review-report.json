@@ -1,0 +1,85 @@
+{
+  "visualReview": "Opening, middle and ending representative frames of all 24 scenes inspected in contact sheets; 180 kg discrepancy and the confirmed packing list/B/L distinction checked in full-size device frames. New moving laptop proof inspected before batch generation.",
+  "narration": "Six new normal-speed John library reads, exact approved voice settings. Fresh local alignment matched 330/331 script tokens (99.7%). Remaining recognition mismatch Eindhoven is explicitly retained in alignment warnings, not hidden.",
+  "pausesSeconds": {
+    "opening-normalized": [
+      0.22725,
+      0.5375,
+      0.302458,
+      0.286521,
+      0.328146,
+      0.405646,
+      0.449146,
+      0.383313,
+      0.157917,
+      0.332646,
+      0.642021,
+      0.198542,
+      0.1955,
+      0.529583,
+      0.201396
+    ],
+    "documents-normalized": [
+      0.489708,
+      0.424833,
+      0.435854,
+      0.74425,
+      0.684958,
+      0.859021,
+      0.318146,
+      0.411187
+    ],
+    "customs-normalized": [
+      0.192146,
+      0.743958,
+      0.517583,
+      0.387104,
+      0.396271,
+      0.623521
+    ],
+    "charges-normalized": [
+      0.677104,
+      0.663229,
+      0.518625,
+      0.669667,
+      0.182896,
+      0.787813,
+      0.64425
+    ],
+    "road-normalized": [
+      0.847042,
+      0.647667,
+      0.913708,
+      0.728771,
+      0.597
+    ],
+    "closing-normalized": [
+      0.209104,
+      0.621729,
+      0.676354,
+      0.232792,
+      0.473979,
+      0.529,
+      0.337042,
+      0.301312,
+      0.466812,
+      0.202292,
+      0.314875,
+      0.448937,
+      0.844021,
+      0.5955,
+      0.269229,
+      0.595708
+    ]
+  },
+  "limitations": [
+    "No independent human listening session or external-player certification.",
+    "App Screenshot-tool localhost check returned Cross-origin write rejected; capture helper successfully used the allowed hosted development origin. Film browser playback passed independently.",
+    "Small source-interface text is contextual; editorial labels and Dutch captions provide key story facts. Generated device angles differ from the original footage, as expected for new shots."
+  ],
+  "demoBoundaries": [
+    "Tracking synthetic, not live AIS. Customs/payments/release/delivery simulated.",
+    "Connection is an introduction, not a booking; planning is a separate step.",
+    "Weight correction confirms shipment data; it does not rewrite the B/L."
+  ]
+}

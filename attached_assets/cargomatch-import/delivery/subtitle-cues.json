@@ -1,0 +1,439 @@
+{
+  "language": "nl",
+  "generatedFrom": "media/cargomatch-import/production.json",
+  "timingBasis": "Fresh local faster-whisper base.en word timestamps aligned to the exact normalized continuous English reads and bilingual import script",
+  "cueCount": 38,
+  "cues": [
+    {
+      "slotId": 1,
+      "sentence": 1,
+      "start": 0.65,
+      "end": 3.53,
+      "english": "A container arrives. But its journey is not finished.",
+      "dutch": "Een container komt aan. Maar de reis is nog niet voorbij.",
+      "lines": [
+        "Een container komt aan. Maar de reis is nog niet voorbij."
+      ]
+    },
+    {
+      "slotId": 2,
+      "sentence": 1,
+      "start": 3.53,
+      "end": 9.6,
+      "english": "From Yantian, through Rotterdam, to Eindhoven. One import journey, many people.",
+      "dutch": "Van Yantian via Rotterdam naar Eindhoven. Eén importreis, met veel betrokkenen.",
+      "lines": [
+        "Van Yantian via Rotterdam naar Eindhoven. Eén importreis,",
+        "met veel betrokkenen."
+      ]
+    },
+    {
+      "slotId": 3,
+      "sentence": 1,
+      "start": 9.6,
+      "end": 15.23,
+      "english": "CargoMatch brings shipments, documents and import preparation into one connected demo.",
+      "dutch": "CargoMatch verbindt zendingen, documenten en importvoorbereiding in één demo.",
+      "lines": [
+        "CargoMatch verbindt zendingen, documenten en",
+        "importvoorbereiding in één demo."
+      ]
+    },
+    {
+      "slotId": 4,
+      "sentence": 1,
+      "start": 15.23,
+      "end": 18.59,
+      "english": "Customs, charges, release and delivery follow.",
+      "dutch": "Douane, kosten, vrijgave en aflevering volgen.",
+      "lines": [
+        "Douane, kosten, vrijgave en aflevering volgen."
+      ]
+    },
+    {
+      "slotId": 4,
+      "sentence": 2,
+      "start": 18.59,
+      "end": 22.116,
+      "english": "Control, partners and exceptions keep the wider picture in view.",
+      "dutch": "Control, partners en afwijkingen bewaken het overzicht.",
+      "lines": [
+        "Control, partners en afwijkingen bewaken het overzicht."
+      ]
+    },
+    {
+      "slotId": 5,
+      "sentence": 1,
+      "start": 22.666,
+      "end": 24.796,
+      "english": "The China shipment begins with its documents.",
+      "dutch": "De China-zending begint bij de documenten.",
+      "lines": [
+        "De China-zending begint bij de documenten."
+      ]
+    },
+    {
+      "slotId": 5,
+      "sentence": 2,
+      "start": 24.796,
+      "end": 27.636,
+      "english": "Details must agree before the next step.",
+      "dutch": "Gegevens moeten kloppen vóór de volgende stap.",
+      "lines": [
+        "Gegevens moeten kloppen vóór de volgende stap."
+      ]
+    },
+    {
+      "slotId": 6,
+      "sentence": 1,
+      "start": 27.636,
+      "end": 31.896,
+      "english": "Here, the declared weights differ by one hundred and eighty kilograms.",
+      "dutch": "Hier verschillen de opgegeven gewichten met honderd­tachtig kilogram.",
+      "lines": [
+        "Hier verschillen de opgegeven gewichten met",
+        "honderd­tachtig kilogram."
+      ]
+    },
+    {
+      "slotId": 7,
+      "sentence": 1,
+      "start": 31.896,
+      "end": 34.686,
+      "english": "An exception makes that difference visible.",
+      "dutch": "Een afwijkingsmelding toont het verschil.",
+      "lines": [
+        "Een afwijkingsmelding toont het verschil."
+      ]
+    },
+    {
+      "slotId": 7,
+      "sentence": 2,
+      "start": 34.686,
+      "end": 37.876,
+      "english": "A person checks the source and reviews the correction.",
+      "dutch": "Een medewerker controleert de bron en de correctie.",
+      "lines": [
+        "Een medewerker controleert de bron en de correctie."
+      ]
+    },
+    {
+      "slotId": 8,
+      "sentence": 1,
+      "start": 37.876,
+      "end": 40.266,
+      "english": "The record stays with the shipment.",
+      "dutch": "Het dossier blijft bij de zending.",
+      "lines": [
+        "Het dossier blijft bij de zending."
+      ]
+    },
+    {
+      "slotId": 8,
+      "sentence": 2,
+      "start": 40.266,
+      "end": 43.007,
+      "english": "Partners work from the information their role allows.",
+      "dutch": "Partners zien de informatie die bij hun rol hoort.",
+      "lines": [
+        "Partners zien de informatie die bij hun rol hoort."
+      ]
+    },
+    {
+      "slotId": 9,
+      "sentence": 1,
+      "start": 43.556,
+      "end": 48.136,
+      "english": "Customs preparation is a human decision, not an invisible automatic approval.",
+      "dutch": "Douanevoorbereiding is mensenwerk, geen onzichtbare automatische goedkeuring.",
+      "lines": [
+        "Douanevoorbereiding is mensenwerk, geen onzichtbare",
+        "automatische goedkeuring."
+      ]
+    },
+    {
+      "slotId": 10,
+      "sentence": 1,
+      "start": 48.136,
+      "end": 52.176,
+      "english": "The reviewer checks the dossier and its requirements before proceeding.",
+      "dutch": "De behandelaar controleert het dossier en de vereisten vóór de volgende stap.",
+      "lines": [
+        "De behandelaar controleert het dossier en de vereisten",
+        "vóór de volgende stap."
+      ]
+    },
+    {
+      "slotId": 11,
+      "sentence": 1,
+      "start": 52.176,
+      "end": 55.396,
+      "english": "This demonstration simulates the customs process.",
+      "dutch": "Deze demonstratie simuleert het douaneproces.",
+      "lines": [
+        "Deze demonstratie simuleert het douaneproces."
+      ]
+    },
+    {
+      "slotId": 11,
+      "sentence": 2,
+      "start": 55.396,
+      "end": 57.806,
+      "english": "It does not submit a real declaration.",
+      "dutch": "Er wordt geen echte aangifte ingediend.",
+      "lines": [
+        "Er wordt geen echte aangifte ingediend."
+      ]
+    },
+    {
+      "slotId": 12,
+      "sentence": 1,
+      "start": 57.806,
+      "end": 63.075,
+      "english": "Clear status and responsibilities help the next professional understand what still needs attention.",
+      "dutch": "Duidelijke status en taken tonen de volgende medewerker wat nog aandacht vraagt.",
+      "lines": [
+        "Duidelijke status en taken tonen de volgende medewerker",
+        "wat nog aandacht vraagt."
+      ]
+    },
+    {
+      "slotId": 13,
+      "sentence": 1,
+      "start": 63.625,
+      "end": 65.895,
+      "english": "Costs belong in the same conversation.",
+      "dutch": "Kosten horen erbij.",
+      "lines": [
+        "Kosten horen erbij."
+      ]
+    },
+    {
+      "slotId": 13,
+      "sentence": 2,
+      "start": 65.895,
+      "end": 71.095,
+      "english": "The China example totals ninety-five thousand, seven hundred and seven euros.",
+      "dutch": "Het China-voorbeeld komt uit op 95.707 euro.",
+      "lines": [
+        "Het China-voorbeeld komt uit op 95.707 euro."
+      ]
+    },
+    {
+      "slotId": 14,
+      "sentence": 1,
+      "start": 71.095,
+      "end": 76.825,
+      "english": "Charges and release conditions are visible together, so missing steps are not overlooked.",
+      "dutch": "Kosten en vrijgavevoorwaarden zijn samen zichtbaar, zodat ontbrekende stappen opvallen.",
+      "lines": [
+        "Kosten en vrijgavevoorwaarden zijn samen zichtbaar, zodat",
+        "ontbrekende stappen opvallen."
+      ]
+    },
+    {
+      "slotId": 15,
+      "sentence": 1,
+      "start": 76.825,
+      "end": 79.715,
+      "english": "Payments and release remain simulated.",
+      "dutch": "Betalingen en vrijgave blijven gesimuleerd.",
+      "lines": [
+        "Betalingen en vrijgave blijven gesimuleerd."
+      ]
+    },
+    {
+      "slotId": 15,
+      "sentence": 2,
+      "start": 79.715,
+      "end": 83.075,
+      "english": "The demo explains the process without moving real money.",
+      "dutch": "De demo verplaatst geen echt geld.",
+      "lines": [
+        "De demo verplaatst geen echt geld."
+      ]
+    },
+    {
+      "slotId": 16,
+      "sentence": 1,
+      "start": 83.075,
+      "end": 86.694,
+      "english": "Only then does the focus shift from the port to the onward journey.",
+      "dutch": "Daarna verschuift de aandacht van de haven naar het vervolg van de reis.",
+      "lines": [
+        "Daarna verschuift de aandacht van de haven naar het",
+        "vervolg van de reis."
+      ]
+    },
+    {
+      "slotId": 17,
+      "sentence": 1,
+      "start": 87.244,
+      "end": 91.764,
+      "english": "Suitable transport options support the conversation about the next leg to Eindhoven.",
+      "dutch": "Passende vervoeropties ondersteunen het gesprek over de rit naar Eindhoven.",
+      "lines": [
+        "Passende vervoeropties ondersteunen het gesprek over de",
+        "rit naar Eindhoven."
+      ]
+    },
+    {
+      "slotId": 18,
+      "sentence": 1,
+      "start": 91.764,
+      "end": 94.094,
+      "english": "Both parties decide whether to connect.",
+      "dutch": "Beide partijen kiezen of ze verbinden.",
+      "lines": [
+        "Beide partijen kiezen of ze verbinden."
+      ]
+    },
+    {
+      "slotId": 18,
+      "sentence": 2,
+      "start": 94.094,
+      "end": 97.174,
+      "english": "A connection is an introduction, not a booking.",
+      "dutch": "Een verbinding is geen boeking.",
+      "lines": [
+        "Een verbinding is geen boeking."
+      ]
+    },
+    {
+      "slotId": 19,
+      "sentence": 1,
+      "start": 97.174,
+      "end": 100.444,
+      "english": "Planning and delivery remain separate steps.",
+      "dutch": "Planning en aflevering blijven aparte stappen.",
+      "lines": [
+        "Planning en aflevering blijven aparte stappen."
+      ]
+    },
+    {
+      "slotId": 19,
+      "sentence": 2,
+      "start": 100.444,
+      "end": 102.964,
+      "english": "People confirm the practical arrangements.",
+      "dutch": "Mensen bevestigen de afspraken.",
+      "lines": [
+        "Mensen bevestigen de afspraken."
+      ]
+    },
+    {
+      "slotId": 20,
+      "sentence": 1,
+      "start": 102.964,
+      "end": 106.615,
+      "english": "From port to warehouse, the handover stays part of the shipment story.",
+      "dutch": "Van haven tot magazijn blijft de overdracht onderdeel van het zendingsdossier.",
+      "lines": [
+        "Van haven tot magazijn blijft de overdracht onderdeel van",
+        "het zendingsdossier."
+      ]
+    },
+    {
+      "slotId": 21,
+      "sentence": 1,
+      "start": 107.165,
+      "end": 113.745,
+      "english": "For the India groupage journey, Mumbai to Tilburg through Rotterdam, the receiver sees only their own house shipment.",
+      "dutch": "Bij de deelzending Mumbai–Rotterdam–Tilburg ziet de ontvanger alleen de eigen house-zending.",
+      "lines": [
+        "Bij de deelzending Mumbai–Rotterdam–Tilburg ziet de",
+        "ontvanger alleen de eigen house-zending."
+      ]
+    },
+    {
+      "slotId": 22,
+      "sentence": 1,
+      "start": 113.745,
+      "end": 117.385,
+      "english": "Their own documents, relevant charges and delivery choice.",
+      "dutch": "Eigen documenten, relevante kosten en afleverkeuze.",
+      "lines": [
+        "Eigen documenten, relevante kosten en afleverkeuze."
+      ]
+    },
+    {
+      "slotId": 22,
+      "sentence": 2,
+      "start": 117.385,
+      "end": 121.325,
+      "english": "Shared work, without exposing another receiver's business.",
+      "dutch": "Samenwerken zonder gegevens van andere ontvangers.",
+      "lines": [
+        "Samenwerken zonder gegevens van andere ontvangers."
+      ]
+    },
+    {
+      "slotId": 23,
+      "sentence": 1,
+      "start": 121.325,
+      "end": 128.485,
+      "english": "The Control Tower shows vessel status, route, arrival estimates and exceptions, with source and time.",
+      "dutch": "De Control Tower toont scheepsstatus, route, ETA en afwijkingen, met bron en tijd.",
+      "lines": [
+        "De Control Tower toont scheepsstatus, route, ETA en",
+        "afwijkingen, met bron en tijd."
+      ]
+    },
+    {
+      "slotId": 23,
+      "sentence": 2,
+      "start": 128.485,
+      "end": 131.905,
+      "english": "Synthetic demo tracking, not live A I S.",
+      "dutch": "Demotracking, geen live AIS.",
+      "lines": [
+        "Demotracking, geen live AIS."
+      ]
+    },
+    {
+      "slotId": 24,
+      "sentence": 1,
+      "start": 131.905,
+      "end": 133.245,
+      "english": "CargoMatch.",
+      "dutch": "CargoMatch.",
+      "lines": [
+        "CargoMatch."
+      ]
+    },
+    {
+      "slotId": 24,
+      "sentence": 2,
+      "start": 133.245,
+      "end": 136.665,
+      "english": "From arrival to delivery, with people in control.",
+      "dutch": "Van aankomst tot aflevering, met mensen aan het roer.",
+      "lines": [
+        "Van aankomst tot aflevering, met mensen aan het roer."
+      ]
+    },
+    {
+      "slotId": 24,
+      "sentence": 3,
+      "start": 136.665,
+      "end": 139.645,
+      "english": "The transport capacity intelligence network.",
+      "dutch": "Het netwerk voor transportcapaciteitsinformatie.",
+      "lines": [
+        "Het netwerk voor transportcapaciteitsinformatie."
+      ]
+    },
+    {
+      "slotId": 24,
+      "sentence": 4,
+      "start": 139.645,
+      "end": 141.229,
+      "english": "Discover CargoMatch.",
+      "dutch": "Ontdek CargoMatch.",
+      "lines": [
+        "Ontdek CargoMatch."
+      ]
+    }
+  ],
+  "alignmentEvidence": "attached_assets/cargomatch-import/delivery/alignment.json"
+}

@@ -1,0 +1,93 @@
+{
+  "videos": [
+    {
+      "description": "Photorealistic premium logistics commercial. A Dutch female import coordinator seated on the left at her desk in a sunlit modern harbour office, Rotterdam cranes blurred outside. A single large open laptop is the central subject, screen facing camera almost straight on, all four rectangular display corners fully visible and unobstructed throughout. The entire display is perfectly flat uniform saturated magenta #ff00ff, no text no graphics no reflections, thick dark bezel, screen occupies 60 percent of frame width. Hands rest on desk away from display. Very slow smooth camera dolly toward laptop over eight seconds; subtle human breathing. Realistic materials, restrained blue navy palette warm natural light. No cuts. No other screens. Landscape 1920x1080.",
+      "filePath": "attached_assets/cargomatch-import/source/plate-import.mp4",
+      "requestedPath": "attached_assets/cargomatch-import/source/plate-import.mp4"
+    },
+    {
+      "description": "Photorealistic premium cinematic B2B logistics commercial, restrained navy palette warm natural daylight, physically credible detail, slow continuous camera movement, no cuts, no text or logos, no spoken dialogue. Wide aerial slow tracking shot of a large laden container vessel entering Rotterdam harbour, stacked containers, port cranes and calm grey-blue sea, morning sun and subtle haze.",
+      "filePath": "attached_assets/cargomatch-import/source/port.mp4",
+      "requestedPath": "attached_assets/cargomatch-import/source/port.mp4"
+    },
+    {
+      "description": "Photorealistic premium cinematic B2B logistics commercial, restrained navy palette warm natural daylight, physically credible detail, slow continuous camera movement, no cuts, no text or logos, no spoken dialogue. An unbranded navy European tractor pulling a container chassis drives safely from a Dutch container terminal onto a divided highway, stable tracking camera front three-quarter view, realistic wheels and road markings.",
+      "filePath": "attached_assets/cargomatch-import/source/truck.mp4",
+      "requestedPath": "attached_assets/cargomatch-import/source/truck.mp4"
+    },
+    {
+      "description": "Photorealistic premium cinematic B2B logistics commercial, restrained navy palette warm natural daylight, physically credible detail, slow continuous camera movement, no cuts, no text or logos, no spoken dialogue. A professional warehouse supervisor in reflective vest receives a container delivery at a tidy Dutch distribution centre, two adult colleagues check a paper clipboard, forklift moving slowly far in background, slow lateral camera move.",
+      "filePath": "attached_assets/cargomatch-import/source/warehouse.mp4",
+      "requestedPath": "attached_assets/cargomatch-import/source/warehouse.mp4"
+    },
+    {
+      "description": "Photorealistic premium cinematic B2B logistics commercial, restrained navy palette warm natural daylight, physically credible detail, slow continuous camera movement, no cuts, no text or logos, no spoken dialogue. A male customs dossier reviewer with glasses seated at a desk in a modern European logistics office. Camera looks over his right shoulder toward a LARGE widescreen laptop. Display plane almost parallel to camera sensor, level and horizontal, 16:10 aspect ratio, all four display corners visible, no occlusion. Laptop display is solid flat vivid magenta #ff00ff, no reflections no text. Start with reviewer profile on far right and laptop occupying 65 percent of picture width. Slow gentle straight forward dolly until display fills 80 percent of width. Hands never cover screen.",
+      "filePath": "attached_assets/cargomatch-import/source/plate-customs.mp4",
+      "requestedPath": "attached_assets/cargomatch-import/source/plate-customs.mp4"
+    },
+    {
+      "description": "Photorealistic premium cinematic B2B logistics commercial, restrained navy palette warm natural daylight, physically credible detail, slow continuous camera movement, no cuts, no text or logos, no spoken dialogue. An adult female transport planner seated at a desk in an airy distribution centre office. Camera just over left shoulder sees laptop almost exactly front on, landscape widescreen display 16:10 perfectly flat vivid magenta #ff00ff. All four screen corners stay in frame with thick black bezel. Laptop fills 65 percent frame width from start, gentle camera dolly toward 80 percent width, only subtle natural human motion at edge of frame, no hand occlusion.",
+      "filePath": "attached_assets/cargomatch-import/source/plate-planner.mp4",
+      "requestedPath": "attached_assets/cargomatch-import/source/plate-planner.mp4"
+    },
+    {
+      "description": "Photorealistic premium cinematic B2B logistics commercial, restrained navy palette warm natural daylight, physically credible detail, slow continuous camera movement, no cuts, no text or logos, no spoken dialogue. An adult Indian male receiving manager in a clean warehouse office reviewing a LARGE open laptop. Camera over shoulder but display almost exactly front on and horizontal, wide 16:10 screen perfectly uniform vivid magenta #ff00ff, no reflections or text. Display occupies 65 percent of entire image width, gentle smooth dolly closer to 80 percent; all four display corners visible for full shot. Face at far left edge, hands resting away from screen.",
+      "filePath": "attached_assets/cargomatch-import/source/plate-receiver.mp4",
+      "requestedPath": "attached_assets/cargomatch-import/source/plate-receiver.mp4"
+    },
+    {
+      "description": "Photorealistic premium cinematic B2B logistics commercial, restrained navy palette warm natural daylight, physically credible detail, slow continuous camera movement, no cuts, no text or logos, no spoken dialogue. A female European logistics planner seated entirely at the far LEFT edge of frame, shown SIDE PROFILE, not over the shoulder. The person occupies only the leftmost 15 percent of picture. On the desk at centre is a large open laptop, its screen facing directly toward the CAMERA, not toward the person. All four display corners and entire bezel are fully visible with clear empty space around. There is absolutely NO person, shoulder, head, arm or hand in front of ANY part of screen. The laptop display is a wide 16:10 rectangle filled completely uniform bright magenta #ff00ff, no graphics no reflections no text. Screen dominates centre-right 70 percent of frame width. Person's hands are on a paper notebook at far left, not the computer. View is from other side of desk. Gentle slow forward dolly to laptop, no rotation, keep all four display corners in frame. Bright modern port logistics office with cranes outside.",
+      "filePath": "attached_assets/cargomatch-import/source/plate-planner-clear.mp4",
+      "requestedPath": "attached_assets/cargomatch-import/source/plate-planner-clear.mp4"
+    },
+    {
+      "description": "Photorealistic premium cinematic B2B logistics commercial, restrained navy palette warm natural daylight, physically credible detail, slow continuous camera movement, no cuts, no text or logos, no spoken dialogue. A male Indian warehouse receiving manager seated entirely at the far LEFT edge of frame, shown SIDE PROFILE, not over the shoulder. The person occupies only the leftmost 15 percent of picture. On the desk at centre is a large open laptop, its screen facing directly toward the CAMERA, not toward the person. All four display corners and entire bezel are fully visible with clear empty space around. There is absolutely NO person, shoulder, head, arm or hand in front of ANY part of screen. The laptop display is a wide 16:10 rectangle filled completely uniform bright magenta #ff00ff, no graphics no reflections no text. Screen dominates centre-right 70 percent of frame width. Person's hands are on a paper notebook at far left, not the computer. View is from other side of desk. Gentle slow forward dolly to laptop, no rotation, keep all four display corners in frame. Bright modern distribution centre office with shelves behind.",
+      "filePath": "attached_assets/cargomatch-import/source/plate-receiver-clear.mp4",
+      "requestedPath": "attached_assets/cargomatch-import/source/plate-receiver-clear.mp4"
+    }
+  ],
+  "rejectedSources": [
+    {
+      "path": "attached_assets/cargomatch-import/source/plate-planner.mp4",
+      "reason": "Occluded screen corners; not used in film"
+    },
+    {
+      "path": "attached_assets/cargomatch-import/source/plate-receiver.mp4",
+      "reason": "Occluded screen corners; not used in film"
+    }
+  ],
+  "audio": [
+    {
+      "description": "CargoMatch import opening",
+      "filePath": "attached_assets/cargomatch-import/audio/opening.mp3",
+      "requestedPath": "attached_assets/cargomatch-import/audio/opening.mp3"
+    },
+    {
+      "description": "CargoMatch import documents",
+      "filePath": "attached_assets/cargomatch-import/audio/documents.mp3",
+      "requestedPath": "attached_assets/cargomatch-import/audio/documents.mp3"
+    },
+    {
+      "description": "CargoMatch import customs",
+      "filePath": "attached_assets/cargomatch-import/audio/customs.mp3",
+      "requestedPath": "attached_assets/cargomatch-import/audio/customs.mp3"
+    },
+    {
+      "description": "CargoMatch import charges",
+      "filePath": "attached_assets/cargomatch-import/audio/charges.mp3",
+      "requestedPath": "attached_assets/cargomatch-import/audio/charges.mp3"
+    },
+    {
+      "description": "CargoMatch import road",
+      "filePath": "attached_assets/cargomatch-import/audio/road.mp3",
+      "requestedPath": "attached_assets/cargomatch-import/audio/road.mp3"
+    },
+    {
+      "description": "CargoMatch import closing",
+      "filePath": "attached_assets/cargomatch-import/audio/closing.mp3",
+      "requestedPath": "attached_assets/cargomatch-import/audio/closing.mp3"
+    }
+  ],
+  "score": "Reused approved original generated music and port/road ambience, with fresh normalized mix",
+  "proof": "First moving import laptop composite measured on all 192 source frames and visually inspected at opening and four-second close-up before later video batch"
+}

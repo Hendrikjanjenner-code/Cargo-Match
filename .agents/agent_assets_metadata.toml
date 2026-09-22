@@ -730,3 +730,107 @@ mtime_ms = 1789723514604
 storage_uri = "gcs://replit-rams-assets-worf/rams/assets/repl:929794db-e72d-4439-9aa2-c5d927c149ce/50076be1-7026-49c7-b5b4-24e22af68776/396478f5-9efb-4a99-90cd-43aaa2eb6be4"
 storage_version_token = "1789723635640218"
 content_type = "video/mp4"
+
+[[outputs]]
+id = "Bi26cqFVWGPo86qOTzgRq"
+uri = "file://attached_assets/cargomatch-import/audio/road.mp3"
+type = "audio"
+title = "CargoMatch import road"
+description = "Text-to-speech audio: Suitable transport options support the conversation about the next leg to Eindhoven. Both parties decide whether to connect. A connection is an introduction, not a booking. Plan…"
+logical_id = "da60fc9d-f865-4c96-b73b-48b1ed5ac4a3"
+
+[[outputs]]
+id = "8LsED6H-I5SQlQTsGJJll"
+uri = "file://attached_assets/cargomatch-import/audio/opening.mp3"
+type = "audio"
+title = "CargoMatch import opening"
+description = "Text-to-speech audio: A container arrives. But its journey is not finished. From Yantian, through Rotterdam, to Eindhoven. One import journey, many people. CargoMatch brings shipments, documents and …"
+logical_id = "691abb6a-3637-4744-84fa-0421fcdf68aa"
+
+[[outputs]]
+id = "QotwtqgxzzXU8gntZFNpX"
+uri = "file://attached_assets/cargomatch-import/audio/customs.mp3"
+type = "audio"
+title = "CargoMatch import customs"
+description = "Text-to-speech audio: Customs preparation is a human decision, not an invisible automatic approval. The reviewer checks the dossier and its requirements before proceeding. This demonstration simulate…"
+logical_id = "ed8b1ae4-271b-4880-b85b-6843962ce0dd"
+
+[[outputs]]
+id = "IbAAwfepI8Q4JQYgJaLRB"
+uri = "file://attached_assets/cargomatch-import/audio/documents.mp3"
+type = "audio"
+title = "CargoMatch import documents"
+description = "Text-to-speech audio: The China shipment begins with its documents. Details must agree before the next step. Here, the declared weights differ by one hundred and eighty kilograms. An exception makes …"
+logical_id = "47da61a8-98f8-4c24-a8f2-12ca8a0f9dab"
+
+[[outputs]]
+id = "L5KbHtwmzof3jzUWHcH-b"
+uri = "file://attached_assets/cargomatch-import/audio/charges.mp3"
+type = "audio"
+title = "CargoMatch import charges"
+description = "Text-to-speech audio: Costs belong in the same conversation. The China example totals ninety-five thousand, seven hundred and seven euros. Charges and release conditions are visible together, so miss…"
+logical_id = "ffbba592-3f54-4830-8657-72b0346130b2"
+
+[[outputs]]
+id = "3YAllCrSwnJqqYiGFdx8e"
+uri = "file://attached_assets/cargomatch-import/audio/closing.mp3"
+type = "audio"
+title = "CargoMatch import closing"
+description = "Text-to-speech audio: For the India groupage journey, Mumbai to Tilburg through Rotterdam, the receiver sees only their own house shipment. Their own documents, relevant charges and delivery choice. …"
+logical_id = "ae6f3ba2-2d9d-48a0-9808-3716795bc7fd"
+
+[[outputs]]
+id = "Rps-q8mbQsjKXJtoaubOM"
+uri = "file://attached_assets/cargomatch-import/delivery/cargomatch-en-nl-1080p.mp4"
+type = "video"
+title = "CargoMatch — de importketen"
+description = "Tweede film, 2 minuten 22,5 seconden. Full HD met de goedgekeurde Ierse vertelstem, Engelse voice-over en ingebakken Nederlandse ondertitels."
+logical_id = "338149bb-8349-436c-899d-df15d4e17c37"
+content_hash = "sha256:7a2699c799894167c753e9f90def98a30b913d84b463a93189b18ea49bd848a8"
+size = 78484853
+mtime_ms = 1790091644550
+storage_uri = "gcs://replit-rams-assets-worf/rams/assets/repl:929794db-e72d-4439-9aa2-c5d927c149ce/338149bb-8349-436c-899d-df15d4e17c37/3413b61b-74bb-4c98-85d5-1a70665a3f84"
+storage_version_token = "1790091976280565"
+content_type = "video/mp4"
+
+[[outputs]]
+id = "1ajDE0M-Es_DhqjqJMxGX"
+uri = "file://attached_assets/cargomatch-import/delivery/cargomatch-nl.srt"
+type = "unspecified"
+title = "Nederlandse ondertitels — SRT"
+description = "Bewerkbare ondertitels van de tweede CargoMatch-film."
+logical_id = "1c070996-319d-46bf-b2cd-7a14f1ee6cce"
+content_hash = "sha256:629ed5b9ccdbe4fdd4a702b5826caa8bd9eafc4faaebf4ccf573b54aa7f0d7d8"
+size = 3328
+mtime_ms = 1790091444678
+storage_uri = "gcs://replit-rams-assets-worf/rams/assets/repl:929794db-e72d-4439-9aa2-c5d927c149ce/1c070996-319d-46bf-b2cd-7a14f1ee6cce/55c0bef7-14a7-4450-bf81-d5bbacdd22ea"
+storage_version_token = "1790091976787679"
+content_type = "application/octet-stream"
+
+[[outputs]]
+id = "qplT0OqvODbvacSJstC34"
+uri = "file://attached_assets/cargomatch-import/delivery/cargomatch-nl.ass"
+type = "unspecified"
+title = "Nederlandse ondertitels — ASS"
+description = "Bewerkbare ondertitels inclusief opmaak."
+logical_id = "487f0f0f-e0af-4305-a30a-39466045333c"
+content_hash = "sha256:9e6129cbc552932e4fcc8e151333e7c4298e332f420eca0cc64736a3848a9359"
+size = 4493
+mtime_ms = 1790091444678
+storage_uri = "gcs://replit-rams-assets-worf/rams/assets/repl:929794db-e72d-4439-9aa2-c5d927c149ce/487f0f0f-e0af-4305-a30a-39466045333c/29962190-40a7-4d02-a8fc-27b6731b430c"
+storage_version_token = "1790091977281332"
+content_type = "application/octet-stream"
+
+[[outputs]]
+id = "3Ilq7-iqPlofNlOKUsEYj"
+uri = "file://attached_assets/cargomatch-import/delivery/production-receipt.json"
+type = "unspecified"
+title = "Productieregistratie importfilm"
+description = "Bronnen, steminstellingen, technische metingen en behouden oorspronkelijke films."
+logical_id = "7b3c66ee-a259-432f-8074-f851df8aeeed"
+content_hash = "sha256:69cfb66e49b9e15c43b3aac75620f0d3fa64b62b60c7c8baec9e07774e724b8d"
+size = 8501
+mtime_ms = 1790091652428
+storage_uri = "gcs://replit-rams-assets-worf/rams/assets/repl:929794db-e72d-4439-9aa2-c5d927c149ce/7b3c66ee-a259-432f-8074-f851df8aeeed/36888fc8-f7b0-4693-93eb-ddc7a3d9d907"
+storage_version_token = "1790091977763547"
+content_type = "application/octet-stream"

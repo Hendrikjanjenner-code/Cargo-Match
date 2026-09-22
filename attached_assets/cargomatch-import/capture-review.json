@@ -1,0 +1,25 @@
+{
+  "captureRun": "Final run contains 36 authentic current isolated-demo screenshots.",
+  "review": "All captures reviewed as contact sheet; key discrepancy, correction, customs, costs, delivery, receiver and geographic-map frames inspected individually.",
+  "importantFacts": [
+    "All ten modules have authentic captures: Shipments, Documents, Import, Customs, Charges, Release, Delivery, Control, Partners, Exceptions.",
+    "03-exceptions-180kg.png visibly shows the 180 kg discrepancy.",
+    "06b-weight-confirmed.png shows the accepted packing-list 18420 kg proposal marked Bevestigd and the accepted bill of lading still showing 18240 kg. This is a human-confirmed shipment correction, not a rewrite of source documents.",
+    "11-customs-approval-result.png is APPROVED by customs-specialist at version 15. 12 is SUBMITTED to the mock provider and 13 is RELEASED.",
+    "14-charges-95707.png visibly shows all eight costs and Totaal EUR 95707.00; 15 shows simulated payments.",
+    "16b-release-gates-satisfied.png is READY_FOR_PICKUP. Customs and payment gates came from their source modules; other ordinary gates were explicitly satisfied with synthetic evidence and none were disabled.",
+    "17-delivery-options.png has ROAD score 75 and RAIL score 71; INLAND has no eligible capacity.",
+    "17c is interest, 17d is mutual connection, 17e is separate planning, 17f is DELIVERED following explicit simulated delivery.",
+    "20-23 show Priya's own India H2 only, own documents excluding the commercial invoice, EUR 210 relevant costs, and actual DELIVER preference.",
+    "Vessel statuses in the seed and real UI are Jade Horizon/Mumbai Star UNDERWAY, North Anchorage ANCHORED, Rotterdam Pearl IN_PORT, Silent Ocean STALE, Unknown Passage UNKNOWN.",
+    "Silent Ocean has a four-day-old observation. Unknown Passage has Observed N/A and no invented map position.",
+    "19b-control-simulated-position.png shows the actual playback slider at 35%, Gesimuleerde verplaatsing and Simulated labels."
+  ],
+  "limits": [
+    "Manifest visibleText is document.body.innerText: rendered document text, not a guarantee every line fits inside the screenshot viewport.",
+    "The app represents vessel states mainly with icons, not large written status labels.",
+    "A separate Screenshot-tool localhost preview check failed with Cross-origin write rejected. The fresh capture run used the configured hosted development origin and completed successfully.",
+    "The source UI has an origin extraction proposal that cannot be confirmed through the server's allowed CONFIRM_FIELD list. The final scenario does not claim that proposal was confirmed; it explicitly confirms the necessary weight correction and reviews documents and customs through supported controls.",
+    "No app changes, dependency changes, production provider actions, or original-film modifications."
+  ]
+}

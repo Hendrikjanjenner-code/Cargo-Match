@@ -1,0 +1,36 @@
+{
+  "title": "CargoMatch — From arrival to delivery",
+  "disclosures": [
+    "Photorealistic people and location footage is AI generated, not actual customers or evidence of real operations.",
+    "Screens are fresh captures of an isolated fictional CargoMatch demo.",
+    "Tracking is synthetic, not live AIS. Customs, payments and release are simulated.",
+    "Mutual consent is an introduction, not a booking; planning and delivery are separate.",
+    "Original library narrator John, generated score and ambience; no celebrity imitation or endorsement."
+  ],
+  "narration": [
+    {"id":1,"en":"A container arrives. But its journey is not finished.","nl":"Een container komt aan. Maar de reis is nog niet voorbij."},
+    {"id":2,"en":"From Yantian, through Rotterdam, to Eindhoven. One import journey, many people.","nl":"Van Yantian via Rotterdam naar Eindhoven. Eén importreis, met veel betrokkenen."},
+    {"id":3,"en":"CargoMatch brings shipments, documents and import preparation into one connected demo.","nl":"CargoMatch verbindt zendingen, documenten en importvoorbereiding in één demo."},
+    {"id":4,"en":"Customs, charges, release and delivery follow. Control, partners and exceptions keep the wider picture in view.","nl":"Douane, kosten, vrijgave en aflevering volgen. Control, partners en afwijkingen bewaken het overzicht."},
+    {"id":5,"en":"The China shipment begins with its documents. Details must agree before the next step.","nl":"De China-zending begint bij de documenten. Gegevens moeten kloppen vóór de volgende stap."},
+    {"id":6,"en":"Here, the declared weights differ by one hundred and eighty kilograms.","nl":"Hier verschillen de opgegeven gewichten met honderd­tachtig kilogram."},
+    {"id":7,"en":"An exception makes that difference visible. A person checks the source and reviews the correction.","nl":"Een afwijkingsmelding toont het verschil. Een medewerker controleert de bron en de correctie."},
+    {"id":8,"en":"The record stays with the shipment. Partners work from the information their role allows.","nl":"Het dossier blijft bij de zending. Partners zien de informatie die bij hun rol hoort."},
+    {"id":9,"en":"Customs preparation is a human decision, not an invisible automatic approval.","nl":"Douanevoorbereiding is mensenwerk, geen onzichtbare automatische goedkeuring."},
+    {"id":10,"en":"The reviewer checks the dossier and its requirements before proceeding.","nl":"De behandelaar controleert het dossier en de vereisten vóór de volgende stap."},
+    {"id":11,"en":"This demonstration simulates the customs process. It does not submit a real declaration.","nl":"Deze demonstratie simuleert het douaneproces. Er wordt geen echte aangifte ingediend."},
+    {"id":12,"en":"Clear status and responsibilities help the next professional understand what still needs attention.","nl":"Duidelijke status en taken tonen de volgende medewerker wat nog aandacht vraagt."},
+    {"id":13,"en":"Costs belong in the same conversation. The China example totals ninety-five thousand, seven hundred and seven euros.","nl":"Kosten horen erbij. Het China-voorbeeld komt uit op 95.707 euro."},
+    {"id":14,"en":"Charges and release conditions are visible together, so missing steps are not overlooked.","nl":"Kosten en vrijgavevoorwaarden zijn samen zichtbaar, zodat ontbrekende stappen opvallen."},
+    {"id":15,"en":"Payments and release remain simulated. The demo explains the process without moving real money.","nl":"Betalingen en vrijgave blijven gesimuleerd. De demo verplaatst geen echt geld."},
+    {"id":16,"en":"Only then does the focus shift from the port to the onward journey.","nl":"Daarna verschuift de aandacht van de haven naar het vervolg van de reis."},
+    {"id":17,"en":"Suitable transport options support the conversation about the next leg to Eindhoven.","nl":"Passende vervoeropties ondersteunen het gesprek over de rit naar Eindhoven."},
+    {"id":18,"en":"Both parties decide whether to connect. A connection is an introduction, not a booking.","nl":"Beide partijen kiezen of ze verbinden. Een verbinding is geen boeking."},
+    {"id":19,"en":"Planning and delivery remain separate steps. People confirm the practical arrangements.","nl":"Planning en aflevering blijven aparte stappen. Mensen bevestigen de afspraken."},
+    {"id":20,"en":"From port to warehouse, the handover stays part of the shipment story.","nl":"Van haven tot magazijn blijft de overdracht onderdeel van het zendingsdossier."},
+    {"id":21,"en":"For the India groupage journey, Mumbai to Tilburg through Rotterdam, the receiver sees only their own house shipment.","nl":"Bij de deelzending Mumbai–Rotterdam–Tilburg ziet de ontvanger alleen de eigen house-zending."},
+    {"id":22,"en":"Their own documents, relevant charges and delivery choice. Shared work, without exposing another receiver's business.","nl":"Eigen documenten, relevante kosten en afleverkeuze. Samenwerken zonder gegevens van andere ontvangers."},
+    {"id":23,"en":"The Control Tower shows vessel status, route, arrival estimates and exceptions, with source and time. Synthetic demo tracking, not live A I S.","nl":"De Control Tower toont scheepsstatus, route, ETA en afwijkingen, met bron en tijd. Demotracking, geen live AIS."},
+    {"id":24,"en":"CargoMatch. From arrival to delivery, with people in control. The transport capacity intelligence network. Discover CargoMatch.","nl":"CargoMatch. Van aankomst tot aflevering, met mensen aan het roer. Het netwerk voor transportcapaciteitsinformatie. Ontdek CargoMatch."}
+  ]
+}

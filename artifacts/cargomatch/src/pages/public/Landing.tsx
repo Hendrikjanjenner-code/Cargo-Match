@@ -83,7 +83,7 @@ export default function Landing() {
             Ontdek CargoMatch vanuit elk perspectief
           </h1>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            {DEMO_UI_ENABLED ? "Verken beide kanten van de markt met elf fictieve profielen. Je oefent in een eigen, beveiligde demo-omgeving op de server. Profielwissels behouden je oefeningen; echte klanten, sessies en bedrijfsgegevens blijven gescheiden." : "Breng lading en beschikbare transportcapaciteit samen. Log in om vanuit je bedrijf en bevoegdheden passende kansen te bekijken en veilig contact te leggen."}
+            {DEMO_UI_ENABLED ? "Verken de markt en importketen met vijftien fictieve profielen. Je oefent in een eigen, beveiligde demo-omgeving op de server. Profielwissels behouden je oefeningen; echte klanten, sessies en bedrijfsgegevens blijven gescheiden." : "Breng lading en beschikbare transportcapaciteit samen. Log in om vanuit je bedrijf en bevoegdheden passende kansen te bekijken en veilig contact te leggen."}
           </p>
           <div className="flex flex-wrap justify-center gap-3">
             {DEMO_UI_ENABLED && <Button onClick={() => setExplore(true)} aria-expanded={explore} aria-controls="demo-personas" className="gap-2">Explore Demo <ArrowRight className="h-4 w-4" /></Button>}

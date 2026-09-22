@@ -8,6 +8,196 @@
  *
  * OpenAPI spec version: 0.1.0
  */
+export type ImportSessionWorkspaceImportControl = { [key: string]: unknown };
+
+export type ImportSessionWorkspace = {
+  importControl: ImportSessionWorkspaceImportControl;
+};
+
+export type ImportSessionContextMembersItem = {
+  id: string;
+  name: string;
+  membershipRole: string;
+  permissions: string[];
+};
+
+export type ImportSessionContext = {
+  importModules: string[];
+  companyId?: string;
+  userId?: string;
+  membershipRole?: string;
+  permissions?: string[];
+  members?: ImportSessionContextMembersItem[];
+  [key: string]: unknown;
+ };
+
+export interface ImportSession {
+  demo: boolean;
+  workspace: ImportSessionWorkspace;
+  context: ImportSessionContext;
+}
+
+export type ImportActionInputType = typeof ImportActionInputType[keyof typeof ImportActionInputType];
+
+
+export const ImportActionInputType = {
+  IMPORT_CONTROL: 'IMPORT_CONTROL',
+} as const;
+
+export type ImportActionInputOperation = typeof ImportActionInputOperation[keyof typeof ImportActionInputOperation];
+
+
+export const ImportActionInputOperation = {
+  SET_MODULE: 'SET_MODULE',
+  CREATE_SHIPMENT: 'CREATE_SHIPMENT',
+  EDIT_SHIPMENT: 'EDIT_SHIPMENT',
+  EXTRACT_DOCUMENT: 'EXTRACT_DOCUMENT',
+  REVIEW_DOCUMENT: 'REVIEW_DOCUMENT',
+  CONFIRM_FIELD: 'CONFIRM_FIELD',
+  CUSTOMS_EDIT: 'CUSTOMS_EDIT',
+  CUSTOMS_APPROVE: 'CUSTOMS_APPROVE',
+  CUSTOMS_SUBMIT: 'CUSTOMS_SUBMIT',
+  CUSTOMS_EVENT: 'CUSTOMS_EVENT',
+  ADD_CHARGE: 'ADD_CHARGE',
+  EDIT_CHARGE: 'EDIT_CHARGE',
+  PAY_CHARGE: 'PAY_CHARGE',
+  RECORD_PAYMENT: 'RECORD_PAYMENT',
+  SET_GATE: 'SET_GATE',
+  CONFIGURE_GATE: 'CONFIGURE_GATE',
+  FIND_DELIVERY: 'FIND_DELIVERY',
+  PLAN_DELIVERY: 'PLAN_DELIVERY',
+  DELIVER: 'DELIVER',
+  EXCEPTION: 'EXCEPTION',
+  ASSIGN_PARTNER: 'ASSIGN_PARTNER',
+  CONFIRM_COMPANY: 'CONFIRM_COMPANY',
+  CONFIRM_REPRESENTATION: 'CONFIRM_REPRESENTATION',
+  DELIVERY_CHOICE: 'DELIVERY_CHOICE',
+} as const;
+
+export type ImportActionInputCommand = typeof ImportActionInputCommand[keyof typeof ImportActionInputCommand];
+
+
+export const ImportActionInputCommand = {
+  ASSIGN: 'ASSIGN',
+  COMMENT: 'COMMENT',
+  RESOLVE: 'RESOLVE',
+  ESCALATE: 'ESCALATE',
+  SNOOZE: 'SNOOZE',
+} as const;
+
+export type ImportActionInputShipment = {
+  reference: string;
+  name: string;
+  kind: string;
+  origin: string;
+  destination: string;
+  port: string;
+  eta: string;
+  incoterm?: string;
+  container?: string;
+  masterReference?: string;
+  houseReference?: string;
+};
+
+export type ImportActionInputCharge = {
+  label: string;
+  /** @minimum 0 */
+  amount: number;
+  currency: string;
+  supplier: string;
+  invoiceReference: string;
+  estimated: boolean;
+  vat: boolean;
+};
+
+/**
+ * Domain validates operation-specific fields. UPLOAD_DOCUMENT requires the separate verified completion endpoint. No simulated production provider events.
+ */
+export interface ImportActionInput {
+  type?: ImportActionInputType;
+  operation: ImportActionInputOperation;
+  shipmentId?: string;
+  /** @maxLength 2000 */
+  evidence?: string;
+  module?: string;
+  enabled?: boolean;
+  documentId?: string;
+  accepted?: boolean;
+  field?: string;
+  value?: string | number;
+  chargeId?: string;
+  gate?: string;
+  required?: boolean;
+  satisfied?: boolean;
+  matchId?: string;
+  status?: string;
+  exceptionId?: string;
+  command?: ImportActionInputCommand;
+  /** @maxLength 2000 */
+  note?: string;
+  userId?: string;
+  until?: string;
+  modules?: string[];
+  shipment?: ImportActionInputShipment;
+  charge?: ImportActionInputCharge;
+  [key: string]: unknown;
+ }
+
+export interface ImportUploadInput {
+  /**
+     * @minLength 1
+     * @maxLength 100
+     */
+  shipmentId: string;
+  /**
+     * @minLength 1
+     * @maxLength 200
+     */
+  name: string;
+  /**
+     * @minLength 1
+     * @maxLength 100
+     */
+  mimeType: string;
+  /**
+     * @minimum 1
+     * @maximum 10485760
+     */
+  size: number;
+}
+
+export interface ImportUploadTarget {
+  uploadURL: string;
+  objectPath: string;
+}
+
+export type ImportDocumentInputDocumentType = typeof ImportDocumentInputDocumentType[keyof typeof ImportDocumentInputDocumentType];
+
+
+export const ImportDocumentInputDocumentType = {
+  INVOICE: 'INVOICE',
+  PACKING_LIST: 'PACKING_LIST',
+  BILL_OF_LADING: 'BILL_OF_LADING',
+  ORIGIN: 'ORIGIN',
+  DELIVERY_ORDER: 'DELIVERY_ORDER',
+  REPRESENTATION: 'REPRESENTATION',
+  OTHER: 'OTHER',
+} as const;
+
+export interface ImportDocumentInput {
+  /**
+     * @minLength 1
+     * @maxLength 100
+     */
+  shipmentId: string;
+  /**
+     * @minLength 1
+     * @maxLength 1000
+     */
+  objectPath: string;
+  documentType: ImportDocumentInputDocumentType;
+}
+
 export type DemoMode = typeof DemoMode[keyof typeof DemoMode];
 
 

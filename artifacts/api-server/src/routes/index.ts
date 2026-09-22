@@ -14,6 +14,7 @@ import notificationsRouter from "./notifications";
 import availabilitySuggestionsRouter from "./availabilitySuggestions";
 import linerRouter from "./liner";
 import roadRouter from "./road";
+import importsRouter from "./imports";
 
 const router: IRouter = Router();
 
@@ -32,4 +33,5 @@ router.use(notificationsRouter);
 router.use(availabilitySuggestionsRouter);
 router.use(linerRouter);
 router.use(roadRouter);
+router.use(importsRouter);
 export default router;

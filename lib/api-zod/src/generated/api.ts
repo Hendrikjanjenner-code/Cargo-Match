@@ -12,6 +12,684 @@ import * as zod from 'zod';
 
 
 /**
+ * @summary Current authenticated company import workspace
+ */
+export const GetImportSessionResponse = zod.object({
+  "demo": zod.boolean(),
+  "workspace": zod.object({
+  "importControl": zod.record(zod.string(), zod.unknown())
+}),
+  "context": zod.object({
+  "importModules": zod.array(zod.string()),
+  "companyId": zod.string().optional(),
+  "userId": zod.string().optional(),
+  "membershipRole": zod.string().optional(),
+  "permissions": zod.array(zod.string()).optional(),
+  "members": zod.array(zod.object({
+  "id": zod.string(),
+  "name": zod.string(),
+  "membershipRole": zod.string(),
+  "permissions": zod.array(zod.string())
+})).optional()
+})
+})
+
+
+export const executeImportActionBodyEvidenceMax = 2000;
+
+export const executeImportActionBodyNoteMax = 2000;
+
+export const executeImportActionBodyChargeAmountMin = 0;
+
+
+
+export const ExecuteImportActionBody = zod.object({
+  "type": zod.enum(['IMPORT_CONTROL']).optional(),
+  "operation": zod.enum(['SET_MODULE', 'CREATE_SHIPMENT', 'EDIT_SHIPMENT', 'EXTRACT_DOCUMENT', 'REVIEW_DOCUMENT', 'CONFIRM_FIELD', 'CUSTOMS_EDIT', 'CUSTOMS_APPROVE', 'CUSTOMS_SUBMIT', 'CUSTOMS_EVENT', 'ADD_CHARGE', 'EDIT_CHARGE', 'PAY_CHARGE', 'RECORD_PAYMENT', 'SET_GATE', 'CONFIGURE_GATE', 'FIND_DELIVERY', 'PLAN_DELIVERY', 'DELIVER', 'EXCEPTION', 'ASSIGN_PARTNER', 'CONFIRM_COMPANY', 'CONFIRM_REPRESENTATION', 'DELIVERY_CHOICE']),
+  "shipmentId": zod.string().optional(),
+  "evidence": zod.string().max(executeImportActionBodyEvidenceMax).optional(),
+  "module": zod.string().optional(),
+  "enabled": zod.boolean().optional(),
+  "documentId": zod.string().optional(),
+  "accepted": zod.boolean().optional(),
+  "field": zod.string().optional(),
+  "value": zod.union([zod.string(),zod.number()]).optional(),
+  "chargeId": zod.string().optional(),
+  "gate": zod.string().optional(),
+  "required": zod.boolean().optional(),
+  "satisfied": zod.boolean().optional(),
+  "matchId": zod.string().optional(),
+  "status": zod.string().optional(),
+  "exceptionId": zod.string().optional(),
+  "command": zod.enum(['ASSIGN', 'COMMENT', 'RESOLVE', 'ESCALATE', 'SNOOZE']).optional(),
+  "note": zod.string().max(executeImportActionBodyNoteMax).optional(),
+  "userId": zod.string().optional(),
+  "until": zod.string().optional(),
+  "modules": zod.array(zod.string()).optional(),
+  "shipment": zod.object({
+  "reference": zod.string(),
+  "name": zod.string(),
+  "kind": zod.string(),
+  "origin": zod.string(),
+  "destination": zod.string(),
+  "port": zod.string(),
+  "eta": zod.string(),
+  "incoterm": zod.string().optional(),
+  "container": zod.string().optional(),
+  "masterReference": zod.string().optional(),
+  "houseReference": zod.string().optional()
+}).optional(),
+  "charge": zod.object({
+  "label": zod.string(),
+  "amount": zod.number().min(executeImportActionBodyChargeAmountMin),
+  "currency": zod.string(),
+  "supplier": zod.string(),
+  "invoiceReference": zod.string(),
+  "estimated": zod.boolean(),
+  "vat": zod.boolean()
+}).optional()
+}).describe('Domain validates operation-specific fields. UPLOAD_DOCUMENT requires the separate verified completion endpoint. No simulated production provider events.')
+
+export const ExecuteImportActionResponse = zod.object({
+  "demo": zod.boolean(),
+  "workspace": zod.object({
+  "importControl": zod.record(zod.string(), zod.unknown())
+}),
+  "context": zod.object({
+  "importModules": zod.array(zod.string()),
+  "companyId": zod.string().optional(),
+  "userId": zod.string().optional(),
+  "membershipRole": zod.string().optional(),
+  "permissions": zod.array(zod.string()).optional(),
+  "members": zod.array(zod.object({
+  "id": zod.string(),
+  "name": zod.string(),
+  "membershipRole": zod.string(),
+  "permissions": zod.array(zod.string())
+})).optional()
+})
+})
+
+
+export const requestImportUploadBodyShipmentIdMax = 100;
+
+export const requestImportUploadBodyNameMax = 200;
+
+export const requestImportUploadBodyMimeTypeMax = 100;
+
+export const requestImportUploadBodySizeMax = 10485760;
+
+
+
+export const RequestImportUploadBody = zod.object({
+  "shipmentId": zod.string().min(1).max(requestImportUploadBodyShipmentIdMax),
+  "name": zod.string().min(1).max(requestImportUploadBodyNameMax),
+  "mimeType": zod.string().min(1).max(requestImportUploadBodyMimeTypeMax),
+  "size": zod.number().int().min(1).max(requestImportUploadBodySizeMax)
+})
+
+export const RequestImportUploadResponse = zod.object({
+  "uploadURL": zod.string(),
+  "objectPath": zod.string()
+})
+
+
+export const completeImportUploadBodyShipmentIdMax = 100;
+
+export const completeImportUploadBodyObjectPathMax = 1000;
+
+
+
+export const CompleteImportUploadBody = zod.object({
+  "shipmentId": zod.string().min(1).max(completeImportUploadBodyShipmentIdMax),
+  "objectPath": zod.string().min(1).max(completeImportUploadBodyObjectPathMax),
+  "documentType": zod.enum(['INVOICE', 'PACKING_LIST', 'BILL_OF_LADING', 'ORIGIN', 'DELIVERY_ORDER', 'REPRESENTATION', 'OTHER'])
+})
+
+export const CompleteImportUploadResponse = zod.object({
+  "demo": zod.boolean(),
+  "workspace": zod.object({
+  "importControl": zod.record(zod.string(), zod.unknown())
+}),
+  "context": zod.object({
+  "importModules": zod.array(zod.string()),
+  "companyId": zod.string().optional(),
+  "userId": zod.string().optional(),
+  "membershipRole": zod.string().optional(),
+  "permissions": zod.array(zod.string()).optional(),
+  "members": zod.array(zod.object({
+  "id": zod.string(),
+  "name": zod.string(),
+  "membershipRole": zod.string(),
+  "permissions": zod.array(zod.string())
+})).optional()
+})
+})
+
+
+export const DownloadImportDocumentParams = zod.object({
+  "shipmentId": zod.coerce.string(),
+  "documentId": zod.coerce.string()
+})
+
+export const DownloadImportDocumentResponse = zod.unknown()
+
+
+export const RequestDemoImportUploadHeader = zod.object({
+  "X-Demo-CSRF": zod.string()
+})
+
+export const requestDemoImportUploadBodyShipmentIdMax = 100;
+
+export const requestDemoImportUploadBodyNameMax = 200;
+
+export const requestDemoImportUploadBodyMimeTypeMax = 100;
+
+export const requestDemoImportUploadBodySizeMax = 10485760;
+
+
+
+export const RequestDemoImportUploadBody = zod.object({
+  "shipmentId": zod.string().min(1).max(requestDemoImportUploadBodyShipmentIdMax),
+  "name": zod.string().min(1).max(requestDemoImportUploadBodyNameMax),
+  "mimeType": zod.string().min(1).max(requestDemoImportUploadBodyMimeTypeMax),
+  "size": zod.number().int().min(1).max(requestDemoImportUploadBodySizeMax)
+})
+
+export const RequestDemoImportUploadResponse = zod.object({
+  "uploadURL": zod.string(),
+  "objectPath": zod.string()
+})
+
+
+export const CompleteDemoImportUploadHeader = zod.object({
+  "X-Demo-CSRF": zod.string()
+})
+
+export const completeDemoImportUploadBodyShipmentIdMax = 100;
+
+export const completeDemoImportUploadBodyObjectPathMax = 1000;
+
+
+
+export const CompleteDemoImportUploadBody = zod.object({
+  "shipmentId": zod.string().min(1).max(completeDemoImportUploadBodyShipmentIdMax),
+  "objectPath": zod.string().min(1).max(completeDemoImportUploadBodyObjectPathMax),
+  "documentType": zod.enum(['INVOICE', 'PACKING_LIST', 'BILL_OF_LADING', 'ORIGIN', 'DELIVERY_ORDER', 'REPRESENTATION', 'OTHER'])
+})
+
+
+export const completeDemoImportUploadResponseWorkspaceAssetsItemTechnicalTemperatureMinMin = -100;
+export const completeDemoImportUploadResponseWorkspaceAssetsItemTechnicalTemperatureMinMax = 100;
+
+export const completeDemoImportUploadResponseWorkspaceAssetsItemTechnicalTemperatureMaxMin = -100;
+export const completeDemoImportUploadResponseWorkspaceAssetsItemTechnicalTemperatureMaxMax = 100;
+
+export const completeDemoImportUploadResponseWorkspaceAssetsItemTechnicalPieceWeightExclusiveMin = 0;
+
+export const completeDemoImportUploadResponseWorkspaceAssetsItemTechnicalMaxPieceWeightExclusiveMin = 0;
+
+export const completeDemoImportUploadResponseWorkspaceAssetsItemTechnicalManualPositioningDaysMin = 0;
+export const completeDemoImportUploadResponseWorkspaceAssetsItemTechnicalManualPositioningDaysMax = 365;
+
+export const completeDemoImportUploadResponseWorkspaceAssetsItemTechnicalPositioningBufferDaysMin = 0;
+export const completeDemoImportUploadResponseWorkspaceAssetsItemTechnicalPositioningBufferDaysMax = 365;
+
+export const completeDemoImportUploadResponseWorkspaceAssetsItemTechnicalUncertaintyDaysMin = 0;
+export const completeDemoImportUploadResponseWorkspaceAssetsItemTechnicalUncertaintyDaysMax = 365;
+
+export const completeDemoImportUploadResponseWorkspaceAssetsItemTechnicalDraftExclusiveMin = 0;
+
+export const completeDemoImportUploadResponseWorkspaceAssetsItemTechnicalMaxDraftExclusiveMin = 0;
+
+export const completeDemoImportUploadResponseWorkspaceAssetsItemTechnicalLoadingMetresExclusiveMin = 0;
+
+
+export const completeDemoImportUploadResponseWorkspaceAssetsItemTechnicalMaximumPositioningDistanceKmExclusiveMin = 0;
+
+export const completeDemoImportUploadResponseWorkspaceAssetsItemTechnicalMinimumDwtExclusiveMin = 0;
+
+export const completeDemoImportUploadResponseWorkspaceAssetsItemTechnicalMaximumDwtExclusiveMin = 0;
+
+export const completeDemoImportUploadResponseWorkspaceAssetsItemTechnicalQuantityTolerancePercentMin = 0;
+export const completeDemoImportUploadResponseWorkspaceAssetsItemTechnicalQuantityTolerancePercentExclusiveMax = 100;
+
+export const completeDemoImportUploadResponseWorkspaceAssetsItemTechnicalAvailabilityUncertaintyMinutesMin = 0;
+export const completeDemoImportUploadResponseWorkspaceAssetsItemTechnicalAvailabilityUncertaintyMinutesMax = 365;
+
+
+export const completeDemoImportUploadResponseWorkspaceAssetsItemTechnicalPieceLengthExclusiveMin = 0;
+
+export const completeDemoImportUploadResponseWorkspaceAssetsItemTechnicalPieceWidthExclusiveMin = 0;
+
+export const completeDemoImportUploadResponseWorkspaceAssetsItemTechnicalPieceHeightExclusiveMin = 0;
+
+export const completeDemoImportUploadResponseWorkspaceAssetsItemTechnicalMaxPieceLengthExclusiveMin = 0;
+
+export const completeDemoImportUploadResponseWorkspaceAssetsItemTechnicalMaxPieceWidthExclusiveMin = 0;
+
+export const completeDemoImportUploadResponseWorkspaceAssetsItemTechnicalMaxPieceHeightExclusiveMin = 0;
+
+export const completeDemoImportUploadResponseWorkspaceAssetsItemTechnicalLiftingCapacityExclusiveMin = 0;
+
+export const completeDemoImportUploadResponseWorkspaceAssetsItemTechnicalRequiredLiftingExclusiveMin = 0;
+
+export const completeDemoImportUploadResponseWorkspaceCargosItemOneNameMax = 200;
+
+export const completeDemoImportUploadResponseWorkspaceCargosItemOneQuantityExclusiveMin = 0;
+
+export const completeDemoImportUploadResponseWorkspaceCargosItemOneVolumeExclusiveMin = 0;
+
+
+export const completeDemoImportUploadResponseWorkspaceCargosItemOneTechnicalTemperatureMinMin = -100;
+export const completeDemoImportUploadResponseWorkspaceCargosItemOneTechnicalTemperatureMinMax = 100;
+
+export const completeDemoImportUploadResponseWorkspaceCargosItemOneTechnicalTemperatureMaxMin = -100;
+export const completeDemoImportUploadResponseWorkspaceCargosItemOneTechnicalTemperatureMaxMax = 100;
+
+export const completeDemoImportUploadResponseWorkspaceCargosItemOneTechnicalPieceWeightExclusiveMin = 0;
+
+export const completeDemoImportUploadResponseWorkspaceCargosItemOneTechnicalMaxPieceWeightExclusiveMin = 0;
+
+export const completeDemoImportUploadResponseWorkspaceCargosItemOneTechnicalManualPositioningDaysMin = 0;
+export const completeDemoImportUploadResponseWorkspaceCargosItemOneTechnicalManualPositioningDaysMax = 365;
+
+export const completeDemoImportUploadResponseWorkspaceCargosItemOneTechnicalPositioningBufferDaysMin = 0;
+export const completeDemoImportUploadResponseWorkspaceCargosItemOneTechnicalPositioningBufferDaysMax = 365;
+
+export const completeDemoImportUploadResponseWorkspaceCargosItemOneTechnicalUncertaintyDaysMin = 0;
+export const completeDemoImportUploadResponseWorkspaceCargosItemOneTechnicalUncertaintyDaysMax = 365;
+
+export const completeDemoImportUploadResponseWorkspaceCargosItemOneTechnicalDraftExclusiveMin = 0;
+
+export const completeDemoImportUploadResponseWorkspaceCargosItemOneTechnicalMaxDraftExclusiveMin = 0;
+
+export const completeDemoImportUploadResponseWorkspaceCargosItemOneTechnicalLoadingMetresExclusiveMin = 0;
+
+
+export const completeDemoImportUploadResponseWorkspaceCargosItemOneTechnicalMaximumPositioningDistanceKmExclusiveMin = 0;
+
+export const completeDemoImportUploadResponseWorkspaceCargosItemOneTechnicalMinimumDwtExclusiveMin = 0;
+
+export const completeDemoImportUploadResponseWorkspaceCargosItemOneTechnicalMaximumDwtExclusiveMin = 0;
+
+export const completeDemoImportUploadResponseWorkspaceCargosItemOneTechnicalQuantityTolerancePercentMin = 0;
+export const completeDemoImportUploadResponseWorkspaceCargosItemOneTechnicalQuantityTolerancePercentExclusiveMax = 100;
+
+export const completeDemoImportUploadResponseWorkspaceCargosItemOneTechnicalAvailabilityUncertaintyMinutesMin = 0;
+export const completeDemoImportUploadResponseWorkspaceCargosItemOneTechnicalAvailabilityUncertaintyMinutesMax = 365;
+
+
+export const completeDemoImportUploadResponseWorkspaceCargosItemOneTechnicalPieceLengthExclusiveMin = 0;
+
+export const completeDemoImportUploadResponseWorkspaceCargosItemOneTechnicalPieceWidthExclusiveMin = 0;
+
+export const completeDemoImportUploadResponseWorkspaceCargosItemOneTechnicalPieceHeightExclusiveMin = 0;
+
+export const completeDemoImportUploadResponseWorkspaceCargosItemOneTechnicalMaxPieceLengthExclusiveMin = 0;
+
+export const completeDemoImportUploadResponseWorkspaceCargosItemOneTechnicalMaxPieceWidthExclusiveMin = 0;
+
+export const completeDemoImportUploadResponseWorkspaceCargosItemOneTechnicalMaxPieceHeightExclusiveMin = 0;
+
+export const completeDemoImportUploadResponseWorkspaceCargosItemOneTechnicalLiftingCapacityExclusiveMin = 0;
+
+export const completeDemoImportUploadResponseWorkspaceCargosItemOneTechnicalRequiredLiftingExclusiveMin = 0;
+
+export const completeDemoImportUploadResponseWorkspaceCapacityItemOneNameMax = 200;
+
+export const completeDemoImportUploadResponseWorkspaceCapacityItemOneQuantityExclusiveMin = 0;
+
+export const completeDemoImportUploadResponseWorkspaceCapacityItemOneVolumeExclusiveMin = 0;
+
+
+export const completeDemoImportUploadResponseWorkspaceCapacityItemOneTechnicalTemperatureMinMin = -100;
+export const completeDemoImportUploadResponseWorkspaceCapacityItemOneTechnicalTemperatureMinMax = 100;
+
+export const completeDemoImportUploadResponseWorkspaceCapacityItemOneTechnicalTemperatureMaxMin = -100;
+export const completeDemoImportUploadResponseWorkspaceCapacityItemOneTechnicalTemperatureMaxMax = 100;
+
+export const completeDemoImportUploadResponseWorkspaceCapacityItemOneTechnicalPieceWeightExclusiveMin = 0;
+
+export const completeDemoImportUploadResponseWorkspaceCapacityItemOneTechnicalMaxPieceWeightExclusiveMin = 0;
+
+export const completeDemoImportUploadResponseWorkspaceCapacityItemOneTechnicalManualPositioningDaysMin = 0;
+export const completeDemoImportUploadResponseWorkspaceCapacityItemOneTechnicalManualPositioningDaysMax = 365;
+
+export const completeDemoImportUploadResponseWorkspaceCapacityItemOneTechnicalPositioningBufferDaysMin = 0;
+export const completeDemoImportUploadResponseWorkspaceCapacityItemOneTechnicalPositioningBufferDaysMax = 365;
+
+export const completeDemoImportUploadResponseWorkspaceCapacityItemOneTechnicalUncertaintyDaysMin = 0;
+export const completeDemoImportUploadResponseWorkspaceCapacityItemOneTechnicalUncertaintyDaysMax = 365;
+
+export const completeDemoImportUploadResponseWorkspaceCapacityItemOneTechnicalDraftExclusiveMin = 0;
+
+export const completeDemoImportUploadResponseWorkspaceCapacityItemOneTechnicalMaxDraftExclusiveMin = 0;
+
+export const completeDemoImportUploadResponseWorkspaceCapacityItemOneTechnicalLoadingMetresExclusiveMin = 0;
+
+
+export const completeDemoImportUploadResponseWorkspaceCapacityItemOneTechnicalMaximumPositioningDistanceKmExclusiveMin = 0;
+
+export const completeDemoImportUploadResponseWorkspaceCapacityItemOneTechnicalMinimumDwtExclusiveMin = 0;
+
+export const completeDemoImportUploadResponseWorkspaceCapacityItemOneTechnicalMaximumDwtExclusiveMin = 0;
+
+export const completeDemoImportUploadResponseWorkspaceCapacityItemOneTechnicalQuantityTolerancePercentMin = 0;
+export const completeDemoImportUploadResponseWorkspaceCapacityItemOneTechnicalQuantityTolerancePercentExclusiveMax = 100;
+
+export const completeDemoImportUploadResponseWorkspaceCapacityItemOneTechnicalAvailabilityUncertaintyMinutesMin = 0;
+export const completeDemoImportUploadResponseWorkspaceCapacityItemOneTechnicalAvailabilityUncertaintyMinutesMax = 365;
+
+
+export const completeDemoImportUploadResponseWorkspaceCapacityItemOneTechnicalPieceLengthExclusiveMin = 0;
+
+export const completeDemoImportUploadResponseWorkspaceCapacityItemOneTechnicalPieceWidthExclusiveMin = 0;
+
+export const completeDemoImportUploadResponseWorkspaceCapacityItemOneTechnicalPieceHeightExclusiveMin = 0;
+
+export const completeDemoImportUploadResponseWorkspaceCapacityItemOneTechnicalMaxPieceLengthExclusiveMin = 0;
+
+export const completeDemoImportUploadResponseWorkspaceCapacityItemOneTechnicalMaxPieceWidthExclusiveMin = 0;
+
+export const completeDemoImportUploadResponseWorkspaceCapacityItemOneTechnicalMaxPieceHeightExclusiveMin = 0;
+
+export const completeDemoImportUploadResponseWorkspaceCapacityItemOneTechnicalLiftingCapacityExclusiveMin = 0;
+
+export const completeDemoImportUploadResponseWorkspaceCapacityItemOneTechnicalRequiredLiftingExclusiveMin = 0;
+
+
+
+export const CompleteDemoImportUploadResponse = zod.object({
+  "demo": zod.literal(true),
+  "csrfToken": zod.string(),
+  "revision": zod.number().int(),
+  "seededAt": zod.coerce.date(),
+  "stale": zod.boolean(),
+  "context": zod.object({
+  "user": zod.object({
+  "id": zod.enum(['andy', 'sophie', 'mark', 'eva', 'laura', 'thomas', 'jan', 'anna', 'sarah', 'david', 'emma']),
+  "name": zod.string(),
+  "companyId": zod.string(),
+  "membershipRole": zod.enum(['OWNER', 'ADMIN', 'MEMBER']),
+  "operationalProfile": zod.string(),
+  "platformRole": zod.enum(['USER', 'DEMO_ADMIN']),
+  "primaryMode": zod.enum(['INLAND', 'DEEPSEA', 'LINER', 'ROAD', 'RAIL', 'AIR', 'IMPORT']),
+  "permissions": zod.array(zod.string()),
+  "assignedAssetIds": zod.array(zod.string())
+}),
+  "company": zod.object({
+  "id": zod.string(),
+  "name": zod.string(),
+  "activities": zod.array(zod.string()),
+  "modes": zod.array(zod.enum(['INLAND', 'DEEPSEA', 'LINER', 'ROAD', 'RAIL', 'AIR', 'IMPORT'])),
+  "demo": zod.literal(true)
+}),
+  "permissions": zod.array(zod.string()),
+  "allowedModes": zod.array(zod.enum(['INLAND', 'DEEPSEA', 'LINER', 'ROAD', 'RAIL', 'AIR', 'IMPORT'])),
+  "modules": zod.record(zod.string(), zod.enum(['ACTIVE', 'PILOT', 'COMING_LATER', 'HIDDEN']))
+}),
+  "personas": zod.array(zod.object({
+  "id": zod.enum(['andy', 'sophie', 'mark', 'eva', 'laura', 'thomas', 'jan', 'anna', 'sarah', 'david', 'emma']),
+  "name": zod.string(),
+  "companyId": zod.string(),
+  "membershipRole": zod.enum(['OWNER', 'ADMIN', 'MEMBER']),
+  "operationalProfile": zod.string(),
+  "platformRole": zod.enum(['USER', 'DEMO_ADMIN']),
+  "primaryMode": zod.enum(['INLAND', 'DEEPSEA', 'LINER', 'ROAD', 'RAIL', 'AIR', 'IMPORT']),
+  "permissions": zod.array(zod.string()),
+  "assignedAssetIds": zod.array(zod.string())
+})),
+  "catalogue": zod.object({
+  "locations": zod.array(zod.string())
+}),
+  "workspace": zod.object({
+  "assets": zod.array(zod.object({
+  "id": zod.string(),
+  "companyId": zod.string(),
+  "mode": zod.enum(['INLAND', 'DEEPSEA', 'LINER', 'ROAD', 'RAIL', 'AIR', 'IMPORT']),
+  "name": zod.string(),
+  "type": zod.string(),
+  "capacity": zod.number(),
+  "volume": zod.number().optional(),
+  "equipment": zod.array(zod.string()),
+  "location": zod.string(),
+  "availableAt": zod.coerce.date(),
+  "technical": zod.object({
+  "wagonCount": zod.number().int().min(1).optional(),
+  "wagonType": zod.string().optional(),
+  "temperatureMin": zod.number().min(completeDemoImportUploadResponseWorkspaceAssetsItemTechnicalTemperatureMinMin).max(completeDemoImportUploadResponseWorkspaceAssetsItemTechnicalTemperatureMinMax).optional(),
+  "temperatureMax": zod.number().min(completeDemoImportUploadResponseWorkspaceAssetsItemTechnicalTemperatureMaxMin).max(completeDemoImportUploadResponseWorkspaceAssetsItemTechnicalTemperatureMaxMax).optional(),
+  "cargoType": zod.string().optional(),
+  "cutoffAt": zod.coerce.date().optional(),
+  "pieceWeight": zod.number().gt(completeDemoImportUploadResponseWorkspaceAssetsItemTechnicalPieceWeightExclusiveMin).optional(),
+  "maxPieceWeight": zod.number().gt(completeDemoImportUploadResponseWorkspaceAssetsItemTechnicalMaxPieceWeightExclusiveMin).optional(),
+  "manualPositioningDays": zod.number().min(completeDemoImportUploadResponseWorkspaceAssetsItemTechnicalManualPositioningDaysMin).max(completeDemoImportUploadResponseWorkspaceAssetsItemTechnicalManualPositioningDaysMax).optional(),
+  "positioningBufferDays": zod.number().min(completeDemoImportUploadResponseWorkspaceAssetsItemTechnicalPositioningBufferDaysMin).max(completeDemoImportUploadResponseWorkspaceAssetsItemTechnicalPositioningBufferDaysMax).optional(),
+  "uncertaintyDays": zod.number().min(completeDemoImportUploadResponseWorkspaceAssetsItemTechnicalUncertaintyDaysMin).max(completeDemoImportUploadResponseWorkspaceAssetsItemTechnicalUncertaintyDaysMax).optional(),
+  "draft": zod.number().gt(completeDemoImportUploadResponseWorkspaceAssetsItemTechnicalDraftExclusiveMin).optional(),
+  "maxDraft": zod.number().gt(completeDemoImportUploadResponseWorkspaceAssetsItemTechnicalMaxDraftExclusiveMin).optional(),
+  "gear": zod.string().optional(),
+  "vesselClass": zod.string().optional(),
+  "loadingMetres": zod.number().gt(completeDemoImportUploadResponseWorkspaceAssetsItemTechnicalLoadingMetresExclusiveMin).optional(),
+  "pallets": zod.number().int().min(1).optional(),
+  "adrClasses": zod.array(zod.string()).optional(),
+  "vesselType": zod.string().optional(),
+  "requiredVesselType": zod.string().optional(),
+  "maximumPositioningDistanceKm": zod.number().gt(completeDemoImportUploadResponseWorkspaceAssetsItemTechnicalMaximumPositioningDistanceKmExclusiveMin).optional(),
+  "minimumDwt": zod.number().gt(completeDemoImportUploadResponseWorkspaceAssetsItemTechnicalMinimumDwtExclusiveMin).optional(),
+  "maximumDwt": zod.number().gt(completeDemoImportUploadResponseWorkspaceAssetsItemTechnicalMaximumDwtExclusiveMin).optional(),
+  "quantityTolerancePercent": zod.number().min(completeDemoImportUploadResponseWorkspaceAssetsItemTechnicalQuantityTolerancePercentMin).lt(completeDemoImportUploadResponseWorkspaceAssetsItemTechnicalQuantityTolerancePercentExclusiveMax).optional(),
+  "requiredTrailerType": zod.string().optional(),
+  "availabilityUncertaintyMinutes": zod.number().min(completeDemoImportUploadResponseWorkspaceAssetsItemTechnicalAvailabilityUncertaintyMinutesMin).max(completeDemoImportUploadResponseWorkspaceAssetsItemTechnicalAvailabilityUncertaintyMinutesMax).optional(),
+  "currentDeliveryExpectedAt": zod.coerce.date().optional(),
+  "expectedAvailabilityAt": zod.coerce.date().optional(),
+  "preferredDirection": zod.string().optional(),
+  "pieceCount": zod.number().int().min(1).optional(),
+  "pieceLength": zod.number().gt(completeDemoImportUploadResponseWorkspaceAssetsItemTechnicalPieceLengthExclusiveMin).optional(),
+  "pieceWidth": zod.number().gt(completeDemoImportUploadResponseWorkspaceAssetsItemTechnicalPieceWidthExclusiveMin).optional(),
+  "pieceHeight": zod.number().gt(completeDemoImportUploadResponseWorkspaceAssetsItemTechnicalPieceHeightExclusiveMin).optional(),
+  "maxPieceLength": zod.number().gt(completeDemoImportUploadResponseWorkspaceAssetsItemTechnicalMaxPieceLengthExclusiveMin).optional(),
+  "maxPieceWidth": zod.number().gt(completeDemoImportUploadResponseWorkspaceAssetsItemTechnicalMaxPieceWidthExclusiveMin).optional(),
+  "maxPieceHeight": zod.number().gt(completeDemoImportUploadResponseWorkspaceAssetsItemTechnicalMaxPieceHeightExclusiveMin).optional(),
+  "liftingCapacity": zod.number().gt(completeDemoImportUploadResponseWorkspaceAssetsItemTechnicalLiftingCapacityExclusiveMin).optional(),
+  "requiredLifting": zod.number().gt(completeDemoImportUploadResponseWorkspaceAssetsItemTechnicalRequiredLiftingExclusiveMin).optional(),
+  "stowage": zod.enum(['HOLD', 'DECK', 'EITHER']).optional()
+}).optional(),
+  "demo": zod.literal(true)
+})),
+  "cargos": zod.array(zod.object({
+  "mode": zod.enum(['INLAND', 'DEEPSEA', 'LINER', 'ROAD', 'RAIL', 'AIR', 'IMPORT']),
+  "kind": zod.enum(['CARGO', 'CAPACITY']),
+  "name": zod.string().max(completeDemoImportUploadResponseWorkspaceCargosItemOneNameMax),
+  "assetId": zod.string().optional(),
+  "origin": zod.string(),
+  "destination": zod.string(),
+  "quantity": zod.number().gt(completeDemoImportUploadResponseWorkspaceCargosItemOneQuantityExclusiveMin),
+  "volume": zod.number().gt(completeDemoImportUploadResponseWorkspaceCargosItemOneVolumeExclusiveMin).optional(),
+  "equipment": zod.array(zod.string()),
+  "availableFrom": zod.coerce.date(),
+  "availableUntil": zod.coerce.date(),
+  "visibility": zod.enum(['OPEN_NETWORK', 'PRIVATE']),
+  "technical": zod.object({
+  "wagonCount": zod.number().int().min(1).optional(),
+  "wagonType": zod.string().optional(),
+  "temperatureMin": zod.number().min(completeDemoImportUploadResponseWorkspaceCargosItemOneTechnicalTemperatureMinMin).max(completeDemoImportUploadResponseWorkspaceCargosItemOneTechnicalTemperatureMinMax).optional(),
+  "temperatureMax": zod.number().min(completeDemoImportUploadResponseWorkspaceCargosItemOneTechnicalTemperatureMaxMin).max(completeDemoImportUploadResponseWorkspaceCargosItemOneTechnicalTemperatureMaxMax).optional(),
+  "cargoType": zod.string().optional(),
+  "cutoffAt": zod.coerce.date().optional(),
+  "pieceWeight": zod.number().gt(completeDemoImportUploadResponseWorkspaceCargosItemOneTechnicalPieceWeightExclusiveMin).optional(),
+  "maxPieceWeight": zod.number().gt(completeDemoImportUploadResponseWorkspaceCargosItemOneTechnicalMaxPieceWeightExclusiveMin).optional(),
+  "manualPositioningDays": zod.number().min(completeDemoImportUploadResponseWorkspaceCargosItemOneTechnicalManualPositioningDaysMin).max(completeDemoImportUploadResponseWorkspaceCargosItemOneTechnicalManualPositioningDaysMax).optional(),
+  "positioningBufferDays": zod.number().min(completeDemoImportUploadResponseWorkspaceCargosItemOneTechnicalPositioningBufferDaysMin).max(completeDemoImportUploadResponseWorkspaceCargosItemOneTechnicalPositioningBufferDaysMax).optional(),
+  "uncertaintyDays": zod.number().min(completeDemoImportUploadResponseWorkspaceCargosItemOneTechnicalUncertaintyDaysMin).max(completeDemoImportUploadResponseWorkspaceCargosItemOneTechnicalUncertaintyDaysMax).optional(),
+  "draft": zod.number().gt(completeDemoImportUploadResponseWorkspaceCargosItemOneTechnicalDraftExclusiveMin).optional(),
+  "maxDraft": zod.number().gt(completeDemoImportUploadResponseWorkspaceCargosItemOneTechnicalMaxDraftExclusiveMin).optional(),
+  "gear": zod.string().optional(),
+  "vesselClass": zod.string().optional(),
+  "loadingMetres": zod.number().gt(completeDemoImportUploadResponseWorkspaceCargosItemOneTechnicalLoadingMetresExclusiveMin).optional(),
+  "pallets": zod.number().int().min(1).optional(),
+  "adrClasses": zod.array(zod.string()).optional(),
+  "vesselType": zod.string().optional(),
+  "requiredVesselType": zod.string().optional(),
+  "maximumPositioningDistanceKm": zod.number().gt(completeDemoImportUploadResponseWorkspaceCargosItemOneTechnicalMaximumPositioningDistanceKmExclusiveMin).optional(),
+  "minimumDwt": zod.number().gt(completeDemoImportUploadResponseWorkspaceCargosItemOneTechnicalMinimumDwtExclusiveMin).optional(),
+  "maximumDwt": zod.number().gt(completeDemoImportUploadResponseWorkspaceCargosItemOneTechnicalMaximumDwtExclusiveMin).optional(),
+  "quantityTolerancePercent": zod.number().min(completeDemoImportUploadResponseWorkspaceCargosItemOneTechnicalQuantityTolerancePercentMin).lt(completeDemoImportUploadResponseWorkspaceCargosItemOneTechnicalQuantityTolerancePercentExclusiveMax).optional(),
+  "requiredTrailerType": zod.string().optional(),
+  "availabilityUncertaintyMinutes": zod.number().min(completeDemoImportUploadResponseWorkspaceCargosItemOneTechnicalAvailabilityUncertaintyMinutesMin).max(completeDemoImportUploadResponseWorkspaceCargosItemOneTechnicalAvailabilityUncertaintyMinutesMax).optional(),
+  "currentDeliveryExpectedAt": zod.coerce.date().optional(),
+  "expectedAvailabilityAt": zod.coerce.date().optional(),
+  "preferredDirection": zod.string().optional(),
+  "pieceCount": zod.number().int().min(1).optional(),
+  "pieceLength": zod.number().gt(completeDemoImportUploadResponseWorkspaceCargosItemOneTechnicalPieceLengthExclusiveMin).optional(),
+  "pieceWidth": zod.number().gt(completeDemoImportUploadResponseWorkspaceCargosItemOneTechnicalPieceWidthExclusiveMin).optional(),
+  "pieceHeight": zod.number().gt(completeDemoImportUploadResponseWorkspaceCargosItemOneTechnicalPieceHeightExclusiveMin).optional(),
+  "maxPieceLength": zod.number().gt(completeDemoImportUploadResponseWorkspaceCargosItemOneTechnicalMaxPieceLengthExclusiveMin).optional(),
+  "maxPieceWidth": zod.number().gt(completeDemoImportUploadResponseWorkspaceCargosItemOneTechnicalMaxPieceWidthExclusiveMin).optional(),
+  "maxPieceHeight": zod.number().gt(completeDemoImportUploadResponseWorkspaceCargosItemOneTechnicalMaxPieceHeightExclusiveMin).optional(),
+  "liftingCapacity": zod.number().gt(completeDemoImportUploadResponseWorkspaceCargosItemOneTechnicalLiftingCapacityExclusiveMin).optional(),
+  "requiredLifting": zod.number().gt(completeDemoImportUploadResponseWorkspaceCargosItemOneTechnicalRequiredLiftingExclusiveMin).optional(),
+  "stowage": zod.enum(['HOLD', 'DECK', 'EITHER']).optional()
+}).optional()
+}).and(zod.object({
+  "id": zod.string(),
+  "companyId": zod.string(),
+  "status": zod.enum(['DRAFT', 'ACTIVE', 'WITHDRAWN']),
+  "demo": zod.literal(true)
+}))),
+  "capacity": zod.array(zod.object({
+  "mode": zod.enum(['INLAND', 'DEEPSEA', 'LINER', 'ROAD', 'RAIL', 'AIR', 'IMPORT']),
+  "kind": zod.enum(['CARGO', 'CAPACITY']),
+  "name": zod.string().max(completeDemoImportUploadResponseWorkspaceCapacityItemOneNameMax),
+  "assetId": zod.string().optional(),
+  "origin": zod.string(),
+  "destination": zod.string(),
+  "quantity": zod.number().gt(completeDemoImportUploadResponseWorkspaceCapacityItemOneQuantityExclusiveMin),
+  "volume": zod.number().gt(completeDemoImportUploadResponseWorkspaceCapacityItemOneVolumeExclusiveMin).optional(),
+  "equipment": zod.array(zod.string()),
+  "availableFrom": zod.coerce.date(),
+  "availableUntil": zod.coerce.date(),
+  "visibility": zod.enum(['OPEN_NETWORK', 'PRIVATE']),
+  "technical": zod.object({
+  "wagonCount": zod.number().int().min(1).optional(),
+  "wagonType": zod.string().optional(),
+  "temperatureMin": zod.number().min(completeDemoImportUploadResponseWorkspaceCapacityItemOneTechnicalTemperatureMinMin).max(completeDemoImportUploadResponseWorkspaceCapacityItemOneTechnicalTemperatureMinMax).optional(),
+  "temperatureMax": zod.number().min(completeDemoImportUploadResponseWorkspaceCapacityItemOneTechnicalTemperatureMaxMin).max(completeDemoImportUploadResponseWorkspaceCapacityItemOneTechnicalTemperatureMaxMax).optional(),
+  "cargoType": zod.string().optional(),
+  "cutoffAt": zod.coerce.date().optional(),
+  "pieceWeight": zod.number().gt(completeDemoImportUploadResponseWorkspaceCapacityItemOneTechnicalPieceWeightExclusiveMin).optional(),
+  "maxPieceWeight": zod.number().gt(completeDemoImportUploadResponseWorkspaceCapacityItemOneTechnicalMaxPieceWeightExclusiveMin).optional(),
+  "manualPositioningDays": zod.number().min(completeDemoImportUploadResponseWorkspaceCapacityItemOneTechnicalManualPositioningDaysMin).max(completeDemoImportUploadResponseWorkspaceCapacityItemOneTechnicalManualPositioningDaysMax).optional(),
+  "positioningBufferDays": zod.number().min(completeDemoImportUploadResponseWorkspaceCapacityItemOneTechnicalPositioningBufferDaysMin).max(completeDemoImportUploadResponseWorkspaceCapacityItemOneTechnicalPositioningBufferDaysMax).optional(),
+  "uncertaintyDays": zod.number().min(completeDemoImportUploadResponseWorkspaceCapacityItemOneTechnicalUncertaintyDaysMin).max(completeDemoImportUploadResponseWorkspaceCapacityItemOneTechnicalUncertaintyDaysMax).optional(),
+  "draft": zod.number().gt(completeDemoImportUploadResponseWorkspaceCapacityItemOneTechnicalDraftExclusiveMin).optional(),
+  "maxDraft": zod.number().gt(completeDemoImportUploadResponseWorkspaceCapacityItemOneTechnicalMaxDraftExclusiveMin).optional(),
+  "gear": zod.string().optional(),
+  "vesselClass": zod.string().optional(),
+  "loadingMetres": zod.number().gt(completeDemoImportUploadResponseWorkspaceCapacityItemOneTechnicalLoadingMetresExclusiveMin).optional(),
+  "pallets": zod.number().int().min(1).optional(),
+  "adrClasses": zod.array(zod.string()).optional(),
+  "vesselType": zod.string().optional(),
+  "requiredVesselType": zod.string().optional(),
+  "maximumPositioningDistanceKm": zod.number().gt(completeDemoImportUploadResponseWorkspaceCapacityItemOneTechnicalMaximumPositioningDistanceKmExclusiveMin).optional(),
+  "minimumDwt": zod.number().gt(completeDemoImportUploadResponseWorkspaceCapacityItemOneTechnicalMinimumDwtExclusiveMin).optional(),
+  "maximumDwt": zod.number().gt(completeDemoImportUploadResponseWorkspaceCapacityItemOneTechnicalMaximumDwtExclusiveMin).optional(),
+  "quantityTolerancePercent": zod.number().min(completeDemoImportUploadResponseWorkspaceCapacityItemOneTechnicalQuantityTolerancePercentMin).lt(completeDemoImportUploadResponseWorkspaceCapacityItemOneTechnicalQuantityTolerancePercentExclusiveMax).optional(),
+  "requiredTrailerType": zod.string().optional(),
+  "availabilityUncertaintyMinutes": zod.number().min(completeDemoImportUploadResponseWorkspaceCapacityItemOneTechnicalAvailabilityUncertaintyMinutesMin).max(completeDemoImportUploadResponseWorkspaceCapacityItemOneTechnicalAvailabilityUncertaintyMinutesMax).optional(),
+  "currentDeliveryExpectedAt": zod.coerce.date().optional(),
+  "expectedAvailabilityAt": zod.coerce.date().optional(),
+  "preferredDirection": zod.string().optional(),
+  "pieceCount": zod.number().int().min(1).optional(),
+  "pieceLength": zod.number().gt(completeDemoImportUploadResponseWorkspaceCapacityItemOneTechnicalPieceLengthExclusiveMin).optional(),
+  "pieceWidth": zod.number().gt(completeDemoImportUploadResponseWorkspaceCapacityItemOneTechnicalPieceWidthExclusiveMin).optional(),
+  "pieceHeight": zod.number().gt(completeDemoImportUploadResponseWorkspaceCapacityItemOneTechnicalPieceHeightExclusiveMin).optional(),
+  "maxPieceLength": zod.number().gt(completeDemoImportUploadResponseWorkspaceCapacityItemOneTechnicalMaxPieceLengthExclusiveMin).optional(),
+  "maxPieceWidth": zod.number().gt(completeDemoImportUploadResponseWorkspaceCapacityItemOneTechnicalMaxPieceWidthExclusiveMin).optional(),
+  "maxPieceHeight": zod.number().gt(completeDemoImportUploadResponseWorkspaceCapacityItemOneTechnicalMaxPieceHeightExclusiveMin).optional(),
+  "liftingCapacity": zod.number().gt(completeDemoImportUploadResponseWorkspaceCapacityItemOneTechnicalLiftingCapacityExclusiveMin).optional(),
+  "requiredLifting": zod.number().gt(completeDemoImportUploadResponseWorkspaceCapacityItemOneTechnicalRequiredLiftingExclusiveMin).optional(),
+  "stowage": zod.enum(['HOLD', 'DECK', 'EITHER']).optional()
+}).optional()
+}).and(zod.object({
+  "id": zod.string(),
+  "companyId": zod.string(),
+  "status": zod.enum(['DRAFT', 'ACTIVE', 'WITHDRAWN']),
+  "demo": zod.literal(true)
+}))),
+  "opportunities": zod.array(zod.object({
+  "id": zod.string(),
+  "cargoId": zod.string(),
+  "capacityId": zod.string(),
+  "mode": zod.enum(['INLAND', 'DEEPSEA', 'LINER', 'ROAD', 'RAIL', 'AIR', 'IMPORT']),
+  "origin": zod.string(),
+  "destination": zod.string(),
+  "quantity": zod.number(),
+  "score": zod.number(),
+  "provisional": zod.literal(true),
+  "status": zod.enum(['NEW', 'INTEREST_SENT', 'CONNECTED', 'DECLINED', 'STALE']),
+  "ownSide": zod.enum(['CARGO', 'CAPACITY']),
+  "counterpartyName": zod.string().optional(),
+  "assetName": zod.string().optional(),
+  "contact": zod.string().optional(),
+  "source": zod.enum(['FICTIONAL_MANUAL']),
+  "verification": zod.enum(['NOT_VERIFIED'])
+})),
+  "matches": zod.array(zod.object({
+  "id": zod.string(),
+  "cargoId": zod.string(),
+  "capacityId": zod.string(),
+  "mode": zod.enum(['INLAND', 'DEEPSEA', 'LINER', 'ROAD', 'RAIL', 'AIR', 'IMPORT']),
+  "origin": zod.string(),
+  "destination": zod.string(),
+  "quantity": zod.number(),
+  "score": zod.number(),
+  "provisional": zod.literal(true),
+  "status": zod.enum(['NEW', 'INTEREST_SENT', 'CONNECTED', 'DECLINED', 'STALE']),
+  "ownSide": zod.enum(['CARGO', 'CAPACITY']),
+  "counterpartyName": zod.string().optional(),
+  "assetName": zod.string().optional(),
+  "contact": zod.string().optional(),
+  "source": zod.enum(['FICTIONAL_MANUAL']),
+  "verification": zod.enum(['NOT_VERIFIED'])
+}).and(zod.object({
+  "leftConsent": zod.boolean(),
+  "rightConsent": zod.boolean()
+}))),
+  "messages": zod.array(zod.object({
+  "id": zod.string(),
+  "matchId": zod.string(),
+  "senderName": zod.string(),
+  "body": zod.string(),
+  "createdAt": zod.coerce.date(),
+  "demo": zod.literal(true)
+})),
+  "notifications": zod.array(zod.record(zod.string(), zod.unknown()).describe('Demo-only projected notification, referral, evidence, import shipment or audit record as documented in docs/demo-server-contract.md. Never raw sandbox state.')),
+  "referrals": zod.array(zod.record(zod.string(), zod.unknown()).describe('Demo-only projected notification, referral, evidence, import shipment or audit record as documented in docs/demo-server-contract.md. Never raw sandbox state.')),
+  "imports": zod.array(zod.record(zod.string(), zod.unknown()).describe('Demo-only projected notification, referral, evidence, import shipment or audit record as documented in docs/demo-server-contract.md. Never raw sandbox state.')),
+  "companies": zod.array(zod.object({
+  "id": zod.string(),
+  "name": zod.string(),
+  "activities": zod.array(zod.string()),
+  "modes": zod.array(zod.enum(['INLAND', 'DEEPSEA', 'LINER', 'ROAD', 'RAIL', 'AIR', 'IMPORT'])),
+  "demo": zod.literal(true)
+})),
+  "audit": zod.array(zod.record(zod.string(), zod.unknown()).describe('Demo-only projected notification, referral, evidence, import shipment or audit record as documented in docs/demo-server-contract.md. Never raw sandbox state.')),
+  "evidence": zod.array(zod.record(zod.string(), zod.unknown()).describe('Demo-only projected notification, referral, evidence, import shipment or audit record as documented in docs/demo-server-contract.md. Never raw sandbox state.'))
+})
+})
+
+
+export const DownloadDemoImportDocumentParams = zod.object({
+  "shipmentId": zod.coerce.string(),
+  "documentId": zod.coerce.string()
+})
+
+export const DownloadDemoImportDocumentResponse = zod.unknown()
+
+
+/**
  * @summary Restore a private visitor demo, independent from OIDC
  */
 

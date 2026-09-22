@@ -37,6 +37,7 @@ import LinerMarketplace from "./pages/liner/LinerMarketplace";
 import LinerMatches from "./pages/liner/LinerMatches";
 import LinerMatchDetail from "./pages/liner/LinerMatchDetail";
 import RoadPilot from "./pages/road/RoadPilot";
+import ImportPage from "./pages/import/ImportPage";
 
 function ProtectedRoute({ component: Component, requireCompany = true, allowedActivities = [] }: { component: React.ComponentType, requireCompany?: boolean, allowedActivities?: CompanyActivity[] }) {
   const { isAuthenticated, isLoading: authLoading } = useAuth();
@@ -145,6 +146,9 @@ function AppRouter() {
       <Route path="/road/opportunities">{() => <ProtectedRoute component={RoadPilot} />}</Route>
       <Route path="/road/matches">{() => <ProtectedRoute component={RoadPilot} />}</Route>
       <Route path="/road/matches/:id">{({ id }) => <ProtectedRoute component={() => <RoadPilot matchId={id} />} />}</Route>
+
+      {/* Authenticated company import control */}
+      <Route path="/import">{() => <ProtectedRoute component={ImportPage} />}</Route>
 
       <Route>
         <div className="flex items-center justify-center min-h-screen">{t("not_found.title")}</div>

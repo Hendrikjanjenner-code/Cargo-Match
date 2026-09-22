@@ -1,3 +1,4 @@
+export * from "./importUploads";
 // Export your models here. Add one export per file
 // export * from "./posts";
 //
@@ -22,3 +23,4 @@ export * from "./cargomatch";
 export * from "./availabilitySuggestions";
 export * from "./road";
 export * from "./demo";
+export * from "./imports";

@@ -108,6 +108,32 @@ function match(jar: Jar, id: string) {
   return found;
 }
 
+test("import fixture downloads enforce sandbox, module and LCL house access; uploads cannot forge metadata", async () => {
+  const jar = await start("michael");
+  const url = "/api/demo/import/documents/china-fcl/china-fcl-doc-1";
+  assert.equal((await fetch(`${baseUrl}${url}`)).status, 401);
+  const fixture = await fetch(`${baseUrl}${url}`, { headers: {cookie: jar.cookie} });
+  assert.equal(fixture.status, 200);
+  assert.match(fixture.headers.get("content-disposition") ?? "", /attachment/);
+  const content = await fixture.text();
+  assert.match(content, /DEMO.*SYNTHETIC/);
+  assert.match(content, /18420/);
+  assert.equal((await action(jar, {type: "IMPORT_CONTROL", operation: "UPLOAD_DOCUMENT", shipmentId: "china-fcl",
+    documentType: "INVOICE", name: "forged.pdf", objectPath: "/objects/forged", size: 100, mimeType: "application/pdf"})).status, 403);
+  assert.equal((await post(jar, "import/uploads/request-url", {shipmentId: "china-fcl", name: "oversize.pdf", mimeType: "application/pdf", size: 2097153})).status, 400);
+  assert.equal((await post(jar, "import/uploads/complete", {shipmentId: "china-fcl", documentType: "INVOICE", objectPath: "/objects/uploads/00000000-0000-0000-0000-000000000000"})).status, 403);
+  await switchTo(jar, "laura");
+  const download = (shipment: string, document: string) => fetch(`${baseUrl}/api/demo/import/documents/${shipment}/${document}`, {headers: {cookie: jar.cookie}});
+  assert.equal((await download("india-house-1", "india-house-1-doc-1")).status, 200);
+  assert.equal((await download("india-house-1", "india-house-1-doc-0")).status, 403);
+  assert.equal((await download("india-house-2", "india-house-2-doc-1")).status, 403);
+  assert.equal((await download("china-fcl", "china-fcl-doc-1")).status, 403);
+  assert.equal((await post(jar, "import/uploads/request-url", {shipmentId: "india-house-2", name: "test.txt", mimeType: "text/plain", size: 10})).status, 403);
+  await switchTo(jar, "michael");
+  success(await action(jar, {type: "IMPORT_CONTROL", operation: "SET_MODULE", module: "DOCUMENTS", enabled: false}));
+  assert.equal((await download("china-fcl", "china-fcl-doc-1")).status, 403);
+});
+
 async function connect(jar: Jar, id: string, counterpart: string) {
   success(await action(jar, { type: "INTEREST", matchId: id }));
   assert.equal(match(jar, id).status, "INTEREST_SENT");

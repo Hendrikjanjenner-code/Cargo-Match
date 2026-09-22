@@ -15,3 +15,14 @@ separate assertions.
 **How to apply:** Test blank optional inputs as well as populated values.
 Preserve null for intentional clearing on edit and omit unsupported optional
 values on create. Avoid weakening all schemas merely to accommodate a form.
+
+Action-based forms also need this check when a shared action type makes most
+properties optional. Static typing then cannot prove that review evidence,
+the correct operation-specific field name, or a required role transition is
+actually supplied by the screen.
+
+**Why:** Valid domain tests can conceal unusable review and approval controls
+whose real requests omit mandatory human evidence.
+
+**How to apply:** Trace the actual UI payload through the action dispatcher and
+check who can reach each control, not just whether the server supports it.

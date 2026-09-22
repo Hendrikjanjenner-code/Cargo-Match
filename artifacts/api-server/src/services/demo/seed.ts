@@ -1,4 +1,6 @@
 import type { Persona, DemoCompany, DemoState, Mode, Asset, Listing, Technical } from "./types";
+import { seedImports, IMPORT_MANAGER_PERMISSIONS } from "../imports/seed";
+import { IMPORT_MODULES } from "../imports/types";
 
 const commercial = ["VIEW_MATCHES", "SHOW_INTEREST", "ACCEPT_CONNECTION", "DECLINE_CONNECTION", "MESSAGE_CONNECTED"];
 const persona = (id: string, name: string, companyId: string, operationalProfile: string, primaryMode: Mode,
@@ -9,17 +11,24 @@ export const PERSONAS: Persona[] = [
   persona("sophie", "Sophie van Dijk", "oceanbridge", "OWNER_REPRESENTATIVE", "DEEPSEA", [...commercial, "MANAGE_ASSETS", "MANAGE_CAPACITY"], [], "ADMIN"),
   persona("mark", "Mark de Jong", "rhineflow", "SKIPPER", "INLAND", ["VIEW_ASSIGNED_ASSET", "MANAGE_ASSIGNED_ASSET_AVAILABILITY", "SEND_TO_PLANNER", "VIEW_MATCHES"], ["asset-inland"]),
   persona("eva", "Eva Jansen", "rhineflow", "PLANNER", "INLAND", [...commercial, "MANAGE_ASSETS", "MANAGE_CAPACITY", "REVIEW_REFERRAL"]),
-  persona("laura", "Laura Peters", "eurocommodities", "SHIPPER", "INLAND", [...commercial, "CREATE_CARGO", "EDIT_OWN_CARGO", "VIEW_IMPORT_RECEIVER"], [], "OWNER"),
+   persona("laura", "Laura Peters", "eurocommodities", "SHIPPER", "INLAND", [...commercial, "CREATE_CARGO", "EDIT_OWN_CARGO", "VIEW_IMPORT_RECEIVER", ...["SHIPMENTS", "DOCUMENTS", "CHARGES", "RELEASE", "DELIVERY", "CONTROL", "IMPORT"].map(m => `IMPORT_${m}`)], [], "OWNER"),
   persona("thomas", "Thomas Becker", "transroute", "PLANNER", "ROAD", [...commercial, "MANAGE_ASSETS", "MANAGE_CAPACITY", "REVIEW_REFERRAL"]),
   persona("jan", "Jan Müller", "transroute", "DRIVER", "ROAD", ["VIEW_ASSIGNED_ASSET", "MANAGE_ASSIGNED_ASSET_AVAILABILITY", "SEND_TO_PLANNER", "VIEW_MATCHES"], ["asset-road"]),
   persona("anna", "Anna Schmidt", "eurorail", "RAIL_OPERATOR", "RAIL", [...commercial, "MANAGE_ASSETS", "MANAGE_CAPACITY"]),
   persona("sarah", "Sarah Williams", "skyfreight", "AIR_CARGO_OPERATOR", "AIR", [...commercial, "MANAGE_ASSETS", "MANAGE_CAPACITY"]),
-  persona("david", "David Chen", "globalline", "FORWARDER", "LINER", [...commercial, "CREATE_CARGO", "EDIT_OWN_CARGO", "MANAGE_ASSETS", "MANAGE_CAPACITY", "MANAGE_IMPORT"]),
+   persona("david", "David Chen", "globalline", "FORWARDER", "LINER", [...commercial, "CREATE_CARGO", "EDIT_OWN_CARGO", "MANAGE_ASSETS", "MANAGE_CAPACITY", "MANAGE_IMPORT", ...IMPORT_MODULES.filter(m => m !== "CUSTOMS").map(m => `IMPORT_${m}`)]),
+   persona("michael", "Michael van der Meer", "globaltrade", "IMPORT_MANAGER", "IMPORT", [...commercial, ...IMPORT_MANAGER_PERMISSIONS, "CREATE_CARGO", "EDIT_OWN_CARGO"], [], "OWNER"),
+   persona("customs-specialist", "Noor Bakker (DEMO)", "customs-demo", "CUSTOMS_SPECIALIST", "IMPORT", [...["SHIPMENTS", "DOCUMENTS", "IMPORT", "CUSTOMS", "CONTROL", "EXCEPTIONS"].map(m => `IMPORT_${m}`), "IMPORT_CUSTOMS_APPROVE"]),
+   persona("finance", "Sanne Visser (DEMO)", "globaltrade", "FINANCE", "IMPORT", ["SHIPMENTS", "CHARGES", "CONTROL", "EXCEPTIONS"].map(m => `IMPORT_${m}`)),
+   persona("consignee", "Priya de Vries (DEMO)", "textile-demo", "CONSIGNEE", "IMPORT", ["SHIPMENTS", "DOCUMENTS", "CHARGES", "RELEASE", "DELIVERY", "CONTROL", "IMPORT"].map(m => `IMPORT_${m}`)),
   persona("emma", "Emma de Vries", "cargomatch-demo", "COMPANY_MANAGER", "DEEPSEA", ["VIEW_ADMIN", "RESET_DEMO"], [], "ADMIN"),
 ];
 export const getPersona = (id: string) => PERSONAS.find(p => p.id === id);
 const company = (id: string, name: string, modes: Mode[], activities: string[]): DemoCompany => ({ id, name, modes, activities, demo: true });
 export const COMPANIES: DemoCompany[] = [
+   company("globaltrade", "GLOBALTRADE IMPORTS DEMO BV", ["IMPORT", "ROAD", "INLAND", "RAIL"], ["IMPORTER"]),
+   company("customs-demo", "Customs Specialist DEMO BV", ["IMPORT"], ["CUSTOMS"]),
+   company("textile-demo", "Textile Consignee DEMO BV", ["IMPORT"], ["RECEIVER"]),
   company("northsea", "NorthSea Chartering Demo", ["DEEPSEA"], ["CHARTERER"]),
   company("oceanbridge", "OceanBridge Bulk Demo", ["DEEPSEA"], ["CARRIER"]),
   company("rhineflow", "RhineFlow Shipping Demo", ["INLAND"], ["CARRIER"]),
@@ -96,5 +105,12 @@ export function seedDemo(now = new Date()): DemoState {
   }
   state.imports.push({id: "import-lcl", name: "Demo LCL Shanghai–Rotterdam", receiverCompanyId: "eurocommodities", status: "IN_TRANSIT", arrivalAt: at(2), documents: [{id: "doc-packing", name: "Fictieve paklijst", status: "PENDING"}, {id: "doc-arrival", name: "Fictief aankomstbericht", status: "PENDING"}], charges: [{id: "charge-handling", label: "Gesimuleerde handling", amount: 125, currency: "EUR"}, {id: "charge-terminal", label: "Gesimuleerde terminalkosten", amount: 85, currency: "EUR"}], paymentStatus: "UNPAID", releaseStatus: "HELD", pickupStatus: "NOT_READY", demo: true});
   for (const p of PERSONAS) state.notifications.push({id: `welcome-${p.id}`, userId: p.id, title: "Welkom in je geïsoleerde demo. Alle gegevens zijn fictief.", read: false, createdAt: now.toISOString(), demo: true});
-  return state;
+   state.importControl = seedImports(now);
+   // Shipment-derived cargo uses the existing physical and timing matcher.
+   for (const m of ["ROAD", "INLAND", "RAIL"] as const) {
+     const source = state.listings.find(l => l.id === `capacity-${m.toLowerCase()}`)!;
+      state.listings.push({...structuredClone(source), id: `capacity-import-${m.toLowerCase()}`, origin: "Rotterdam", destination: "Eindhoven", availableFrom: at(2), availableUntil: at(6), technical: {...source.technical, ...(m === "ROAD" ? {preferredDirection: "Eindhoven"} : {})}});
+   }
+    state.importFixtureRevision = 1;
+   return state;
 }

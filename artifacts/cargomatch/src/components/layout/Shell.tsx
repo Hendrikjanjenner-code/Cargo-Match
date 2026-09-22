@@ -4,7 +4,7 @@ import { useAuth } from "@workspace/replit-auth-web";
 import { useQueryClient } from "@tanstack/react-query";
 import { 
   LogOut, LayoutDashboard, Ship, Package, Layers, Globe, Truck,
-  Handshake, MessageSquare, Building2, Bell
+  Handshake, MessageSquare, Building2, Bell, PackageOpen
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { t } from "@/lib/i18n";
@@ -85,6 +85,13 @@ function ShellContent({ children }: { children: React.ReactNode }) {
     activeGroups.push({ title: "Road Pilot", items: roadNavItems });
   }
 
+  if (company) {
+    activeGroups.push({
+      title: "Import",
+      items: [{ href: "/import", label: "Import & Control", icon: PackageOpen }],
+    });
+  }
+
   activeGroups.push({
     title: "Account",
     items: [
@@ -94,7 +101,7 @@ function ShellContent({ children }: { children: React.ReactNode }) {
   });
   // The same predicate also gates the actual page below, not just its link.
   activeGroups = activeGroups.map(group => ({
-    ...group, items: group.items.filter(item => !!item.href && authority.canVisit(item.href)),
+    ...group, items: group.items.filter(item => !!item.href && (item.href === "/import" ? !!company : authority.canVisit(item.href))),
   })).filter(group => group.items.length > 0);
 
   const { state, isMobile } = useSidebar();
@@ -175,7 +182,7 @@ function ShellContent({ children }: { children: React.ReactNode }) {
           <div className="mx-auto max-w-6xl">
             {companyLoading ? <p role="status">{t("common.loading")}</p> :
               companyError ? <section role="alert"><h1 className="text-xl font-semibold">Company context unavailable</h1><p className="my-3">Your current company permissions could not be verified.</p><Button onClick={() => { void reloadCompany(); }}>Try again</Button></section> :
-              !authority.canVisit(location) ? <section role="alert" className="rounded-lg border bg-card p-6">
+              location !== "/import" && !authority.canVisit(location) ? <section role="alert" className="rounded-lg border bg-card p-6">
                 <h1 className="text-xl font-semibold">{authority.allowedModules.length ? "Access unavailable" : "No available transport modules"}</h1>
                 <p className="my-3 text-muted-foreground">This page is not available for your company activities, membership or module settings. No changes have been made.</p>
                 <Button onClick={() => setLocation(authority.allowedModules.length ? authority.moduleHome(authority.allowedModules[0]) : "/company")}>{authority.allowedModules.length ? "Open available workspace" : "View company context"}</Button>

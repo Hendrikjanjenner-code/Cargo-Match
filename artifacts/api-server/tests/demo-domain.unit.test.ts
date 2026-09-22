@@ -15,9 +15,9 @@ function pair(state: DemoState, mode: string) {
   const asset = state.assets.find(a => a.id === capacity.assetId)!;
   return {cargo, capacity, asset};
 }
-test("all eleven personas, consistent owners and intentional positive/negative mode seeds", () => {
+test("all original and import personas, consistent owners and intentional positive/negative mode seeds", () => {
   const state = seedDemo(now);
-  assert.equal(PERSONAS.length, 11);
+  assert.equal(PERSONAS.length, 15);
   assert.equal(new Set(state.assets.map(a => a.id)).size, state.assets.length);
   for (const mode of ["inland", "deepsea", "road", "rail", "air", "liner"]) {
     const {cargo, capacity} = pair(state, mode);
@@ -208,7 +208,7 @@ test("commercial transition matrix rejects all non-incoming accept/decline state
 });
 
 test("DECLINE_CONNECTION is independent from ACCEPT_CONNECTION and absent on operational/admin personas", () => {
-  const commercial = ["andy", "sophie", "eva", "laura", "thomas", "anna", "sarah", "david"];
+  const commercial = ["andy", "sophie", "eva", "laura", "thomas", "anna", "sarah", "david", "michael"];
   for (const persona of PERSONAS) assert.equal(persona.permissions.includes("DECLINE_CONNECTION"), commercial.includes(persona.id), persona.id);
   const sandbox = box("andy");
   applyAction(sandbox, {type: "INTEREST", matchId: "match-deepsea"});

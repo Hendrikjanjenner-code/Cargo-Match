@@ -15,3 +15,6 @@ psql "$DATABASE_URL" -X -v ON_ERROR_STOP=1 --single-transaction \
 psql "$DATABASE_URL" -X -v ON_ERROR_STOP=1 --single-transaction \
   -f lib/db/migrations/0007_isolated_demo.sql
 pnpm --filter @workspace/scripts run seed-locations
+psql "$DATABASE_URL" -X -v ON_ERROR_STOP=1 --single-transaction \
+  -f lib/db/migrations/0008_company_imports.sql \
+  -f lib/db/migrations/0009_import_uploads.sql

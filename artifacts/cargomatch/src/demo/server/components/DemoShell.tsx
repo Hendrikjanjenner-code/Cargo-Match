@@ -29,7 +29,10 @@ function Content({ onExit }: { onExit: () => void }) {
   const admin = has("VIEW_ADMIN");
   const operational = has("VIEW_ASSIGNED_ASSET");
   const enabled = moduleEnabled(session, activeMode);
-  const importAccess = moduleEnabled(session, "IMPORT") && (has("MANAGE_IMPORT") || has("VIEW_IMPORT_RECEIVER"));
+  const importAccess = moduleEnabled(session, "IMPORT") && (!!workspace.importControl?.modules.length || has("IMPORT_ADMIN"));
+  const importControl = workspace.importControl;
+  const isImportMode = activeMode === "IMPORT";
+  
   const rules: Record<string, boolean> = {
     dashboard: true, map: !admin && activeMode !== "IMPORT", assets: has("MANAGE_ASSETS") || operational,
     cargos: has("CREATE_CARGO"), capacity: has("MANAGE_CAPACITY"), matches: has("VIEW_MATCHES"),
@@ -37,28 +40,63 @@ function Content({ onExit }: { onExit: () => void }) {
     import: importAccess, admin, form_cargo: has("CREATE_CARGO"), form_capacity: has("MANAGE_CAPACITY"),
     form_departure: has("MANAGE_CAPACITY") && activeMode === "LINER", form_asset: has("MANAGE_ASSETS"),
     match_detail: has("VIEW_MATCHES") && !!entityId && [...workspace.matches, ...workspace.opportunities].some(item => item.id === entityId && item.mode === activeMode),
+    import_shipments: importAccess && !!importControl?.modules.includes("SHIPMENTS"),
+    import_documents: importAccess && !!importControl?.modules.includes("DOCUMENTS"),
+    import_customs: importAccess && !!importControl?.modules.includes("CUSTOMS"),
+    import_charges: importAccess && !!importControl?.modules.includes("CHARGES"),
+    import_release: importAccess && !!importControl?.modules.includes("RELEASE"),
+    import_delivery: importAccess && !!importControl?.modules.includes("DELIVERY"),
+    import_control: importAccess && !!importControl?.modules.includes("CONTROL"),
+    import_partners: importAccess && !!importControl?.modules.includes("PARTNERS"),
+    import_exceptions: importAccess && !!importControl?.modules.includes("EXCEPTIONS"),
+    import_settings: importAccess,
   };
-  const denied = !rules[view] || (!admin && !enabled) || (activeMode === "IMPORT" && !["import", "profile", "company", "settings", "notifications", "network"].includes(view));
+  const denied = !rules[view] || (!admin && !enabled);
   const go = (next: string) => navigate({ demoView: next, entityId: null });
   const item = (next: string, label: string, icon: React.ElementType, badge?: number) => ({ onClick: () => go(next), label, icon, isActive: view === next, badge: badge || undefined });
-  const groups: NavGroup[] = [{ title: "Overzicht", items: [item(activeMode === "IMPORT" ? "import" : "dashboard", activeMode === "IMPORT" ? "Import-overzicht" : "Dashboard", LayoutDashboard), ...(!admin && activeMode !== "IMPORT" ? [item("map", "Regiokaart", Map)] : [])] }];
-  if (!admin && activeMode !== "IMPORT") groups.push({ title: "Operatie & markt", items: [
-    ...(rules.assets ? [item("assets", operational ? "Mijn toegewezen asset" : assetLabels[activeMode], Ship)] : []),
-    ...(rules.cargos ? [item("cargos", activeMode === "DEEPSEA" ? "Cargo orders" : "Mijn lading", Package)] : []),
-    ...(rules.capacity ? [item("capacity", capacityLabels[activeMode], Layers)] : []),
-    ...(rules.matches ? [item("matches", operational ? "Passende kansen" : "Matches & kansen", Handshake)] : []),
-  ] });
-  if (importAccess) groups.push({ title: "Afzonderlijke module", items: [{ label: "CargoMatch Import · pilot", icon: Package, isActive: view === "import", onClick: () => navigate({ demoView: "import", demoMode: "IMPORT", entityId: null }) }] });
+  
+  const groups: NavGroup[] = [];
+  
+  if (isImportMode && importAccess) {
+    groups.push({ title: "Overzicht", items: [item("import", "Import Dashboard", LayoutDashboard)] });
+    
+    const impItems = [];
+    if (rules.import_control) impItems.push(item("import_control", "Control Tower", Map));
+    if (rules.import_shipments) impItems.push(item("import_shipments", "Zendingen", Package));
+    if (rules.import_documents) impItems.push(item("import_documents", "Documenten", Layers));
+    if (rules.import_customs) impItems.push(item("import_customs", "Douane", Building2));
+    if (rules.import_charges) impItems.push(item("import_charges", "Kosten", Layers));
+    if (rules.import_release) impItems.push(item("import_release", "Vrijgave", Handshake));
+    if (rules.import_delivery) impItems.push(item("import_delivery", "Achterland", Ship));
+    if (rules.import_partners) impItems.push(item("import_partners", "Partners", Users));
+    if (rules.import_exceptions) impItems.push(item("import_exceptions", "Uitzonderingen", Bell));
+    if (rules.import_settings) impItems.push(item("import_settings", "Module-instellingen", Settings));
+    
+    if (impItems.length > 0) {
+      groups.push({ title: "Import Modules", items: impItems });
+    }
+  } else {
+    groups.push({ title: "Overzicht", items: [item("dashboard", "Dashboard", LayoutDashboard), ...(!admin && activeMode !== "IMPORT" ? [item("map", "Regiokaart", Map)] : [])] });
+    if (!admin && activeMode !== "IMPORT") groups.push({ title: "Operatie & markt", items: [
+      ...(rules.assets ? [item("assets", operational ? "Mijn toegewezen asset" : assetLabels[activeMode], Ship)] : []),
+      ...(rules.cargos ? [item("cargos", activeMode === "DEEPSEA" ? "Cargo orders" : "Mijn lading", Package)] : []),
+      ...(rules.capacity ? [item("capacity", capacityLabels[activeMode], Layers)] : []),
+      ...(rules.matches ? [item("matches", operational ? "Passende kansen" : "Matches & kansen", Handshake)] : []),
+    ] });
+    if (importAccess) groups.push({ title: "Afzonderlijke module", items: [{ label: "CargoMatch Import", icon: Package, isActive: false, onClick: () => navigate({ demoView: "import", demoMode: "IMPORT", entityId: null }) }] });
+  }
+
   groups.push({ title: "Communicatie", items: [
     ...(rules.messages ? [item("messages", "Gesprekken", MessageSquare)] : []),
     item("notifications", "Notificaties", Bell, workspace.notifications.filter(n => !n.read).length),
-    ...(!admin ? [item("network", "Demo-netwerk", Users)] : []),
+    ...(!admin && !isImportMode ? [item("network", "Demo-netwerk", Users)] : []),
   ] });
   groups.push({ title: "Context", items: [item("profile", "Mijn profiel", User), item("company", "Bedrijf", Building2), item("settings", "Instellingen", Settings), ...(admin ? [item("admin", "Demo-beheer", Settings)] : [])] });
+  
   const actions = [
-    ...(rules.form_cargo && activeMode !== "IMPORT" ? [{ label: "Nieuwe lading", icon: Plus, onClick: () => navigate({ demoView: "form_cargo", entityId: "new" }) }] : []),
-    ...(rules.form_capacity && activeMode !== "IMPORT" ? [{ label: "Nieuwe capaciteit", icon: Plus, onClick: () => navigate({ demoView: "form_capacity", entityId: "new" }) }] : []),
-    ...(rules.form_asset && activeMode !== "IMPORT" ? [{ label: "Nieuwe asset", icon: Plus, onClick: () => navigate({ demoView: "form_asset", entityId: "new" }) }] : []),
+    ...(rules.form_cargo && !isImportMode ? [{ label: "Nieuwe lading", icon: Plus, onClick: () => navigate({ demoView: "form_cargo", entityId: "new" }) }] : []),
+    ...(rules.form_capacity && !isImportMode ? [{ label: "Nieuwe capaciteit", icon: Plus, onClick: () => navigate({ demoView: "form_capacity", entityId: "new" }) }] : []),
+    ...(rules.form_asset && !isImportMode ? [{ label: "Nieuwe asset", icon: Plus, onClick: () => navigate({ demoView: "form_asset", entityId: "new" }) }] : []),
   ];
   if (actions.length) groups.push({ title: "Acties", items: actions });
   return <>
@@ -77,7 +115,7 @@ function Content({ onExit }: { onExit: () => void }) {
           {view === "dashboard" && <DemoOverview />}
           {view === "map" && <DemoMap />}
           {(["assets", "cargos", "capacity", "matches", "messages", "notifications"] as string[]).includes(view) && <DemoLists type={view as "assets" | "cargos" | "capacity" | "matches" | "messages" | "notifications"} />}
-          {view === "import" && <DemoImport />}
+          {view.startsWith("import") && <DemoImport view={view} />}
           {view === "admin" && <DemoAdmin />}
           {["profile", "company", "network", "settings"].includes(view) && <DemoSettings type={view as "profile" | "company" | "network" | "settings"} />}
           {["form_cargo", "form_capacity", "form_asset", "form_departure"].includes(view) && <DemoForms key={`${view}:${entityId}:${activeMode}`} type={view as "form_cargo" | "form_capacity" | "form_asset" | "form_departure"} entityId={entityId} onCancel={() => navigate({ demoView: view === "form_asset" ? "assets" : view === "form_cargo" ? "cargos" : "capacity", entityId: null })} />}

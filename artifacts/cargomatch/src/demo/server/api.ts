@@ -135,6 +135,7 @@ export interface DemoNotification {
   read: boolean;
   createdAt: string;
   demo: true;
+  importShipmentId?: string;
 }
 
 export interface DemoReferral {
@@ -195,6 +196,7 @@ export interface DemoSession {
     notifications: DemoNotification[];
     referrals: DemoReferral[];
     imports: DemoImportShipment[];
+    importControl?: import("./import-contract").ImportControlView;
     companies: DemoCompany[];
     audit: DemoAudit[];
     evidence: { assetId: string; actorId: string; availableAt: string; createdAt: string; demo: true }[];
@@ -211,6 +213,7 @@ export type DemoAction =
   | { type: "SAVE_LISTING"; listingId?: string; listing: Partial<DemoListing> }
   | { type: "PUBLISH_LISTING" | "WITHDRAW_LISTING"; listingId: string }
   | { type: "IMPORT_STEP"; shipmentId: string; step: "ARRIVED" | "DOCUMENTS_READY" | "PAYMENT_SIMULATED" | "RELEASED" | "PICKUP_READY" }
+  | import("./import-contract").ImportAction
   | { type: "READ_NOTIFICATION"; notificationId: string }
   | { type: "RESET"; confirmation: "RESET DEMO" };
 

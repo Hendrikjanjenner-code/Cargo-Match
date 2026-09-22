@@ -1,4 +1,6 @@
 import { randomUUID } from "node:crypto";
+import { applyImportAction, projectImportControl, importModules, shipmentModules, type ImportActionOptions } from "../imports/domain";
+import type { ImportIntegration } from "../imports/types";
 import { isCapacityWithinVessel } from "../matching";
 import { coreEvaluation } from "./core-adapter";
 import { PERSONAS, getPersona, seedDemo } from "./seed";
@@ -20,6 +22,7 @@ export const LOCATIONS: Record<string, {region: string; latitude: number; longit
   DXB: {region: "Dubai region", latitude: 25.25, longitude: 55.36},
   Shanghai: {region: "East China", latitude: 31.23, longitude: 121.47},
   Hamburg: {region: "Northern Germany", latitude: 53.55, longitude: 9.99},
+  Tilburg: {region: "North Brabant", latitude: 51.56, longitude: 5.09},
 };
 const has = (actor: Persona, permission: string) => actor.permissions.includes(permission);
 const isOperational = (actor: Persona) => has(actor, "VIEW_ASSIGNED_ASSET");
@@ -128,6 +131,24 @@ function connected(state: DemoState, actor: Persona, match: Match) {
   return !isOperational(actor) && canSeeMatch(state, actor, match) && match.status === "CONNECTED" && eligible(state, cargo, capacity);
 }
 export function refreshMatches(state: DemoState, now = new Date()) {
+  // Add the new isolated scenarios to an older persisted sandbox without
+  // discarding the visitor's existing listings, conversations or consent.
+  if (!state.importControl || state.importFixtureRevision !== 1) {
+    const additions = seedDemo(new Date(state.seededAt));
+    state.importControl ??= additions.importControl;
+    for (const company of additions.companies) {
+      if (!state.companies.some(existing => existing.id === company.id)) state.companies.push(company);
+    }
+    for (const listing of additions.listings.filter(l => l.id.startsWith("capacity-import-"))) {
+      if (!state.listings.some(existing => existing.id === listing.id)) state.listings.push(listing);
+    }
+    const road = state.listings.find(l => l.id === "capacity-import-road");
+    if (road?.destination === "Eindhoven" && road.technical?.preferredDirection === "Utrecht") {
+      road.technical.preferredDirection = "Eindhoven";
+      invalidateListing(state, road.id);
+    }
+    state.importFixtureRevision = 1;
+  }
   for (const cargo of state.listings.filter(l => l.kind === "CARGO")) for (const capacity of state.listings.filter(l => l.kind === "CAPACITY")) {
     if (!eligible(state, cargo, capacity, now)) continue;
     if (!state.matches.some(m => m.cargoId === cargo.id && m.capacityId === capacity.id))
@@ -171,7 +192,8 @@ export function projectSession(sandbox: Sandbox) {
   return {
     demo: true as const, csrfToken: sandbox.csrfToken, revision: sandbox.revision, seededAt: state.seededAt,
     stale: Date.now() - Date.parse(state.seededAt) > 7 * 86_400_000,
-    context: { user: actor, company, permissions: actor.permissions, allowedModes: company.modes,
+     context: { user: actor, company, permissions: actor.permissions, allowedModes: company.modes,
+       importModules: state.importControl && process.env.DEMO_IMPORT_ENABLED !== "false" ? importModules(state.importControl, actor) : [],
       modules: {
         INLAND: "ACTIVE", DEEPSEA: "ACTIVE", LINER: "ACTIVE", ROAD: "PILOT", RAIL: "PILOT", AIR: "PILOT",
         IMPORT: process.env.DEMO_IMPORT_ENABLED === "false" ? "HIDDEN" : "PILOT",
@@ -185,9 +207,16 @@ export function projectSession(sandbox: Sandbox) {
       cargos: ownListings.filter(l => l.kind === "CARGO"), capacity: ownListings.filter(l => l.kind === "CAPACITY"),
       opportunities, matches: matches.map(m => ({...projectMatch(state, actor, m), leftConsent: m.leftConsent, rightConsent: m.rightConsent})),
       messages: state.messages.filter(message => matches.some(m => m.id === message.matchId && connected(state, actor, m))),
-      notifications: state.notifications.filter(n => n.userId === actor.id),
+       notifications: state.notifications.filter(n => {
+         if (n.userId !== actor.id) return false;
+         if (!n.importShipmentId) return true;
+         const shipment = state.importControl?.shipments.find(s => s.id === n.importShipmentId);
+         return process.env.DEMO_IMPORT_ENABLED !== "false" && !!shipment &&
+           shipmentModules(state.importControl!, actor, shipment).includes("RELEASE");
+       }),
       referrals: state.referrals.filter(r => r.fromUserId === actor.id || r.toUserId === actor.id),
-      imports: process.env.DEMO_IMPORT_ENABLED !== "false" ? state.imports.filter(i => has(actor, "MANAGE_IMPORT") || (has(actor, "VIEW_IMPORT_RECEIVER") && i.receiverCompanyId === actor.companyId)) : [],
+       imports: process.env.DEMO_IMPORT_ENABLED !== "false" ? state.imports.filter(i => (has(actor, "MANAGE_IMPORT") && actor.companyId === "globalline" && i.id === "import-lcl") || (has(actor, "VIEW_IMPORT_RECEIVER") && i.receiverCompanyId === actor.companyId)) : [],
+       importControl: state.importControl && process.env.DEMO_IMPORT_ENABLED !== "false" ? projectImportControl(state.importControl, actor) : undefined,
       companies: state.companies.filter(c => c.id === actor.companyId || connectedCompanyIds.has(c.id) || has(actor, "VIEW_ADMIN")),
       audit: has(actor, "VIEW_ADMIN") ? state.audit : [],
       evidence: state.evidence.filter(e => actor.assignedAssetIds.includes(e.assetId) || (has(actor, "MANAGE_CAPACITY") && state.assets.some(a => a.id === e.assetId && a.companyId === actor.companyId))),
@@ -239,12 +268,54 @@ function validateListingLimits(state: DemoState, listing: Listing) {
     if (listing.mode === "LINER" && (!t.maxPieceWeight || !t.maxPieceLength || !t.maxPieceWidth || !t.maxPieceHeight || !t.liftingCapacity || !t.stowage)) return invalid("Lijndienstcapaciteit vereist stuklimieten, hijscapaciteit en stuwage.");
   }
 }
-export function applyAction(sandbox: Sandbox, input: unknown): void {
+export function demoImportIntegration(state: DemoState): ImportIntegration {
+  return {
+    findActor: getPersona,
+    notify(shipment, eventKey, message) {
+      for (const assignment of shipment.assignments) {
+        const actor = getPersona(assignment.userId);
+        if (!actor || !state.importControl || !importModules(state.importControl, actor).includes("RELEASE") || !assignment.modules.includes("RELEASE")) continue;
+        const id = `import-${shipment.id}-${eventKey}-${actor.id}`;
+        if (!state.notifications.some(n => n.id === id)) state.notifications.push({id, userId: actor.id, title: `${shipment.reference}: ${message}`, importShipmentId: shipment.id, read: false, createdAt: nowText(), demo: true});
+      }
+    },
+    findDelivery(shipment) {
+      const ids: string[] = [];
+      for (const mode of ["ROAD", "INLAND", "RAIL"] as const) {
+        const template = state.listings.find(l => l.id === `cargo-${mode.toLowerCase()}`);
+        if (!template) continue;
+        const id = `import-cargo-${shipment.id}-${mode.toLowerCase()}`;
+        const previous = state.listings.find(l => l.id === id);
+        const next: Listing = {...structuredClone(template), id, companyId: shipment.companyId, name: `${shipment.reference} — DEMO voortransport`,
+            origin: shipment.port, destination: shipment.destination, quantity: Number(shipment.fields.weightKg ?? 0) / 1000,
+            volume: Number(shipment.fields.volumeM3 ?? 0), availableFrom: shipment.eta, availableUntil: new Date(Date.parse(shipment.eta) + 4 * 86400000).toISOString(),
+            technical: {...template.technical, ...(mode === "RAIL" ? {wagonCount: 1} : {}), ...(mode === "ROAD" ? {loadingMetres: 8, pallets: 24} : {})},
+            status: "ACTIVE", visibility: "OPEN_NETWORK"};
+        if (!previous) state.listings.push(next);
+        else if (["quantity", "volume", "origin", "destination", "availableFrom", "availableUntil"].some(k => previous[k as keyof Listing] !== next[k as keyof Listing])) {
+          Object.assign(previous, next); invalidateListing(state, previous.id);
+        }
+        ids.push(id);
+      }
+      refreshMatches(state); return ids;
+    },
+    isConnectedEligible(shipment, matchId) {
+      const match = state.matches.find(m => m.id === matchId && shipment.delivery.listingIds.includes(m.cargoId));
+      if (!match || match.status !== "CONNECTED" || !match.leftConsent || !match.rightConsent) return false;
+      const {cargo, capacity} = sides(state, match);
+      return !!cargo && !!capacity && cargo.companyId === shipment.companyId && eligible(state, cargo, capacity);
+    },
+  };
+}
+export function applyAction(sandbox: Sandbox, input: unknown, options?: ImportActionOptions): void {
   const action = record(input); const type = text(action.type, 40);
   const actor = getPersona(sandbox.personaId); if (!actor) return denied();
   const state = sandbox.state;
   refreshMatches(state);
-  if (["INTEREST", "ACCEPT", "DECLINE", "MESSAGE", "SEND_TO_PLANNER"].includes(type)) {
+  if (type === "IMPORT_CONTROL") {
+    if (!state.importControl || process.env.DEMO_IMPORT_ENABLED === "false") return denied();
+    applyImportAction(state.importControl, actor, action, demoImportIntegration(state), options);
+  } else if (["INTEREST", "ACCEPT", "DECLINE", "MESSAGE", "SEND_TO_PLANNER"].includes(type)) {
     const match = state.matches.find(m => m.id === action.matchId);
     if (!match || !canSeeMatch(state, actor, match)) return denied();
     const commercialPermission = type === "INTEREST" ? "SHOW_INTEREST" : type === "ACCEPT" ? "ACCEPT_CONNECTION" : type === "DECLINE" ? "DECLINE_CONNECTION" : null;
@@ -326,7 +397,7 @@ export function applyAction(sandbox: Sandbox, input: unknown): void {
     listing.status = type === "PUBLISH_LISTING" ? "ACTIVE" : "WITHDRAWN";
   } else if (type === "IMPORT_STEP") {
     if (!has(actor, "MANAGE_IMPORT") || process.env.DEMO_IMPORT_ENABLED === "false") return denied();
-    const shipment = state.imports.find(i => i.id === action.shipmentId); if (!shipment) return denied();
+     const shipment = state.imports.find(i => i.id === action.shipmentId && i.id === "import-lcl" && actor.companyId === "globalline"); if (!shipment) return denied();
     const step = text(action.step);
     if (step === "ARRIVED" && shipment.status === "IN_TRANSIT") shipment.status = "ARRIVED";
     else if (step === "DOCUMENTS_READY" && shipment.status === "ARRIVED") shipment.documents.forEach(d => d.status = "READY");

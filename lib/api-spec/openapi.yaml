@@ -40,6 +40,136 @@ tags:
   - name: Notifications
     description: In-app notifications for the current user.
 paths:
+  /import/session:
+    get:
+      operationId: getImportSession
+      tags: [Import]
+      summary: Current authenticated company import workspace
+      responses:
+        "200":
+          description: Membership-scoped projection; never seeded with demo data
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ImportSession" }
+        "401": { description: Authentication required }
+        "403": { description: Active membership required }
+  /import/actions:
+    post:
+      operationId: executeImportAction
+      tags: [Import]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/ImportActionInput" }
+      responses:
+        "200":
+          description: Updated workspace
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ImportSession" }
+        "400": { description: Invalid action }
+        "401": { description: Authentication required }
+        "403": { description: Tenant or module permission denied }
+        "409": { description: Blocked transition or unavailable production integration }
+  /import/uploads/request-url:
+    post:
+      operationId: requestImportUpload
+      tags: [Import]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/ImportUploadInput" }
+      responses:
+        "200":
+          description: Private signed upload target
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ImportUploadTarget" }
+        "403": { description: Document access denied }
+        "503": { description: Storage unavailable }
+  /import/uploads/complete:
+    post:
+      operationId: completeImportUpload
+      tags: [Import]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/ImportDocumentInput" }
+      responses:
+        "200":
+          description: Verified metadata registered and workspace updated
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ImportSession" }
+        "403": { description: Storage ownership or document access denied }
+  /import/documents/{shipmentId}/{documentId}:
+    get:
+      operationId: downloadImportDocument
+      tags: [Import]
+      parameters:
+        - { name: shipmentId, in: path, required: true, schema: { type: string } }
+        - { name: documentId, in: path, required: true, schema: { type: string } }
+      responses:
+        "200":
+          description: Authorized private document download
+          content:
+            application/octet-stream:
+              schema: { type: string, format: binary }
+        "403": { description: Document access denied }
+        "503": { description: Storage unavailable }
+  /demo/import/uploads/request-url:
+    post:
+      operationId: requestDemoImportUpload
+      tags: [Demo]
+      security: [{ demoCookie: [] }]
+      parameters:
+        - { name: X-Demo-CSRF, in: header, required: true, schema: { type: string } }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/ImportUploadInput" }
+      responses:
+        "200":
+          description: Private demo upload target
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ImportUploadTarget" }
+        "403": { description: Demo access or CSRF denied }
+        "503": { description: Storage unavailable }
+  /demo/import/uploads/complete:
+    post:
+      operationId: completeDemoImportUpload
+      tags: [Demo]
+      security: [{ demoCookie: [] }]
+      parameters:
+        - { name: X-Demo-CSRF, in: header, required: true, schema: { type: string } }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/ImportDocumentInput" }
+      responses:
+        "200": { $ref: "#/components/responses/DemoSessionResponse" }
+        "403": { description: Demo document access or CSRF denied }
+  /demo/import/documents/{shipmentId}/{documentId}:
+    get:
+      operationId: downloadDemoImportDocument
+      tags: [Demo]
+      security: [{ demoCookie: [] }]
+      parameters:
+        - { name: shipmentId, in: path, required: true, schema: { type: string } }
+        - { name: documentId, in: path, required: true, schema: { type: string } }
+      responses:
+        "200":
+          description: Authorized synthetic fixture or private uploaded document
+          content:
+            application/octet-stream:
+              schema: { type: string, format: binary }
+        "403": { description: Demo document access denied }
   /demo/session:
     get:
       operationId: getDemoSession
@@ -2204,6 +2334,113 @@ components:
           schema:
             $ref: "#/components/schemas/ErrorEnvelope"
   schemas:
+    ImportSession:
+      type: object
+      required: [demo, workspace, context]
+      properties:
+        demo: { type: boolean }
+        workspace:
+          type: object
+          required: [importControl]
+          properties:
+            importControl: { type: object, additionalProperties: true }
+        context:
+          type: object
+          additionalProperties: true
+          required: [importModules]
+          properties:
+            importModules: { type: array, items: { type: string } }
+            companyId: { type: string }
+            userId: { type: string }
+            membershipRole: { type: string }
+            permissions: { type: array, items: { type: string } }
+            members:
+              type: array
+              items:
+                type: object
+                required: [id, name, membershipRole, permissions]
+                properties:
+                  id: { type: string }
+                  name: { type: string }
+                  membershipRole: { type: string }
+                  permissions: { type: array, items: { type: string } }
+    ImportActionInput:
+      type: object
+      additionalProperties: true
+      required: [operation]
+      description: Domain validates operation-specific fields. UPLOAD_DOCUMENT requires the separate verified completion endpoint. No simulated production provider events.
+      properties:
+        type: { type: string, enum: [IMPORT_CONTROL] }
+        operation:
+          type: string
+          enum: [SET_MODULE, CREATE_SHIPMENT, EDIT_SHIPMENT, EXTRACT_DOCUMENT, REVIEW_DOCUMENT, CONFIRM_FIELD, CUSTOMS_EDIT, CUSTOMS_APPROVE, CUSTOMS_SUBMIT, CUSTOMS_EVENT, ADD_CHARGE, EDIT_CHARGE, PAY_CHARGE, RECORD_PAYMENT, SET_GATE, CONFIGURE_GATE, FIND_DELIVERY, PLAN_DELIVERY, DELIVER, EXCEPTION, ASSIGN_PARTNER, CONFIRM_COMPANY, CONFIRM_REPRESENTATION, DELIVERY_CHOICE]
+        shipmentId: { type: string }
+        evidence: { type: string, maxLength: 2000 }
+        module: { type: string }
+        enabled: { type: boolean }
+        documentId: { type: string }
+        accepted: { type: boolean }
+        field: { type: string }
+        value: { oneOf: [{ type: string }, { type: number }] }
+        chargeId: { type: string }
+        gate: { type: string }
+        required: { type: boolean }
+        satisfied: { type: boolean }
+        matchId: { type: string }
+        status: { type: string }
+        exceptionId: { type: string }
+        command: { type: string, enum: [ASSIGN, COMMENT, RESOLVE, ESCALATE, SNOOZE] }
+        note: { type: string, maxLength: 2000 }
+        userId: { type: string }
+        until: { type: string }
+        modules: { type: array, items: { type: string } }
+        shipment:
+          type: object
+          required: [reference, name, kind, origin, destination, port, eta]
+          properties:
+            reference: { type: string }
+            name: { type: string }
+            kind: { type: string }
+            origin: { type: string }
+            destination: { type: string }
+            port: { type: string }
+            eta: { type: string }
+            incoterm: { type: string }
+            container: { type: string }
+            masterReference: { type: string }
+            houseReference: { type: string }
+        charge:
+          type: object
+          required: [label, amount, currency, supplier, invoiceReference, estimated, vat]
+          properties:
+            label: { type: string }
+            amount: { type: number, minimum: 0 }
+            currency: { type: string }
+            supplier: { type: string }
+            invoiceReference: { type: string }
+            estimated: { type: boolean }
+            vat: { type: boolean }
+    ImportUploadInput:
+      type: object
+      required: [shipmentId, name, mimeType, size]
+      properties:
+        shipmentId: { type: string, minLength: 1, maxLength: 100 }
+        name: { type: string, minLength: 1, maxLength: 200 }
+        mimeType: { type: string, minLength: 1, maxLength: 100 }
+        size: { type: integer, minimum: 1, maximum: 10485760 }
+    ImportUploadTarget:
+      type: object
+      required: [uploadURL, objectPath]
+      properties:
+        uploadURL: { type: string }
+        objectPath: { type: string }
+    ImportDocumentInput:
+      type: object
+      required: [shipmentId, objectPath, documentType]
+      properties:
+        shipmentId: { type: string, minLength: 1, maxLength: 100 }
+        objectPath: { type: string, minLength: 1, maxLength: 1000 }
+        documentType: { type: string, enum: [INVOICE, PACKING_LIST, BILL_OF_LADING, ORIGIN, DELIVERY_ORDER, REPRESENTATION, OTHER] }
     DemoMode:
       type: string
       enum: [INLAND, DEEPSEA, LINER, ROAD, RAIL, AIR, IMPORT]

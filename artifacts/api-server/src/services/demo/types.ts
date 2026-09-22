@@ -1,3 +1,4 @@
+import type { ImportState } from "../imports/types";
 export const MODES = ["INLAND", "DEEPSEA", "LINER", "ROAD", "RAIL", "AIR", "IMPORT"] as const;
 export type Mode = typeof MODES[number];
 export interface Persona {
@@ -45,6 +46,7 @@ export interface Message {
 }
 export interface Notification {
   id: string; userId: string; title: string; read: boolean; createdAt: string; demo: true;
+  importShipmentId?: string;
 }
 export interface Referral {
   id: string; fromUserId: string; toUserId: string; opportunityId: string; note: string;
@@ -61,6 +63,8 @@ export interface DemoState {
   version: 1; seededAt: string; companies: DemoCompany[]; assets: Asset[]; listings: Listing[];
   matches: Match[]; messages: Message[]; notifications: Notification[]; referrals: Referral[];
   imports: ImportShipment[]; audit: Audit[];
+  importControl?: ImportState;
+  importFixtureRevision?: number;
   evidence: {assetId: string; actorId: string; availableAt: string; createdAt: string; demo: true}[];
 }
 export interface Sandbox {

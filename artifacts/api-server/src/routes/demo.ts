@@ -6,6 +6,8 @@ import { applyAction, projectSession, refreshMatches } from "../services/demo/do
 import { getPersona, seedDemo } from "../services/demo/seed";
 import { postgresDemoStore, type DemoStore } from "../services/demo/store";
 import { DemoError, type Sandbox } from "../services/demo/types";
+import { assertDocumentAccess, fixtureContent } from "../services/imports/domain";
+import { requestImportUpload, verifyImportUpload, serveImportDocument } from "../services/importDocuments";
 
 export const DEMO_COOKIE = "cargomatch_demo";
 const cookieOptions = { httpOnly: true, secure: true, sameSite: "strict" as const, path: "/api/demo", maxAge: 14 * 86_400_000 };
@@ -83,6 +85,37 @@ export function createDemoRouter(store: DemoStore = postgresDemoStore) {
   });
   router.post("/actions", async (req, res) => {
     res.json(await load(req, true, sandbox => { applyAction(sandbox, req.body); return projectSession(sandbox); }));
+  });
+  const documentShipment = (sandbox: Sandbox, shipmentId: unknown) => {
+    const shipment = projectSession(sandbox).workspace.importControl?.shipments.find(s => s.id === shipmentId);
+    if (!shipment?.allowedModules.includes("DOCUMENTS")) throw new DemoError(403, "FORBIDDEN", "Geen documenttoegang voor deze zending.");
+    return shipment;
+  };
+  router.post("/import/uploads/request-url", async (req, res) => {
+    res.json(await load(req, true, async sandbox => {
+      const shipment = documentShipment(sandbox, req.body?.shipmentId);
+      return requestImportUpload(`demo:${hash(cookie(req)!)}`, shipment.id, req.body?.name, req.body?.mimeType, req.body?.size);
+    }));
+  });
+  router.post("/import/uploads/complete", async (req, res) => {
+    res.json(await load(req, true, async sandbox => {
+      const shipment = documentShipment(sandbox, req.body?.shipmentId);
+      const metadata = await verifyImportUpload(`demo:${hash(cookie(req)!)}`, shipment.id, req.body?.objectPath);
+      if (!shipment.documents.some(d => d.objectPath === metadata.objectPath)) {
+        applyAction(sandbox, {type: "IMPORT_CONTROL", operation: "UPLOAD_DOCUMENT", shipmentId: shipment.id,
+          documentType: req.body?.documentType, ...metadata}, {trustedDocument: metadata});
+      }
+      return projectSession(sandbox);
+    }));
+  });
+  router.get("/import/documents/:shipmentId/:documentId", async (req, res) => {
+    const result = await load(req, false, sandbox => {
+      documentShipment(sandbox, req.params.shipmentId);
+      if (!sandbox.state.importControl) throw new DemoError(404, "NOT_FOUND", "Geen importmodule.");
+      const document = assertDocumentAccess(sandbox.state.importControl, getPersona(sandbox.personaId)!, String(req.params.shipmentId), String(req.params.documentId));
+      return {document, fixture: document.fixtureId ? fixtureContent(document) : undefined};
+    }) as {document: {name: string; objectPath?: string; mimeType?: string}; fixture?: string};
+    await serveImportDocument(res, result.document, result.fixture);
   });
   router.post("/logout", async (req, res) => {
     await load(req, true, () => undefined, true);

@@ -1,0 +1,3058 @@
+# CARGOMATCH — IMPORT, CUSTOMS & SHIPMENT CONTROL
+
+## MODULAR MASTER EXTENSION PROMPT
+
+Extend the existing CargoMatch application with a new modular product family for international import shipments.
+
+IMPORTANT:
+
+Do NOT rebuild the existing CargoMatch application.
+
+Do NOT remove or break:
+
+* existing inland-waterway functionality
+* deepsea functionality
+* road
+* rail
+* air cargo
+* capacity matching
+* cargo matching
+* expected availability
+* maps
+* companies
+* users
+* permissions
+* networks
+* messages
+* demo users
+* existing CargoMatch design system.
+
+This is an EXTENSION of the existing CargoMatch platform.
+
+The new functionality must be built as SEPARATE ACTIVATABLE MODULES.
+
+---
+
+# 1. PRODUCT VISION
+
+CargoMatch should evolve from only:
+
+**TRANSPORT CAPACITY INTELLIGENCE**
+
+into a broader platform combining:
+
+**CARGO INTELLIGENCE**
+
+*
+
+**TRANSPORT CAPACITY INTELLIGENCE**
+
+The long-term objective is:
+
+> One digital workflow from supplier to final delivery.
+
+Example:
+
+CHINESE SUPPLIER
+
+↓
+
+ORIGIN PICKUP
+
+↓
+
+EXPORT DOCUMENTATION
+
+↓
+
+PORT OF LOADING
+
+↓
+
+OCEAN TRANSPORT
+
+↓
+
+PORT OF ROTTERDAM
+
+↓
+
+IMPORT CUSTOMS
+
+↓
+
+CUSTOMS RELEASE
+
+↓
+
+TERMINAL RELEASE
+
+↓
+
+INLAND TRANSPORT
+
+↓
+
+FINAL DELIVERY
+
+CargoMatch should digitally coordinate this chain.
+
+---
+
+# 2. IMPORTANT ARCHITECTURAL PRINCIPLE
+
+Do NOT build this as one giant feature.
+
+Create independent modules.
+
+The first modules are:
+
+1. CARGOMATCH SHIPMENTS
+2. CARGOMATCH DOCUMENTS
+3. CARGOMATCH IMPORT
+4. CARGOMATCH CUSTOMS
+5. CARGOMATCH CHARGES
+6. CARGOMATCH RELEASE
+7. CARGOMATCH DELIVERY
+8. CARGOMATCH CONTROL
+9. CARGOMATCH PARTNERS
+10. CARGOMATCH EXCEPTIONS
+
+Each module must be separately activatable through feature flags and company subscriptions/permissions.
+
+Example:
+
+Company A:
+
+Shipments ✓
+Documents ✓
+Import ✓
+Customs ✕
+Delivery ✕
+
+Company B:
+
+Shipments ✓
+Documents ✓
+Import ✓
+Customs ✓
+Charges ✓
+Release ✓
+Delivery ✓
+Control ✓
+
+Do not assume every CargoMatch customer uses every module.
+
+---
+
+# 3. FIRST COMMERCIAL CORRIDOR
+
+Use as the first development/demo corridor:
+
+CHINA → NETHERLANDS
+
+and:
+
+INDIA → NETHERLANDS.
+
+Typical destinations:
+
+Rotterdam
+
+Amsterdam
+
+Schiphol
+
+and final delivery throughout the Netherlands.
+
+However:
+
+DO NOT hardcode CargoMatch to China/India or the Netherlands.
+
+Architecture must support future corridors such as:
+
+Vietnam → Netherlands
+
+China → Belgium
+
+India → Germany
+
+USA → Netherlands
+
+Turkey → Netherlands
+
+etc.
+
+---
+
+# 4. CORE OBJECT: SHIPMENT
+
+Create a central entity:
+
+`SHIPMENT`
+
+A shipment represents the commercial/logistical movement of cargo from origin to destination.
+
+Example fields:
+
+shipment_id
+
+shipment_reference
+
+company_id
+
+customer_reference
+
+purchase_order_reference
+
+supplier_reference
+
+booking_reference
+
+carrier_reference
+
+master_bill_number
+
+house_bill_number
+
+container_numbers
+
+origin_country
+
+origin_location
+
+port_of_loading
+
+port_of_discharge
+
+destination_country
+
+final_delivery_location
+
+incoterm
+
+transport_mode
+
+shipment_type
+
+cargo_description
+
+gross_weight
+
+net_weight
+
+volume
+
+package_count
+
+package_type
+
+commodity
+
+declared_value
+
+currency
+
+estimated_departure
+
+actual_departure
+
+estimated_arrival
+
+actual_arrival
+
+customs_status
+
+release_status
+
+delivery_status
+
+responsible_party
+
+created_at
+
+updated_at.
+
+Possible shipment types:
+
+FCL
+
+LCL
+
+AIR_FREIGHT
+
+BREAKBULK
+
+CONVENTIONAL
+
+ROAD
+
+RAIL
+
+MULTIMODAL
+
+OTHER.
+
+---
+
+# 5. SHIPMENT CONTROL PAGE
+
+Every shipment should have one central control page.
+
+Example:
+
+# CM-2026-008421
+
+SHENZHEN → EINDHOVEN
+
+Status:
+
+IN TRANSIT
+
+Progress:
+
+ORIGIN
+✓ Completed
+
+EXPORT
+✓ Completed
+
+OCEAN
+● In Transit
+
+IMPORT
+○ Preparing
+
+CUSTOMS
+○ Ready
+
+RELEASE
+○ Waiting
+
+DELIVERY
+○ Not Planned
+
+---
+
+Display important information:
+
+Carrier
+
+Vessel
+
+Voyage
+
+Container
+
+Bill of Lading
+
+ETA
+
+Supplier
+
+Consignee
+
+Incoterm
+
+Cargo
+
+Weight
+
+Volume
+
+Value
+
+Customs status
+
+Documents
+
+Charges
+
+Release
+
+Delivery.
+
+This page becomes the operational heart of CargoMatch Import.
+
+---
+
+# MODULE 1
+
+# CARGOMATCH SHIPMENTS
+
+Purpose:
+
+Create and manage international shipments.
+
+Allow shipments to be:
+
+created manually
+
+created from booking
+
+created from uploaded documents
+
+created from integration
+
+created from API
+
+created from email/document ingestion in future.
+
+Shipment dashboard should support:
+
+ALL
+
+DRAFT
+
+BOOKED
+
+AT ORIGIN
+
+IN TRANSIT
+
+ARRIVING
+
+CUSTOMS
+
+RELEASE
+
+DELIVERY
+
+COMPLETED
+
+EXCEPTION.
+
+Filters:
+
+origin
+
+destination
+
+supplier
+
+customer
+
+carrier
+
+ETA
+
+transport mode
+
+status
+
+exception
+
+responsible user.
+
+---
+
+# MODULE 2
+
+# CARGOMATCH DOCUMENTS
+
+Create a central document-management module.
+
+Documents may include:
+
+Commercial Invoice
+
+Packing List
+
+Purchase Order
+
+Bill of Lading
+
+Sea Waybill
+
+Air Waybill
+
+Certificate of Origin
+
+Preference Certificate
+
+Import Licence
+
+Export Licence
+
+Insurance Certificate
+
+Dangerous Goods Declaration
+
+Health Certificate
+
+Phytosanitary Certificate
+
+Inspection Certificate
+
+Customs documents
+
+Delivery Order
+
+Terminal Release
+
+Proof of Delivery
+
+Other.
+
+Every document must be linked to:
+
+shipment
+
+company
+
+document type
+
+version
+
+upload date
+
+uploaded by
+
+status.
+
+Possible statuses:
+
+UPLOADED
+
+PROCESSING
+
+EXTRACTED
+
+REVIEW_REQUIRED
+
+APPROVED
+
+REJECTED
+
+EXPIRED.
+
+---
+
+# 6. DOCUMENT INTELLIGENCE
+
+Where technically feasible, CargoMatch should extract structured information from uploaded documents.
+
+Example:
+
+COMMERCIAL INVOICE
+
+extract:
+
+seller
+
+buyer
+
+invoice number
+
+invoice date
+
+currency
+
+invoice value
+
+commodity descriptions
+
+quantities
+
+country of origin
+
+Incoterm.
+
+PACKING LIST
+
+extract:
+
+packages
+
+weights
+
+dimensions
+
+gross weight
+
+net weight.
+
+BILL OF LADING
+
+extract:
+
+shipper
+
+consignee
+
+notify party
+
+carrier
+
+vessel
+
+voyage
+
+POL
+
+POD
+
+container
+
+seal
+
+packages
+
+gross weight.
+
+Never silently overwrite confirmed data.
+
+Use:
+
+EXTRACTED VALUE
+
+vs:
+
+CONFIRMED VALUE.
+
+Example:
+
+Invoice Value
+
+Extracted:
+€84,300
+
+Confidence:
+98%
+
+Status:
+CONFIRMED
+
+---
+
+# 7. CROSS-DOCUMENT VALIDATION
+
+CargoMatch should compare documents.
+
+Example:
+
+Commercial Invoice:
+
+Gross weight:
+18,420 KG
+
+Packing List:
+
+Gross weight:
+18,420 KG
+
+Bill of Lading:
+
+Gross weight:
+18,240 KG
+
+CargoMatch:
+
+⚠️ DOCUMENT MISMATCH
+
+Bill of Lading weight differs by 180 KG.
+
+Require review.
+
+Other validation examples:
+
+different consignee
+
+different container
+
+different package count
+
+different currency
+
+different commodity description
+
+missing origin
+
+missing invoice
+
+incorrect shipment reference.
+
+---
+
+# MODULE 3
+
+# CARGOMATCH IMPORT
+
+This module orchestrates the import process.
+
+Example workflow:
+
+PRE-ARRIVAL
+
+↓
+
+DOCUMENTS
+
+↓
+
+IMPORT PREPARATION
+
+↓
+
+CUSTOMS
+
+↓
+
+DUTIES / VAT
+
+↓
+
+CUSTOMS RELEASE
+
+↓
+
+CARRIER RELEASE
+
+↓
+
+TERMINAL RELEASE
+
+↓
+
+INLAND DELIVERY
+
+↓
+
+COMPLETED.
+
+Display a clear progress tracker.
+
+---
+
+# 8. IMPORT READINESS
+
+Create:
+
+`IMPORT_READINESS`
+
+Example:
+
+IMPORT READINESS
+
+Commercial Invoice
+✓
+
+Packing List
+✓
+
+Bill of Lading
+✓
+
+EORI
+✓
+
+Commodity classification
+⚠ Review
+
+Country of Origin
+✓
+
+Customs Value
+✓
+
+Certificates
+○ Not Required
+
+Customs Instructions
+✓
+
+STATUS:
+
+REVIEW REQUIRED
+
+Do not allow a shipment to appear "customs ready" when required information is missing.
+
+---
+
+# MODULE 4
+
+# CARGOMATCH CUSTOMS
+
+IMPORTANT:
+
+CargoMatch must NOT pretend that software automatically replaces all legally required customs roles.
+
+Separate:
+
+SOFTWARE AUTOMATION
+
+from:
+
+LEGAL CUSTOMS REPRESENTATION.
+
+CargoMatch can:
+
+prepare data
+
+validate data
+
+calculate estimates
+
+prepare declarations
+
+route declarations for approval
+
+connect to authorized customs systems
+
+receive customs statuses
+
+manage exceptions.
+
+Where legal authorization is required, the appropriate:
+
+importer
+
+declarant
+
+customs representative
+
+customs broker
+
+or other authorized party
+
+must remain responsible.
+
+---
+
+# 9. CUSTOMS CASE
+
+Create entity:
+
+`CUSTOMS_CASE`
+
+Fields:
+
+shipment_id
+
+declaration_type
+
+customs_office
+
+importer
+
+consignee
+
+declarant
+
+representative
+
+representation_type
+
+EORI
+
+goods_items
+
+commodity_codes
+
+country_of_origin
+
+customs_value
+
+currency
+
+customs_procedure
+
+duty_rate
+
+estimated_duty
+
+estimated_import_vat
+
+supporting_documents
+
+status
+
+customs_reference
+
+submitted_at
+
+released_at.
+
+---
+
+# 10. CUSTOMS STATUS
+
+Possible statuses:
+
+NOT_STARTED
+
+DATA_INCOMPLETE
+
+PREPARING
+
+REVIEW_REQUIRED
+
+READY_FOR_APPROVAL
+
+APPROVED
+
+SUBMITTED
+
+ACCEPTED
+
+CUSTOMS_PROCESSING
+
+DOCUMENT_CONTROL
+
+PHYSICAL_INSPECTION
+
+ADDITIONAL_INFORMATION_REQUIRED
+
+RELEASED
+
+REJECTED
+
+CANCELLED.
+
+Show these clearly.
+
+---
+
+# 11. CUSTOMS APPROVAL
+
+Before a declaration is submitted where approval is required:
+
+show:
+
+CUSTOMS DECLARATION REVIEW
+
+Importer:
+Example Trading BV
+
+Origin:
+China
+
+Commodity:
+Electric motors
+
+Declared value:
+€84,300
+
+Gross weight:
+18,420 KG
+
+Commodity code:
+XXXXXXXXXX
+
+Estimated duty:
+€X,XXX
+
+Estimated import VAT:
+€XX,XXX
+
+Representation:
+DIRECT / INDIRECT / SELF
+
+Button:
+
+REVIEW DECLARATION
+
+then:
+
+APPROVE FOR SUBMISSION.
+
+Store:
+
+approved_by
+
+approved_at
+
+version.
+
+---
+
+# 12. NO BLIND AI CUSTOMS DECISIONS
+
+AI may assist.
+
+AI must not silently make high-impact customs decisions.
+
+Example:
+
+Possible classification:
+
+8501....
+
+Confidence:
+
+74%
+
+Display:
+
+⚠️ CLASSIFICATION REVIEW REQUIRED
+
+Possible alternatives:
+
+....
+
+Require human confirmation where appropriate.
+
+Same principle for:
+
+origin
+
+valuation
+
+anti-dumping
+
+licensing
+
+restricted goods
+
+sanctions
+
+dual-use
+
+dangerous goods
+
+food products
+
+medical products
+
+chemicals
+
+agricultural goods.
+
+---
+
+# MODULE 5
+
+# CARGOMATCH CHARGES
+
+Create a complete shipment-cost module.
+
+Possible charges:
+
+Ocean Freight
+
+Air Freight
+
+Origin Charges
+
+Destination Charges
+
+Terminal Handling
+
+Customs Clearance
+
+Import Duty
+
+Import VAT
+
+Port Charges
+
+Documentation
+
+Demurrage
+
+Detention
+
+Storage
+
+Inspection
+
+Security
+
+Delivery
+
+Fuel Surcharge
+
+Other.
+
+Each charge:
+
+charge_type
+
+description
+
+amount
+
+currency
+
+supplier
+
+invoice_reference
+
+estimated_or_actual
+
+paid_status
+
+due_date.
+
+---
+
+# 13. LANDED COST
+
+CargoMatch should calculate:
+
+LANDED COST.
+
+Example:
+
+Goods Value:
+€84,300
+
+Ocean Freight:
+€4,800
+
+Origin:
+€950
+
+Destination:
+€1,240
+
+Customs Duty:
+€3,372
+
+Customs Clearance:
+€145
+
+Inland Delivery:
+€720
+
+Other:
+€180
+
+TOTAL LANDED COST:
+€95,707
+
+Show:
+
+ESTIMATED
+
+versus:
+
+ACTUAL.
+
+Do not present uncertain amounts as confirmed.
+
+---
+
+# 14. PAYMENT
+
+Design payment architecture but keep provider-independent.
+
+Possible future flow:
+
+CHARGE
+
+↓
+
+PAYMENT REQUEST
+
+↓
+
+PAYMENT SERVICE PROVIDER
+
+↓
+
+PAID
+
+↓
+
+RELEASE CONDITION SATISFIED.
+
+Do not hardcode one payment provider.
+
+Possible statuses:
+
+NOT_REQUIRED
+
+PAYMENT_REQUIRED
+
+PENDING
+
+PAID
+
+FAILED
+
+REFUNDED.
+
+---
+
+# MODULE 6
+
+# CARGOMATCH RELEASE
+
+Create a release-management module.
+
+A container/shipment may require multiple releases.
+
+Example:
+
+CUSTOMS RELEASE
+
+✓ RELEASED
+
+CARRIER RELEASE
+
+✓ RELEASED
+
+TERMINAL RELEASE
+
+○ WAITING
+
+PAYMENT
+
+✓ PAID
+
+DELIVERY ORDER
+
+✓ AVAILABLE
+
+CargoMatch calculates:
+
+`READY_FOR_PICKUP`
+
+only when all mandatory release conditions are satisfied.
+
+---
+
+# 15. RELEASE GATE ENGINE
+
+Create configurable:
+
+`RELEASE_REQUIREMENT`
+
+Example:
+
+Shipment X requires:
+
+CUSTOMS_RELEASE = TRUE
+
+CARRIER_RELEASE = TRUE
+
+TERMINAL_RELEASE = TRUE
+
+PAYMENT_COMPLETE = TRUE
+
+DELIVERY_ORDER = TRUE
+
+Then:
+
+READY_FOR_PICKUP = TRUE.
+
+Do not hardcode identical requirements for every port/carrier/country.
+
+---
+
+# MODULE 7
+
+# CARGOMATCH DELIVERY
+
+Once cargo becomes available:
+
+CargoMatch should connect directly to the existing capacity-matching platform.
+
+Example:
+
+CONTAINER AVAILABLE
+
+Rotterdam
+
+29 September
+
+07:00
+
+↓
+
+FINAL DESTINATION
+
+Eindhoven
+
+↓
+
+CARGOMATCH DELIVERY
+
+Search:
+
+TRUCK
+
+RAIL
+
+INLAND WATERWAY
+
+or multimodal options where appropriate.
+
+---
+
+# 16. AUTOMATIC DELIVERY OPPORTUNITY
+
+Example:
+
+CUSTOMS:
+RELEASED
+
+TERMINAL:
+AVAILABLE
+
+CONTAINER:
+TCLU1234567
+
+WEIGHT:
+18,420 KG
+
+DESTINATION:
+EINDHOVEN
+
+DELIVERY WINDOW:
+29 SEP
+08:00–16:00
+
+CargoMatch:
+
+3 SUITABLE TRANSPORT OPTIONS FOUND
+
+Then use the existing CargoMatch matching engine.
+
+Do not duplicate the transport marketplace.
+
+Reuse it.
+
+---
+
+# 17. EXPECTED DELIVERY MATCHING
+
+Do not wait until the container is physically available.
+
+Use:
+
+ETA
+
+expected discharge
+
+expected customs release
+
+terminal availability
+
+free time
+
+delivery deadline
+
+to search for capacity ahead of time.
+
+Concept:
+
+EXPECTED CARGO AVAILABILITY
+
+↓
+
+EXPECTED TRANSPORT CAPACITY
+
+↓
+
+ELIGIBILITY
+
+↓
+
+MATCH.
+
+This is a major CargoMatch advantage.
+
+---
+
+# MODULE 8
+
+# CARGOMATCH CONTROL
+
+Create an end-to-end control tower.
+
+Dashboard:
+
+SHIPMENTS IN TRANSIT
+
+ARRIVING THIS WEEK
+
+CUSTOMS READY
+
+CUSTOMS EXCEPTIONS
+
+AWAITING RELEASE
+
+READY FOR PICKUP
+
+DELIVERY AT RISK
+
+DEMURRAGE RISK
+
+DOCUMENTS MISSING
+
+PAYMENTS REQUIRED.
+
+---
+
+# 18. CONTROL TOWER MAP
+
+Map can show:
+
+origin suppliers
+
+ports
+
+vessels
+
+airports
+
+terminals
+
+containers
+
+delivery locations
+
+expected available transport capacity.
+
+Do not imply precise real-time location when only estimated location is available.
+
+Use labels:
+
+LIVE
+
+ESTIMATED
+
+SCHEDULED
+
+EXPECTED.
+
+---
+
+# 19. TIMELINE
+
+Every shipment needs an event timeline.
+
+Example:
+
+18 SEP 09:12
+Booking confirmed
+
+19 SEP 14:44
+Commercial invoice uploaded
+
+20 SEP 08:30
+Container gated in
+
+21 SEP 17:15
+Vessel departed Yantian
+
+22 SEP 10:02
+B/L received
+
+24 SEP 11:22
+Import documents validated
+
+28 SEP 06:00
+Expected Rotterdam arrival
+
+29 SEP 07:00
+Expected cargo availability.
+
+Store source/provenance for system-generated events.
+
+---
+
+# MODULE 9
+
+# CARGOMATCH PARTNERS
+
+Create a partner ecosystem.
+
+Possible partner types:
+
+SHIPPER
+
+CONSIGNEE
+
+SUPPLIER
+
+FREIGHT_FORWARDER
+
+CUSTOMS_BROKER
+
+CUSTOMS_REPRESENTATIVE
+
+SHIPPING_LINE
+
+AIRLINE
+
+GSSA
+
+PORT_AGENT
+
+TERMINAL
+
+WAREHOUSE
+
+TRUCK_CARRIER
+
+BARGE_OPERATOR
+
+RAIL_OPERATOR
+
+INSPECTION_COMPANY
+
+OTHER.
+
+---
+
+# 20. PARTNER ASSIGNMENT
+
+Shipment tasks can be assigned to partners.
+
+Example:
+
+CUSTOMS CLEARANCE
+
+Assigned to:
+
+Rotterdam Customs Partner BV
+
+Status:
+
+IN PROGRESS
+
+CargoMatch remains the orchestration layer.
+
+The specialist performs the legally/professionally required action.
+
+---
+
+# 21. PARTNER MARKETPLACE — FUTURE
+
+Architect for future capability:
+
+REQUEST CUSTOMS SERVICE
+
+REQUEST DELIVERY
+
+REQUEST WAREHOUSE
+
+REQUEST INSPECTION
+
+REQUEST ORIGIN PICKUP.
+
+Do not make this required for first MVP.
+
+---
+
+# MODULE 10
+
+# CARGOMATCH EXCEPTIONS
+
+This is extremely important.
+
+The system should be designed around:
+
+AUTOMATE NORMAL FLOW
+
+↓
+
+ESCALATE EXCEPTIONS.
+
+Examples:
+
+DOCUMENT MISSING
+
+HS CODE UNCERTAIN
+
+WEIGHT MISMATCH
+
+CUSTOMS INSPECTION
+
+PAYMENT OVERDUE
+
+VESSEL DELAYED
+
+CONTAINER NOT RELEASED
+
+DEMURRAGE RISK
+
+DELIVERY CAPACITY MISSING
+
+CERTIFICATE REQUIRED.
+
+---
+
+# 22. EXCEPTION INBOX
+
+Create:
+
+EXCEPTION INBOX.
+
+Example:
+
+HIGH
+
+CM-8421
+
+Commodity classification requires review
+
+ETA:
+28 SEP
+
+Owner:
+Customs Team
+
+---
+
+MEDIUM
+
+CM-8412
+
+Packing list weight differs from B/L
+
+Owner:
+Sophie
+
+---
+
+HIGH
+
+CM-8398
+
+Container available but no delivery booked
+
+Free time expires:
+Tomorrow 18:00.
+
+Allow:
+
+ASSIGN
+
+COMMENT
+
+RESOLVE
+
+ESCALATE
+
+SNOOZE.
+
+---
+
+# 23. PRIORITY ENGINE
+
+Exception priority may consider:
+
+legal risk
+
+financial risk
+
+time to arrival
+
+free time
+
+delivery deadline
+
+customer priority
+
+shipment value.
+
+Do not allow AI alone to make legally consequential decisions.
+
+---
+
+# 24. NOTIFICATIONS
+
+Examples:
+
+"Shipment CM-8421 is expected in Rotterdam in 48 hours."
+
+"Customs declaration is ready for approval."
+
+"Customs requested additional documentation."
+
+"Shipment CM-8421 has been released."
+
+"Container TCLU1234567 is ready for pickup."
+
+"Free time expires in 24 hours."
+
+"Three suitable delivery options have been found."
+
+"Delivery has been confirmed."
+
+Notifications must link directly to the relevant action.
+
+---
+
+# 25. USER EXPERIENCE
+
+The importer should NOT need to understand every technical customs step.
+
+Create a simple primary status:
+
+IN TRANSIT
+
+ARRIVING
+
+ACTION REQUIRED
+
+CUSTOMS
+
+RELEASED
+
+READY FOR DELIVERY
+
+DELIVERING
+
+DELIVERED.
+
+Advanced users can open technical details.
+
+---
+
+# 26. SIDEBAR
+
+Extend the existing CargoMatch sidebar.
+
+When import modules are enabled:
+
+IMPORT
+
+Shipments
+
+Documents
+
+Customs
+
+Charges
+
+Release
+
+Delivery
+
+Control Tower
+
+Exceptions.
+
+Only show modules enabled for that company/user.
+
+Do not clutter navigation for companies that do not use Import.
+
+---
+
+# 27. ROLE-BASED EXPERIENCE
+
+Relevant operational profiles:
+
+IMPORTER
+
+SHIPPER
+
+CONSIGNEE
+
+FORWARDER
+
+CUSTOMS_SPECIALIST
+
+CUSTOMS_REPRESENTATIVE
+
+PORT_AGENT
+
+LOGISTICS_COORDINATOR
+
+FINANCE
+
+TRANSPORT_PLANNER
+
+COMPANY_MANAGER
+
+PLATFORM_ADMIN.
+
+Separate operational profile from permissions.
+
+---
+
+# 28. IMPORTER DASHBOARD
+
+Importer should see:
+
+My Shipments
+
+Arriving Soon
+
+Action Required
+
+Customs Status
+
+Outstanding Payments
+
+Ready for Delivery
+
+Delivery Status
+
+Exceptions.
+
+Avoid unnecessary customs jargon on the primary dashboard.
+
+---
+
+# 29. CUSTOMS SPECIALIST DASHBOARD
+
+Show:
+
+Declarations to Prepare
+
+Ready for Review
+
+Awaiting Approval
+
+Submitted
+
+Customs Queries
+
+Document Controls
+
+Physical Inspections
+
+Classification Reviews
+
+Released Today.
+
+---
+
+# 30. FORWARDER DASHBOARD
+
+Show:
+
+Active Shipments
+
+Arrivals
+
+Missing Documents
+
+Customs
+
+Release
+
+Delivery Planning
+
+Customer Exceptions.
+
+---
+
+# 31. FINANCE DASHBOARD
+
+Show:
+
+Estimated Charges
+
+Actual Charges
+
+Import Duties
+
+Import VAT
+
+Outstanding Payments
+
+Supplier Charges
+
+Landed Cost
+
+Cost Variances.
+
+---
+
+# 32. API / CONNECTOR ARCHITECTURE
+
+Do NOT tightly couple CargoMatch to individual external providers.
+
+Create interfaces such as:
+
+`CustomsProvider`
+
+`CarrierProvider`
+
+`TerminalProvider`
+
+`PortCommunityProvider`
+
+`DocumentIntelligenceProvider`
+
+`PaymentProvider`
+
+`ShipmentTrackingProvider`.
+
+Possible future connectors can implement these interfaces.
+
+Core CargoMatch logic must remain provider-independent.
+
+---
+
+# 33. CUSTOMS PROVIDER
+
+Example interface:
+
+submitDeclaration()
+
+updateDeclaration()
+
+cancelDeclaration()
+
+getDeclarationStatus()
+
+submitDocuments()
+
+getCustomsMessages()
+
+getReleaseStatus().
+
+Use MOCK provider during development when production authorization is unavailable.
+
+Never pretend mock submissions were sent to customs.
+
+Clearly mark:
+
+DEMO
+
+SANDBOX
+
+PRODUCTION.
+
+---
+
+# 34. CARRIER CONNECTOR
+
+Future carrier integration may provide:
+
+booking
+
+B/L
+
+vessel/voyage
+
+ETA
+
+container status
+
+release
+
+charges
+
+delivery order.
+
+Normalize data into CargoMatch models.
+
+---
+
+# 35. TERMINAL CONNECTOR
+
+Possible data:
+
+container discharged
+
+available
+
+hold
+
+customs hold
+
+terminal hold
+
+pickup reference
+
+appointment
+
+gate out.
+
+---
+
+# 36. DATA PROVENANCE
+
+Every important external data point should store:
+
+source
+
+received_at
+
+effective_at
+
+confidence if applicable
+
+raw_reference
+
+manual_override.
+
+Example:
+
+ETA ROTTERDAM
+
+28 SEP 06:00
+
+SOURCE:
+Carrier API
+
+UPDATED:
+12 minutes ago.
+
+---
+
+# 37. AUTOMATION ENGINE
+
+Create event-driven automation.
+
+Example:
+
+VESSEL ETA < 72 HOURS
+
+↓
+
+CHECK IMPORT READINESS
+
+↓
+
+IF INCOMPLETE:
+
+CREATE EXCEPTION.
+
+Another:
+
+CUSTOMS RELEASED
+
+*
+
+TERMINAL AVAILABLE
+
+↓
+
+CHECK DELIVERY
+
+↓
+
+IF NOT BOOKED:
+
+RUN CARGOMATCH CAPACITY MATCHING.
+
+Another:
+
+FREE TIME < 24 HOURS
+
+*
+
+NO DELIVERY
+
+↓
+
+HIGH PRIORITY ALERT.
+
+---
+
+# 38. AUDIT TRAIL
+
+Customs and financial actions require strong auditability.
+
+Store:
+
+who
+
+what
+
+when
+
+old value
+
+new value
+
+source
+
+approval
+
+submission reference.
+
+Do not allow silent modification of submitted declaration data.
+
+---
+
+# 39. SECURITY
+
+Enforce permissions server-side.
+
+A supplier must not automatically see:
+
+importer's financial information
+
+customs calculations
+
+other suppliers
+
+internal comments.
+
+A carrier must not automatically see:
+
+commercial purchase price
+
+unrelated shipments.
+
+A customs partner only sees shipments assigned to them unless explicitly authorized otherwise.
+
+---
+
+# 40. DEMO COMPANY
+
+Create fictional:
+
+GLOBALTRADE IMPORTS DEMO BV
+
+Netherlands.
+
+Demo user:
+
+MICHAEL VAN DER MEER
+
+Operational profile:
+
+IMPORT_MANAGER.
+
+---
+
+# 41. DEMO SHIPMENT A — CHINA
+
+Create:
+
+CM-2026-008421
+
+Supplier:
+
+Shenzhen Electric Manufacturing Ltd.
+
+Origin:
+
+Shenzhen, China
+
+Port of Loading:
+
+Yantian
+
+Port of Discharge:
+
+Rotterdam
+
+Final Destination:
+
+Eindhoven
+
+Mode:
+
+FCL
+
+Container:
+
+TCLU1234567
+
+Cargo:
+
+Electric motors
+
+Gross Weight:
+
+18,420 KG
+
+Invoice Value:
+
+€84,300
+
+Incoterm:
+
+FOB
+
+Status:
+
+IN TRANSIT.
+
+Documents:
+
+Commercial Invoice ✓
+
+Packing List ✓
+
+Bill of Lading ✓
+
+Certificate of Origin ✓
+
+Customs Classification:
+REVIEW REQUIRED.
+
+ETA Rotterdam:
+
+dynamic demo date.
+
+Create realistic relative dates so demo data never looks stale.
+
+---
+
+# 42. DEMO EXCEPTION
+
+Create document mismatch.
+
+Packing List:
+
+18,420 KG
+
+Bill of Lading:
+
+18,240 KG
+
+CargoMatch should detect:
+
+⚠️ WEIGHT MISMATCH
+
+Difference:
+
+180 KG.
+
+Assign:
+
+CUSTOMS / IMPORT REVIEW.
+
+---
+
+# 43. DEMO SHIPMENT B — INDIA
+
+Create:
+
+Mumbai → Rotterdam → Tilburg.
+
+Cargo:
+
+Textile products.
+
+Mode:
+
+LCL.
+
+Status:
+
+ARRIVING.
+
+Create multiple house shipments within one consolidation.
+
+This demonstrates that CargoMatch supports:
+
+FCL
+
+and:
+
+LCL.
+
+---
+
+# 44. LCL MODEL
+
+Create:
+
+`CONSOLIDATION`
+
+linked to:
+
+multiple `HOUSE_SHIPMENT` records.
+
+Example:
+
+CONTAINER
+
+↓
+
+MASTER B/L
+
+↓
+
+HOUSE SHIPMENT A
+
+HOUSE SHIPMENT B
+
+HOUSE SHIPMENT C.
+
+Each consignee should only see their own house shipment unless authorized otherwise.
+
+---
+
+# 45. LCL CONSIGNEE PORTAL
+
+Create simple consignee experience.
+
+Show:
+
+YOUR SHIPMENT
+
+Mumbai → Rotterdam
+
+ETA
+
+Documents
+
+Customs
+
+Local Charges
+
+Payment
+
+Release
+
+Pickup / Delivery.
+
+Possible actions:
+
+UPLOAD DOCUMENT
+
+CONFIRM COMPANY DETAILS
+
+PAY CHARGES
+
+AUTHORIZE CUSTOMS REPRESENTATION
+
+SELECT DELIVERY
+
+DOWNLOAD DOCUMENTS.
+
+Do not imply a digital authorization is legally sufficient unless applicable requirements are satisfied.
+
+---
+
+# 46. CARGOMATCH + EXISTING MATCHING ENGINE
+
+This is strategically important.
+
+CargoMatch Import must not become an isolated customs application.
+
+Connect it with the existing CargoMatch intelligence platform.
+
+Example:
+
+Shipment:
+
+China → Rotterdam
+
+Final destination:
+
+Duisburg.
+
+ETA:
+
+Tuesday 06:00.
+
+Expected terminal availability:
+
+Wednesday 08:00.
+
+CargoMatch knows:
+
+Barge X
+
+expected available Rotterdam:
+
+Wednesday 11:00.
+
+Truck Y
+
+expected empty Rotterdam:
+
+Wednesday 09:30.
+
+Rail service:
+
+Rotterdam → Duisburg
+
+departure Wednesday 18:00.
+
+CargoMatch can show:
+
+DELIVERY OPTIONS
+
+BARGE
+
+TRUCK
+
+RAIL.
+
+Run mode-specific eligibility before scoring.
+
+---
+
+# 47. EXPECTED AVAILABILITY × EXPECTED CARGO
+
+This should become an important CargoMatch concept.
+
+Existing CargoMatch:
+
+EXPECTED TRANSPORT CAPACITY.
+
+New Import module:
+
+EXPECTED CARGO AVAILABILITY.
+
+Combine:
+
+EXPECTED CARGO AVAILABILITY
+
+×
+
+EXPECTED TRANSPORT CAPACITY
+
+↓
+
+ELIGIBILITY
+
+↓
+
+MATCHING
+
+↓
+
+EARLY DELIVERY PLANNING.
+
+Do not wait until both sides are already physically available.
+
+---
+
+# 48. COMMERCIAL PRIVACY
+
+Preserve CargoMatch privacy principles.
+
+Do not unnecessarily expose:
+
+supplier
+
+buyer
+
+commercial value
+
+commodity details
+
+customer identity
+
+transport provider identity
+
+contact information.
+
+Matching views may use privacy-safe summaries until appropriate connection/authorization.
+
+---
+
+# 49. AI ASSISTANT
+
+Create optional:
+
+CARGOMATCH IMPORT ASSISTANT.
+
+It may answer:
+
+"What is missing before customs?"
+
+"Which shipments arrive this week?"
+
+"Why is CM-8421 blocked?"
+
+"Which containers risk demurrage?"
+
+"Which shipments are ready for delivery?"
+
+"What changed since yesterday?"
+
+"Which document has a weight discrepancy?"
+
+"What transport capacity is available after release?"
+
+AI should explain using shipment data.
+
+Do not allow AI to invent missing operational or customs facts.
+
+---
+
+# 50. AI ACTIONS
+
+Where permissions allow, AI may prepare:
+
+task
+
+draft customs data
+
+exception
+
+partner request
+
+delivery search
+
+document request
+
+customer message.
+
+High-impact actions require confirmation where appropriate.
+
+Example:
+
+"I found that the B/L weight differs from the packing list by 180 KG.
+
+Would you like me to create a review task for the customs team?"
+
+---
+
+# 51. FUTURE AUTONOMOUS WORKFLOW
+
+Architect for a future state where CargoMatch can handle normal shipments largely automatically.
+
+Concept:
+
+DOCUMENTS RECEIVED
+
+↓
+
+DATA EXTRACTED
+
+↓
+
+VALIDATED
+
+↓
+
+IMPORT FILE CREATED
+
+↓
+
+CUSTOMS PREPARED
+
+↓
+
+AUTHORIZED APPROVAL
+
+↓
+
+SUBMITTED
+
+↓
+
+RELEASE RECEIVED
+
+↓
+
+DELIVERY MATCHED
+
+↓
+
+TRANSPORT CONNECTED
+
+↓
+
+DELIVERED.
+
+Human users primarily manage:
+
+EXCEPTIONS
+
+APPROVALS
+
+COMMERCIAL DECISIONS
+
+LEGAL RESPONSIBILITIES.
+
+---
+
+# 52. DO NOT OVER-AUTOMATE LEGAL RESPONSIBILITY
+
+CargoMatch may automate workflows.
+
+CargoMatch must not falsely claim:
+
+"We are the legal customs declarant"
+
+"We guarantee customs clearance"
+
+"No customs agent is required"
+
+"AI determines the correct tariff code"
+
+unless the actual legal/company structure and authorization support such claims.
+
+Design the platform so legally authorized third parties can be plugged into the workflow.
+
+---
+
+# 53. MODULAR DATABASE ARCHITECTURE
+
+Recommended major entities:
+
+SHIPMENT
+
+SHIPMENT_PARTY
+
+SHIPMENT_LEG
+
+CONTAINER
+
+CONSOLIDATION
+
+HOUSE_SHIPMENT
+
+DOCUMENT
+
+DOCUMENT_EXTRACTION
+
+DOCUMENT_VALIDATION
+
+IMPORT_CASE
+
+CUSTOMS_CASE
+
+CUSTOMS_GOODS_ITEM
+
+CUSTOMS_DECLARATION_VERSION
+
+CHARGE
+
+PAYMENT
+
+RELEASE_REQUIREMENT
+
+RELEASE_EVENT
+
+DELIVERY_REQUIREMENT
+
+EXCEPTION
+
+TASK
+
+PARTNER_ASSIGNMENT
+
+SHIPMENT_EVENT
+
+INTEGRATION_EVENT.
+
+Reuse existing:
+
+COMPANY
+
+USER
+
+MEMBERSHIP
+
+MESSAGE
+
+NOTIFICATION
+
+CARGO_REQUIREMENT
+
+CAPACITY_OPPORTUNITY
+
+MATCH
+
+CONNECTION
+
+TRANSPORT_ASSET
+
+where applicable.
+
+Do not create duplicate company/user/messaging systems.
+
+---
+
+# 54. FEATURE FLAGS
+
+Create feature flags such as:
+
+IMPORT_SHIPMENTS
+
+IMPORT_DOCUMENTS
+
+IMPORT_DOCUMENT_INTELLIGENCE
+
+IMPORT_CUSTOMS
+
+IMPORT_CHARGES
+
+IMPORT_PAYMENTS
+
+IMPORT_RELEASE
+
+IMPORT_DELIVERY
+
+IMPORT_CONTROL_TOWER
+
+IMPORT_EXCEPTIONS
+
+IMPORT_AI_ASSISTANT
+
+IMPORT_LCL
+
+IMPORT_PARTNER_NETWORK.
+
+---
+
+# 55. MODULE DEPENDENCIES
+
+Model dependencies explicitly.
+
+Example:
+
+SHIPMENTS
+= base module.
+
+DOCUMENTS
+depends on SHIPMENTS.
+
+CUSTOMS
+depends on SHIPMENTS + DOCUMENTS.
+
+RELEASE
+depends on SHIPMENTS.
+
+DELIVERY
+depends on SHIPMENTS + existing CargoMatch matching.
+
+CONTROL
+aggregates all enabled modules.
+
+Do not create circular dependencies.
+
+---
+
+# 56. DEVELOPMENT APPROACH
+
+Build vertical slices.
+
+PHASE 1:
+
+Shipment
+
+Documents
+
+Import readiness
+
+Exceptions.
+
+PHASE 2:
+
+Customs preparation
+
+Customs workflow
+
+Mock customs provider
+
+Audit trail.
+
+PHASE 3:
+
+Charges
+
+Release.
+
+PHASE 4:
+
+Delivery integration with existing CargoMatch matching.
+
+PHASE 5:
+
+Control Tower.
+
+PHASE 6:
+
+LCL consignee portal.
+
+PHASE 7:
+
+External integrations.
+
+PHASE 8:
+
+Advanced automation / AI.
+
+---
+
+# 57. FIRST END-TO-END DEMO
+
+The first complete demo should show:
+
+1.
+
+User opens:
+
+CM-2026-008421.
+
+2.
+
+Shipment is:
+
+Shenzhen → Rotterdam → Eindhoven.
+
+3.
+
+Documents have already been uploaded.
+
+4.
+
+CargoMatch extracts document information.
+
+5.
+
+CargoMatch detects:
+
+180 KG weight discrepancy.
+
+6.
+
+Exception is created.
+
+7.
+
+User resolves discrepancy.
+
+8.
+
+Import readiness becomes:
+
+READY.
+
+9.
+
+Customs declaration data is prepared.
+
+10.
+
+Authorized user approves.
+
+11.
+
+Mock customs provider returns:
+
+SUBMITTED.
+
+12.
+
+Then:
+
+RELEASED.
+
+13.
+
+Terminal becomes:
+
+AVAILABLE.
+
+14.
+
+CargoMatch automatically searches existing capacity marketplace.
+
+15.
+
+Suitable truck / barge / rail options appear.
+
+16.
+
+User shows interest / selects workflow.
+
+17.
+
+Delivery becomes:
+
+PLANNED.
+
+18.
+
+Shipment eventually becomes:
+
+DELIVERED.
+
+This demo must feel like one continuous CargoMatch workflow.
+
+---
+
+# 58. DESIGN PRINCIPLE
+
+The interface must remain consistent with existing CargoMatch.
+
+Professional B2B logistics SaaS.
+
+Use:
+
+navy/marine visual identity
+
+clean cards
+
+maps
+
+timelines
+
+status badges
+
+clear action buttons
+
+tables where useful
+
+exception indicators
+
+responsive design.
+
+Do not make Import look like an unrelated second application.
+
+---
+
+# 59. PRODUCT FAMILY
+
+Architect the product family as:
+
+## CARGOMATCH MOVE
+
+Find and connect cargo with transport capacity.
+
+## CARGOMATCH IMPORT
+
+Manage international import workflows.
+
+## CARGOMATCH CUSTOMS
+
+Prepare and orchestrate customs workflows.
+
+## CARGOMATCH CONTROL
+
+End-to-end shipment visibility and exception management.
+
+They share:
+
+ONE ACCOUNT
+
+ONE COMPANY
+
+ONE NETWORK
+
+ONE DATA MODEL
+
+ONE MESSAGING SYSTEM
+
+ONE PERMISSION SYSTEM
+
+ONE CARGOMATCH PLATFORM.
+
+---
+
+# 60. LONG-TERM USER EXPERIENCE
+
+The ultimate CargoMatch experience should be:
+
+A user opens one shipment.
+
+They can immediately answer:
+
+WHERE IS MY CARGO?
+
+WHEN WILL IT ARRIVE?
+
+ARE MY DOCUMENTS COMPLETE?
+
+IS CUSTOMS READY?
+
+HAS CUSTOMS RELEASED IT?
+
+WHAT WILL IT COST?
+
+ARE THERE EXCEPTIONS?
+
+WHEN CAN THE CONTAINER BE PICKED UP?
+
+WHICH TRANSPORT CAPACITY IS AVAILABLE?
+
+WHO IS DELIVERING IT?
+
+WHEN WILL IT ARRIVE AT MY WAREHOUSE?
+
+The user should not have to search through:
+
+20 emails
+
+multiple portals
+
+spreadsheets
+
+WhatsApp messages
+
+carrier websites
+
+customs messages
+
+terminal portals
+
+and separate transport systems
+
+to understand one shipment.
+
+CargoMatch should bring the workflow together.
+
+---
+
+# FINAL PRODUCT PRINCIPLE
+
+CargoMatch should not attempt to eliminate every participant in international logistics.
+
+It should eliminate unnecessary:
+
+MANUAL DATA ENTRY
+
+DUPLICATE WORK
+
+STATUS CHASING
+
+EMAIL CHAINS
+
+DOCUMENT SEARCHING
+
+REPETITIVE COORDINATION
+
+LATE TRANSPORT PLANNING.
+
+Specialists remain where their expertise, authorization or legal responsibility is necessary.
+
+CargoMatch orchestrates the process around them.
+
+The long-term flow is:
+
+SUPPLIER
+
+↓
+
+CARGO
+
+↓
+
+DOCUMENTS
+
+↓
+
+INTERNATIONAL TRANSPORT
+
+↓
+
+IMPORT
+
+↓
+
+CUSTOMS
+
+↓
+
+RELEASE
+
+↓
+
+AVAILABLE CARGO
+
+↓
+
+AVAILABLE TRANSPORT CAPACITY
+
+↓
+
+MATCH
+
+↓
+
+DELIVERY
+
+↓
+
+CONSIGNEE
+
+# ONE SHIPMENT.
+
+# ONE WORKFLOW.
+
+# FROM FACTORY TO FINAL DELIVERY.

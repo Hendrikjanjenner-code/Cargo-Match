@@ -1,0 +1,16 @@
+{
+  "sourceSha256": "411a7a057b39ec691e2f01cc31adb3c1cada3e5bab4312c745ec1519eadc3f29",
+  "normalizedSha256": "b954490e0264e9f118af51a87a21144a524dd03108d4b20f86ea0c74058e1067",
+  "measurement": {
+    "input_i": "-22.44",
+    "input_tp": "-4.39",
+    "input_lra": "4.10",
+    "input_thresh": "-33.17",
+    "output_i": "-18.55",
+    "output_tp": "-3.00",
+    "output_lra": "3.30",
+    "output_thresh": "-29.27",
+    "normalization_type": "dynamic",
+    "target_offset": "0.55"
+  }
+}

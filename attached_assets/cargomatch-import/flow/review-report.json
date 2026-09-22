@@ -1,0 +1,36 @@
+{
+  "revision": "One connected journey",
+  "diagnosis": [
+    "The previous film rebuilt a seven-second physical camera approach independently for each screenshot, then retimed each result to its narration slot. Consecutive screenshots could therefore restart the same camera move and change its apparent velocity.",
+    "Six separately generated narration groups, five inserted 0.55-second gaps, and numerous short standalone sentences reinforced the segmented delivery."
+  ],
+  "changes": [
+    "A newly written connected 377-token story generated as one uninterrupted John Irish library read, using the exact approved voice settings. No internal audio edits, inserted chapter gaps, or narration time stretch.",
+    "Twelve physical shots instead of twenty-four sentence-bound scenes. Every same-device screen change shares one uninterrupted physical source timeline and measured geometry.",
+    "Motion-compensated optical-flow resampling replaces dropped/repeated-frame retiming. Background estimation is at 960x540 for practical rendering, then restored to 1080p before authentic full-resolution screen compositing. This tradeoff preserves sharp UI while backgrounds can be softer.",
+    "Screen-only six-frame blends preserve the physical laptop at changes. Sixteen-frame context dissolves connect different locations while the single narration continues."
+  ],
+  "proof": {
+    "file": "media/cargomatch-import/flow/build/representative-proof.mp4",
+    "scope": "16.67-second document-discrepancy and human-review sequence; generated and successfully played through Chromium before rendering the remaining shots.",
+    "review": "Representative composed frame inspected for clear unobstructed screen geometry. Browser playback and screen-change window checked without media errors."
+  },
+  "finalReview": {
+    "contactSheet": "media/cargomatch-import/flow/build/review/contact-sheet.jpg",
+    "images": "All twelve shot midpoints inspected, plus representative large document and Control Tower frames.",
+    "movingPlayback": "Full 156.14-second real-time Chromium progression; 3749 total video frames, zero reported dropped frames. Additional 18 moving playback windows span all eleven context transitions and seven screen transitions.",
+    "audio": "One complete regenerated take with 100% script-token alignment (377/377). Loudness and natural pauses measured; no digital cuts between sentences. Maximum detected natural pause approximately one second.",
+    "limits": "No tool exposes perceptual audio listening to this agent; no independent human listening or subjective full-motion visual certification is claimed. Browser motion playback, every-frame image metrics, screen-plane tracking, sampled visual inspection and ASR are complementary technical checks, not substitutes for the user's perceptual review. Optical-flow interpolation can retain local photographic artifacts."
+  },
+  "rebuild": [
+    "python3 media/cargomatch-import/flow/render.py --prepare-audio",
+    "python3 media/cargomatch-import/flow/render.py --align",
+    "python3 media/cargomatch-import/flow/render.py --proof",
+    "node media/cargomatch-import/flow/verify_browser.cjs --proof",
+    "python3 media/cargomatch-import/flow/render.py",
+    "python3 media/cargomatch-import/flow/verify.py",
+    "node media/cargomatch-import/flow/verify_browser.cjs"
+  ],
+  "renderingNote": "Intermediate full-length picture join was encoded with x264 ultrafast CRF18 to fit execution time; final downloadable export is x264 fast CRF20 with capped bitrate. A clean rebuild uses the shared fast intermediate preset and may take longer than five minutes. Cached shot fingerprints preserve completed work.",
+  "preservation": "No existing export, screenshot, source clip, app file, or original production utility was edited. Rejected old source plates remain unused. Old-export hashes are in production-receipt.json."
+}

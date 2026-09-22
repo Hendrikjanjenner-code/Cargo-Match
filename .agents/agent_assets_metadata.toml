@@ -834,3 +834,53 @@ mtime_ms = 1790091652428
 storage_uri = "gcs://replit-rams-assets-worf/rams/assets/repl:929794db-e72d-4439-9aa2-c5d927c149ce/7b3c66ee-a259-432f-8074-f851df8aeeed/36888fc8-f7b0-4693-93eb-ddc7a3d9d907"
 storage_version_token = "1790091977763547"
 content_type = "application/octet-stream"
+
+[[outputs]]
+id = "0t5AIlnce7YkFqtp68PgF"
+uri = "file://attached_assets/cargomatch-import/flow/audio/story.mp3"
+type = "audio"
+title = "Continuous CargoMatch import story"
+description = "Text-to-speech audio: As a container reaches Rotterdam after its voyage from Yantian, the team is already preparing its onward journey to Eindhoven. In the CargoMatch demo, they bring the shipment an…"
+logical_id = "13939406-4abf-423c-bc4e-629859de0cb9"
+
+[[outputs]]
+id = "q6hib6wkCWqVPAlFvKj9p"
+uri = "file://attached_assets/cargomatch-import/flow/cargomatch-en-nl-1080p.mp4"
+type = "video"
+title = "CargoMatch — vloeiende verhaalversie"
+description = "Herziene importfilm: één doorlopende Engelse vertelling met dezelfde Ierse stem, vloeiendere camerabeweging en Nederlandse ondertitels. Full HD, 2:36."
+logical_id = "cc0ff59e-dbcb-4665-bb86-33df1a680184"
+content_hash = "sha256:754128c9c2c0dea3e7912d4e14909e7abd047aad06999a5c0831bdd82b739ae0"
+size = 81613348
+mtime_ms = 1790097508495
+storage_uri = "gcs://replit-rams-assets-worf/rams/assets/repl:929794db-e72d-4439-9aa2-c5d927c149ce/cc0ff59e-dbcb-4665-bb86-33df1a680184/81cfe708-981b-4d6d-9368-b8f3b1c5e871"
+storage_version_token = "1790097886397378"
+content_type = "video/mp4"
+
+[[outputs]]
+id = "_Y9gk21lveoUPWPVh7v09"
+uri = "file://attached_assets/cargomatch-import/flow/cargomatch-nl.srt"
+type = "unspecified"
+title = "Nederlandse ondertitels — verhaalversie"
+description = "Bewerkbaar SRT-bestand, opnieuw gesynchroniseerd met de nieuwe vertelling."
+logical_id = "f2b5fbb8-805e-452b-9d16-41ba81962bfa"
+content_hash = "sha256:2c9d1504212019b954f1df6f76f080ead70f680e4b47a4a3f3d090c925239cf3"
+size = 2475
+mtime_ms = 1790097318006
+storage_uri = "gcs://replit-rams-assets-worf/rams/assets/repl:929794db-e72d-4439-9aa2-c5d927c149ce/f2b5fbb8-805e-452b-9d16-41ba81962bfa/c10e8434-9a5e-4372-8ab8-1edbb8c5571d"
+storage_version_token = "1790097886922930"
+content_type = "application/octet-stream"
+
+[[outputs]]
+id = "vmQjtdP4KuafBWwOjnkQE"
+uri = "file://attached_assets/cargomatch-import/flow/cargomatch-nl.ass"
+type = "unspecified"
+title = "Opgemaakte ondertitels — verhaalversie"
+description = "Bewerkbaar ASS-bestand met de filmopmaak."
+logical_id = "f6b5db8d-f99e-4279-a506-f9a78f8ed34a"
+content_hash = "sha256:28888a0fe2ab12b24e2419ce04fddf74da11865fd742fff6d99f92a2cf5c9f8c"
+size = 3396
+mtime_ms = 1790097318006
+storage_uri = "gcs://replit-rams-assets-worf/rams/assets/repl:929794db-e72d-4439-9aa2-c5d927c149ce/f6b5db8d-f99e-4279-a506-f9a78f8ed34a/8efcd6d2-9373-498d-ac15-88ac836b71ac"
+storage_version_token = "1790097887542930"
+content_type = "application/octet-stream"

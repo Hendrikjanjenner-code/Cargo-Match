@@ -1,0 +1,66 @@
+{
+  "output": "attached_assets/cargomatch-import/flow/cargomatch-en-nl-1080p.mp4",
+  "outputSha256": "754128c9c2c0dea3e7912d4e14909e7abd047aad06999a5c0831bdd82b739ae0",
+  "durationSeconds": 156.20833333333334,
+  "bytes": 81613348,
+  "voice": {
+    "voiceId": "GFyWqnwcF2mv6dWlo3u1",
+    "name": "John - Irish Man",
+    "modelId": "eleven_multilingual_v2",
+    "outputFormat": "mp3_44100_192",
+    "voiceSettings": {
+      "stability": 0.62,
+      "similarity_boost": 0.75,
+      "style": 0.1,
+      "use_speaker_boost": true,
+      "speed": 1
+    }
+  },
+  "narrationTakes": 1,
+  "voiceTimeStretch": 1,
+  "insertedChapterPauses": 0,
+  "originalsPreserved": {
+    "attached_assets/cargomatch-import/delivery/cargomatch-en-nl-1080p.mp4": "7a2699c799894167c753e9f90def98a30b913d84b463a93189b18ea49bd848a8",
+    "attached_assets/cargomatch/revised/cargomatch-en-nl-1080p.mp4": "78ac4b7b9542c66ecda3ffe1df821066fa733de57cfd83866378f7897d0f6d5b",
+    "attached_assets/cargomatch/delivery/cargomatch-en-nl-1080p.mp4": "d8b90e58666522aeebdbaba753beb299f9c487e908e4a9ef73a0771741cc48cc"
+  },
+  "audio": {
+    "mixInputMeasurement": {
+      "input_i": "-18.14",
+      "input_tp": "-2.42",
+      "input_lra": "3.90",
+      "input_thresh": "-28.70",
+      "output_i": "-16.02",
+      "output_tp": "-1.50",
+      "output_lra": "3.50",
+      "output_thresh": "-26.56",
+      "normalization_type": "dynamic",
+      "target_offset": "0.02"
+    },
+    "finalMeasurement": {
+      "input_i": "-16.06",
+      "input_tp": "-1.23",
+      "input_lra": "3.60",
+      "input_thresh": "-26.62",
+      "output_i": "-15.91",
+      "output_tp": "-1.50",
+      "output_lra": "3.50",
+      "output_thresh": "-26.46",
+      "normalization_type": "dynamic",
+      "target_offset": "-0.09"
+    }
+  },
+  "disclosures": [
+    "Photorealistic people and location footage is AI generated, not actual customers or evidence of real operations.",
+    "Screens are fresh captures of an isolated fictional CargoMatch demo.",
+    "Tracking is synthetic, not live AIS. Customs, payments and release are simulated.",
+    "Mutual consent is an introduction, not a booking; planning and delivery are separate.",
+    "Original library narrator John, generated score and ambience; no celebrity imitation or endorsement."
+  ],
+  "scriptSha256": "d2320e90eb79a0c73d00ac96bad1850f2ead3dd91c7463c9e0027baa36208b83",
+  "manifestSha256": "a92680caed28e5cb285117274b100d2358545af381d1057be2cd0d0279e5b36b",
+  "rendererSha256": "47b1c723cd86f11d9ecead43fc65b73155d88ebc545ddd510ad312ce111175fa",
+  "captureManifestSha256": "2087c4e4b86762e7f840ac94f740305f507e45af5a707d692c256abc5c7b214c",
+  "motionMethod": "Continuous optical-flow-resampled physical source per shot; screen-only six-frame blends; no camera reset at screen changes.",
+  "reviewLimits": "Technical motion/frame and browser playback checks plus sampled image review; no independent human listening assessment."
+}

@@ -1,0 +1,25 @@
+{
+  "title": "CargoMatch — One connected journey",
+  "narration": [
+    {"id":1,"en":"As a container reaches Rotterdam after its voyage from Yantian, the team is already preparing its onward journey to Eindhoven.","nl":"Een container uit Yantian bereikt Rotterdam. Het team bereidt de reis naar Eindhoven voor."},
+    {"id":2,"en":"In the CargoMatch demo, they bring the shipment and its documents together, so everyone can follow what needs to happen next.","nl":"In de CargoMatch-demo komen zending en documenten samen, zodat iedereen de volgende stap kan volgen."},
+    {"id":3,"en":"But before they move ahead, a small detail needs attention: the documents show a weight difference of one hundred and eighty kilograms.","nl":"Eerst vraagt een detail aandacht: de documenten tonen een gewichtsverschil van 180 kilogram."},
+    {"id":4,"en":"Rather than letting that discrepancy travel further down the chain, a colleague checks the source and records the reviewed weight.","nl":"Een collega controleert de bron en legt het beoordeelde gewicht vast, vóór de afwijking doorwerkt."},
+    {"id":5,"en":"The original documents remain in the dossier, while each partner sees the information their role allows.","nl":"De oorspronkelijke documenten blijven bewaard. Elke partner ziet wat bij zijn rol hoort."},
+    {"id":6,"en":"With that context in place, the customs specialist can review the dossier and its requirements before deciding how to proceed.","nl":"Met die informatie beoordeelt de douanespecialist het dossier en de vereisten voor de volgende stap."},
+    {"id":7,"en":"The process here is simulated, so no real declaration is submitted, but the handover still makes clear who has checked what.","nl":"Dit proces is gesimuleerd, zonder echte aangifte. De overdracht toont wel wie wat heeft gecontroleerd."},
+    {"id":8,"en":"That same visibility carries into the costs, which total ninety-five thousand seven hundred and seven euros in this China example.","nl":"Ook de kosten zijn zichtbaar: in dit China-voorbeeld samen 95.707 euro."},
+    {"id":9,"en":"By reviewing those charges alongside the release conditions, the team can see what remains outstanding before collection.","nl":"Kosten en vrijgavevoorwaarden tonen samen wat vóór het ophalen nog moet gebeuren."},
+    {"id":10,"en":"Payments and release are simulated too; the demonstration moves the process forward without moving real money.","nl":"Ook betaling en vrijgave zijn gesimuleerd: het proces gaat verder, zonder echt geld te verplaatsen."},
+    {"id":11,"en":"Once those conditions are satisfied, attention turns to the journey beyond the port, where suitable transport options help the planner start a conversation.","nl":"Daarna verschuift de aandacht naar het achterland. Passende vervoeropties helpen de planner op weg."},
+    {"id":12,"en":"Both parties choose whether to connect, knowing that this introduction is not a booking.","nl":"Beide partijen kiezen of ze verbinden. Die kennismaking is geen boeking."},
+    {"id":13,"en":"They still need to agree the practical arrangements, with planning and delivery handled as separate steps.","nl":"Praktische afspraken blijven nodig. Planning en aflevering zijn afzonderlijke stappen."},
+    {"id":14,"en":"As the container continues towards the warehouse, its handover remains part of the same shipment story.","nl":"Op weg naar het magazijn blijft de overdracht onderdeel van hetzelfde zendingsdossier."},
+    {"id":15,"en":"The approach also supports a smaller shipment travelling from Mumbai, through Rotterdam, to Tilburg.","nl":"Dezelfde aanpak helpt een deelzending van Mumbai via Rotterdam naar Tilburg."},
+    {"id":16,"en":"Here, the receiver follows only their own house shipment, with their own documents, relevant charges and delivery choice, without seeing another receiver's business.","nl":"De ontvanger ziet alleen de eigen house-zending, documenten, kosten en afleverkeuze; geen andere dossiers."},
+    {"id":17,"en":"And while these individual journeys unfold, the Control Tower keeps vessel status, route and arrival estimates in view, together with the source, time and any exceptions.","nl":"De Control Tower toont scheepsstatus, route, ETA en afwijkingen, steeds met bron en tijd."},
+    {"id":18,"en":"This is synthetic demo tracking rather than live A I S, giving the team a shared picture while keeping its limits clear.","nl":"Dit is synthetische demotracking, geen live AIS: gedeeld overzicht met duidelijke grenzen."},
+    {"id":19,"en":"From the first document check to the final handover, CargoMatch connects the journey while leaving people in control.","nl":"Van documentcontrole tot overdracht verbindt CargoMatch de reis, met mensen aan het roer."},
+    {"id":20,"en":"Discover CargoMatch, the transport capacity intelligence network.","nl":"Ontdek CargoMatch, het netwerk voor transportcapaciteitsinformatie."}
+  ]
+}

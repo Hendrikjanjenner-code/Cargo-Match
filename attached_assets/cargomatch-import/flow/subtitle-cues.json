@@ -1,0 +1,249 @@
+{
+  "language": "nl",
+  "generatedFrom": "media/cargomatch-import/flow/production.json",
+  "timingBasis": "Fresh word alignment against one uninterrupted normalized story read.",
+  "cueCount": 20,
+  "cues": [
+    {
+      "slotId": 1,
+      "sentence": 1,
+      "start": 0.65,
+      "end": 8.07,
+      "english": "As a container reaches Rotterdam after its voyage from Yantian, the team is already preparing its onward journey to Eindhoven.",
+      "dutch": "Een container uit Yantian bereikt Rotterdam. Het team bereidt de reis naar Eindhoven voor.",
+      "lines": [
+        "Een container uit Yantian bereikt Rotterdam. Het team",
+        "bereidt de reis naar Eindhoven voor."
+      ]
+    },
+    {
+      "slotId": 2,
+      "sentence": 1,
+      "start": 8.07,
+      "end": 16.189999999999998,
+      "english": "In the CargoMatch demo, they bring the shipment and its documents together, so everyone can follow what needs to happen next.",
+      "dutch": "In de CargoMatch-demo komen zending en documenten samen, zodat iedereen de volgende stap kan volgen.",
+      "lines": [
+        "In de CargoMatch-demo komen zending en documenten samen,",
+        "zodat iedereen de volgende stap kan volgen."
+      ]
+    },
+    {
+      "slotId": 3,
+      "sentence": 1,
+      "start": 16.189999999999998,
+      "end": 23.939999999999998,
+      "english": "But before they move ahead, a small detail needs attention: the documents show a weight difference of one hundred and eighty kilograms.",
+      "dutch": "Eerst vraagt een detail aandacht: de documenten tonen een gewichtsverschil van 180 kilogram.",
+      "lines": [
+        "Eerst vraagt een detail aandacht: de documenten tonen een",
+        "gewichtsverschil van 180 kilogram."
+      ]
+    },
+    {
+      "slotId": 4,
+      "sentence": 1,
+      "start": 23.939999999999998,
+      "end": 32.21,
+      "english": "Rather than letting that discrepancy travel further down the chain, a colleague checks the source and records the reviewed weight.",
+      "dutch": "Een collega controleert de bron en legt het beoordeelde gewicht vast, vóór de afwijking doorwerkt.",
+      "lines": [
+        "Een collega controleert de bron en legt het beoordeelde",
+        "gewicht vast, vóór de afwijking doorwerkt."
+      ]
+    },
+    {
+      "slotId": 5,
+      "sentence": 1,
+      "start": 32.21,
+      "end": 38.129999999999995,
+      "english": "The original documents remain in the dossier, while each partner sees the information their role allows.",
+      "dutch": "De oorspronkelijke documenten blijven bewaard. Elke partner ziet wat bij zijn rol hoort.",
+      "lines": [
+        "De oorspronkelijke documenten blijven bewaard. Elke",
+        "partner ziet wat bij zijn rol hoort."
+      ]
+    },
+    {
+      "slotId": 6,
+      "sentence": 1,
+      "start": 38.129999999999995,
+      "end": 46.03,
+      "english": "With that context in place, the customs specialist can review the dossier and its requirements before deciding how to proceed.",
+      "dutch": "Met die informatie beoordeelt de douanespecialist het dossier en de vereisten voor de volgende stap.",
+      "lines": [
+        "Met die informatie beoordeelt de douanespecialist het",
+        "dossier en de vereisten voor de volgende stap."
+      ]
+    },
+    {
+      "slotId": 7,
+      "sentence": 1,
+      "start": 46.03,
+      "end": 53.67,
+      "english": "The process here is simulated, so no real declaration is submitted, but the handover still makes clear who has checked what.",
+      "dutch": "Dit proces is gesimuleerd, zonder echte aangifte. De overdracht toont wel wie wat heeft gecontroleerd.",
+      "lines": [
+        "Dit proces is gesimuleerd, zonder echte aangifte. De",
+        "overdracht toont wel wie wat heeft gecontroleerd."
+      ]
+    },
+    {
+      "slotId": 8,
+      "sentence": 1,
+      "start": 53.67,
+      "end": 62.589999999999996,
+      "english": "That same visibility carries into the costs, which total ninety-five thousand seven hundred and seven euros in this China example.",
+      "dutch": "Ook de kosten zijn zichtbaar: in dit China-voorbeeld samen 95.707 euro.",
+      "lines": [
+        "Ook de kosten zijn zichtbaar: in dit China-voorbeeld samen",
+        "95.707 euro."
+      ]
+    },
+    {
+      "slotId": 9,
+      "sentence": 1,
+      "start": 62.589999999999996,
+      "end": 70.39,
+      "english": "By reviewing those charges alongside the release conditions, the team can see what remains outstanding before collection.",
+      "dutch": "Kosten en vrijgavevoorwaarden tonen samen wat vóór het ophalen nog moet gebeuren.",
+      "lines": [
+        "Kosten en vrijgavevoorwaarden tonen samen wat vóór het",
+        "ophalen nog moet gebeuren."
+      ]
+    },
+    {
+      "slotId": 10,
+      "sentence": 1,
+      "start": 70.39,
+      "end": 77.47,
+      "english": "Payments and release are simulated too; the demonstration moves the process forward without moving real money.",
+      "dutch": "Ook betaling en vrijgave zijn gesimuleerd: het proces gaat verder, zonder echt geld te verplaatsen.",
+      "lines": [
+        "Ook betaling en vrijgave zijn gesimuleerd: het proces gaat",
+        "verder, zonder echt geld te verplaatsen."
+      ]
+    },
+    {
+      "slotId": 11,
+      "sentence": 1,
+      "start": 77.47,
+      "end": 86.7,
+      "english": "Once those conditions are satisfied, attention turns to the journey beyond the port, where suitable transport options help the planner start a conversation.",
+      "dutch": "Daarna verschuift de aandacht naar het achterland. Passende vervoeropties helpen de planner op weg.",
+      "lines": [
+        "Daarna verschuift de aandacht naar het achterland.",
+        "Passende vervoeropties helpen de planner op weg."
+      ]
+    },
+    {
+      "slotId": 12,
+      "sentence": 1,
+      "start": 86.7,
+      "end": 92.19000000000001,
+      "english": "Both parties choose whether to connect, knowing that this introduction is not a booking.",
+      "dutch": "Beide partijen kiezen of ze verbinden. Die kennismaking is geen boeking.",
+      "lines": [
+        "Beide partijen kiezen of ze verbinden. Die kennismaking is",
+        "geen boeking."
+      ]
+    },
+    {
+      "slotId": 13,
+      "sentence": 1,
+      "start": 92.19000000000001,
+      "end": 98.62,
+      "english": "They still need to agree the practical arrangements, with planning and delivery handled as separate steps.",
+      "dutch": "Praktische afspraken blijven nodig. Planning en aflevering zijn afzonderlijke stappen.",
+      "lines": [
+        "Praktische afspraken blijven nodig. Planning en aflevering",
+        "zijn afzonderlijke stappen."
+      ]
+    },
+    {
+      "slotId": 14,
+      "sentence": 1,
+      "start": 98.62,
+      "end": 105.25,
+      "english": "As the container continues towards the warehouse, its handover remains part of the same shipment story.",
+      "dutch": "Op weg naar het magazijn blijft de overdracht onderdeel van hetzelfde zendingsdossier.",
+      "lines": [
+        "Op weg naar het magazijn blijft de overdracht onderdeel",
+        "van hetzelfde zendingsdossier."
+      ]
+    },
+    {
+      "slotId": 15,
+      "sentence": 1,
+      "start": 105.25,
+      "end": 112.31,
+      "english": "The approach also supports a smaller shipment travelling from Mumbai, through Rotterdam, to Tilburg.",
+      "dutch": "Dezelfde aanpak helpt een deelzending van Mumbai via Rotterdam naar Tilburg.",
+      "lines": [
+        "Dezelfde aanpak helpt een deelzending van Mumbai via",
+        "Rotterdam naar Tilburg."
+      ]
+    },
+    {
+      "slotId": 16,
+      "sentence": 1,
+      "start": 112.31,
+      "end": 123.2,
+      "english": "Here, the receiver follows only their own house shipment, with their own documents, relevant charges and delivery choice, without seeing another receiver's business.",
+      "dutch": "De ontvanger ziet alleen de eigen house-zending, documenten, kosten en afleverkeuze; geen andere dossiers.",
+      "lines": [
+        "De ontvanger ziet alleen de eigen house-zending,",
+        "documenten, kosten en afleverkeuze; geen andere dossiers."
+      ]
+    },
+    {
+      "slotId": 17,
+      "sentence": 1,
+      "start": 123.2,
+      "end": 134.68,
+      "english": "And while these individual journeys unfold, the Control Tower keeps vessel status, route and arrival estimates in view, together with the source, time and any exceptions.",
+      "dutch": "De Control Tower toont scheepsstatus, route, ETA en afwijkingen, steeds met bron en tijd.",
+      "lines": [
+        "De Control Tower toont scheepsstatus, route, ETA en",
+        "afwijkingen, steeds met bron en tijd."
+      ]
+    },
+    {
+      "slotId": 18,
+      "sentence": 1,
+      "start": 134.68,
+      "end": 143.44,
+      "english": "This is synthetic demo tracking rather than live A I S, giving the team a shared picture while keeping its limits clear.",
+      "dutch": "Dit is synthetische demotracking, geen live AIS: gedeeld overzicht met duidelijke grenzen.",
+      "lines": [
+        "Dit is synthetische demotracking, geen live AIS: gedeeld",
+        "overzicht met duidelijke grenzen."
+      ]
+    },
+    {
+      "slotId": 19,
+      "sentence": 1,
+      "start": 143.44,
+      "end": 150.62,
+      "english": "From the first document check to the final handover, CargoMatch connects the journey while leaving people in control.",
+      "dutch": "Van documentcontrole tot overdracht verbindt CargoMatch de reis, met mensen aan het roer.",
+      "lines": [
+        "Van documentcontrole tot overdracht verbindt CargoMatch de",
+        "reis, met mensen aan het roer."
+      ]
+    },
+    {
+      "slotId": 20,
+      "sentence": 1,
+      "start": 150.62,
+      "end": 154.957,
+      "english": "Discover CargoMatch, the transport capacity intelligence network.",
+      "dutch": "Ontdek CargoMatch, het netwerk voor transportcapaciteitsinformatie.",
+      "lines": [
+        "Ontdek CargoMatch, het netwerk voor",
+        "transportcapaciteitsinformatie."
+      ]
+    }
+  ],
+  "alignmentEvidence": "attached_assets/cargomatch-import/flow/alignment.json"
+}

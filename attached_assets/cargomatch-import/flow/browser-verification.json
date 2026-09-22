@@ -1,0 +1,266 @@
+{
+  "check": "CargoMatch final MP4 browser decode, playback, seeks, and burned-subtitle delivery",
+  "started": "2026-09-22T17:19:20.868Z",
+  "baseURL": "http://127.0.0.1:36589",
+  "file": "cargomatch-en-nl-1080p.mp4",
+  "expected": {
+    "width": 1920,
+    "height": 1080,
+    "durationSeconds": 156.20833333333334,
+    "videoCodec": "H.264",
+    "browserTextTracks": 0
+  },
+  "assertions": {
+    "metadata": {
+      "duration": 156.208333,
+      "width": 1920,
+      "height": 1080,
+      "readyState": 1,
+      "networkState": 1,
+      "error": null,
+      "textTracks": 0,
+      "videoTracks": null,
+      "audioTracks": null
+    },
+    "noExtraBrowserTracks": true,
+    "noMediaElementError": true,
+    "decodedPlaybackProgression": {
+      "startedAt": 0,
+      "endedAt": 156.137754,
+      "progressedSeconds": 156.137754,
+      "decodedFramesObserved": 3746,
+      "totalVideoFrames": 3749,
+      "droppedVideoFrames": 0,
+      "error": null
+    },
+    "h264DecodeEvidence": [
+      {
+        "name": "kVideoDecoderName",
+        "value": "FFmpegVideoDecoder"
+      },
+      {
+        "name": "kIsPlatformAudioDecoder",
+        "value": "false"
+      },
+      {
+        "name": "kAudioDecoderName",
+        "value": "FFmpegAudioDecoder"
+      },
+      {
+        "name": "kVideoTracks",
+        "value": "[{\"alpha mode\":\"is_opaque\",\"codec\":\"h264\",\"coded size\":\"1920x1080\",\"color space\":{\"matrix\":\"BT709\",\"primaries\":\"BT709\",\"range\":\"LIMITED\",\"transfer\":\"BT709\"},\"encryption scheme\":\"Unencrypted\",\"has extra data\":true,\"hdr metadata\":{},\"natural size\":\"1920x1080\",\"orientation\":\"0°\",\"profile\":\"h264 high\",\"visible rect\":\"0,0 1920x1080\"}]"
+      },
+      {
+        "name": "kIsPlatformVideoDecoder",
+        "value": "false"
+      }
+    ],
+    "finalState": {
+      "error": null,
+      "textTracks": 0
+    }
+  },
+  "screenshots": [
+    {
+      "filename": "seek-7.333333333333333s.png",
+      "timeSeconds": 7.333333333333333,
+      "currentTime": 7.333333,
+      "frameCallback": false
+    },
+    {
+      "filename": "seek-15.458333333333334s.png",
+      "timeSeconds": 15.458333333333334,
+      "currentTime": 15.458333,
+      "frameCallback": false
+    },
+    {
+      "filename": "seek-23.541666666666668s.png",
+      "timeSeconds": 23.541666666666668,
+      "currentTime": 23.541666,
+      "frameCallback": false
+    },
+    {
+      "filename": "seek-31.458333333333332s.png",
+      "timeSeconds": 31.458333333333332,
+      "currentTime": 31.458333,
+      "frameCallback": false
+    },
+    {
+      "filename": "seek-37.416666666666664s.png",
+      "timeSeconds": 37.416666666666664,
+      "currentTime": 37.416666,
+      "frameCallback": false
+    },
+    {
+      "filename": "seek-45.625s.png",
+      "timeSeconds": 45.625,
+      "currentTime": 45.625,
+      "frameCallback": false
+    },
+    {
+      "filename": "seek-52.916666666666664s.png",
+      "timeSeconds": 52.916666666666664,
+      "currentTime": 52.916666,
+      "frameCallback": false
+    },
+    {
+      "filename": "seek-62.208333333333336s.png",
+      "timeSeconds": 62.208333333333336,
+      "currentTime": 62.208333,
+      "frameCallback": false
+    },
+    {
+      "filename": "seek-070s.png",
+      "timeSeconds": 70,
+      "currentTime": 70,
+      "frameCallback": false
+    },
+    {
+      "filename": "seek-76.75s.png",
+      "timeSeconds": 76.75,
+      "currentTime": 76.75,
+      "frameCallback": false
+    },
+    {
+      "filename": "seek-85.95833333333333s.png",
+      "timeSeconds": 85.95833333333333,
+      "currentTime": 85.958333,
+      "frameCallback": false
+    },
+    {
+      "filename": "seek-91.79166666666667s.png",
+      "timeSeconds": 91.79166666666667,
+      "currentTime": 91.791666,
+      "frameCallback": false
+    },
+    {
+      "filename": "seek-97.875s.png",
+      "timeSeconds": 97.875,
+      "currentTime": 97.875,
+      "frameCallback": false
+    },
+    {
+      "filename": "seek-104.5s.png",
+      "timeSeconds": 104.5,
+      "currentTime": 104.5,
+      "frameCallback": false
+    },
+    {
+      "filename": "seek-111.91666666666667s.png",
+      "timeSeconds": 111.91666666666667,
+      "currentTime": 111.916666,
+      "frameCallback": false
+    },
+    {
+      "filename": "seek-122.45833333333333s.png",
+      "timeSeconds": 122.45833333333333,
+      "currentTime": 122.458333,
+      "frameCallback": false
+    },
+    {
+      "filename": "seek-134.29166666666666s.png",
+      "timeSeconds": 134.29166666666666,
+      "currentTime": 134.291666,
+      "frameCallback": false
+    },
+    {
+      "filename": "seek-142.70833333333334s.png",
+      "timeSeconds": 142.70833333333334,
+      "currentTime": 142.708333,
+      "frameCallback": false
+    }
+  ],
+  "transitionPlayback": [
+    {
+      "before": 7.333333,
+      "after": 8.894095,
+      "error": null
+    },
+    {
+      "before": 15.458333,
+      "after": 17.018821,
+      "error": null
+    },
+    {
+      "before": 23.541666,
+      "after": 25.102013,
+      "error": null
+    },
+    {
+      "before": 31.458333,
+      "after": 33.018697,
+      "error": null
+    },
+    {
+      "before": 37.416666,
+      "after": 38.978698,
+      "error": null
+    },
+    {
+      "before": 45.625,
+      "after": 47.185742,
+      "error": null
+    },
+    {
+      "before": 52.916666,
+      "after": 54.47718,
+      "error": null
+    },
+    {
+      "before": 62.208333,
+      "after": 63.770759,
+      "error": null
+    },
+    {
+      "before": 70,
+      "after": 71.560442,
+      "error": null
+    },
+    {
+      "before": 76.75,
+      "after": 78.307851,
+      "error": null
+    },
+    {
+      "before": 85.958333,
+      "after": 87.518676,
+      "error": null
+    },
+    {
+      "before": 91.791666,
+      "after": 93.35195,
+      "error": null
+    },
+    {
+      "before": 97.875,
+      "after": 99.43567,
+      "error": null
+    },
+    {
+      "before": 104.5,
+      "after": 106.060438,
+      "error": null
+    },
+    {
+      "before": 111.916666,
+      "after": 113.476963,
+      "error": null
+    },
+    {
+      "before": 122.458333,
+      "after": 124.018787,
+      "error": null
+    },
+    {
+      "before": 134.291666,
+      "after": 135.852173,
+      "error": null
+    },
+    {
+      "before": 142.708333,
+      "after": 144.268812,
+      "error": null
+    }
+  ],
+  "completed": "2026-09-22T17:22:39.952Z"
+}

@@ -1,0 +1,99 @@
+1
+00:00:00,650 --> 00:00:08,070
+Een container uit Yantian bereikt Rotterdam. Het team
+bereidt de reis naar Eindhoven voor.
+
+2
+00:00:08,070 --> 00:00:16,190
+In de CargoMatch-demo komen zending en documenten samen,
+zodat iedereen de volgende stap kan volgen.
+
+3
+00:00:16,190 --> 00:00:23,940
+Eerst vraagt een detail aandacht: de documenten tonen een
+gewichtsverschil van 180 kilogram.
+
+4
+00:00:23,940 --> 00:00:32,210
+Een collega controleert de bron en legt het beoordeelde
+gewicht vast, vóór de afwijking doorwerkt.
+
+5
+00:00:32,210 --> 00:00:38,130
+De oorspronkelijke documenten blijven bewaard. Elke
+partner ziet wat bij zijn rol hoort.
+
+6
+00:00:38,130 --> 00:00:46,030
+Met die informatie beoordeelt de douanespecialist het
+dossier en de vereisten voor de volgende stap.
+
+7
+00:00:46,030 --> 00:00:53,670
+Dit proces is gesimuleerd, zonder echte aangifte. De
+overdracht toont wel wie wat heeft gecontroleerd.
+
+8
+00:00:53,670 --> 00:01:02,590
+Ook de kosten zijn zichtbaar: in dit China-voorbeeld samen
+95.707 euro.
+
+9
+00:01:02,590 --> 00:01:10,390
+Kosten en vrijgavevoorwaarden tonen samen wat vóór het
+ophalen nog moet gebeuren.
+
+10
+00:01:10,390 --> 00:01:17,470
+Ook betaling en vrijgave zijn gesimuleerd: het proces gaat
+verder, zonder echt geld te verplaatsen.
+
+11
+00:01:17,470 --> 00:01:26,700
+Daarna verschuift de aandacht naar het achterland.
+Passende vervoeropties helpen de planner op weg.
+
+12
+00:01:26,700 --> 00:01:32,190
+Beide partijen kiezen of ze verbinden. Die kennismaking is
+geen boeking.
+
+13
+00:01:32,190 --> 00:01:38,620
+Praktische afspraken blijven nodig. Planning en aflevering
+zijn afzonderlijke stappen.
+
+14
+00:01:38,620 --> 00:01:45,250
+Op weg naar het magazijn blijft de overdracht onderdeel
+van hetzelfde zendingsdossier.
+
+15
+00:01:45,250 --> 00:01:52,310
+Dezelfde aanpak helpt een deelzending van Mumbai via
+Rotterdam naar Tilburg.
+
+16
+00:01:52,310 --> 00:02:03,200
+De ontvanger ziet alleen de eigen house-zending,
+documenten, kosten en afleverkeuze; geen andere dossiers.
+
+17
+00:02:03,200 --> 00:02:14,680
+De Control Tower toont scheepsstatus, route, ETA en
+afwijkingen, steeds met bron en tijd.
+
+18
+00:02:14,680 --> 00:02:23,440
+Dit is synthetische demotracking, geen live AIS: gedeeld
+overzicht met duidelijke grenzen.
+
+19
+00:02:23,440 --> 00:02:30,620
+Van documentcontrole tot overdracht verbindt CargoMatch de
+reis, met mensen aan het roer.
+
+20
+00:02:30,620 --> 00:02:34,957
+Ontdek CargoMatch, het netwerk voor
+transportcapaciteitsinformatie.

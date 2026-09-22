@@ -17,3 +17,15 @@ appropriate. Do not return to isolated fixed-length narration slots or fill
 time with silence merely to reproduce the original duration. Preserve the
 previous full export when making revised versions. Ask before materially
 changing the approved voice direction.
+
+For connected product demonstrations, write a causal story rather than a series
+of short statements per screen, and preserve continuous camera motion across
+adjacent states of the same device.
+
+**Why:** The user found the import film fragmented despite chapter-length reads
+and dissolves: short declarative sentences still sounded disconnected, while
+restarting a camera move at each screen change made the picture feel jerky.
+
+**How to apply:** Prefer a continuous narration take with natural connective
+phrases. Check moving transitions, not just stills; longer dissolves alone do
+not repair a repeated camera reset or inconsistent motion speed.

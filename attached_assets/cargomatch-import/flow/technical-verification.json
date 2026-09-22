@@ -1,0 +1,188 @@
+{
+  "passed": true,
+  "sha256": "754128c9c2c0dea3e7912d4e14909e7abd047aad06999a5c0831bdd82b739ae0",
+  "seconds": 156.20833333333334,
+  "frames": 3749,
+  "bytes": 81613348,
+  "fullDecode": true,
+  "narrationTakes": 1,
+  "insertedPauses": 0,
+  "naturalDetectedPausesSeconds": [
+    0.467583,
+    1.00046,
+    0.407812,
+    0.607687,
+    0.787417,
+    0.425771,
+    0.492167,
+    0.881687,
+    0.470125,
+    0.313729,
+    0.673958,
+    0.213646,
+    0.2585,
+    0.950562,
+    0.483,
+    0.49125,
+    0.492354,
+    0.168708,
+    0.511896,
+    0.435417,
+    0.554521,
+    0.177625,
+    0.269604,
+    0.516729,
+    0.278917,
+    0.173792,
+    0.579688,
+    0.880979,
+    0.643979,
+    0.985271,
+    0.675479,
+    0.502479,
+    0.343458,
+    0.352167,
+    0.422812,
+    0.375792,
+    0.374437,
+    0.569312,
+    0.270521,
+    0.263188,
+    0.52225,
+    0.483271,
+    0.239542,
+    0.290563,
+    0.201063,
+    0.930896,
+    0.190562,
+    0.178083,
+    0.602271,
+    0.588938,
+    0.812458,
+    0.533687,
+    0.205187,
+    0.290833,
+    0.610083,
+    0.316625,
+    0.859229,
+    0.608812,
+    0.975167,
+    0.52375,
+    0.222167,
+    0.529229,
+    0.439042,
+    0.346792
+  ],
+  "subtitleCues": 20,
+  "loudness": {
+    "input_i": "-16.06",
+    "input_tp": "-1.23",
+    "input_lra": "3.60",
+    "input_thresh": "-26.62",
+    "output_i": "-15.91",
+    "output_tp": "-1.50",
+    "output_lra": "3.50",
+    "output_thresh": "-26.46",
+    "normalization_type": "dynamic",
+    "target_offset": "-0.09"
+  },
+  "cameraGeometry": [
+    {
+      "shot": 2,
+      "sourceClockLinear": true,
+      "cameraResets": 0,
+      "maxCornerStep": 1.7219779862850861,
+      "screenChanges": []
+    },
+    {
+      "shot": 3,
+      "sourceClockLinear": true,
+      "cameraResets": 0,
+      "maxCornerStep": 0.8919293651893555,
+      "screenChanges": [
+        {
+          "frame": 194,
+          "maxCornerStep": 0.18081870106755674
+        }
+      ]
+    },
+    {
+      "shot": 4,
+      "sourceClockLinear": true,
+      "cameraResets": 0,
+      "maxCornerStep": 3.3083468074225975,
+      "screenChanges": []
+    },
+    {
+      "shot": 5,
+      "sourceClockLinear": true,
+      "cameraResets": 0,
+      "maxCornerStep": 0.9355494711580756,
+      "screenChanges": [
+        {
+          "frame": 197,
+          "maxCornerStep": 0.2094382947137943
+        }
+      ]
+    },
+    {
+      "shot": 6,
+      "sourceClockLinear": true,
+      "cameraResets": 0,
+      "maxCornerStep": 0.9378471668182176,
+      "screenChanges": [
+        {
+          "frame": 223,
+          "maxCornerStep": 0.7352471863780355
+        },
+        {
+          "frame": 410,
+          "maxCornerStep": 0.4541766257659027
+        }
+      ]
+    },
+    {
+      "shot": 8,
+      "sourceClockLinear": true,
+      "cameraResets": 0,
+      "maxCornerStep": 1.7704362573943444,
+      "screenChanges": [
+        {
+          "frame": 140,
+          "maxCornerStep": 1.4408378575390812
+        }
+      ]
+    },
+    {
+      "shot": 10,
+      "sourceClockLinear": true,
+      "cameraResets": 0,
+      "maxCornerStep": 0.9852414509802955,
+      "screenChanges": [
+        {
+          "frame": 178,
+          "maxCornerStep": 0.35371945508768987
+        }
+      ]
+    },
+    {
+      "shot": 11,
+      "sourceClockLinear": true,
+      "cameraResets": 0,
+      "maxCornerStep": 0.8789574487744043,
+      "screenChanges": [
+        {
+          "frame": 284,
+          "maxCornerStep": 0.6320849283037805
+        }
+      ]
+    }
+  ],
+  "allPhotographicFramesChecked": true,
+  "internalBlackFrames": [],
+  "firstFrameMean": 0.0,
+  "lastFrameMean": 0.0,
+  "longestIdenticalFrameRun": 0,
+  "frameDifferenceMean": 2.901298860163692,
+  "reviewLimits": "Frame metrics and browser moving playback are technical evidence, not independent human perception or listening. Optical-flow background interpolation may retain local artifacts; UI is composited afterward at full resolution."
+}

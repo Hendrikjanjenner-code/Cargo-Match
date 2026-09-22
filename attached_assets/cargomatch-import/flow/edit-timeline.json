@@ -1,0 +1,305 @@
+{
+  "durationSeconds": 156.20833333333334,
+  "frames": 3749,
+  "fps": 24,
+  "scenes": [
+    {
+      "id": 1,
+      "ids": [
+        1
+      ],
+      "source": "port",
+      "heading": "ONE CONNECTED JOURNEY",
+      "start": 0.0,
+      "end": 8.166666666666666,
+      "renderStartFrame": 0,
+      "renderEndFrame": 204,
+      "screens": []
+    },
+    {
+      "id": 2,
+      "ids": [
+        2
+      ],
+      "source": "plate-import",
+      "heading": "CHINA / YANTIAN → ROTTERDAM → EINDHOVEN",
+      "start": 8.166666666666666,
+      "end": 16.291666666666668,
+      "renderStartFrame": 188,
+      "renderEndFrame": 399,
+      "screens": [
+        {
+          "frame": 0,
+          "screen": "01-import-overview.png"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "ids": [
+        3,
+        4
+      ],
+      "source": "plate-customs",
+      "heading": "DOCUMENTS / HUMAN REVIEW",
+      "start": 16.291666666666668,
+      "end": 32.291666666666664,
+      "renderStartFrame": 383,
+      "renderEndFrame": 783,
+      "screens": [
+        {
+          "frame": 0,
+          "screen": "03-exceptions-180kg.png"
+        },
+        {
+          "frame": 194,
+          "screen": "06b-weight-confirmed.png"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "ids": [
+        5
+      ],
+      "source": "plate-planner-clear",
+      "heading": "PARTNERS / ROLE-BASED ACCESS",
+      "start": 32.291666666666664,
+      "end": 38.25,
+      "renderStartFrame": 767,
+      "renderEndFrame": 926,
+      "screens": [
+        {
+          "frame": 0,
+          "screen": "08-partners.png"
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "ids": [
+        6,
+        7
+      ],
+      "source": "plate-customs",
+      "heading": "CUSTOMS / SIMULATED",
+      "start": 38.25,
+      "end": 53.75,
+      "renderStartFrame": 910,
+      "renderEndFrame": 1298,
+      "screens": [
+        {
+          "frame": 0,
+          "screen": "10-customs-human-review.png"
+        },
+        {
+          "frame": 197,
+          "screen": "13-customs-released.png"
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "ids": [
+        8,
+        9,
+        10
+      ],
+      "source": "plate-planner-clear",
+      "heading": "CHARGES AND RELEASE / SIMULATED",
+      "start": 53.75,
+      "end": 77.58333333333333,
+      "renderStartFrame": 1282,
+      "renderEndFrame": 1870,
+      "screens": [
+        {
+          "frame": 0,
+          "screen": "14-charges-95707.png"
+        },
+        {
+          "frame": 223,
+          "screen": "16-release-gates.png"
+        },
+        {
+          "frame": 410,
+          "screen": "16b-release-gates-satisfied.png"
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "ids": [
+        11
+      ],
+      "source": "truck",
+      "heading": "FROM PORT TO HINTERLAND",
+      "start": 77.58333333333333,
+      "end": 86.79166666666667,
+      "renderStartFrame": 1854,
+      "renderEndFrame": 2091,
+      "screens": []
+    },
+    {
+      "id": 8,
+      "ids": [
+        12,
+        13
+      ],
+      "source": "plate-planner-clear",
+      "heading": "MUTUAL CONSENT / CONNECTION IS NOT A BOOKING",
+      "start": 86.79166666666667,
+      "end": 98.70833333333333,
+      "renderStartFrame": 2075,
+      "renderEndFrame": 2377,
+      "screens": [
+        {
+          "frame": 0,
+          "screen": "17d-delivery-connected.png"
+        },
+        {
+          "frame": 140,
+          "screen": "17e-delivery-planned.png"
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "ids": [
+        14
+      ],
+      "source": "warehouse",
+      "heading": "THE HANDOVER",
+      "start": 98.70833333333333,
+      "end": 105.33333333333333,
+      "renderStartFrame": 2361,
+      "renderEndFrame": 2536,
+      "screens": []
+    },
+    {
+      "id": 10,
+      "ids": [
+        15,
+        16
+      ],
+      "source": "plate-receiver-clear",
+      "heading": "INDIA / ONLY THE RECEIVER'S OWN SHIPMENT",
+      "start": 105.33333333333333,
+      "end": 123.29166666666667,
+      "renderStartFrame": 2520,
+      "renderEndFrame": 2967,
+      "screens": [
+        {
+          "frame": 0,
+          "screen": "20-india-receiver-private.png"
+        },
+        {
+          "frame": 178,
+          "screen": "23-india-delivery-choice.png"
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "ids": [
+        17,
+        18
+      ],
+      "source": "plate-import",
+      "heading": "CONTROL TOWER / SYNTHETIC DEMO, NOT LIVE AIS",
+      "start": 123.29166666666667,
+      "end": 143.54166666666666,
+      "renderStartFrame": 2951,
+      "renderEndFrame": 3453,
+      "screens": [
+        {
+          "frame": 0,
+          "screen": "18-control-geographic.png"
+        },
+        {
+          "frame": 284,
+          "screen": "19-vessel-jade-horizon.png"
+        }
+      ]
+    },
+    {
+      "id": 12,
+      "ids": [
+        19,
+        20
+      ],
+      "source": "port",
+      "heading": "",
+      "start": 143.54166666666666,
+      "end": 156.20833333333334,
+      "renderStartFrame": 3437,
+      "renderEndFrame": 3749,
+      "screens": []
+    }
+  ],
+  "chapterGapSeconds": 0,
+  "voiceTimeStretch": 1,
+  "narration": {
+    "path": "attached_assets/cargomatch-import/flow/audio/story-normalized.wav",
+    "start": 0.65,
+    "takes": 1
+  },
+  "transitions": [
+    {
+      "start": 7.833333333333333,
+      "duration": 0.6666666666666666,
+      "kind": "context dissolve"
+    },
+    {
+      "start": 15.958333333333334,
+      "duration": 0.6666666666666666,
+      "kind": "context dissolve"
+    },
+    {
+      "start": 31.958333333333332,
+      "duration": 0.6666666666666666,
+      "kind": "context dissolve"
+    },
+    {
+      "start": 37.916666666666664,
+      "duration": 0.6666666666666666,
+      "kind": "context dissolve"
+    },
+    {
+      "start": 53.416666666666664,
+      "duration": 0.6666666666666666,
+      "kind": "context dissolve"
+    },
+    {
+      "start": 77.25,
+      "duration": 0.6666666666666666,
+      "kind": "context dissolve"
+    },
+    {
+      "start": 86.45833333333333,
+      "duration": 0.6666666666666666,
+      "kind": "context dissolve"
+    },
+    {
+      "start": 98.375,
+      "duration": 0.6666666666666666,
+      "kind": "context dissolve"
+    },
+    {
+      "start": 105.0,
+      "duration": 0.6666666666666666,
+      "kind": "context dissolve"
+    },
+    {
+      "start": 122.95833333333333,
+      "duration": 0.6666666666666666,
+      "kind": "context dissolve"
+    },
+    {
+      "start": 143.20833333333334,
+      "duration": 0.6666666666666666,
+      "kind": "context dissolve"
+    }
+  ],
+  "screenTransitionFrames": 6,
+  "cameraClock": "One continuous linear source clock per whole physical shot; never reset for screen changes."
+}

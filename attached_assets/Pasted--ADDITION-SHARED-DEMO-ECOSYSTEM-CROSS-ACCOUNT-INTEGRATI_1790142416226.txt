@@ -1,0 +1,1359 @@
+# ADDITION — SHARED DEMO ECOSYSTEM & CROSS-ACCOUNT INTEGRATION
+
+The CargoMatch demo environment must operate as ONE SHARED COMMERCIAL AND OPERATIONAL ECOSYSTEM.
+
+This requirement applies to:
+
+* existing CargoMatch demo users
+* maritime demo users
+* inland-waterway demo users
+* road demo users
+* rail demo users
+* air-cargo demo users
+* import demo users
+* customs demo users
+* future demo personas.
+
+Do NOT create isolated demo environments for each persona.
+
+All demo users must interact with the SAME underlying:
+
+companies
+
+shipments
+
+cargo requirements
+
+capacity opportunities
+
+transport assets
+
+matches
+
+interests
+
+connections
+
+messages
+
+notifications
+
+documents
+
+customs cases
+
+release events
+
+delivery requirements
+
+exceptions
+
+tasks
+
+and partner assignments
+
+where their permissions allow access.
+
+---
+
+# 61. DEMO ACCOUNTS MUST ACTUALLY WORK TOGETHER
+
+This is a HARD REQUIREMENT.
+
+Demo persona switching must not merely change:
+
+frontend text
+
+hardcoded cards
+
+mock notifications
+
+local state
+
+or visual examples.
+
+Changing demo user must change the actual authenticated backend context.
+
+Every demo persona must have:
+
+USER record
+
+COMPANY membership
+
+operational profile
+
+permissions
+
+authorized assets
+
+authorized shipments
+
+authorized actions
+
+network relationships.
+
+All cross-user actions must persist in the shared database.
+
+---
+
+# 62. EXISTING DEMO PERSONAS
+
+Preserve and integrate the existing demo personas.
+
+These include:
+
+## ANDY KERS
+
+Company:
+
+NorthSea Chartering Demo
+
+Operational Profile:
+
+CHARTERER
+
+Primary Mode:
+
+DEEPSEA
+
+---
+
+## SOPHIE VAN DIJK
+
+Company:
+
+OceanBridge Bulk Demo
+
+Operational Profile:
+
+OWNER_REPRESENTATIVE / CARRIER
+
+Primary Mode:
+
+DEEPSEA
+
+---
+
+## MARK DE JONG
+
+Company:
+
+RhineFlow Shipping Demo
+
+Operational Profile:
+
+SKIPPER
+
+Primary Mode:
+
+INLAND WATERWAY
+
+---
+
+## EVA JANSEN
+
+Company:
+
+RhineFlow Shipping Demo
+
+Operational Profile:
+
+PLANNER
+
+Primary Mode:
+
+INLAND WATERWAY
+
+---
+
+## LAURA PETERS
+
+Company:
+
+EuroCommodities Demo
+
+Operational Profile:
+
+SHIPPER
+
+---
+
+## THOMAS BECKER
+
+Company:
+
+TransRoute Logistics Demo
+
+Operational Profile:
+
+PLANNER
+
+Primary Mode:
+
+ROAD
+
+---
+
+## JAN MÜLLER
+
+Company:
+
+TransRoute Logistics Demo
+
+Operational Profile:
+
+DRIVER
+
+Primary Mode:
+
+ROAD
+
+---
+
+## ANNA SCHMIDT
+
+Company:
+
+EuroRail Cargo Demo
+
+Operational Profile:
+
+RAIL_OPERATOR
+
+Primary Mode:
+
+RAIL
+
+---
+
+## SARAH WILLIAMS
+
+Company:
+
+SkyFreight Demo
+
+Operational Profile:
+
+AIR_CARGO_OPERATOR
+
+Primary Mode:
+
+AIR CARGO
+
+---
+
+## DAVID CHEN
+
+Company:
+
+GlobalLine Logistics Demo
+
+Operational Profile:
+
+FORWARDER
+
+Primary Areas:
+
+LINER / IMPORT / LCL
+
+---
+
+## EMMA DE VRIES
+
+Company:
+
+CargoMatch
+
+Operational Profile:
+
+PLATFORM_ADMIN.
+
+---
+
+# 63. NEW IMPORT DEMO PERSONA
+
+Also integrate the Import Manager introduced in this extension.
+
+## MICHAEL VAN DER MEER
+
+Company:
+
+GlobalTrade Imports Demo BV
+
+Operational Profile:
+
+IMPORT_MANAGER
+
+Primary Areas:
+
+IMPORT
+
+SHIPMENTS
+
+DOCUMENTS
+
+CUSTOMS
+
+RELEASE
+
+DELIVERY
+
+CONTROL.
+
+Michael must NOT exist in an isolated import demo.
+
+His shipments must be capable of interacting with existing CargoMatch users, companies and transport capacity.
+
+---
+
+# 64. SHARED CROSS-ACCOUNT DATA
+
+If two users participate in the same commercial or operational workflow, both must reference the SAME underlying database object.
+
+Never create:
+
+Andy's version of Match 123
+
+and:
+
+Sophie's copy of Match 123.
+
+There must be:
+
+MATCH 123
+
+with authorized role-specific views.
+
+The same applies to:
+
+SHIPMENT
+
+INTEREST
+
+CONNECTION
+
+CONVERSATION
+
+DELIVERY REQUIREMENT
+
+CUSTOMS CASE
+
+EXCEPTION
+
+PARTNER ASSIGNMENT.
+
+One business object.
+
+Multiple authorized perspectives.
+
+---
+
+# 65. DEEPSEA CROSS-ACCOUNT TEST
+
+Seed:
+
+Cargo Requirement:
+
+75,000 MT
+
+Indonesia → China
+
+Laycan:
+
+22–25 OCT
+
+Owned/managed by:
+
+Andy Kers / NorthSea Chartering Demo.
+
+Seed:
+
+MV OceanBridge Atlas
+
+Kamsarmax
+
+82,000 DWT
+
+Expected Open:
+
+Malaysia
+
+20–23 OCT
+
+Managed by:
+
+Sophie van Dijk / OceanBridge Bulk Demo.
+
+CargoMatch creates one shared match.
+
+Test:
+
+LOGIN AS ANDY
+
+↓
+
+OPEN MATCH
+
+↓
+
+SHOW INTEREST
+
+↓
+
+DATABASE:
+
+INTEREST CREATED.
+
+Then:
+
+LOGIN AS SOPHIE
+
+↓
+
+SOPHIE MUST SEE:
+
+NEW INTEREST.
+
+Sophie selects:
+
+ACCEPT.
+
+Then:
+
+MATCH STATE:
+
+CONNECTED.
+
+Login again as Andy.
+
+Andy must now see:
+
+CONNECTED.
+
+Both users must have access to the SAME conversation.
+
+---
+
+# 66. PRIVACY TEST
+
+Before connection:
+
+Andy must not automatically see confidential Sophie/company/vessel information beyond the privacy policy.
+
+Sophie must not automatically see confidential Andy/cargo-owner information beyond the privacy policy.
+
+After mutual acceptance:
+
+authorized identity/contact information becomes visible according to CargoMatch rules.
+
+Test this server-side.
+
+Do not rely on hidden frontend fields.
+
+Attempt unauthorized API access.
+
+Expected:
+
+403 / ACCESS DENIED.
+
+---
+
+# 67. INLAND CROSS-ACCOUNT TEST
+
+Mark de Jong is skipper of:
+
+MS RhineFlow One.
+
+Mark sees:
+
+NEXT CARGO OPPORTUNITY.
+
+If Mark does not have commercial authority:
+
+button:
+
+SEND TO PLANNER.
+
+Mark selects:
+
+SEND TO PLANNER.
+
+Persist:
+
+PLANNER_REFERRAL.
+
+Login as:
+
+Eva Jansen.
+
+Eva must see:
+
+NEW OPPORTUNITY FROM SKIPPER
+
+Vessel:
+
+MS RhineFlow One.
+
+Eva can:
+
+review
+
+show interest
+
+dismiss
+
+or continue commercial workflow.
+
+Mark must subsequently see an appropriate status.
+
+Example:
+
+SENT TO PLANNER
+
+↓
+
+PLANNER REVIEWING
+
+↓
+
+INTEREST SENT.
+
+---
+
+# 68. ROAD CROSS-ACCOUNT TEST
+
+Seed:
+
+Truck 42.
+
+Current/expected operation:
+
+Cologne → Eindhoven.
+
+Expected Empty:
+
+Eindhoven
+
+14:00.
+
+Driver:
+
+Jan Müller.
+
+Planner:
+
+Thomas Becker.
+
+CargoMatch finds:
+
+NEXT LOAD
+
+18 KM AWAY.
+
+Jan sees opportunity.
+
+Jan selects:
+
+SEND TO PLANNER.
+
+Persist event.
+
+Login as:
+
+Thomas Becker.
+
+Thomas must see the SAME opportunity.
+
+Thomas can continue commercial action.
+
+Status must update for Jan.
+
+---
+
+# 69. RAIL CROSS-ACCOUNT TEST
+
+Anna Schmidt:
+
+EuroRail Cargo Demo.
+
+Capacity:
+
+12 wagons
+
+Duisburg
+
+available tomorrow
+
+06:00.
+
+Create compatible cargo from another appropriate demo company.
+
+CargoMatch must create a real shared match.
+
+The cargo-side demo user and Anna must see their authorized perspectives of the SAME match.
+
+Interest/connection must persist across accounts.
+
+---
+
+# 70. AIR-CARGO CROSS-ACCOUNT TEST
+
+Sarah Williams:
+
+SkyFreight Demo.
+
+Seed:
+
+AMS → DXB
+
+B777F
+
+Departure:
+
+tomorrow 21:30
+
+Remaining Commercial Capacity:
+
+4,800 KG
+
+28 M³.
+
+Seed compatible cargo:
+
+Schiphol region → Dubai
+
+3,600 KG
+
+Ready:
+
+15:00.
+
+CargoMatch creates shared air-cargo match.
+
+Cargo-side persona shows interest.
+
+Sarah must receive the interest.
+
+Sarah accepts.
+
+Both parties see:
+
+CONNECTED.
+
+Do not confuse:
+
+aircraft tracking
+
+with:
+
+commercial capacity.
+
+---
+
+# 71. IMPORT → DELIVERY CROSS-ACCOUNT TEST
+
+This is mandatory for the new Import modules.
+
+Michael van der Meer manages:
+
+CM-2026-008421
+
+Shenzhen
+
+↓
+
+Rotterdam
+
+↓
+
+Eindhoven.
+
+The shipment progresses:
+
+IN TRANSIT
+
+↓
+
+ARRIVING
+
+↓
+
+CUSTOMS PREPARED
+
+↓
+
+CUSTOMS RELEASED
+
+↓
+
+TERMINAL AVAILABLE.
+
+When cargo is expected to become available in Rotterdam:
+
+CargoMatch creates:
+
+DELIVERY_REQUIREMENT.
+
+This must use the EXISTING CargoMatch matching engine.
+
+Do not create a fake Import-only transport result.
+
+---
+
+# 72. IMPORT → ROAD EXAMPLE
+
+Shipment:
+
+CM-2026-008421.
+
+Container:
+
+TCLU1234567.
+
+Weight:
+
+18,420 KG.
+
+Available:
+
+Rotterdam.
+
+Destination:
+
+Eindhoven.
+
+CargoMatch searches suitable transport.
+
+Create a realistic road-capacity match with an appropriate demo carrier where eligibility permits.
+
+The importer side sees:
+
+SUITABLE ROAD CAPACITY.
+
+The road planner sees:
+
+NEW CARGO OPPORTUNITY.
+
+If one side shows interest:
+
+the other side receives the interest.
+
+If accepted:
+
+CONNECTED.
+
+Both sides then see the shared conversation according to permissions.
+
+---
+
+# 73. IMPORT → BARGE EXAMPLE
+
+Where appropriate, also seed an inland-waterway delivery scenario.
+
+Example:
+
+Imported cargo becomes available:
+
+Rotterdam.
+
+Final inland destination:
+
+Rhine corridor.
+
+Expected cargo availability:
+
+Wednesday 08:00.
+
+A RhineFlow vessel is expected available:
+
+Rotterdam region
+
+Wednesday 11:00.
+
+CargoMatch evaluates:
+
+eligibility
+
+time compatibility
+
+cargo compatibility
+
+capacity
+
+location.
+
+If eligible:
+
+create a shared CargoMatch match.
+
+Importer/forwarder sees capacity.
+
+Planner sees cargo opportunity.
+
+Use the same interest and connection workflow.
+
+---
+
+# 74. IMPORT → RAIL EXAMPLE
+
+Create an optional rail scenario.
+
+Imported cargo:
+
+Rotterdam
+
+↓
+
+Duisburg region.
+
+Rail capacity:
+
+appropriate service / wagons.
+
+CargoMatch should match:
+
+EXPECTED CARGO AVAILABILITY
+
+with:
+
+EXPECTED RAIL CAPACITY.
+
+Again:
+
+same database match
+
+different authorized perspectives.
+
+---
+
+# 75. FORWARDER PARTICIPATION
+
+David Chen / GlobalLine Logistics Demo must participate in relevant:
+
+liner
+
+LCL
+
+import
+
+and forwarding workflows.
+
+For the India → Netherlands LCL demo:
+
+David may act as:
+
+FORWARDER.
+
+Michael or another importer/consignee can see their authorized shipment.
+
+David sees the operational forwarding workflow.
+
+Do not expose unrelated house shipments to consignees.
+
+---
+
+# 76. LCL CROSS-ACCOUNT PRIVACY
+
+For one consolidation:
+
+MASTER CONTAINER
+
+↓
+
+HOUSE SHIPMENT A
+
+HOUSE SHIPMENT B
+
+HOUSE SHIPMENT C.
+
+Each consignee only sees:
+
+their own shipment
+
+their own documents
+
+their own charges
+
+their own customs/release information
+
+unless explicitly authorized.
+
+Forwarder:
+
+may see all house shipments assigned to the consolidation according to permissions.
+
+Platform Admin:
+
+may access according to platform-admin authorization.
+
+Test these permissions at API level.
+
+---
+
+# 77. CUSTOMS PARTNER WORKFLOW
+
+Create at least one fictional customs-specialist/representative demo user if needed.
+
+Example:
+
+NATALIE SMIT
+
+Company:
+
+CargoClear Customs Demo
+
+Operational Profile:
+
+CUSTOMS_SPECIALIST.
+
+Michael's shipment develops:
+
+CLASSIFICATION REVIEW REQUIRED.
+
+Michael assigns:
+
+CUSTOMS REVIEW
+
+to:
+
+CargoClear Customs Demo.
+
+Natalie logs in.
+
+Natalie sees:
+
+ASSIGNED CUSTOMS CASE.
+
+She can review only authorized shipment/customs information.
+
+She resolves/recommends appropriate action.
+
+Michael then sees:
+
+CUSTOMS REVIEW COMPLETED.
+
+Do not expose Michael's unrelated shipments.
+
+---
+
+# 78. NOTIFICATIONS MUST BE REAL EVENTS
+
+Notifications must originate from persisted events.
+
+Examples:
+
+Andy:
+
+"Interest sent."
+
+Sophie:
+
+"New interest received."
+
+Eva:
+
+"New opportunity from skipper."
+
+Thomas:
+
+"Driver sent a cargo opportunity."
+
+Michael:
+
+"Customs case requires review."
+
+Natalie:
+
+"New customs case assigned."
+
+Michael:
+
+"Customs review completed."
+
+Sarah:
+
+"New air cargo interest received."
+
+Do NOT seed a permanent fake notification that appears regardless of user action.
+
+Seed initial demo notifications where useful, but new actions must generate real notifications dynamically.
+
+---
+
+# 79. MESSAGING MUST BE SHARED
+
+A CargoMatch connection should create/access one:
+
+CONVERSATION.
+
+Participants reference the same conversation.
+
+Example:
+
+Andy sends:
+
+"Can you confirm expected open position?"
+
+Sophie logs in.
+
+Sophie must see exactly that message.
+
+Sophie replies.
+
+Andy must see the reply.
+
+Test:
+
+sender
+
+recipient/participants
+
+timestamp
+
+read state
+
+permissions.
+
+Do not store separate fake chat histories per frontend persona.
+
+---
+
+# 80. ACTIVITY TIMELINE
+
+Cross-account actions should create activity events.
+
+Example:
+
+09:14
+
+Andy showed interest.
+
+09:16
+
+Sophie received interest.
+
+09:22
+
+Sophie accepted connection.
+
+09:23
+
+Connection established.
+
+09:25
+
+Andy sent message.
+
+For Import:
+
+10:05
+
+Michael assigned customs review.
+
+10:08
+
+Natalie opened case.
+
+10:24
+
+Natalie completed review.
+
+10:25
+
+Import readiness recalculated.
+
+Store actual event records.
+
+---
+
+# 81. ROLE-AWARE VIEWS OF SAME DATA
+
+Same object does NOT mean identical screen.
+
+Example:
+
+MATCH 123.
+
+Andy may see:
+
+VESSEL SUMMARY
+
+EXPECTED OPEN REGION
+
+CAPACITY
+
+MATCH SCORE
+
+SHOW INTEREST.
+
+Sophie may see:
+
+CARGO SUMMARY
+
+LAYCAN
+
+QUANTITY
+
+COMPATIBILITY
+
+INCOMING INTEREST.
+
+After connection:
+
+additional authorized information becomes available.
+
+Therefore implement:
+
+ONE RECORD
+
+*
+
+ROLE/PERMISSION-AWARE SERIALIZATION.
+
+Do not create duplicate records to achieve privacy.
+
+---
+
+# 82. DEMO USER SWITCHER
+
+Maintain:
+
+SWITCH DEMO USER.
+
+It must be available only in:
+
+DEVELOPMENT / DEMO MODE.
+
+When selecting:
+
+SOPHIE VAN DIJK
+
+the system must actually establish Sophie's demo authentication/session context.
+
+Then all API requests execute as Sophie.
+
+Same for every demo persona.
+
+Do NOT implement:
+
+currentDemoUser = "Sophie"
+
+as merely a frontend variable while backend requests still execute as Andy/admin.
+
+---
+
+# 83. DEMO USER SWITCH SECURITY
+
+Production authentication must remain separate.
+
+Never allow:
+
+public production users
+
+to impersonate arbitrary users through the demo switcher.
+
+Demo impersonation/switching must be restricted to:
+
+demo environment
+
+development environment
+
+or explicitly authorized platform-admin demo functionality.
+
+---
+
+# 84. DATABASE PERSISTENCE
+
+Cross-persona actions must persist.
+
+Test:
+
+Andy sends interest.
+
+Refresh browser.
+
+Interest still exists.
+
+Switch to Sophie.
+
+Interest exists.
+
+Restart frontend.
+
+Interest still exists.
+
+Switch back to Andy.
+
+State remains correct.
+
+Do not depend on:
+
+React local state
+
+browser-only local storage
+
+hardcoded JSON
+
+static fixtures
+
+for transactional demo state.
+
+---
+
+# 85. DEVELOPMENT VS PRODUCTION DEMO DATA
+
+Account for environments.
+
+Demo seed data must be intentionally initialized in the environment where the demo is supposed to run.
+
+Do not assume development database records automatically exist in production.
+
+Create:
+
+idempotent demo seed mechanism.
+
+Example:
+
+`seedCargoMatchDemoEcosystem()`
+
+Running seed multiple times must not create duplicate:
+
+users
+
+companies
+
+assets
+
+shipments
+
+matches
+
+conversations.
+
+Use stable demo identifiers.
+
+---
+
+# 86. RESET DEMO ENVIRONMENT
+
+Provide authorized:
+
+RESET DEMO DATA.
+
+This should restore the entire shared demo ecosystem to its known starting state.
+
+Reset:
+
+matches
+
+interests
+
+connections
+
+messages
+
+notifications
+
+shipment statuses
+
+customs demo statuses
+
+exceptions
+
+delivery statuses
+
+demo tasks.
+
+Preserve required:
+
+users
+
+companies
+
+permissions
+
+base assets
+
+seed configuration.
+
+Require confirmation:
+
+RESET ALL DEMO DATA?
+
+This affects all demo personas.
+
+---
+
+# 87. DYNAMIC DEMO DATES
+
+Do not hardcode dates that become permanently expired.
+
+Use relative date generation.
+
+Examples:
+
+tomorrow
+
++2 days
+
++4 days
+
+next Wednesday
+
+relative laycan.
+
+Internally use actual timestamps.
+
+UI may display:
+
+23 SEP
+
+24 SEP
+
+etc.
+
+Regenerate/reset demo dates relative to current demo seed time.
+
+---
+
+# 88. END-TO-END AUTOMATED TEST SUITE
+
+Create automated integration tests.
+
+At minimum:
+
+TEST 1
+
+Andy → Sophie interest.
+
+Expected:
+
+PASS.
+
+TEST 2
+
+Sophie → Andy acceptance.
+
+Expected:
+
+CONNECTED.
+
+TEST 3
+
+Connected messaging.
+
+Expected:
+
+both users access same conversation.
+
+TEST 4
+
+Pre-connection privacy.
+
+Expected:
+
+confidential fields unavailable.
+
+TEST 5
+
+Post-connecti

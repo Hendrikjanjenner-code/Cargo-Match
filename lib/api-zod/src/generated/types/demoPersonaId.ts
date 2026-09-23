@@ -24,4 +24,10 @@ export const DemoPersonaId = {
   sarah: 'sarah',
   david: 'david',
   emma: 'emma',
+  michael: 'michael',
+  'customs-specialist': 'customs-specialist',
+  finance: 'finance',
+  consignee: 'consignee',
+  natalie: 'natalie',
+  'consignee-c': 'consignee-c',
 } as const;

@@ -98,6 +98,8 @@ export interface DemoListing {
 }
 
 export interface DemoOpportunity {
+  conversationId?: string;
+  positioningDistanceKm?: number;
   id: string;
   cargoId: string;
   capacityId: string;
@@ -120,6 +122,9 @@ export interface DemoMatch extends DemoOpportunity {
 }
 
 export interface DemoMessage {
+  senderId?: string;
+  conversationId?: string;
+  readBy?: string[];
   id: string;
   matchId: string;
   senderName: string;
@@ -144,7 +149,7 @@ export interface DemoReferral {
   toUserId: string;
   opportunityId: string;
   note: string;
-  status: "SENT" | "REVIEWED";
+  status: "SENT" | "REVIEWED" | "DISMISSED" | "INTEREST_SENT" | "CONNECTED";
   createdAt: string;
   demo: true;
 }
@@ -164,6 +169,7 @@ export interface DemoImportShipment {
 }
 
 export interface DemoAudit {
+  matchId?: string;
   id: string;
   actorId: string;
   action: string;
@@ -208,14 +214,15 @@ export type DemoAction =
   | { type: "MESSAGE"; matchId: string; body: string }
   | { type: "CONFIRM_AVAILABILITY"; assetId: string; availableAt: string }
   | { type: "SEND_TO_PLANNER"; matchId: string; note?: string }
-  | { type: "REVIEW_REFERRAL"; referralId: string }
+  | { type: "REVIEW_REFERRAL" | "DISMISS_REFERRAL"; referralId: string }
+  | { type: "READ_CONVERSATION"; matchId: string }
   | { type: "SAVE_ASSET"; assetId?: string; mode?: Mode; assetType?: string; name?: string; location?: string; availableAt?: string; capacity?: number; volume?: number; equipment?: string[]; technical?: DemoTechnical }
   | { type: "SAVE_LISTING"; listingId?: string; listing: Partial<DemoListing> }
   | { type: "PUBLISH_LISTING" | "WITHDRAW_LISTING"; listingId: string }
   | { type: "IMPORT_STEP"; shipmentId: string; step: "ARRIVED" | "DOCUMENTS_READY" | "PAYMENT_SIMULATED" | "RELEASED" | "PICKUP_READY" }
   | import("./import-contract").ImportAction
   | { type: "READ_NOTIFICATION"; notificationId: string }
-  | { type: "RESET"; confirmation: "RESET DEMO" };
+  | { type: "RESET"; confirmation: "RESET ALL DEMO DATA?" };
 
 const BASE_URL = "/api/demo";
 

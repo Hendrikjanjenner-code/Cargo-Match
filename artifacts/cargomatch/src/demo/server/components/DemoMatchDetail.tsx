@@ -62,6 +62,7 @@ export function DemoMatchDetail({ matchId, onBack }: { matchId: string, onBack: 
       </Button>
       {feedback && <p role="status" className="rounded-md border bg-white p-3 text-sm">{feedback}</p>}
       <p className="text-sm text-slate-600">Fictieve, handmatig geschatte kans. Geen live positie of geverifieerde route. CONNECTED is geen boeking of reservering.</p>
+      <section className="text-xs space-y-1" aria-label="Activiteit bij deze match">{workspace.audit.filter(e => e.matchId === matchId).map(e => <p key={e.id}>{new Date(e.createdAt).toLocaleString("nl-NL")} · {e.actorId === context.user.id ? "Jij" : isConnected ? e.actorId : "Andere deelnemer"} · {e.action}</p>)}</section>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div className="md:col-span-2 space-y-6">
@@ -75,6 +76,7 @@ export function DemoMatchDetail({ matchId, onBack }: { matchId: string, onBack: 
               </div>
             </CardHeader>
             <CardContent className="space-y-6 pt-6">
+                {match.positioningDistanceKm !== undefined && <p className="text-sm">Circa {match.positioningDistanceKm} km positionering, hemelsbreed uit fictieve locaties — geen geverifieerde rijroute.</p>}
               <div className="grid grid-cols-2 gap-6 text-sm">
                 <div>
                   <div className="text-slate-500 mb-1">Route</div>
@@ -121,12 +123,15 @@ export function DemoMatchDetail({ matchId, onBack }: { matchId: string, onBack: 
                 <CardTitle>Gesprek</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4 pt-4">
+                <p className="text-xs text-muted-foreground">Gedeeld gesprek: {match.conversationId}</p>
+                <Button variant="outline" size="sm" disabled={busy} onClick={() => void executeAction({type: "READ_CONVERSATION", matchId}).catch(e => setFeedback(e.message))}>Markeer gesprek als gelezen</Button>
                 <div className="space-y-3 max-h-[300px] overflow-y-auto p-2">
                   {messages.length === 0 && <p className="text-sm text-slate-500 text-center py-4">Nog geen berichten gestuurd.</p>}
                   {messages.map(m => (
                     <div key={m.id} className={`p-3 rounded-lg text-sm max-w-[80%] shadow-sm ${m.senderName === context.user.name ? "bg-blue-100 ml-auto" : "bg-slate-100"}`}>
                       <div className="font-bold text-xs mb-1 text-slate-600">{m.senderName}</div>
                       <div>{m.body}</div>
+                      <p className="text-xs mt-1 text-slate-500">{new Date(m.createdAt).toLocaleString("nl-NL")} · {(m.readBy?.filter(id => id !== m.senderId).length ?? 0) > 0 ? "Gelezen" : "Verzonden"}</p>
                     </div>
                   ))}
                 </div>

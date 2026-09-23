@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { once } from "node:events";
 import test, { after, before, beforeEach } from "node:test";
 import { eq, inArray } from "drizzle-orm";
-import { db, demoSandboxesTable } from "@workspace/db";
+import { db, demoSessionsTable, pool } from "@workspace/db";
 import { createTestIdentity, disposeTestIdentity } from "./support/testIdentity";
 
 // Import the app after configuring its trusted origin. These are ordinary HTTP
@@ -35,7 +35,11 @@ const previousOrigin = process.env.APP_ORIGIN;
 const previousEnabled = process.env.DEMO_ENABLED;
 const previousEnvironment = process.env.NODE_ENV;
 let clientNumber = 1;
-beforeEach(() => { clientNumber += 1; });
+beforeEach(async () => {
+  clientNumber += 1;
+  const admin = await start("emma");
+  success(await action(admin, {type: "RESET", confirmation: "RESET ALL DEMO DATA?"}));
+});
 
 async function request(path: string, options: {
   method?: string; cookie?: string; body?: unknown; session?: Session;
@@ -143,6 +147,7 @@ async function connect(jar: Jar, id: string, counterpart: string) {
 }
 
 before(async () => {
+  process.env.DEMO_TEST_ECOSYSTEM = `test-demo-http-${process.pid}`;
   process.env.APP_ORIGIN = origin;
   process.env.NODE_ENV = "test";
   delete process.env.DEMO_ENABLED;
@@ -156,7 +161,8 @@ before(async () => {
 });
 
 after(async () => {
-  if (csrfTokens.size) await db.delete(demoSandboxesTable).where(inArray(demoSandboxesTable.csrfToken, [...csrfTokens]));
+  await pool.query("DELETE FROM demo_sessions WHERE ecosystem_id=$1", [process.env.DEMO_TEST_ECOSYSTEM]);
+  await pool.query("DELETE FROM demo_ecosystems WHERE id=$1", [process.env.DEMO_TEST_ECOSYSTEM]);
   if (real) await disposeTestIdentity(real);
   if (server) {
     server.closeAllConnections();
@@ -348,7 +354,7 @@ test("HTTP simultaneous withdrawal and acceptance cannot leave stale disclosure"
   assert.ok(!jar.session.workspace.messages.some(item => item.matchId === "match-deepsea"));
 });
 
-test("HTTP separate visitor sandboxes reject body-forged actors and retain isolated edits/reset", async () => {
+test("HTTP independent principals reject forged actors and share edits/global reset", async () => {
   const left = await start("andy");
   const right = await start("andy");
   assert.notEqual(left.cookie, right.cookie);
@@ -360,20 +366,22 @@ test("HTTP separate visitor sandboxes reject body-forged actors and retain isola
   const { id: _id, companyId: _company, status: _status, demo: _demo, ...listing } = edited;
   success(await action(left, { type: "SAVE_LISTING", listingId: cargo.id, listing }));
   const rightReload = success(await request("/api/demo/session", { cookie: right.cookie }));
-  assert.equal(rightReload.workspace.cargos.find(item => item.id === cargo.id)?.name, original.name);
+  assert.equal(rightReload.workspace.cargos.find(item => item.id === cargo.id)?.name, edited.name);
   const forged = await action(right, {
-    type: "RESET", confirmation: "RESET DEMO", actorId: "emma", personaId: "emma",
+    type: "RESET", confirmation: "RESET ALL DEMO DATA?", actorId: "emma", personaId: "emma",
     sandboxId: left.cookie, companyId: left.session.context.company.id,
   });
   assert.ok([400, 403].includes(forged.status), JSON.stringify(forged.body));
   await switchTo(right, "emma");
-  success(await action(right, { type: "RESET", confirmation: "RESET DEMO" }));
+  success(await action(right, { type: "RESET", confirmation: "RESET ALL DEMO DATA?" }));
   const leftReload = success(await request("/api/demo/session", { cookie: left.cookie }));
-  assert.equal(leftReload.workspace.cargos.find(item => item.id === cargo.id)?.name, edited.name);
+  assert.equal(leftReload.workspace.cargos.find(item => item.id === cargo.id)?.name, original.name);
 });
 
 test("HTTP decline is an explicit incoming-recipient permission, not sender cancellation", async () => {
   for (const [sender, recipient] of [["andy", "sophie"], ["sophie", "andy"]]) {
+    const admin = await start("emma");
+    success(await action(admin, {type: "RESET", confirmation: "RESET ALL DEMO DATA?"}));
     const jar = await start(sender!);
     assert.ok(jar.session.context.permissions.includes("DECLINE_CONNECTION"));
     for (const type of ["ACCEPT", "DECLINE"]) {
@@ -449,7 +457,7 @@ test("HTTP stale tabs and simultaneous switches cannot mutate under a changed pr
   jar.session = success(await request("/api/demo/session", { cookie: jar.cookie }));
   await switchTo(jar, "emma");
   const beforeReset = structuredClone(jar.session);
-  success(await action(jar, { type: "RESET", confirmation: "RESET DEMO" }));
+  success(await action(jar, { type: "RESET", confirmation: "RESET ALL DEMO DATA?" }));
   assert.ok(jar.session.revision > beforeReset.revision);
   assert.equal((await request("/api/demo/actions", {
     method: "POST", cookie: jar.cookie, session: beforeReset,
@@ -459,8 +467,8 @@ test("HTTP stale tabs and simultaneous switches cannot mutate under a changed pr
 
 test("HTTP expired sessions and logout stop reads and writes", async () => {
   const jar = await start("andy");
-  await db.update(demoSandboxesTable).set({ expiresAt: new Date(Date.now() - 60_000) })
-    .where(eq(demoSandboxesTable.csrfToken, jar.session.csrfToken));
+  await db.update(demoSessionsTable).set({ expiresAt: new Date(Date.now() - 60_000) })
+    .where(eq(demoSessionsTable.csrfToken, jar.session.csrfToken));
   assert.equal((await request("/api/demo/session", { cookie: jar.cookie })).status, 401);
   assert.equal((await action(jar, { type: "INTEREST", matchId: "match-deepsea" })).status, 401);
   const live = await start("andy");

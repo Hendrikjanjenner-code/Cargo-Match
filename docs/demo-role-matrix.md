@@ -19,10 +19,10 @@ for another:
   not grant authority by itself.
 - **Platform role** is `USER` or the implementation token `DEMO_ADMIN`.
   `DEMO_ADMIN` realizes the requested platform-administrator perspective but
-  applies only to the current isolated demo sandbox; it is not a production
+  applies only to the shared fictional demo ecosystem; it is not a production
   `PLATFORM_ADMIN`.
 - **Explicit permissions** are the final allow-list for an action. Company
-  status, sandbox ownership, record ownership or assignment, mode, publication
+  status, persisted demo membership, record ownership or assignment, mode, publication
   state, and match participation are additional mandatory checks.
 
 Hiding a link is not authorization. Every read and mutation must enforce the
@@ -76,7 +76,7 @@ creates a booking.
 ## Expected shared-state chains
 
 All actors in a chain view different server projections of one underlying
-record set in the current visitor's sandbox. Person switching must not clone a
+   record set shared between all demo visitors. Person switching must not clone a
 match, interest, connection, conversation, notification, or planner referral.
 
 1. **Deepsea (priority):** Andy's 75,000 mt Indonesia–China cargo is eligible

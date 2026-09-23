@@ -52,7 +52,13 @@ const DEMO_CARDS = [
   { id: "anna", company: "EuroRail Cargo Demo", name: "Anna Schmidt", role: "Spooroperator · demo-pilot", desc: "Beoordeel technische geschiktheid en tijdvensters voor twaalf wagons bij Duisburg." },
   { id: "sarah", company: "SkyFreight Demo", name: "Sarah Williams", role: "Luchtvrachtoperator · demo-pilot", desc: "Behandel een zending van 3.600 kg binnen de resterende 4.800 kg en 28 m³ op AMS–DXB." },
   { id: "david", company: "GlobalLine Logistics Demo", name: "David Chen", role: "Forwarder / liner", desc: "Verken afvaarten en de aparte LCL Import-pilot met fictieve documenten en gesimuleerde afhandeling." },
-  { id: "emma", company: "CargoMatch demo-beheer", name: "Emma de Vries", role: "Beheerder van jouw demo-omgeving", desc: "Bekijk uitsluitend deze geïsoleerde oefenomgeving en reset haar na bevestiging. Geen productietoegang." },
+  { id: "emma", company: "CargoMatch demo-beheer", name: "Emma de Vries", role: "Beheerder gedeelde demo", desc: "Bekijk opgeslagen demoactiviteit. Een bevestigde reset raakt alle persona’s en bezoekers; nooit productiegegevens." },
+  { id: "michael", company: "GlobalTrade Imports Demo", name: "Michael van der Meer", role: "Importmanager", desc: "Beheer CM-2026-008421, beoordeel het gewicht, wijs een douanereview toe en verbind passende vervolgcapaciteit." },
+  { id: "natalie", company: "CargoClear Customs Demo", name: "Natalie Smit", role: "Douanepartner", desc: "Bekijk alleen de dossiers die Michael expliciet toewijst en leg een onderbouwde classificatieaanbeveling vast." },
+  { id: "customs-specialist", company: "Demo Customs Desk", name: "Noor Bakker", role: "Douanespecialist", desc: "Beoordeel de toegewezen douanezaak met expliciete versiecontrole. Alle providerafhandeling is fictief." },
+  { id: "finance", company: "GlobalTrade Imports Demo", name: "Sanne Visser", role: "Financieel medewerker", desc: "Bekijk en behandel alleen geautoriseerde kosten en betalingen in de gedeelde importketen." },
+  { id: "consignee", company: "Textile Receiver Demo", name: "Priya de Vries", role: "Ontvanger house B", desc: "Volg alleen je eigen LCL-house, documenten, kosten, vrijgave en afleverkeuze." },
+  { id: "consignee-c", company: "Third Consignee Demo", name: "Lucas de Wit", role: "Ontvanger house C", desc: "Bekijk jouw eigen deel van de consolidatie zonder toegang tot documenten of kosten van andere ontvangers." },
 ];
 
 export default function Landing() {
@@ -83,7 +89,7 @@ export default function Landing() {
             Ontdek CargoMatch vanuit elk perspectief
           </h1>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            {DEMO_UI_ENABLED ? "Verken de markt en importketen met vijftien fictieve profielen. Je oefent in een eigen, beveiligde demo-omgeving op de server. Profielwissels behouden je oefeningen; echte klanten, sessies en bedrijfsgegevens blijven gescheiden." : "Breng lading en beschikbare transportcapaciteit samen. Log in om vanuit je bedrijf en bevoegdheden passende kansen te bekijken en veilig contact te leggen."}
+            {DEMO_UI_ENABLED ? "Verken de markt en importketen met zeventien fictieve profielen in één gedeelde demo-omgeving. Bevoegde demoaccounts zien elkaars acties; wisselen verandert alleen jouw sessie. Een beheerderreset raakt alle bezoekers. Gebruik geen echte bedrijfsgegevens." : "Breng lading en beschikbare transportcapaciteit samen. Log in om vanuit je bedrijf en bevoegdheden passende kansen te bekijken en veilig contact te leggen."}
           </p>
           <div className="flex flex-wrap justify-center gap-3">
             {DEMO_UI_ENABLED && <Button onClick={() => setExplore(true)} aria-expanded={explore} aria-controls="demo-personas" className="gap-2">Explore Demo <ArrowRight className="h-4 w-4" /></Button>}
@@ -113,7 +119,7 @@ export default function Landing() {
                 <p className="text-sm text-muted-foreground mb-6 flex-1">
                   {card.desc}
                 </p>
-                <p className="text-xs text-muted-foreground mb-3">Fictief profiel · eigen demo-omgeving</p>
+                <p className="text-xs text-muted-foreground mb-3">Fictief profiel · gedeelde demo, eigen sessie</p>
                 <Button onClick={() => startDemo(card.id)} className="w-full gap-2">
                   Speel als {card.name} <ArrowRight className="w-4 h-4" />
                 </Button>

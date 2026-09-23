@@ -2,7 +2,7 @@ import { createHash, randomBytes, timingSafeEqual } from "node:crypto";
 import { Router, type Request, type Response, type NextFunction } from "express";
 import rateLimit from "express-rate-limit";
 import { configuredOrigins } from "../lib/origins";
-import { applyAction, projectSession, refreshMatches } from "../services/demo/domain";
+import { applyAction, projectSession, refreshMatches, demoActor } from "../services/demo/domain";
 import { getPersona, seedDemo } from "../services/demo/seed";
 import { postgresDemoStore, type DemoStore } from "../services/demo/store";
 import { DemoError, type Sandbox } from "../services/demo/types";
@@ -76,7 +76,7 @@ export function createDemoRouter(store: DemoStore = postgresDemoStore) {
   router.post("/switch", async (req, res) => {
     res.json(await load(req, true, sandbox => {
       const id = req.body?.personaId;
-      if (typeof id !== "string" || !getPersona(id)) throw new DemoError(400, "UNKNOWN_PERSONA", "Onbekend demoprofiel.");
+      if (typeof id !== "string" || !demoActor(sandbox.state, id)) throw new DemoError(400, "UNKNOWN_PERSONA", "Onbekend of inactief demoprofiel.");
       sandbox.personaId = id;
       sandbox.revision += 1;
       sandbox.csrfToken = randomBytes(32).toString("hex");
@@ -112,7 +112,7 @@ export function createDemoRouter(store: DemoStore = postgresDemoStore) {
     const result = await load(req, false, sandbox => {
       documentShipment(sandbox, req.params.shipmentId);
       if (!sandbox.state.importControl) throw new DemoError(404, "NOT_FOUND", "Geen importmodule.");
-      const document = assertDocumentAccess(sandbox.state.importControl, getPersona(sandbox.personaId)!, String(req.params.shipmentId), String(req.params.documentId));
+       const document = assertDocumentAccess(sandbox.state.importControl, demoActor(sandbox.state, sandbox.personaId)!, String(req.params.shipmentId), String(req.params.documentId));
       return {document, fixture: document.fixtureId ? fixtureContent(document) : undefined};
     }) as {document: {name: string; objectPath?: string; mimeType?: string}; fixture?: string};
     await serveImportDocument(res, result.document, result.fixture);

@@ -2,7 +2,7 @@
 export type ImportModule = "SHIPMENTS" | "DOCUMENTS" | "IMPORT" | "CUSTOMS" | "CHARGES" | "RELEASE" | "DELIVERY" | "CONTROL" | "PARTNERS" | "EXCEPTIONS";
 export type ImportAction = {
   type: "IMPORT_CONTROL"; shipmentId?: string;
-  operation: "CREATE_SHIPMENT" | "EDIT_SHIPMENT" | "ADD_CHARGE" | "EDIT_CHARGE" | "CONFIGURE_GATE" | "SET_MODULE" | "UPLOAD_DOCUMENT" | "EXTRACT_DOCUMENT" | "REVIEW_DOCUMENT" | "CONFIRM_FIELD" | "CUSTOMS_EDIT" | "CUSTOMS_APPROVE" | "CUSTOMS_SUBMIT" | "CUSTOMS_EVENT" | "PAY_CHARGE" | "SET_GATE" | "FIND_DELIVERY" | "PLAN_DELIVERY" | "DELIVER" | "EXCEPTION" | "ASSIGN_PARTNER" | "CONFIRM_COMPANY" | "CONFIRM_REPRESENTATION" | "DELIVERY_CHOICE";
+  operation: "ARRIVING" | "ASSIGN_CUSTOMS_REVIEW" | "CUSTOMS_REVIEW_OPEN" | "CUSTOMS_REVIEW_COMPLETE" | "CREATE_SHIPMENT" | "EDIT_SHIPMENT" | "ADD_CHARGE" | "EDIT_CHARGE" | "CONFIGURE_GATE" | "SET_MODULE" | "UPLOAD_DOCUMENT" | "EXTRACT_DOCUMENT" | "REVIEW_DOCUMENT" | "CONFIRM_FIELD" | "CUSTOMS_EDIT" | "CUSTOMS_APPROVE" | "CUSTOMS_SUBMIT" | "CUSTOMS_EVENT" | "PAY_CHARGE" | "SET_GATE" | "FIND_DELIVERY" | "PLAN_DELIVERY" | "DELIVER" | "EXCEPTION" | "ASSIGN_PARTNER" | "CONFIRM_COMPANY" | "CONFIRM_REPRESENTATION" | "DELIVERY_CHOICE";
   module?: ImportModule; enabled?: boolean; documentId?: string; documentType?: string;
   name?: string; objectPath?: string; mimeType?: string; size?: number; accepted?: boolean;
   field?: string; value?: string | number; evidence?: string; chargeId?: string;
@@ -27,13 +27,14 @@ export interface ImportVessel {
   source: "SYNTHETIC_DEMO"; route: [number, number][];
 }
 export interface ImportShipmentView {
+  customsReview?: {id: string; assigneeId: string; status: "ASSIGNED" | "OPENED" | "COMPLETED"; recommendation?: string; completedAt?: string};
   id: string; reference: string; name: string; kind: string; origin: string; destination: string; port: string; eta: string;
   status: string; vesselId: string; container?: string; masterReference?: string; houseReference?: string; incoterm?: string;
   fields: Record<string, string | number>; readiness: {status: "READY" | "BLOCKED"; reasons: string[]};
   documents: ImportDocument[]; charges: ImportCharge[]; totals: Record<string, {cost: number; vat: number; payable: number}>;
   customs?: {version: number; status: string; approvedVersion?: number; approvedBy?: string; goods: Record<string, string | number>; disclaimer: string};
   gates: {key: string; required: boolean; satisfied: boolean; evidence?: string}[];
-  delivery: {status: string; listingIds: string[]; matchId?: string; evidence?: string; choice?: string};
+  delivery: {status: string; listingIds: string[]; matchId?: string; evidence?: string; choice?: string; requirementId?: string};
   exceptions: ImportException[]; timeline: ImportEvent[]; allowedModules: ImportModule[];
   companyConfirmed: boolean; representationReviewed: boolean;
   parentId?: string;

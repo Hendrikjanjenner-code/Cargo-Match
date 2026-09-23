@@ -38,19 +38,23 @@ export interface Listing {
 }
 export interface Match {
   id: string; cargoId: string; capacityId: string;
+  interest?: {id: string; senderId: string; createdAt: string};
+  conversationId?: string;
   leftConsent: boolean; rightConsent: boolean;
   status: "NEW" | "INTEREST_SENT" | "CONNECTED" | "DECLINED" | "STALE";
 }
 export interface Message {
+  senderId?: string; conversationId?: string; readBy?: string[];
   id: string; matchId: string; senderName: string; body: string; createdAt: string; demo: true;
 }
 export interface Notification {
   id: string; userId: string; title: string; read: boolean; createdAt: string; demo: true;
   importShipmentId?: string;
+  importModule?: import("../imports/types").ImportModule;
 }
 export interface Referral {
   id: string; fromUserId: string; toUserId: string; opportunityId: string; note: string;
-  status: "SENT" | "REVIEWED"; createdAt: string; demo: true;
+  status: "SENT" | "REVIEWED" | "DISMISSED" | "INTEREST_SENT" | "CONNECTED"; createdAt: string; demo: true;
 }
 export interface ImportShipment {
   id: string; name: string; receiverCompanyId: string; status: string; arrivalAt: string;
@@ -58,8 +62,9 @@ export interface ImportShipment {
   charges: {id: string; label: string; amount: number; currency: string}[];
   paymentStatus: string; releaseStatus: string; pickupStatus: string; demo: true;
 }
-export interface Audit { id: string; actorId: string; action: string; createdAt: string; demo: true }
+export interface Audit { id: string; actorId: string; action: string; createdAt: string; demo: true; matchId?: string; companyIds?: string[] }
 export interface DemoState {
+  personas?: Persona[];
   version: 1; seededAt: string; companies: DemoCompany[]; assets: Asset[]; listings: Listing[];
   matches: Match[]; messages: Message[]; notifications: Notification[]; referrals: Referral[];
   imports: ImportShipment[]; audit: Audit[];
@@ -71,6 +76,8 @@ export interface Sandbox {
   csrfToken: string; personaId: string; revision: number; state: DemoState;
 }
 export interface Opportunity {
+  conversationId?: string;
+  positioningDistanceKm?: number;
   id: string; cargoId: string; capacityId: string; mode: Mode; origin: string; destination: string;
   quantity: number; score: number; provisional: true; status: Match["status"]; ownSide: "CARGO" | "CAPACITY";
   counterpartyName?: string; assetName?: string; contact?: string;

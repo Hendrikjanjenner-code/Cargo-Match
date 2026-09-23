@@ -25,7 +25,9 @@ export interface Shipment {
   documents: Document[]; charges: Charge[];
   customs: {version: number; status: string; approvedVersion?: number; approvedBy?: string; goods: Record<string, string | number>; disclaimer: string};
   gates: {key: string; required: boolean; satisfied: boolean; evidence?: string}[];
-  delivery: {status: string; listingIds: string[]; matchId?: string; evidence?: string; choice?: string};
+  delivery: {status: string; listingIds: string[]; matchId?: string; evidence?: string; choice?: string;
+    requirementId?: string; transport?: {mode: "ROAD" | "INLAND" | "RAIL"; pickupFrom?: string; equipment: string[]; technical: import("../demo/types").Technical}};
+  customsReview?: {id: string; assigneeId: string; status: "ASSIGNED" | "OPENED" | "COMPLETED"; recommendation?: string; completedAt?: string};
   exceptions: ImportException[]; timeline: ImportEvent[];
   companyConfirmed: boolean; representationReviewed: boolean;
 }

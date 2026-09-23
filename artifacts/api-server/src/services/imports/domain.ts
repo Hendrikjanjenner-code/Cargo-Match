@@ -40,7 +40,7 @@ export function assertDocumentAccess(state: ImportState, actor: ImportActor, shi
   return d ?? fail(403, "Geen toegang tot document.");
 }
 export function fixtureContent(document: Document): string {
-  if (!document.fixtureId || !/^(china-fcl|india-house-[12])-(invoice|packing_list|bill_of_lading|origin)$/.test(document.fixtureId)) return fail(404, "Geen synthetisch document beschikbaar.");
+  if (!document.fixtureId || !/^(china-fcl|india-house-[123]|import-inland|import-rail)-(invoice|packing_list|bill_of_lading|origin)$/.test(document.fixtureId)) return fail(404, "Geen synthetisch document beschikbaar.");
   return `CARGOMATCH — DEMO / SYNTHETIC — NOT A LEGAL DOCUMENT\n${document.name}\nFixture: ${document.fixtureId}\n${Object.entries(document.fields).map(([k, v]) => `${k}: ${v}`).join("\n")}\nGeen echte handelsdocumenten of vertegenwoordiging.\n`;
 }
 const latestDocuments = (s: Shipment) => s.documents.filter(d => !s.documents.some(other => other.type === d.type && other.version > d.version));
@@ -110,6 +110,7 @@ export function projectImportControl(state: ImportState, actor: ImportActor) {
     const publicShipment = {id: s.id, reference: s.reference, name: s.name, kind: s.kind, origin: s.origin, destination: s.destination, port: s.port, eta: s.eta, status: s.delivery.status === "DELIVERED" ? "DELIVERED" : pickupReady(s) ? "READY_FOR_PICKUP" : s.status, vesselId: see("CONTROL") ? s.vesselId : "", container: s.container, houseReference: s.houseReference, ...(consignee ? {} : {parentId: s.parentId, masterReference: s.masterReference, incoterm: s.incoterm}),
       fields, readiness: see("IMPORT") || see("CUSTOMS") ? readiness(s) : {status: readiness(s).status, reasons: []},
       documents, charges, totals: chargeTotals({...s, charges}), ...(see("CUSTOMS") ? {customs: structuredClone(s.customs)} : {}),
+      ...(see("CUSTOMS") || see("PARTNERS") ? {customsReview: structuredClone(s.customsReview)} : {}),
       gates: see("RELEASE") ? effectiveGates(s) : [], delivery: see("DELIVERY") ? structuredClone(s.delivery) : {status: s.delivery.status, listingIds: []},
       exceptions: see("EXCEPTIONS") ? s.exceptions.filter(e => see(e.module)).map(e => ({...structuredClone(e), ...(e.status === "SNOOZED" && e.until && Date.parse(e.until) <= Date.now() ? {status: "OPEN" as const, until: undefined} : {})})) : [],
       timeline: s.timeline.filter(e => consignee ? ["CONFIRM_COMPANY", "CONFIRM_REPRESENTATION", "DELIVERY_CHOICE", "DELIVER"].includes(e.action) && e.actorId === actor.id : e.action === "SYNTHETIC_SEED" || see(eventModule(e.action))).map(e => ({id: e.id, actorId: e.actorId, action: e.action, at: e.at, eventAt: e.eventAt, source: e.source, ...(allowedModules.length === IMPORT_MODULES.length && financial ? {oldValue: structuredClone(e.oldValue), newValue: structuredClone(e.newValue)} : {})})),
@@ -127,7 +128,7 @@ function eventModule(operation: string): ImportModule {
   if (operation.includes("GATE")) return "RELEASE";
   if (["FIND_DELIVERY", "PLAN_DELIVERY", "DELIVER", "DELIVERY_CHOICE"].includes(operation)) return "DELIVERY";
   if (operation === "EXCEPTION") return "EXCEPTIONS";
-  if (operation === "ASSIGN_PARTNER") return "PARTNERS";
+  if (operation === "ASSIGN_PARTNER" || operation === "ASSIGN_CUSTOMS_REVIEW") return "PARTNERS";
   if (["CONFIRM_FIELD", "CONFIRM_COMPANY", "CONFIRM_REPRESENTATION"].includes(operation)) return "IMPORT";
   return "SHIPMENTS";
 }
@@ -171,7 +172,36 @@ export function applyImportAction(state: ImportState, actor: ImportActor, input:
   const before = structuredClone({shipment: shipmentMetadata(), fields: s.fields, customs: s.customs, gates: effectiveGates(s), delivery: s.delivery, documents: s.documents, charges: s.charges, assignments: s.assignments, exceptions: s.exceptions});
   const wasReady = pickupReady(s);
   const evidence = () => text(a.evidence, 2000);
-  if (op === "EDIT_SHIPMENT") {
+  if (op === "ARRIVING") {
+    if (!state.demo || actor.companyId !== s.companyId || s.status !== "IN_TRANSIT") return fail(409, "Alleen de demo-eigenaar kan een reizende zending als naderend registreren.");
+    evidence(); s.status = "ARRIVING";
+    if (s.delivery.transport) s.delivery.listingIds = integration.findDelivery(s);
+  } else if (op === "ASSIGN_CUSTOMS_REVIEW") {
+    if (!state.demo || actor.companyId !== s.companyId) return fail(403, "Alleen de demo-zendingeigenaar kan deze partnerreview delen.");
+    const target = integration.findActor(text(a.userId));
+    if (!target?.permissions.includes("IMPORT_CUSTOMS_APPROVE")) return fail(403, "Bevoegde douanepartner vereist.");
+    const modules: ImportModule[] = ["SHIPMENTS", "DOCUMENTS", "IMPORT", "CUSTOMS", "EXCEPTIONS"];
+    if (!modules.every(m => shipmentModules(state, actor, s).includes(m) && importModules(state, target).includes(m))) return fail(403, "Onvoldoende moduletoestemming.");
+    evidence();
+    if (s.customsReview && s.customsReview.assigneeId !== target.id) s.assignments = s.assignments.filter(x => x.userId !== s.customsReview!.assigneeId);
+    const previous = s.assignments.find(x => x.userId === target.id);
+    if (previous) previous.modules = modules; else s.assignments.push({userId: target.id, companyId: target.companyId, modules});
+    s.customsReview = {id: `customs-review-${s.id}`, assigneeId: target.id, status: "ASSIGNED"};
+    const id = `classification-${s.id}`;
+    if (!s.exceptions.some(e => e.id === id)) s.exceptions.push({id, title: "CLASSIFICATION REVIEW REQUIRED", status: "OPEN", priority: "HIGH", reason: "Menselijke partnerreview vereist.", module: "CUSTOMS", assigneeId: target.id, comments: []});
+    integration.notify?.(s, `review-assigned-${randomUUID()}`, "Douanereview toegewezen.");
+  } else if (op === "CUSTOMS_REVIEW_OPEN" || op === "CUSTOMS_REVIEW_COMPLETE") {
+    if (!state.demo || s.customsReview?.assigneeId !== actor.id) return fail(403, "Alleen de toegewezen douanepartner mag deze review behandelen.");
+    if (op === "CUSTOMS_REVIEW_OPEN") {
+      if (s.customsReview.status !== "ASSIGNED") return fail(409, "De review is niet nieuw.");
+      s.customsReview.status = "OPENED";
+    } else {
+      if (s.customsReview.status !== "OPENED") return fail(409, "Open eerst de toegewezen review.");
+      s.customsReview.recommendation = evidence(); s.customsReview.status = "COMPLETED"; s.customsReview.completedAt = now;
+      const exception = s.exceptions.find(e => e.id === `classification-${s.id}`); if (exception) exception.status = "RESOLVED";
+      integration.notify?.(s, `review-complete-${randomUUID()}`, "Douanereview voltooid; readiness herberekend. Menselijke goedkeuring en vrijgave blijven afzonderlijk.");
+    }
+  } else if (op === "EDIT_SHIPMENT") {
     const data = shipmentInput(a.shipment);
     if ("requiredDocumentTypes" in data && (actor.companyId !== s.companyId || !actor.permissions.includes("IMPORT_ADMIN"))) return fail(403, "Alleen de bevoegde eigenaar configureert verplichte documenten.");
     evidence(); Object.assign(s, data); invalidate(s);
@@ -204,6 +234,7 @@ export function applyImportAction(state: ImportState, actor: ImportActor, input:
     if (!actor.permissions.includes("IMPORT_CUSTOMS_APPROVE")) return fail(403, "Bevoegde douanegoedkeurder vereist.");
     if (readiness(s).status !== "READY" || !s.customs.goods.hsCode || !s.customs.goods.origin || s.customs.goods.classificationConfirmed !== "yes" || s.customs.goods.valuationConfirmed !== "yes") return fail(409, "Documenten, classificatie, oorsprong en waardering moeten menselijk bevestigd zijn.");
     evidence(); s.customs.approvedVersion = s.customs.version; s.customs.approvedBy = actor.id; s.customs.status = "APPROVED";
+    if (state.demo) s.status = "CUSTOMS_PREPARED";
   } else if (op === "CUSTOMS_SUBMIT") {
     if (!state.demo) return fail(409, "Geen productie-douaneprovider geconfigureerd.");
     if (s.customs.approvedVersion !== s.customs.version || s.customs.status !== "APPROVED" || readiness(s).status !== "READY") return fail(409, "Actuele bevoegde goedkeuring vereist.");
@@ -213,6 +244,7 @@ export function applyImportAction(state: ImportState, actor: ImportActor, input:
     const status = text(a.status); if (!["RELEASED", "HELD"].includes(status)) return fail(400, "Onbekende providerstatus.");
     if (!["SUBMITTED", "RELEASED", "HELD"].includes(s.customs.status) || s.customs.approvedVersion !== s.customs.version) return fail(409, "Dien eerst een goedgekeurde versie in.");
     evidence(); s.customs.status = status;
+    if (status === "RELEASED") s.status = "CUSTOMS_RELEASED";
   } else if (op === "ADD_CHARGE" || op === "EDIT_CHARGE") {
     const c = chargeInput(a.charge); evidence();
     if (op === "ADD_CHARGE") s.charges.push({...c, id: `charge-${randomUUID()}`, paid: false});
@@ -236,7 +268,7 @@ export function applyImportAction(state: ImportState, actor: ImportActor, input:
     } else {
       if (!gate || ["customs", "payment"].includes(key)) return fail(409, "Deze voorwaarde vereist bewijs uit de bronmodule.");
       gate.satisfied = bool(a.satisfied); gate.evidence = proof;
-      if (key === "terminal" && gate.satisfied) s.status = "ARRIVED";
+      if (key === "terminal" && gate.satisfied) s.status = state.demo && s.customs.status === "RELEASED" ? "TERMINAL_AVAILABLE" : "ARRIVED";
     }
   } else if (op === "FIND_DELIVERY") {
     s.delivery.listingIds = [...new Set(integration.findDelivery(s))];
@@ -271,7 +303,7 @@ export function applyImportAction(state: ImportState, actor: ImportActor, input:
   else if (op === "DELIVERY_CHOICE") { evidence(); s.delivery.choice = text(a.value); }
   else return fail(400, "Onbekende importactie.");
   if (!pickupReady(s) && s.delivery.status === "PLANNED") s.delivery.status = "BLOCKED";
-  if (s.delivery.listingIds.length || (!wasReady && pickupReady(s))) s.delivery.listingIds = [...new Set(integration.findDelivery(s))];
+  if (s.delivery.listingIds.length || (!wasReady && pickupReady(s) && (!state.demo || s.delivery.transport))) s.delivery.listingIds = [...new Set(integration.findDelivery(s))];
   if (!wasReady && pickupReady(s)) integration.notify?.(s, `pickup-ready-v${s.customs.version}`, "Alle verplichte vrijgavevoorwaarden voldaan; vervoersopties opnieuw beoordeeld. Geen boeking.");
   syncImportExceptions(s, new Date(now));
   audit(s, actor, op, now, before, {shipment: shipmentMetadata(), fields: s.fields, customs: s.customs, gates: effectiveGates(s), delivery: s.delivery, documents: s.documents, charges: s.charges, assignments: s.assignments, exceptions: s.exceptions, evidence: a.evidence ?? a.note}, state.demo);

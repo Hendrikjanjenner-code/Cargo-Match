@@ -23,6 +23,6 @@ export const roleHeadings: Record<string, [string, string]> = {
   jan: ["Mijn truck & volgende opdracht", "Controleer Truck 42 en stuur een geschikte kans naar Thomas, zonder commerciële toestemming te geven."],
   anna: ["Wagonplanning · demo-pilot", "Beoordeel lading op wagontype, aantallen, route, tonnage en beschikbaarheidsvenster."],
   sarah: ["Vluchtcapaciteit · demo-pilot", "Vergelijk AMS–DXB-lading op kilogrammen, volume, gereedheid, cutoff en benodigde behandeling."],
-  david: ["Liner & forwarding", "Beheer services, afvaarten en luchtvrachtlading. CargoMatch Import is een afzonderlijke oefenmodule."],
-  emma: ["Beheer van mijn demo-omgeving", "Alleen deze bezoekersomgeving: bedrijven, scenario’s, audit en expliciete reset. Geen productiebeheer."],
+  david: ["Liner & forwarding", "Beheer services, afvaarten, luchtvrachtlading en toegewezen LCL-consolidaties in de gedeelde demo."],
+  emma: ["Beheer gedeelde demo-omgeving", "Gedeelde bedrijven, scenario’s en audit. Een expliciete reset raakt ALLE demoaccounts; nooit productiegegevens."],
 };

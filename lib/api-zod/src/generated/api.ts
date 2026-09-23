@@ -408,7 +408,7 @@ export const CompleteDemoImportUploadResponse = zod.object({
   "stale": zod.boolean(),
   "context": zod.object({
   "user": zod.object({
-  "id": zod.enum(['andy', 'sophie', 'mark', 'eva', 'laura', 'thomas', 'jan', 'anna', 'sarah', 'david', 'emma']),
+  "id": zod.enum(['andy', 'sophie', 'mark', 'eva', 'laura', 'thomas', 'jan', 'anna', 'sarah', 'david', 'emma', 'michael', 'customs-specialist', 'finance', 'consignee', 'natalie', 'consignee-c']),
   "name": zod.string(),
   "companyId": zod.string(),
   "membershipRole": zod.enum(['OWNER', 'ADMIN', 'MEMBER']),
@@ -430,7 +430,7 @@ export const CompleteDemoImportUploadResponse = zod.object({
   "modules": zod.record(zod.string(), zod.enum(['ACTIVE', 'PILOT', 'COMING_LATER', 'HIDDEN']))
 }),
   "personas": zod.array(zod.object({
-  "id": zod.enum(['andy', 'sophie', 'mark', 'eva', 'laura', 'thomas', 'jan', 'anna', 'sarah', 'david', 'emma']),
+  "id": zod.enum(['andy', 'sophie', 'mark', 'eva', 'laura', 'thomas', 'jan', 'anna', 'sarah', 'david', 'emma', 'michael', 'customs-specialist', 'finance', 'consignee', 'natalie', 'consignee-c']),
   "name": zod.string(),
   "companyId": zod.string(),
   "membershipRole": zod.enum(['OWNER', 'ADMIN', 'MEMBER']),
@@ -690,7 +690,7 @@ export const DownloadDemoImportDocumentResponse = zod.unknown()
 
 
 /**
- * @summary Restore a private visitor demo, independent from OIDC
+ * @summary Restore a private principal session in the shared demo, independent from OIDC
  */
 
 export const getDemoSessionResponseWorkspaceAssetsItemTechnicalTemperatureMinMin = -100;
@@ -882,7 +882,7 @@ export const GetDemoSessionResponse = zod.object({
   "stale": zod.boolean(),
   "context": zod.object({
   "user": zod.object({
-  "id": zod.enum(['andy', 'sophie', 'mark', 'eva', 'laura', 'thomas', 'jan', 'anna', 'sarah', 'david', 'emma']),
+  "id": zod.enum(['andy', 'sophie', 'mark', 'eva', 'laura', 'thomas', 'jan', 'anna', 'sarah', 'david', 'emma', 'michael', 'customs-specialist', 'finance', 'consignee', 'natalie', 'consignee-c']),
   "name": zod.string(),
   "companyId": zod.string(),
   "membershipRole": zod.enum(['OWNER', 'ADMIN', 'MEMBER']),
@@ -904,7 +904,7 @@ export const GetDemoSessionResponse = zod.object({
   "modules": zod.record(zod.string(), zod.enum(['ACTIVE', 'PILOT', 'COMING_LATER', 'HIDDEN']))
 }),
   "personas": zod.array(zod.object({
-  "id": zod.enum(['andy', 'sophie', 'mark', 'eva', 'laura', 'thomas', 'jan', 'anna', 'sarah', 'david', 'emma']),
+  "id": zod.enum(['andy', 'sophie', 'mark', 'eva', 'laura', 'thomas', 'jan', 'anna', 'sarah', 'david', 'emma', 'michael', 'customs-specialist', 'finance', 'consignee', 'natalie', 'consignee-c']),
   "name": zod.string(),
   "companyId": zod.string(),
   "membershipRole": zod.enum(['OWNER', 'ADMIN', 'MEMBER']),
@@ -1157,7 +1157,7 @@ export const GetDemoSessionResponse = zod.object({
 
 /**
  * Development/test only. An existing demo cookie resumes unchanged; persona switching requires the separately CSRF- and revision-protected switch route.
- * @summary Create a visitor-isolated demo or resume existing unchanged
+ * @summary Join the shared demo with an independent principal session or resume unchanged
  */
 export const StartDemoSessionHeader = zod.object({
   "Origin": zod.string(),
@@ -1165,7 +1165,7 @@ export const StartDemoSessionHeader = zod.object({
 })
 
 export const StartDemoSessionBody = zod.object({
-  "personaId": zod.enum(['andy', 'sophie', 'mark', 'eva', 'laura', 'thomas', 'jan', 'anna', 'sarah', 'david', 'emma']).optional()
+  "personaId": zod.enum(['andy', 'sophie', 'mark', 'eva', 'laura', 'thomas', 'jan', 'anna', 'sarah', 'david', 'emma', 'michael', 'customs-specialist', 'finance', 'consignee', 'natalie', 'consignee-c']).optional()
 })
 
 
@@ -1358,7 +1358,7 @@ export const StartDemoSessionResponse = zod.object({
   "stale": zod.boolean(),
   "context": zod.object({
   "user": zod.object({
-  "id": zod.enum(['andy', 'sophie', 'mark', 'eva', 'laura', 'thomas', 'jan', 'anna', 'sarah', 'david', 'emma']),
+  "id": zod.enum(['andy', 'sophie', 'mark', 'eva', 'laura', 'thomas', 'jan', 'anna', 'sarah', 'david', 'emma', 'michael', 'customs-specialist', 'finance', 'consignee', 'natalie', 'consignee-c']),
   "name": zod.string(),
   "companyId": zod.string(),
   "membershipRole": zod.enum(['OWNER', 'ADMIN', 'MEMBER']),
@@ -1380,7 +1380,7 @@ export const StartDemoSessionResponse = zod.object({
   "modules": zod.record(zod.string(), zod.enum(['ACTIVE', 'PILOT', 'COMING_LATER', 'HIDDEN']))
 }),
   "personas": zod.array(zod.object({
-  "id": zod.enum(['andy', 'sophie', 'mark', 'eva', 'laura', 'thomas', 'jan', 'anna', 'sarah', 'david', 'emma']),
+  "id": zod.enum(['andy', 'sophie', 'mark', 'eva', 'laura', 'thomas', 'jan', 'anna', 'sarah', 'david', 'emma', 'michael', 'customs-specialist', 'finance', 'consignee', 'natalie', 'consignee-c']),
   "name": zod.string(),
   "companyId": zod.string(),
   "membershipRole": zod.enum(['OWNER', 'ADMIN', 'MEMBER']),
@@ -1632,7 +1632,7 @@ export const StartDemoSessionResponse = zod.object({
 
 
 /**
- * @summary Switch only the isolated demo principal and rotate its revision
+ * @summary Switch only this browser's demo principal and rotate its revision
  */
 export const SwitchDemoPersonaHeader = zod.object({
   "Origin": zod.string(),
@@ -1642,7 +1642,7 @@ export const SwitchDemoPersonaHeader = zod.object({
 })
 
 export const SwitchDemoPersonaBody = zod.object({
-  "personaId": zod.enum(['andy', 'sophie', 'mark', 'eva', 'laura', 'thomas', 'jan', 'anna', 'sarah', 'david', 'emma'])
+  "personaId": zod.enum(['andy', 'sophie', 'mark', 'eva', 'laura', 'thomas', 'jan', 'anna', 'sarah', 'david', 'emma', 'michael', 'customs-specialist', 'finance', 'consignee', 'natalie', 'consignee-c'])
 })
 
 
@@ -1835,7 +1835,7 @@ export const SwitchDemoPersonaResponse = zod.object({
   "stale": zod.boolean(),
   "context": zod.object({
   "user": zod.object({
-  "id": zod.enum(['andy', 'sophie', 'mark', 'eva', 'laura', 'thomas', 'jan', 'anna', 'sarah', 'david', 'emma']),
+  "id": zod.enum(['andy', 'sophie', 'mark', 'eva', 'laura', 'thomas', 'jan', 'anna', 'sarah', 'david', 'emma', 'michael', 'customs-specialist', 'finance', 'consignee', 'natalie', 'consignee-c']),
   "name": zod.string(),
   "companyId": zod.string(),
   "membershipRole": zod.enum(['OWNER', 'ADMIN', 'MEMBER']),
@@ -1857,7 +1857,7 @@ export const SwitchDemoPersonaResponse = zod.object({
   "modules": zod.record(zod.string(), zod.enum(['ACTIVE', 'PILOT', 'COMING_LATER', 'HIDDEN']))
 }),
   "personas": zod.array(zod.object({
-  "id": zod.enum(['andy', 'sophie', 'mark', 'eva', 'laura', 'thomas', 'jan', 'anna', 'sarah', 'david', 'emma']),
+  "id": zod.enum(['andy', 'sophie', 'mark', 'eva', 'laura', 'thomas', 'jan', 'anna', 'sarah', 'david', 'emma', 'michael', 'customs-specialist', 'finance', 'consignee', 'natalie', 'consignee-c']),
   "name": zod.string(),
   "companyId": zod.string(),
   "membershipRole": zod.enum(['OWNER', 'ADMIN', 'MEMBER']),
@@ -2109,8 +2109,8 @@ export const SwitchDemoPersonaResponse = zod.object({
 
 
 /**
- * Explicit permissions, mode, company and assignment are rechecked server-side. Connected means introduction, never booking. RESET affects only this visitor and requires Emma plus confirmation.
- * @summary Atomically authorize and execute one isolated demo action
+ * Persisted membership, explicit permissions, mode, company and assignment are rechecked server-side. Connected means introduction, never booking. RESET affects ALL demo visitors and requires authorized Emma plus RESET ALL DEMO DATA? confirmation. Real data remain separate.
+ * @summary Atomically authorize and execute one shared demo action
  */
 export const ExecuteDemoActionHeader = zod.object({
   "Origin": zod.string(),
@@ -2248,7 +2248,10 @@ export const executeDemoActionBodyListingTechnicalRequiredLiftingExclusiveMin = 
 
 
 export const ExecuteDemoActionBody = zod.object({
-  "type": zod.enum(['INTEREST', 'ACCEPT', 'DECLINE', 'MESSAGE', 'CONFIRM_AVAILABILITY', 'SEND_TO_PLANNER', 'REVIEW_REFERRAL', 'SAVE_ASSET', 'SAVE_LISTING', 'PUBLISH_LISTING', 'WITHDRAW_LISTING', 'IMPORT_STEP', 'READ_NOTIFICATION', 'RESET']),
+  "type": zod.enum(['INTEREST', 'ACCEPT', 'DECLINE', 'MESSAGE', 'READ_CONVERSATION', 'CONFIRM_AVAILABILITY', 'SEND_TO_PLANNER', 'REVIEW_REFERRAL', 'DISMISS_REFERRAL', 'SAVE_ASSET', 'SAVE_LISTING', 'PUBLISH_LISTING', 'WITHDRAW_LISTING', 'IMPORT_STEP', 'IMPORT_CONTROL', 'READ_NOTIFICATION', 'RESET']),
+  "operation": zod.string().optional().describe('For IMPORT_CONTROL, validated against the shared import-domain operations; demo additionally supports ARRIVING, ASSIGN_CUSTOMS_REVIEW, CUSTOMS_REVIEW_OPEN and CUSTOMS_REVIEW_COMPLETE.'),
+  "userId": zod.string().optional(),
+  "evidence": zod.string().optional(),
   "matchId": zod.string().optional(),
   "body": zod.string().min(1).max(executeDemoActionBodyBodyMax).optional(),
   "assetId": zod.string().optional(),
@@ -2362,7 +2365,7 @@ export const ExecuteDemoActionBody = zod.object({
   "shipmentId": zod.string().optional(),
   "step": zod.enum(['ARRIVED', 'DOCUMENTS_READY', 'PAYMENT_SIMULATED', 'RELEASED', 'PICKUP_READY']).optional(),
   "notificationId": zod.string().optional(),
-  "confirmation": zod.enum(['RESET DEMO']).optional()
+  "confirmation": zod.enum(['RESET ALL DEMO DATA?']).optional()
 }).describe('Discriminated by type; irrelevant identity/ownership fields are never trusted. SAVE_LISTING requires listing; SAVE_ASSET creates when assetId is absent and merges editable fields when present.')
 
 
@@ -2555,7 +2558,7 @@ export const ExecuteDemoActionResponse = zod.object({
   "stale": zod.boolean(),
   "context": zod.object({
   "user": zod.object({
-  "id": zod.enum(['andy', 'sophie', 'mark', 'eva', 'laura', 'thomas', 'jan', 'anna', 'sarah', 'david', 'emma']),
+  "id": zod.enum(['andy', 'sophie', 'mark', 'eva', 'laura', 'thomas', 'jan', 'anna', 'sarah', 'david', 'emma', 'michael', 'customs-specialist', 'finance', 'consignee', 'natalie', 'consignee-c']),
   "name": zod.string(),
   "companyId": zod.string(),
   "membershipRole": zod.enum(['OWNER', 'ADMIN', 'MEMBER']),
@@ -2577,7 +2580,7 @@ export const ExecuteDemoActionResponse = zod.object({
   "modules": zod.record(zod.string(), zod.enum(['ACTIVE', 'PILOT', 'COMING_LATER', 'HIDDEN']))
 }),
   "personas": zod.array(zod.object({
-  "id": zod.enum(['andy', 'sophie', 'mark', 'eva', 'laura', 'thomas', 'jan', 'anna', 'sarah', 'david', 'emma']),
+  "id": zod.enum(['andy', 'sophie', 'mark', 'eva', 'laura', 'thomas', 'jan', 'anna', 'sarah', 'david', 'emma', 'michael', 'customs-specialist', 'finance', 'consignee', 'natalie', 'consignee-c']),
   "name": zod.string(),
   "companyId": zod.string(),
   "membershipRole": zod.enum(['OWNER', 'ADMIN', 'MEMBER']),

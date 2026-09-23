@@ -21,6 +21,7 @@ export interface ImportWorkspaceProps {
   executeAction: (action: ImportAction) => Promise<void>;
   busy: boolean;
   permissions: string[];
+  currentUserId?: string;
   personas: DemoPersona[];
   opportunities: (DemoOpportunity | DemoMatch)[];
   manager: boolean;
@@ -39,7 +40,7 @@ export function ImportWorkspace(props: ImportWorkspaceProps) {
 
   const run = async (action: ImportAction) => { 
     const proof = action.evidence?.trim() || evidenceRef.current.trim();
-    if (!proof && !["CREATE_SHIPMENT", "SET_MODULE", "FIND_DELIVERY", "EXTRACT_DOCUMENT", "EXCEPTION", "UPLOAD_DOCUMENT"].includes(action.operation)) {
+    if (!proof && !["CREATE_SHIPMENT", "SET_MODULE", "FIND_DELIVERY", "EXTRACT_DOCUMENT", "EXCEPTION", "UPLOAD_DOCUMENT", "CUSTOMS_REVIEW_OPEN"].includes(action.operation)) {
       setFeedback("Vul eerst een onderbouwing of bewijsreferentie in voor deze actie.");
       document.getElementById("import-evidence")?.focus();
       return;

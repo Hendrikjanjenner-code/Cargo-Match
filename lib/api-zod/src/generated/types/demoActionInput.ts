@@ -20,6 +20,10 @@ import type { DemoTechnical } from './demoTechnical';
  */
 export interface DemoActionInput {
   type: DemoActionInputType;
+  /** For IMPORT_CONTROL, validated against the shared import-domain operations; demo additionally supports ARRIVING, ASSIGN_CUSTOMS_REVIEW, CUSTOMS_REVIEW_OPEN and CUSTOMS_REVIEW_COMPLETE. */
+  operation?: string;
+  userId?: string;
+  evidence?: string;
   matchId?: string;
   /**
      * @minLength 1
@@ -47,4 +51,5 @@ export interface DemoActionInput {
   step?: DemoActionInputStep;
   notificationId?: string;
   confirmation?: DemoActionInputConfirmation;
-}
+  [key: string]: unknown;
+ }

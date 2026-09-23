@@ -36,6 +36,12 @@ export function ImportPartners({ control, entityId, run, busy, manager, personas
               <CardTitle className="text-base">{s!.reference} <span className="text-sm font-normal text-muted-foreground ml-2">({s!.kind})</span></CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
+                {control.demo && manager && personas.some(p => p.id === "natalie") && <div className="space-y-2 border rounded p-3">
+                  <h4 className="font-semibold">Classificatiereview · CargoClear</h4>
+                  <p className="text-sm">{s!.customsReview ? `${s!.customsReview.assigneeId}: ${s!.customsReview.status}` : "Nog niet toegewezen. Alleen dit dossier wordt gedeeld."}</p>
+                  {s!.customsReview?.recommendation && <p className="text-sm">{s!.customsReview.recommendation}</p>}
+                  <Button disabled={busy} onClick={() => void run({type: "IMPORT_CONTROL", operation: "ASSIGN_CUSTOMS_REVIEW", shipmentId: s!.id, userId: "natalie"})}>Wijs douanereview toe aan Natalie</Button>
+                </div>}
               {manager ? (
                 <div className="space-y-2">
                   <h4 className="text-sm font-semibold">Partner Toewijzen</h4>

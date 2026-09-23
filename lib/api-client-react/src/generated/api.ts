@@ -817,7 +817,7 @@ export const getGetDemoSessionUrl = () => {
 }
 
 /**
- * @summary Restore a private visitor demo, independent from OIDC
+ * @summary Restore a private principal session in the shared demo, independent from OIDC
  */
 export const getDemoSession = async ( options?: Parameters<typeof customFetch>[1]): Promise<DemoSessionResponseResponse> => {
 
@@ -864,7 +864,7 @@ export type GetDemoSessionQueryError = ErrorType<DemoFailureResponse>
 
 
 /**
- * @summary Restore a private visitor demo, independent from OIDC
+ * @summary Restore a private principal session in the shared demo, independent from OIDC
  */
 
 export function useGetDemoSession<TData = Awaited<ReturnType<typeof getDemoSession>>, TError = ErrorType<DemoFailureResponse>>(
@@ -895,7 +895,7 @@ export const getStartDemoSessionUrl = () => {
 
 /**
  * Development/test only. An existing demo cookie resumes unchanged; persona switching requires the separately CSRF- and revision-protected switch route.
- * @summary Create a visitor-isolated demo or resume existing unchanged
+ * @summary Join the shared demo with an independent principal session or resume unchanged
  */
 export const startDemoSession = async (demoStartInput: DemoStartInput, options?: Parameters<typeof customFetch>[1]): Promise<DemoSessionResponseResponse> => {
 
@@ -961,7 +961,7 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
     export type StartDemoSessionMutationVariables = {data: BodyType<DemoStartInput>}
 
     /**
- * @summary Create a visitor-isolated demo or resume existing unchanged
+ * @summary Join the shared demo with an independent principal session or resume unchanged
  */
 export const useStartDemoSession = <TError = ErrorType<DemoFailureResponse>,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof startDemoSession>>, TError,StartDemoSessionMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
@@ -983,7 +983,7 @@ export const getSwitchDemoPersonaUrl = () => {
 }
 
 /**
- * @summary Switch only the isolated demo principal and rotate its revision
+ * @summary Switch only this browser's demo principal and rotate its revision
  */
 export const switchDemoPersona = async (demoSwitchInput: DemoSwitchInput, options?: Parameters<typeof customFetch>[1]): Promise<DemoSessionResponseResponse> => {
 
@@ -1049,7 +1049,7 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
     export type SwitchDemoPersonaMutationVariables = {data: BodyType<DemoSwitchInput>}
 
     /**
- * @summary Switch only the isolated demo principal and rotate its revision
+ * @summary Switch only this browser's demo principal and rotate its revision
  */
 export const useSwitchDemoPersona = <TError = ErrorType<DemoFailureResponse>,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof switchDemoPersona>>, TError,SwitchDemoPersonaMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
@@ -1071,8 +1071,8 @@ export const getExecuteDemoActionUrl = () => {
 }
 
 /**
- * Explicit permissions, mode, company and assignment are rechecked server-side. Connected means introduction, never booking. RESET affects only this visitor and requires Emma plus confirmation.
- * @summary Atomically authorize and execute one isolated demo action
+ * Persisted membership, explicit permissions, mode, company and assignment are rechecked server-side. Connected means introduction, never booking. RESET affects ALL demo visitors and requires authorized Emma plus RESET ALL DEMO DATA? confirmation. Real data remain separate.
+ * @summary Atomically authorize and execute one shared demo action
  */
 export const executeDemoAction = async (demoActionInput: DemoActionInput, options?: Parameters<typeof customFetch>[1]): Promise<DemoSessionResponseResponse> => {
 
@@ -1138,7 +1138,7 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
     export type ExecuteDemoActionMutationVariables = {data: BodyType<DemoActionInput>}
 
     /**
- * @summary Atomically authorize and execute one isolated demo action
+ * @summary Atomically authorize and execute one shared demo action
  */
 export const useExecuteDemoAction = <TError = ErrorType<DemoFailureResponse>,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof executeDemoAction>>, TError,ExecuteDemoActionMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}

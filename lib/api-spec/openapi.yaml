@@ -174,7 +174,7 @@ paths:
     get:
       operationId: getDemoSession
       tags: [Demo]
-      summary: Restore a private visitor demo, independent from OIDC
+      summary: Restore a private principal session in the shared demo, independent from OIDC
       security: [{ demoCookie: [] }]
       responses:
         "200":
@@ -187,7 +187,7 @@ paths:
     post:
       operationId: startDemoSession
       tags: [Demo]
-      summary: Create a visitor-isolated demo or resume existing unchanged
+      summary: Join the shared demo with an independent principal session or resume unchanged
       description: Development/test only. An existing demo cookie resumes unchanged; persona switching requires the separately CSRF- and revision-protected switch route.
       security: []
       parameters:
@@ -212,7 +212,7 @@ paths:
     post:
       operationId: switchDemoPersona
       tags: [Demo]
-      summary: Switch only the isolated demo principal and rotate its revision
+      summary: Switch only this browser's demo principal and rotate its revision
       security: [{ demoCookie: [] }]
       parameters:
         - $ref: "#/components/parameters/DemoOrigin"
@@ -236,8 +236,8 @@ paths:
     post:
       operationId: executeDemoAction
       tags: [Demo]
-      summary: Atomically authorize and execute one isolated demo action
-      description: Explicit permissions, mode, company and assignment are rechecked server-side. Connected means introduction, never booking. RESET affects only this visitor and requires Emma plus confirmation.
+      summary: Atomically authorize and execute one shared demo action
+      description: Persisted membership, explicit permissions, mode, company and assignment are rechecked server-side. Connected means introduction, never booking. RESET affects ALL demo visitors and requires authorized Emma plus RESET ALL DEMO DATA? confirmation. Real data remain separate.
       security: [{ demoCookie: [] }]
       parameters:
         - $ref: "#/components/parameters/DemoOrigin"
@@ -2446,7 +2446,7 @@ components:
       enum: [INLAND, DEEPSEA, LINER, ROAD, RAIL, AIR, IMPORT]
     DemoPersonaId:
       type: string
-      enum: [andy, sophie, mark, eva, laura, thomas, jan, anna, sarah, david, emma]
+      enum: [andy, sophie, mark, eva, laura, thomas, jan, anna, sarah, david, emma, michael, customs-specialist, finance, consignee, natalie, consignee-c]
     DemoStartInput:
       type: object
       properties:
@@ -2518,12 +2518,16 @@ components:
         technical: { $ref: "#/components/schemas/DemoTechnical" }
     DemoActionInput:
       type: object
+      additionalProperties: true
       required: [type]
       description: Discriminated by type; irrelevant identity/ownership fields are never trusted. SAVE_LISTING requires listing; SAVE_ASSET creates when assetId is absent and merges editable fields when present.
       properties:
         type:
           type: string
-          enum: [INTEREST, ACCEPT, DECLINE, MESSAGE, CONFIRM_AVAILABILITY, SEND_TO_PLANNER, REVIEW_REFERRAL, SAVE_ASSET, SAVE_LISTING, PUBLISH_LISTING, WITHDRAW_LISTING, IMPORT_STEP, READ_NOTIFICATION, RESET]
+          enum: [INTEREST, ACCEPT, DECLINE, MESSAGE, READ_CONVERSATION, CONFIRM_AVAILABILITY, SEND_TO_PLANNER, REVIEW_REFERRAL, DISMISS_REFERRAL, SAVE_ASSET, SAVE_LISTING, PUBLISH_LISTING, WITHDRAW_LISTING, IMPORT_STEP, IMPORT_CONTROL, READ_NOTIFICATION, RESET]
+        operation: { type: string, description: "For IMPORT_CONTROL, validated against the shared import-domain operations; demo additionally supports ARRIVING, ASSIGN_CUSTOMS_REVIEW, CUSTOMS_REVIEW_OPEN and CUSTOMS_REVIEW_COMPLETE." }
+        userId: { type: string }
+        evidence: { type: string }
         matchId: { type: string }
         body: { type: string, minLength: 1, maxLength: 2000 }
         assetId: { type: string }
@@ -2543,7 +2547,7 @@ components:
         shipmentId: { type: string }
         step: { type: string, enum: [ARRIVED, DOCUMENTS_READY, PAYMENT_SIMULATED, RELEASED, PICKUP_READY] }
         notificationId: { type: string }
-        confirmation: { type: string, enum: ["RESET DEMO"] }
+        confirmation: { type: string, enum: ["RESET ALL DEMO DATA?"] }
     DemoPersona:
       type: object
       required: [id, name, companyId, membershipRole, operationalProfile, platformRole, primaryMode, permissions, assignedAssetIds]

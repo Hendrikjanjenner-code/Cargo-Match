@@ -226,6 +226,12 @@ export const DemoPersonaId = {
   sarah: 'sarah',
   david: 'david',
   emma: 'emma',
+  michael: 'michael',
+  'customs-specialist': 'customs-specialist',
+  finance: 'finance',
+  consignee: 'consignee',
+  natalie: 'natalie',
+  'consignee-c': 'consignee-c',
 } as const;
 
 export interface DemoStartInput {
@@ -377,14 +383,17 @@ export const DemoActionInputType = {
   ACCEPT: 'ACCEPT',
   DECLINE: 'DECLINE',
   MESSAGE: 'MESSAGE',
+  READ_CONVERSATION: 'READ_CONVERSATION',
   CONFIRM_AVAILABILITY: 'CONFIRM_AVAILABILITY',
   SEND_TO_PLANNER: 'SEND_TO_PLANNER',
   REVIEW_REFERRAL: 'REVIEW_REFERRAL',
+  DISMISS_REFERRAL: 'DISMISS_REFERRAL',
   SAVE_ASSET: 'SAVE_ASSET',
   SAVE_LISTING: 'SAVE_LISTING',
   PUBLISH_LISTING: 'PUBLISH_LISTING',
   WITHDRAW_LISTING: 'WITHDRAW_LISTING',
   IMPORT_STEP: 'IMPORT_STEP',
+  IMPORT_CONTROL: 'IMPORT_CONTROL',
   READ_NOTIFICATION: 'READ_NOTIFICATION',
   RESET: 'RESET',
 } as const;
@@ -404,7 +413,7 @@ export type DemoActionInputConfirmation = typeof DemoActionInputConfirmation[key
 
 
 export const DemoActionInputConfirmation = {
-  RESET_DEMO: 'RESET DEMO',
+  'RESET_ALL_DEMO_DATA?': 'RESET ALL DEMO DATA?',
 } as const;
 
 /**
@@ -412,6 +421,10 @@ export const DemoActionInputConfirmation = {
  */
 export interface DemoActionInput {
   type: DemoActionInputType;
+  /** For IMPORT_CONTROL, validated against the shared import-domain operations; demo additionally supports ARRIVING, ASSIGN_CUSTOMS_REVIEW, CUSTOMS_REVIEW_OPEN and CUSTOMS_REVIEW_COMPLETE. */
+  operation?: string;
+  userId?: string;
+  evidence?: string;
   matchId?: string;
   /**
      * @minLength 1
@@ -439,7 +452,8 @@ export interface DemoActionInput {
   step?: DemoActionInputStep;
   notificationId?: string;
   confirmation?: DemoActionInputConfirmation;
-}
+  [key: string]: unknown;
+ }
 
 export type DemoPersonaMembershipRole = typeof DemoPersonaMembershipRole[keyof typeof DemoPersonaMembershipRole];
 

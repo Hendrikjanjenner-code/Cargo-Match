@@ -19,6 +19,8 @@ export const PERSONAS: Persona[] = [
    persona("david", "David Chen", "globalline", "FORWARDER", "LINER", [...commercial, "CREATE_CARGO", "EDIT_OWN_CARGO", "MANAGE_ASSETS", "MANAGE_CAPACITY", "MANAGE_IMPORT", ...IMPORT_MODULES.filter(m => m !== "CUSTOMS").map(m => `IMPORT_${m}`)]),
    persona("michael", "Michael van der Meer", "globaltrade", "IMPORT_MANAGER", "IMPORT", [...commercial, ...IMPORT_MANAGER_PERMISSIONS, "CREATE_CARGO", "EDIT_OWN_CARGO"], [], "OWNER"),
    persona("customs-specialist", "Noor Bakker (DEMO)", "customs-demo", "CUSTOMS_SPECIALIST", "IMPORT", [...["SHIPMENTS", "DOCUMENTS", "IMPORT", "CUSTOMS", "CONTROL", "EXCEPTIONS"].map(m => `IMPORT_${m}`), "IMPORT_CUSTOMS_APPROVE"]),
+    persona("natalie", "Natalie Smit", "cargoclear", "CUSTOMS_SPECIALIST", "IMPORT", [...["SHIPMENTS", "DOCUMENTS", "IMPORT", "CUSTOMS", "CONTROL", "EXCEPTIONS"].map(m => `IMPORT_${m}`), "IMPORT_CUSTOMS_APPROVE"]),
+    persona("consignee-c", "Lucas de Wit (DEMO)", "receiver-c", "CONSIGNEE", "IMPORT", ["SHIPMENTS", "DOCUMENTS", "CHARGES", "RELEASE", "DELIVERY", "CONTROL", "IMPORT"].map(m => `IMPORT_${m}`)),
    persona("finance", "Sanne Visser (DEMO)", "globaltrade", "FINANCE", "IMPORT", ["SHIPMENTS", "CHARGES", "CONTROL", "EXCEPTIONS"].map(m => `IMPORT_${m}`)),
    persona("consignee", "Priya de Vries (DEMO)", "textile-demo", "CONSIGNEE", "IMPORT", ["SHIPMENTS", "DOCUMENTS", "CHARGES", "RELEASE", "DELIVERY", "CONTROL", "IMPORT"].map(m => `IMPORT_${m}`)),
   persona("emma", "Emma de Vries", "cargomatch-demo", "COMPANY_MANAGER", "DEEPSEA", ["VIEW_ADMIN", "RESET_DEMO"], [], "ADMIN"),
@@ -28,6 +30,8 @@ const company = (id: string, name: string, modes: Mode[], activities: string[]):
 export const COMPANIES: DemoCompany[] = [
    company("globaltrade", "GLOBALTRADE IMPORTS DEMO BV", ["IMPORT", "ROAD", "INLAND", "RAIL"], ["IMPORTER"]),
    company("customs-demo", "Customs Specialist DEMO BV", ["IMPORT"], ["CUSTOMS"]),
+    company("cargoclear", "CargoClear Customs Demo", ["IMPORT"], ["CUSTOMS"]),
+    company("receiver-c", "Third Receiver Demo", ["IMPORT"], ["RECEIVER"]),
    company("textile-demo", "Textile Consignee DEMO BV", ["IMPORT"], ["RECEIVER"]),
   company("northsea", "NorthSea Chartering Demo", ["DEEPSEA"], ["CHARTERER"]),
   company("oceanbridge", "OceanBridge Bulk Demo", ["DEEPSEA"], ["CARRIER"]),
@@ -72,7 +76,8 @@ export function seedDemo(now = new Date()): DemoState {
   asset("DEEPSEA", "oceanbridge", "MV OceanBridge Mini", "HANDYSIZE", 35000, "Rotterdam");
   pair(asset("INLAND", "rhineflow", "MS RhineFlow One", "DRY_CARGO", 1800, "Rotterdam"), "eurocommodities", "Rotterdam", "Duisburg", 1200);
   asset("INLAND", "rhineflow", "MS RhineFlow Two", "DRY_CARGO", 2400, "Antwerp", {}, undefined, "inland-two");
-  pair(asset("ROAD", "transroute", "Truck 42", "CURTAINSIDER", 24, "Eindhoven", {loadingMetres: 13.6, pallets: 33}, 90), "eurocommodities", "Eindhoven", "Utrecht", 18, 45, {loadingMetres: 8, pallets: 20});
+   const road = pair(asset("ROAD", "transroute", "Truck 42", "CURTAINSIDER", 24, "Eindhoven", {loadingMetres: 13.6, pallets: 33}, 90), "eurocommodities", "Eindhoven North", "Utrecht", 18, 45, {loadingMetres: 8, pallets: 20});
+   road.capacity.origin = "Eindhoven";
   asset("ROAD", "transroute", "Truck 43 + reefer", "REEFER", 22, "Cologne", {temperatureMin: -20, temperatureMax: 10}, 70, "road-two");
   asset("ROAD", "transroute", "Truck 44 + box trailer", "BOX", 24, "Duisburg", {}, 80, "road-three");
   const rail = pair(asset("RAIL", "eurorail", "Duisburg wagon group", "WAGON_GROUP", 720, "Duisburg", {wagonCount: 12, wagonType: "FLAT"}, 800), "eurocommodities", "Duisburg", "Rotterdam", 480, 400, {wagonCount: 8, wagonType: "FLAT"});
@@ -104,13 +109,24 @@ export function seedDemo(now = new Date()): DemoState {
     state.listings.push({...structuredClone(base), id: `cargo-${mode}-weak`, name: `${base.name} · kleinere benutting`, quantity: base.quantity / 2, volume: base.volume! / 2});
   }
   state.imports.push({id: "import-lcl", name: "Demo LCL Shanghai–Rotterdam", receiverCompanyId: "eurocommodities", status: "IN_TRANSIT", arrivalAt: at(2), documents: [{id: "doc-packing", name: "Fictieve paklijst", status: "PENDING"}, {id: "doc-arrival", name: "Fictief aankomstbericht", status: "PENDING"}], charges: [{id: "charge-handling", label: "Gesimuleerde handling", amount: 125, currency: "EUR"}, {id: "charge-terminal", label: "Gesimuleerde terminalkosten", amount: 85, currency: "EUR"}], paymentStatus: "UNPAID", releaseStatus: "HELD", pickupStatus: "NOT_READY", demo: true});
-  for (const p of PERSONAS) state.notifications.push({id: `welcome-${p.id}`, userId: p.id, title: "Welkom in je geïsoleerde demo. Alle gegevens zijn fictief.", read: false, createdAt: now.toISOString(), demo: true});
+   for (const p of PERSONAS) state.notifications.push({id: `welcome-${p.id}`, userId: p.id, title: "Gedeelde demo: alle persona’s werken samen. Alle gegevens zijn fictief.", read: false, createdAt: now.toISOString(), demo: true});
    state.importControl = seedImports(now);
    // Shipment-derived cargo uses the existing physical and timing matcher.
-   for (const m of ["ROAD", "INLAND", "RAIL"] as const) {
-     const source = state.listings.find(l => l.id === `capacity-${m.toLowerCase()}`)!;
-      state.listings.push({...structuredClone(source), id: `capacity-import-${m.toLowerCase()}`, origin: "Rotterdam", destination: "Eindhoven", availableFrom: at(2), availableUntil: at(6), technical: {...source.technical, ...(m === "ROAD" ? {preferredDirection: "Eindhoven"} : {})}});
-   }
+    const containerTruck = asset("ROAD", "transroute", "Truck 45 · container chassis", "CONTAINER_CHASSIS", 28, "Rotterdam", {loadingMetres: 13.6, pallets: 33}, 80, "import-road");
+    const barge = asset("INLAND", "rhineflow", "MS RhineFlow Container", "CONTAINER", 1800, "Rotterdam", {vesselType: "CONTAINER", cargoType: "container"}, 2500, "import-inland");
+    const railImport = asset("RAIL", "eurorail", "Rotterdam–Duisburg container service", "WAGON_GROUP", 720, "Rotterdam", {wagonCount: 12, wagonType: "FLAT", cargoType: "container"}, 800, "import-rail");
+    for (const a of [containerTruck, barge, railImport]) {
+      const shipment = state.importControl!.shipments.find(s => s.delivery.transport?.mode === a.mode)!;
+      const available = new Date(shipment.eta);
+      if (a.mode === "INLAND") available.setUTCHours(11, 0, 0, 0);
+      a.availableAt = available.toISOString(); a.equipment = ["container"];
+      state.listings.push({id: `capacity-import-${a.mode.toLowerCase()}`, companyId: a.companyId, mode: a.mode, kind: "CAPACITY", name: `${a.name} · expliciete democapaciteit`,
+        assetId: a.id, origin: "Rotterdam", destination: shipment.destination, quantity: a.capacity, volume: a.volume, equipment: ["container"], availableFrom: a.availableAt,
+        availableUntil: new Date(available.getTime()+4*86400000).toISOString(), status: "ACTIVE", visibility: "OPEN_NETWORK", demo: true,
+        technical: {...a.technical, cargoType: "container", maximumPositioningDistanceKm: 150, ...(a.mode === "ROAD" ? {
+          expectedAvailabilityAt: a.availableAt, currentDeliveryExpectedAt: new Date(available.getTime()-3600000).toISOString(), availabilityUncertaintyMinutes: 15, preferredDirection: shipment.destination,
+        } : {})}});
+    }
     state.importFixtureRevision = 1;
    return state;
 }

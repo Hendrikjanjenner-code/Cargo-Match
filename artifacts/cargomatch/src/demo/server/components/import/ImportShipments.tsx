@@ -165,6 +165,7 @@ export function ImportShipments({ control, entityId, onNavigate, run, busy, isRe
             </div>
             <div className="flex gap-2">
               {canEdit && <Button size="sm" variant="outline" onClick={() => setEditing({...shipment})}>Bewerken</Button>}
+              {control.demo && canEdit && shipment.status === "IN_TRANSIT" && <Button size="sm" disabled={busy} onClick={() => void run({type: "IMPORT_CONTROL", operation: "ARRIVING", shipmentId: shipment.id})}>Registreer naderende aankomst</Button>}
               <Button size="sm" variant="ghost" onClick={() => onNavigate("import_shipments", null)}>Sluiten</Button>
             </div>
           </CardHeader>

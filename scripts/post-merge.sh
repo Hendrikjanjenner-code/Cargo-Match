@@ -18,3 +18,5 @@ pnpm --filter @workspace/scripts run seed-locations
 psql "$DATABASE_URL" -X -v ON_ERROR_STOP=1 --single-transaction \
   -f lib/db/migrations/0008_company_imports.sql \
   -f lib/db/migrations/0009_import_uploads.sql
+psql "$DATABASE_URL" -X -v ON_ERROR_STOP=1 --single-transaction \
+  -f lib/db/migrations/0010_shared_demo.sql

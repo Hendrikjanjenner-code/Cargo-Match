@@ -184,7 +184,7 @@ test("arrival readiness automatically produces delivery options and idempotent n
   const s = sandbox(), shipment = s.state.importControl!.shipments[0];
   assert.equal(shipment.delivery.listingIds.length, 0);
   prepare(s);
-  assert.equal(shipment.delivery.listingIds.length, 3);
+  assert.equal(shipment.delivery.listingIds.length, 1, "Only the explicitly specified container road requirement is published");
   const notices = s.state.notifications.filter(n => n.id.startsWith(`import-${shipment.id}-pickup-ready`));
   assert.ok(notices.length > 0);
   action(s, "SET_GATE", {gate: "terminal", satisfied: true});

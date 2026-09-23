@@ -42,6 +42,7 @@ export function DemoImport({ view = "import" }: { view?: string }) {
       executeAction={executeAction}
       busy={busy}
       permissions={session.context.permissions}
+      currentUserId={session.context.user.id}
       personas={session.personas}
       opportunities={[...session.workspace.opportunities, ...session.workspace.matches]}
       manager={manager}

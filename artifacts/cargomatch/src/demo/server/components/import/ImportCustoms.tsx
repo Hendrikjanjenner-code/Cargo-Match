@@ -4,7 +4,7 @@ import { Button, Badge, Card, CardHeader, CardTitle, CardContent, Input, Label, 
 import { ImportAction, ImportShipmentView } from "../../import-contract";
 import { localDate } from "../demo-display";
 
-export function ImportCustoms({ control, entityId, run, busy, manager, permissions, isCustoms }: ImportWorkspaceProps & { run: (a: ImportAction) => Promise<void> }) {
+export function ImportCustoms({ control, entityId, run, busy, manager, permissions, isCustoms, currentUserId }: ImportWorkspaceProps & { run: (a: ImportAction) => Promise<void> }) {
   const [selectedShipment, setSelectedShipment] = useState<string>(entityId || "");
   const [editingGoods, setEditingGoods] = useState<Record<string, string | number> | null>(null);
 
@@ -59,6 +59,13 @@ export function ImportCustoms({ control, entityId, run, busy, manager, permissio
                 </div>
               </CardHeader>
               <CardContent className="space-y-4 text-sm">
+                {control.demo && s!.customsReview && <div className="border p-3 rounded space-y-2">
+                  <p>Partnerreview: {s!.customsReview.status} · {s!.customsReview.assigneeId}</p>
+                  {s!.customsReview.recommendation && <p>{s!.customsReview.recommendation}</p>}
+                  {s!.customsReview.assigneeId === currentUserId && s!.customsReview.status === "ASSIGNED" && <Button data-testid={`button-open-review-${s!.id}`} disabled={busy} onClick={() => void run({type: "IMPORT_CONTROL", operation: "CUSTOMS_REVIEW_OPEN", shipmentId: s!.id})}>Open toegewezen review</Button>}
+                  {s!.customsReview.assigneeId === currentUserId && s!.customsReview.status === "OPENED" && <Button data-testid={`button-complete-review-${s!.id}`} disabled={busy} onClick={() => void run({type: "IMPORT_CONTROL", operation: "CUSTOMS_REVIEW_COMPLETE", shipmentId: s!.id})}>Rond review af met onderbouwing</Button>}
+                  <p className="text-xs text-muted-foreground">Een aanbeveling is geen douanegoedkeuring of vrijgave.</p>
+                </div>}
                 <div className="bg-slate-50 p-3 rounded text-xs space-y-1">
                   <p><strong>Versie:</strong> {c.version}</p>
                   <p><strong>Goedgekeurde versie:</strong> {c.approvedVersion || "-"}</p>

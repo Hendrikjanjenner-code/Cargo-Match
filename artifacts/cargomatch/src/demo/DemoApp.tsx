@@ -35,7 +35,7 @@ function DemoAppInner({ onExit, initialPersonaId, onLoginReal }: DemoAppProps) {
     <section className="max-w-md space-y-4 text-center">
       <AlertTriangle className="mx-auto h-10 w-10 text-amber-600" aria-hidden="true" />
       <h1 className="text-xl font-semibold">{status === "STALE" ? "Profielcontext gewijzigd" : status === "IDLE" ? "Demosessie starten" : "Demo niet beschikbaar"}</h1>
-      <p role="alert" className="text-muted-foreground">{errorMsg || "Je oefengegevens worden alleen in je eigen, geïsoleerde demo-omgeving opgeslagen."}</p>
+      <p role="alert" className="text-muted-foreground">{errorMsg || "Dit is één gedeelde fictieve omgeving: acties zijn zichtbaar voor bevoegde demoaccounts en een beheerderreset raakt alle bezoekers. Gebruik geen echte bedrijfsgegevens."}</p>
       <div className="flex justify-center gap-3">
         <Button onClick={() => { void (status === "IDLE" ? startDemo(initialPersonaId || "andy") : reloadSession()); }}>{status === "IDLE" ? "Start demo" : "Opnieuw laden"}</Button>
         <Button variant="outline" onClick={onExit}>Terug</Button>

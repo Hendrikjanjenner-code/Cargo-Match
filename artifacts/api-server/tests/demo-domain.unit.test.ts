@@ -17,7 +17,7 @@ function pair(state: DemoState, mode: string) {
 }
 test("all original and import personas, consistent owners and intentional positive/negative mode seeds", () => {
   const state = seedDemo(now);
-  assert.equal(PERSONAS.length, 15);
+  assert.equal(PERSONAS.length, 17);
   assert.equal(new Set(state.assets.map(a => a.id)).size, state.assets.length);
   for (const mode of ["inland", "deepsea", "road", "rail", "air", "liner"]) {
     const {cargo, capacity} = pair(state, mode);

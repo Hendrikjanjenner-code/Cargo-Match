@@ -3,10 +3,11 @@ import { applyImportAction, projectImportControl, importModules, shipmentModules
 import type { ImportIntegration } from "../imports/types";
 import { isCapacityWithinVessel } from "../matching";
 import { coreEvaluation } from "./core-adapter";
-import { PERSONAS, getPersona, seedDemo } from "./seed";
+import { PERSONAS, seedDemo } from "./seed";
 import { DemoError, denied, MODES, type Asset, type DemoState, type Listing, type Match, type Mode, type Opportunity, type Persona, type Sandbox, type Technical } from "./types";
 
 export const LOCATIONS: Record<string, {region: string; latitude: number; longitude: number}> = {
+  "Eindhoven North": {region: "North Brabant", latitude: 51.602, longitude: 5.47},
   Malaysia: {region: "Southeast Asia", latitude: 1.36, longitude: 103.55},
   Indonesia: {region: "Southeast Asia", latitude: 1.05, longitude: 103.96},
   China: {region: "East Asia", latitude: 31.2, longitude: 121.5},
@@ -25,6 +26,8 @@ export const LOCATIONS: Record<string, {region: string; latitude: number; longit
   Tilburg: {region: "North Brabant", latitude: 51.56, longitude: 5.09},
 };
 const has = (actor: Persona, permission: string) => actor.permissions.includes(permission);
+const identities = (state: DemoState) => state.personas ?? PERSONAS;
+export const demoActor = (state: DemoState, id: string) => identities(state).find(p => p.id === id);
 const isOperational = (actor: Persona) => has(actor, "VIEW_ASSIGNED_ASSET");
 const permittedMode = (state: DemoState, actor: Persona, mode: Mode) => state.companies.find(c => c.id === actor.companyId)?.modes.includes(mode);
 const nowText = () => new Date().toISOString();
@@ -152,7 +155,7 @@ export function refreshMatches(state: DemoState, now = new Date()) {
   for (const cargo of state.listings.filter(l => l.kind === "CARGO")) for (const capacity of state.listings.filter(l => l.kind === "CAPACITY")) {
     if (!eligible(state, cargo, capacity, now)) continue;
     if (!state.matches.some(m => m.cargoId === cargo.id && m.capacityId === capacity.id))
-      state.matches.push({id: `match-${randomUUID()}`, cargoId: cargo.id, capacityId: capacity.id, leftConsent: false, rightConsent: false, status: "NEW"});
+      state.matches.push({id: `match-${cargo.id}--${capacity.id}`, cargoId: cargo.id, capacityId: capacity.id, leftConsent: false, rightConsent: false, status: "NEW"});
   }
   for (const match of state.matches) {
     const {cargo, capacity} = sides(state, match);
@@ -173,6 +176,13 @@ function projectMatch(state: DemoState, actor: Persona, match: Match): Opportuni
     : Math.round(70 + margin * 30);
   return {
     id: match.id, cargoId: cargo.id, capacityId: capacity.id, mode: cargo.mode,
+    ...(disclosed ? {conversationId: match.conversationId ?? `conversation-${match.id}`} : {}),
+    ...(cargo.mode === "ROAD" && LOCATIONS[cargo.origin] && LOCATIONS[capacity.origin] ? {
+      positioningDistanceKm: Math.round(6371 * 2 * Math.asin(Math.sqrt(
+        Math.sin((LOCATIONS[cargo.origin].latitude-LOCATIONS[capacity.origin].latitude)*Math.PI/360)**2 +
+        Math.cos(LOCATIONS[cargo.origin].latitude*Math.PI/180)*Math.cos(LOCATIONS[capacity.origin].latitude*Math.PI/180)*
+        Math.sin((LOCATIONS[cargo.origin].longitude-LOCATIONS[capacity.origin].longitude)*Math.PI/360)**2))),
+    } : {}),
     origin: disclosed ? cargo.origin : LOCATIONS[cargo.origin]?.region ?? "Onbekende regio",
     destination: disclosed ? cargo.destination : LOCATIONS[cargo.destination]?.region ?? "Onbekende regio",
     quantity: ownCargo || disclosed ? cargo.quantity : Math.ceil(cargo.quantity / 100) * 100,
@@ -182,7 +192,7 @@ function projectMatch(state: DemoState, actor: Persona, match: Match): Opportuni
   };
 }
 export function projectSession(sandbox: Sandbox) {
-  const actor = getPersona(sandbox.personaId); if (!actor) return denied();
+  const actor = demoActor(sandbox.state, sandbox.personaId); if (!actor) return denied();
   const state = sandbox.state;
   const company = state.companies.find(c => c.id === actor.companyId)!;
   const matches = state.matches.filter(m => canSeeMatch(state, actor, m));
@@ -201,7 +211,7 @@ export function projectSession(sandbox: Sandbox) {
         DEMO_MODE: "ACTIVE", GUIDED_DEMO: process.env.DEMO_GUIDED_ENABLED === "false" ? "HIDDEN" : "PILOT",
       } },
     // Public catalogue only: explicit static personas, never account records.
-    personas: PERSONAS,
+    personas: identities(state),
     workspace: {
       assets: state.assets.filter(a => a.companyId === actor.companyId && (!isOperational(actor) || actor.assignedAssetIds.includes(a.id))),
       cargos: ownListings.filter(l => l.kind === "CARGO"), capacity: ownListings.filter(l => l.kind === "CAPACITY"),
@@ -212,13 +222,15 @@ export function projectSession(sandbox: Sandbox) {
          if (!n.importShipmentId) return true;
          const shipment = state.importControl?.shipments.find(s => s.id === n.importShipmentId);
          return process.env.DEMO_IMPORT_ENABLED !== "false" && !!shipment &&
-           shipmentModules(state.importControl!, actor, shipment).includes("RELEASE");
+            shipmentModules(state.importControl!, actor, shipment).includes(n.importModule ?? "RELEASE");
        }),
       referrals: state.referrals.filter(r => r.fromUserId === actor.id || r.toUserId === actor.id),
        imports: process.env.DEMO_IMPORT_ENABLED !== "false" ? state.imports.filter(i => (has(actor, "MANAGE_IMPORT") && actor.companyId === "globalline" && i.id === "import-lcl") || (has(actor, "VIEW_IMPORT_RECEIVER") && i.receiverCompanyId === actor.companyId)) : [],
        importControl: state.importControl && process.env.DEMO_IMPORT_ENABLED !== "false" ? projectImportControl(state.importControl, actor) : undefined,
       companies: state.companies.filter(c => c.id === actor.companyId || connectedCompanyIds.has(c.id) || has(actor, "VIEW_ADMIN")),
-      audit: has(actor, "VIEW_ADMIN") ? state.audit : [],
+       audit: state.audit.filter(e => has(actor, "VIEW_ADMIN") || e.actorId === actor.id || e.companyIds?.includes(actor.companyId)).map(({companyIds: _scope, ...e}) => ({
+         ...e, actorId: e.actorId === actor.id || has(actor, "VIEW_ADMIN") || (e.matchId && matches.some(m => m.id === e.matchId && connected(state, actor, m))) ? e.actorId : "participant",
+       })),
       evidence: state.evidence.filter(e => actor.assignedAssetIds.includes(e.assetId) || (has(actor, "MANAGE_CAPACITY") && state.assets.some(a => a.id === e.assetId && a.companyId === actor.companyId))),
     },
     catalogue: {locations: Object.keys(LOCATIONS)},
@@ -270,27 +282,30 @@ function validateListingLimits(state: DemoState, listing: Listing) {
 }
 export function demoImportIntegration(state: DemoState): ImportIntegration {
   return {
-    findActor: getPersona,
+    findActor: id => demoActor(state, id),
     notify(shipment, eventKey, message) {
+      const module = eventKey.startsWith("review-") ? "CUSTOMS" : "RELEASE";
       for (const assignment of shipment.assignments) {
-        const actor = getPersona(assignment.userId);
-        if (!actor || !state.importControl || !importModules(state.importControl, actor).includes("RELEASE") || !assignment.modules.includes("RELEASE")) continue;
+        const actor = demoActor(state, assignment.userId);
+        if (!actor || !state.importControl || !importModules(state.importControl, actor).includes(module) || !assignment.modules.includes(module)) continue;
         const id = `import-${shipment.id}-${eventKey}-${actor.id}`;
-        if (!state.notifications.some(n => n.id === id)) state.notifications.push({id, userId: actor.id, title: `${shipment.reference}: ${message}`, importShipmentId: shipment.id, read: false, createdAt: nowText(), demo: true});
+        if (!state.notifications.some(n => n.id === id)) state.notifications.push({id, userId: actor.id, title: `${shipment.reference}: ${message}`, importShipmentId: shipment.id, importModule: module, read: false, createdAt: nowText(), demo: true});
       }
     },
     findDelivery(shipment) {
+      const transport = shipment.delivery.transport;
+      if (!transport) throw new DemoError(409, "TRANSPORT_REQUIREMENTS_REQUIRED", "Leg eerst expliciete fysieke vervoerseisen vast; er worden geen capaciteitseisen verzonnen.");
+      shipment.delivery.requirementId ??= `delivery-requirement-${shipment.id}`;
       const ids: string[] = [];
-      for (const mode of ["ROAD", "INLAND", "RAIL"] as const) {
-        const template = state.listings.find(l => l.id === `cargo-${mode.toLowerCase()}`);
-        if (!template) continue;
+      for (const mode of [transport.mode]) {
         const id = `import-cargo-${shipment.id}-${mode.toLowerCase()}`;
         const previous = state.listings.find(l => l.id === id);
-        const next: Listing = {...structuredClone(template), id, companyId: shipment.companyId, name: `${shipment.reference} — DEMO voortransport`,
+        const next: Listing = {id, mode, kind: "CARGO", equipment: [...transport.equipment], demo: true, companyId: shipment.companyId, name: `${shipment.reference} — DEMO natransport`,
             origin: shipment.port, destination: shipment.destination, quantity: Number(shipment.fields.weightKg ?? 0) / 1000,
-            volume: Number(shipment.fields.volumeM3 ?? 0), availableFrom: shipment.eta, availableUntil: new Date(Date.parse(shipment.eta) + 4 * 86400000).toISOString(),
-            technical: {...template.technical, ...(mode === "RAIL" ? {wagonCount: 1} : {}), ...(mode === "ROAD" ? {loadingMetres: 8, pallets: 24} : {})},
+             volume: Number(shipment.fields.volumeM3 ?? 0), availableFrom: transport.pickupFrom ?? shipment.eta, availableUntil: new Date(Date.parse(shipment.eta) + 4 * 86400000).toISOString(),
+             technical: structuredClone(transport.technical),
             status: "ACTIVE", visibility: "OPEN_NETWORK"};
+        validateListingLimits(state, next);
         if (!previous) state.listings.push(next);
         else if (["quantity", "volume", "origin", "destination", "availableFrom", "availableUntil"].some(k => previous[k as keyof Listing] !== next[k as keyof Listing])) {
           Object.assign(previous, next); invalidateListing(state, previous.id);
@@ -309,13 +324,13 @@ export function demoImportIntegration(state: DemoState): ImportIntegration {
 }
 export function applyAction(sandbox: Sandbox, input: unknown, options?: ImportActionOptions): void {
   const action = record(input); const type = text(action.type, 40);
-  const actor = getPersona(sandbox.personaId); if (!actor) return denied();
+  const actor = demoActor(sandbox.state, sandbox.personaId); if (!actor) return denied();
   const state = sandbox.state;
   refreshMatches(state);
   if (type === "IMPORT_CONTROL") {
     if (!state.importControl || process.env.DEMO_IMPORT_ENABLED === "false") return denied();
     applyImportAction(state.importControl, actor, action, demoImportIntegration(state), options);
-  } else if (["INTEREST", "ACCEPT", "DECLINE", "MESSAGE", "SEND_TO_PLANNER"].includes(type)) {
+  } else if (["INTEREST", "ACCEPT", "DECLINE", "MESSAGE", "READ_CONVERSATION", "SEND_TO_PLANNER"].includes(type)) {
     const match = state.matches.find(m => m.id === action.matchId);
     if (!match || !canSeeMatch(state, actor, match)) return denied();
     const commercialPermission = type === "INTEREST" ? "SHOW_INTEREST" : type === "ACCEPT" ? "ACCEPT_CONNECTION" : type === "DECLINE" ? "DECLINE_CONNECTION" : null;
@@ -326,12 +341,17 @@ export function applyAction(sandbox: Sandbox, input: unknown, options?: ImportAc
       if (!has(actor, "SEND_TO_PLANNER") || !actor.assignedAssetIds.includes(capacity.assetId ?? "")) return denied();
       const plannerId = actor.id === "mark" ? "eva" : actor.id === "jan" ? "thomas" : denied();
       const note = action.note === undefined ? "" : text(action.note, 1000);
+      if (state.referrals.some(r => r.fromUserId === actor.id && r.opportunityId === match.id && r.status !== "DISMISSED")) return conflict("Deze kans is al doorgestuurd.");
       state.referrals.push({id: randomUUID(), fromUserId: actor.id, toUserId: plannerId, opportunityId: match.id, note, status: "SENT", createdAt: nowText(), demo: true});
       notify(state, plannerId, "Een operationele collega stuurde een ladingkans ter beoordeling.");
+    } else if (type === "READ_CONVERSATION") {
+      if (!has(actor, "MESSAGE_CONNECTED") || !connected(state, actor, match)) return denied();
+      for (const message of state.messages.filter(m => m.matchId === match.id)) message.readBy = [...new Set([...(message.readBy ?? []), actor.id])];
     } else if (type === "MESSAGE") {
       if (!has(actor, "MESSAGE_CONNECTED") || !connected(state, actor, match)) return denied();
-      state.messages.push({id: randomUUID(), matchId: match.id, senderName: actor.name, body: text(action.body, 2000), createdAt: nowText(), demo: true});
-      for (const p of PERSONAS.filter(p => p.companyId === (actor.companyId === cargo.companyId ? capacity.companyId : cargo.companyId) && has(p, "MESSAGE_CONNECTED"))) notify(state, p.id, "Nieuw bericht in een verbonden demogesprek.");
+      match.conversationId ??= `conversation-${match.id}`;
+      state.messages.push({id: randomUUID(), matchId: match.id, conversationId: match.conversationId, senderId: actor.id, readBy: [actor.id], senderName: actor.name, body: text(action.body, 2000), createdAt: nowText(), demo: true});
+      for (const p of identities(state).filter(p => p.companyId === (actor.companyId === cargo.companyId ? capacity.companyId : cargo.companyId) && has(p, "MESSAGE_CONNECTED"))) notify(state, p.id, "Nieuw bericht in een verbonden demogesprek.");
     } else {
       const left = actor.companyId === cargo.companyId;
       const ownConsent = left ? match.leftConsent : match.rightConsent;
@@ -340,6 +360,7 @@ export function applyAction(sandbox: Sandbox, input: unknown, options?: ImportAc
         if (match.status !== "NEW" || ownConsent || otherConsent) return conflict("Interesse tonen kan alleen bij een nieuwe introductie zonder eerdere toestemming.");
         if (left) match.leftConsent = true; else match.rightConsent = true;
         match.status = "INTEREST_SENT";
+        match.interest = {id: randomUUID(), senderId: actor.id, createdAt: nowText()};
       } else {
         // Declining is a recipient response, never cancellation by the sender
         // or revocation of an already connected conversation. ACCEPT follows
@@ -350,19 +371,26 @@ export function applyAction(sandbox: Sandbox, input: unknown, options?: ImportAc
         } else {
           if (left) match.leftConsent = true; else match.rightConsent = true;
           match.status = "CONNECTED";
+          match.conversationId = `conversation-${match.id}`;
         }
       }
-      for (const p of PERSONAS.filter(p => [cargo.companyId, capacity.companyId].includes(p.companyId) && has(p, "ACCEPT_CONNECTION"))) notify(state, p.id, match.status === "CONNECTED" ? "Wederzijdse toestemming: demo verbonden, geen boeking." : "De status van een demo-introductie is gewijzigd.");
+      for (const p of identities(state).filter(p => [cargo.companyId, capacity.companyId].includes(p.companyId) && has(p, "ACCEPT_CONNECTION"))) notify(state, p.id, match.status === "CONNECTED" ? "Wederzijdse toestemming: demo verbonden, geen boeking." : type === "INTEREST" ? p.companyId === actor.companyId ? "Interesse verzonden." : "Nieuwe interesse ontvangen." : "Interesse afgewezen.");
+      for (const r of state.referrals.filter(r => r.opportunityId === match.id)) {
+        r.status = match.status === "CONNECTED" ? "CONNECTED" : match.status === "INTEREST_SENT" ? "INTEREST_SENT" : "DISMISSED";
+        notify(state, r.fromUserId, `Plannerstatus: ${r.status}`);
+      }
     }
+    state.audit.push({id: randomUUID(), actorId: actor.id, action: type, matchId: match.id, companyIds: [cargo.companyId, capacity.companyId], createdAt: nowText(), demo: true});
   } else if (type === "CONFIRM_AVAILABILITY") {
     const asset = state.assets.find(a => a.id === action.assetId && a.companyId === actor.companyId);
     if (!asset || !(has(actor, "MANAGE_CAPACITY") || (has(actor, "MANAGE_ASSIGNED_ASSET_AVAILABILITY") && actor.assignedAssetIds.includes(asset.id)))) return denied();
     state.evidence.push({assetId: asset.id, actorId: actor.id, availableAt: date(action.availableAt), createdAt: nowText(), demo: true});
     for (const p of PERSONAS.filter(p => p.companyId === actor.companyId && has(p, "MANAGE_CAPACITY"))) notify(state, p.id, "Nieuwe operationele beschikbaarheidsbevestiging; commerciële capaciteit is niet aangepast.");
-  } else if (type === "REVIEW_REFERRAL") {
+  } else if (type === "REVIEW_REFERRAL" || type === "DISMISS_REFERRAL") {
     const referral = state.referrals.find(r => r.id === action.referralId && r.toUserId === actor.id);
     if (!referral || !has(actor, "REVIEW_REFERRAL")) return denied();
-    referral.status = "REVIEWED";
+    referral.status = type === "DISMISS_REFERRAL" ? "DISMISSED" : "REVIEWED";
+    notify(state, referral.fromUserId, type === "DISMISS_REFERRAL" ? "Planner heeft de kans afgewezen." : "Planner beoordeelt de kans.");
   } else if (type === "SAVE_ASSET") {
     if (!has(actor, "MANAGE_ASSETS")) return denied();
     const old = action.assetId === undefined ? undefined : state.assets.find(a => a.id === action.assetId && a.companyId === actor.companyId);
@@ -411,8 +439,11 @@ export function applyAction(sandbox: Sandbox, input: unknown, options?: ImportAc
     if (!notification) return denied(); notification.read = true;
   } else if (type === "RESET") {
     if (!has(actor, "RESET_DEMO")) return denied();
-    if (action.confirmation !== "RESET DEMO") return invalid("Bevestig met RESET DEMO.");
-    sandbox.state = seedDemo(); sandbox.revision += 1;
+    if (action.confirmation !== "RESET ALL DEMO DATA?") return invalid("Bevestig met RESET ALL DEMO DATA?");
+    sandbox.state = seedDemo();
+    sandbox.state.personas = state.personas;
+    sandbox.state.companies = state.companies;
+    sandbox.revision += 1;
   } else return invalid("Onbekende demoactie.");
   sandbox.state.audit.push({id: randomUUID(), actorId: actor.id, action: type, createdAt: nowText(), demo: true});
   refreshMatches(sandbox.state);

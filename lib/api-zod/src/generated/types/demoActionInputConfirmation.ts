@@ -13,5 +13,5 @@ export type DemoActionInputConfirmation = typeof DemoActionInputConfirmation[key
 
 
 export const DemoActionInputConfirmation = {
-  RESET_DEMO: 'RESET DEMO',
+  'RESET_ALL_DEMO_DATA?': 'RESET ALL DEMO DATA?',
 } as const;

@@ -1,0 +1,69 @@
+1
+00:00:00,650 --> 00:00:08,980
+Nog vóór het laden begint de commerciële reis: mensen
+brengen ladingbehoefte en scheepscapaciteit samen.
+
+2
+00:00:08,980 --> 00:00:18,330
+In de CargoMatch-demo bereidt Andy lading van Indonesië
+naar China voor. Sophie beheert beschikbare tonnage.
+
+3
+00:00:18,330 --> 00:00:25,150
+Hun gedeelde vraag: passen deze lading en dit schip
+werkelijk bij elkaar?
+
+4
+00:00:25,150 --> 00:00:33,080
+Andy maakt de hoeveelheid, de route en het gewenste
+laadvenster inzichtelijk.
+
+5
+00:00:33,080 --> 00:00:41,600
+Sophie beoordeelt capaciteit en verwachte beschikbaarheid,
+met de scheepspositie als context.
+
+6
+00:00:41,600 --> 00:00:48,800
+Dit zijn demoschattingen, geen live scheepstracking.
+Praktische details vragen nog controle.
+
+7
+00:00:48,800 --> 00:00:58,500
+CargoMatch toont de kans in één overzicht: laadvenster,
+capaciteit en relevante beperkingen.
+
+8
+00:00:58,500 --> 00:01:06,760
+De identiteit van de andere partij blijft afgeschermd. Een
+mogelijke match geeft niet alles prijs.
+
+9
+00:01:06,760 --> 00:01:14,560
+Andy toont interesse. Daarna beslist Sophie of zij de
+verbinding wil accepteren.
+
+10
+00:01:14,560 --> 00:01:22,700
+Pas bij wederzijdse toestemming krijgen de deelnemers de
+toegestane contactgegevens.
+
+11
+00:01:22,700 --> 00:01:31,100
+In één gedeeld gesprek stemmen zij het laadvenster, vragen
+en vervolgstappen af.
+
+12
+00:01:31,100 --> 00:01:39,690
+De verbinding is geen boeking of afgesloten charter.
+Mensen maken de commerciële en operationele afspraken.
+
+13
+00:01:39,690 --> 00:01:50,620
+CargoMatch verbindt ladingbehoefte, capaciteit en
+toestemming: van kans naar een goed voorbereid gesprek.
+
+14
+00:01:50,620 --> 00:01:54,908
+Ontdek CargoMatch, het netwerk voor
+transportcapaciteitsinformatie.

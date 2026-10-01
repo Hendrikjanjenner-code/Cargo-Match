@@ -14,3 +14,9 @@ Compact demo forms may omit advanced management screens, but must not replace mi
 **Why:** A generic capacity-and-date demonstration can appear functional while teaching incorrect deepsea, breakbulk or road eligibility. The exercise is intended to explain the real product's decisions, not merely produce matches.
 
 **How to apply:** Use explicit fictional technical examples, preserve supported requirements when editing compact forms, and compare each mode against the real pure matcher. Keep database, authentication and network dependencies out of shared matching modules.
+
+Film capture exercises must use a disposable server-side test ecosystem, not a fresh browser against the shared visitor ecosystem.
+
+**Why:** Fresh browser profiles isolate cookies, not shared business state. Filming interest/acceptance and release actions otherwise changes what visitors see.
+
+**How to apply:** Preserve real authorization and UI actions in the isolated exercise. A temporary local HTTP proxy must forward its actual protocol and host consistently with the configured application origin; never weaken origin checks to make captures work.

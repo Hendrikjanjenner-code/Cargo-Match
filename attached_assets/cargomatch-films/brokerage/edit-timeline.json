@@ -1,0 +1,213 @@
+{
+  "durationSeconds": 116.16666666666667,
+  "frames": 2788,
+  "fps": 24,
+  "scenes": [
+    {
+      "id": 1,
+      "ids": [
+        1
+      ],
+      "source": "vessel",
+      "heading": "SHIP BROKERAGE",
+      "start": 0.0,
+      "end": 9.083333333333334,
+      "renderStartFrame": 0,
+      "renderEndFrame": 226,
+      "screens": []
+    },
+    {
+      "id": 2,
+      "ids": [
+        2,
+        3
+      ],
+      "source": "collaboration",
+      "heading": "CARGO / AVAILABLE TONNAGE",
+      "start": 9.083333333333334,
+      "end": 25.25,
+      "renderStartFrame": 210,
+      "renderEndFrame": 614,
+      "screens": []
+    },
+    {
+      "id": 3,
+      "ids": [
+        4
+      ],
+      "source": "plate-planner-clear",
+      "heading": "THE CARGO REQUIREMENT",
+      "start": 25.25,
+      "end": 33.166666666666664,
+      "renderStartFrame": 598,
+      "renderEndFrame": 804,
+      "screens": [
+        {
+          "frame": 0,
+          "screen": "brokerage-cargo.png"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "ids": [
+        5,
+        6
+      ],
+      "source": "plate-import",
+      "heading": "EXPECTED AVAILABILITY / NOT LIVE AIS",
+      "start": 33.166666666666664,
+      "end": 48.916666666666664,
+      "renderStartFrame": 788,
+      "renderEndFrame": 1182,
+      "screens": [
+        {
+          "frame": 0,
+          "screen": "brokerage-capacity.png"
+        },
+        {
+          "frame": 213,
+          "screen": "brokerage-assets.png"
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "ids": [
+        7,
+        8
+      ],
+      "source": "plate-planner-clear",
+      "heading": "COMPATIBILITY / PROTECTED IDENTITY",
+      "start": 48.916666666666664,
+      "end": 66.875,
+      "renderStartFrame": 1166,
+      "renderEndFrame": 1613,
+      "screens": [
+        {
+          "frame": 0,
+          "screen": "brokerage-opportunity.png"
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "ids": [
+        9,
+        10
+      ],
+      "source": "plate-import",
+      "heading": "MUTUAL CONSENT",
+      "start": 66.875,
+      "end": 82.79166666666667,
+      "renderStartFrame": 1597,
+      "renderEndFrame": 1995,
+      "screens": [
+        {
+          "frame": 0,
+          "screen": "brokerage-interest.png"
+        },
+        {
+          "frame": 195,
+          "screen": "brokerage-connected.png"
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "ids": [
+        11,
+        12
+      ],
+      "source": "plate-planner-clear",
+      "heading": "INTRODUCTION / NOT A BOOKING",
+      "start": 82.79166666666667,
+      "end": 99.79166666666667,
+      "renderStartFrame": 1979,
+      "renderEndFrame": 2403,
+      "screens": [
+        {
+          "frame": 0,
+          "screen": "brokerage-conversation.png"
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "ids": [
+        13
+      ],
+      "source": "vessel",
+      "heading": "PEOPLE IN CONTROL",
+      "start": 99.79166666666667,
+      "end": 110.70833333333333,
+      "renderStartFrame": 2387,
+      "renderEndFrame": 2665,
+      "screens": []
+    },
+    {
+      "id": 9,
+      "ids": [
+        14
+      ],
+      "source": "port",
+      "heading": "",
+      "start": 110.70833333333333,
+      "end": 116.16666666666667,
+      "renderStartFrame": 2649,
+      "renderEndFrame": 2788,
+      "screens": []
+    }
+  ],
+  "chapterGapSeconds": 0,
+  "voiceTimeStretch": 1,
+  "narration": {
+    "path": "attached_assets/cargomatch-films/brokerage/audio/story-normalized.wav",
+    "start": 0.65,
+    "takes": 1
+  },
+  "transitions": [
+    {
+      "start": 8.75,
+      "duration": 0.6666666666666666,
+      "kind": "context dissolve"
+    },
+    {
+      "start": 24.916666666666668,
+      "duration": 0.6666666666666666,
+      "kind": "context dissolve"
+    },
+    {
+      "start": 32.833333333333336,
+      "duration": 0.6666666666666666,
+      "kind": "context dissolve"
+    },
+    {
+      "start": 48.583333333333336,
+      "duration": 0.6666666666666666,
+      "kind": "context dissolve"
+    },
+    {
+      "start": 66.54166666666667,
+      "duration": 0.6666666666666666,
+      "kind": "context dissolve"
+    },
+    {
+      "start": 82.45833333333333,
+      "duration": 0.6666666666666666,
+      "kind": "context dissolve"
+    },
+    {
+      "start": 99.45833333333333,
+      "duration": 0.6666666666666666,
+      "kind": "context dissolve"
+    },
+    {
+      "start": 110.375,
+      "duration": 0.6666666666666666,
+      "kind": "context dissolve"
+    }
+  ],
+  "screenTransitionFrames": 6,
+  "cameraClock": "One continuous linear source clock per whole physical shot; never reset for screen changes."
+}

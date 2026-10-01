@@ -1,0 +1,101 @@
+{
+  "check": "CargoMatch final MP4 browser decode, playback, seeks, and burned-subtitle delivery",
+  "started": "2026-10-01T21:39:43.555Z",
+  "baseURL": "http://127.0.0.1:40203",
+  "file": "representative-proof.mp4",
+  "expected": {
+    "width": 1920,
+    "height": 1080,
+    "durationSeconds": 42.291666666666664,
+    "videoCodec": "H.264",
+    "browserTextTracks": 0
+  },
+  "assertions": {
+    "metadata": {
+      "duration": 42.291667,
+      "width": 1920,
+      "height": 1080,
+      "readyState": 1,
+      "networkState": 1,
+      "error": null,
+      "textTracks": 0,
+      "videoTracks": null,
+      "audioTracks": null
+    },
+    "noExtraBrowserTracks": true,
+    "noMediaElementError": true,
+    "decodedPlaybackProgression": {
+      "startedAt": 0,
+      "endedAt": 42.219961,
+      "progressedSeconds": 42.219961,
+      "decodedFramesObserved": 1011,
+      "totalVideoFrames": 1015,
+      "droppedVideoFrames": 0,
+      "error": null
+    },
+    "h264DecodeEvidence": [
+      {
+        "name": "kVideoDecoderName",
+        "value": "FFmpegVideoDecoder"
+      },
+      {
+        "name": "kIsPlatformAudioDecoder",
+        "value": "false"
+      },
+      {
+        "name": "kAudioDecoderName",
+        "value": "FFmpegAudioDecoder"
+      },
+      {
+        "name": "kVideoTracks",
+        "value": "[{\"alpha mode\":\"is_opaque\",\"codec\":\"h264\",\"coded size\":\"1920x1080\",\"color space\":{\"matrix\":\"BT709\",\"primaries\":\"BT709\",\"range\":\"LIMITED\",\"transfer\":\"BT709\"},\"encryption scheme\":\"Unencrypted\",\"has extra data\":true,\"hdr metadata\":{},\"natural size\":\"1920x1080\",\"orientation\":\"0°\",\"profile\":\"h264 high\",\"visible rect\":\"0,0 1920x1080\"}]"
+      },
+      {
+        "name": "kIsPlatformVideoDecoder",
+        "value": "false"
+      }
+    ],
+    "finalState": {
+      "error": null,
+      "textTracks": 0
+    }
+  },
+  "screenshots": [
+    {
+      "filename": "seek-7.416666666666668s.png",
+      "timeSeconds": 7.416666666666668,
+      "currentTime": 7.416666,
+      "frameCallback": false
+    },
+    {
+      "filename": "seek-16.291666666666668s.png",
+      "timeSeconds": 16.291666666666668,
+      "currentTime": 16.291666,
+      "frameCallback": false
+    },
+    {
+      "filename": "seek-23.166666666666668s.png",
+      "timeSeconds": 23.166666666666668,
+      "currentTime": 23.166666,
+      "frameCallback": false
+    }
+  ],
+  "transitionPlayback": [
+    {
+      "before": 7.416666,
+      "after": 8.977369,
+      "error": null
+    },
+    {
+      "before": 16.291666,
+      "after": 17.852119,
+      "error": null
+    },
+    {
+      "before": 23.166666,
+      "after": 24.726888,
+      "error": null
+    }
+  ],
+  "completed": "2026-10-01T21:40:34.333Z"
+}

@@ -1,0 +1,39 @@
+{
+  "voice": {
+    "voiceId": "GFyWqnwcF2mv6dWlo3u1",
+    "name": "John - Irish Man",
+    "modelId": "eleven_multilingual_v2",
+    "outputFormat": "mp3_44100_192",
+    "voiceSettings": {
+      "stability": 0.62,
+      "similarity_boost": 0.75,
+      "style": 0.1,
+      "use_speaker_boost": true,
+      "speed": 1
+    }
+  },
+  "deliveryDirection": "One uninterrupted documentary take. Same voice and speed as approved reference.",
+  "groups": [
+    {
+      "id": "story",
+      "ids": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14
+      ],
+      "text": "Before a vessel takes on its next cargo, a commercial journey has already begun, with people bringing the right requirements and the right capacity together. In the CargoMatch demo, Andy is preparing a cargo movement from Indonesia to China, while Sophie manages available tonnage for the next opportunity. They begin from different sides of the same question: can this cargo and this vessel realistically work together? For Andy, that means making the cargo requirement visible, including the quantity, the route and the intended loading window. For Sophie, it means reviewing the vessel's capacity and expected availability, with its position providing context for the next commercial decision. These are estimates in a demonstration, not live vessel tracking, and the team still needs to check the practical details. CargoMatch brings the opportunity into one view, so the people involved can consider the loading window, capacity and relevant restrictions before moving ahead. At this stage, the other company's identity stays protected; seeing a possible fit does not mean sharing every commercial detail. When Andy chooses to express interest, the next decision belongs to Sophie, who can review the approach before agreeing to connect. Only when both sides consent does the introduction open up, with the authorized contact information available to the connected participants. From there, one shared conversation gives them a place to discuss the loading window, ask questions and clarify the next steps. That connection is not a booking, and it does not conclude a charter; commercial terms and operational arrangements remain with the people responsible. By bringing requirements, capacity and consent into the same journey, CargoMatch helps ship brokerage move from an opportunity towards an informed conversation. Discover CargoMatch, the transport capacity intelligence network.",
+      "path": "attached_assets/cargomatch-films/brokerage/audio/story.mp3"
+    }
+  ]
+}

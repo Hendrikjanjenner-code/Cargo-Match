@@ -1,0 +1,74 @@
+1
+00:00:00,650 --> 00:00:07,560
+Eén gedeelde container, meerdere reizen: elk met een eigen
+ontvanger, documenten en vervolgstap.
+
+2
+00:00:07,560 --> 00:00:17,600
+In de CargoMatch-demo reizen deelzendingen in één
+consolidatie van Mumbai via Rotterdam naar Tilburg.
+
+3
+00:00:17,600 --> 00:00:27,400
+Forwarder David ziet de masterconsolidatie. Afzonderlijke
+housedossiers houden de zendingen gescheiden.
+
+4
+00:00:27,400 --> 00:00:36,260
+Die scheiding telt al vóór het lossen: samen reizen
+betekent niet dat iedereen elk document mag zien.
+
+5
+00:00:36,260 --> 00:00:44,910
+De ontvanger ziet alleen de eigen house-zending en
+toegestane informatie, niet de zaken van een ander.
+
+6
+00:00:44,910 --> 00:00:53,450
+In het dossier controleert het team documenten en
+aandachtspunten voor de volgende stap.
+
+7
+00:00:53,450 --> 00:01:01,240
+Documenten ondersteunen menselijke controle. Ze vervangen
+het oordeel van verantwoordelijke medewerkers niet.
+
+8
+00:01:01,240 --> 00:01:11,080
+Ook bij kosten ziet de ontvanger relevante posten voor de
+eigen zending, niet de hele consolidatie.
+
+9
+00:01:11,080 --> 00:01:20,910
+Douane en vrijgave vragen eigen controles. De demo blijft
+gescheiden van echte aangiften en betalingen.
+
+10
+00:01:20,910 --> 00:01:30,940
+Deze processen zijn gesimuleerd: inzicht in open
+voorwaarden, zonder echt geld of echte douanevrijgave.
+
+11
+00:01:30,940 --> 00:01:40,740
+In het magazijn worden deelzendingen gescheiden en
+gecontroleerd voor hun eigen vervolgtraject.
+
+12
+00:01:40,740 --> 00:01:48,120
+De ontvanger legt een aflevervoorkeur vast. Zo weet de
+forwarder wat hierna nodig is.
+
+13
+00:01:48,120 --> 00:01:57,580
+Die keuze is geen transportboeking. Beschikbaarheid,
+afspraken en overdracht worden afzonderlijk afgestemd.
+
+14
+00:01:57,580 --> 00:02:07,320
+Van gedeelde container tot eigen aflevering: CargoMatch
+verbindt de reis en bewaakt de grenzen per ontvanger.
+
+15
+00:02:07,320 --> 00:02:11,459
+Ontdek CargoMatch, het netwerk voor
+transportcapaciteitsinformatie.

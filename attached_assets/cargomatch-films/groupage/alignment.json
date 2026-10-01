@@ -1,0 +1,2783 @@
+{
+  "model": "base.en",
+  "fasterWhisperVersion": "1.2.1",
+  "source": "normalized WAV files",
+  "manifestSha256": "303062500febffbf28ae883bda5881ab4549391e0431f3ff851f4d927de84220",
+  "scriptSha256": "8728c7d53d2f62330070a0753d1bc9c0b3848f2841470db18363c330b2c28f5f",
+  "groups": [
+    {
+      "id": "story",
+      "duration": 130.809,
+      "items": [
+        {
+          "id": 1,
+          "start": 0.0,
+          "end": 6.91,
+          "sentences": [
+            {
+              "english": "A shared container can carry several different journeys, each with its own receiver, its own documents and its own next step.",
+              "dutch": "Eén gedeelde container, meerdere reizen: elk met een eigen ontvanger, documenten en vervolgstap.",
+              "start": 0.0,
+              "end": 6.91
+            }
+          ]
+        },
+        {
+          "id": 2,
+          "start": 6.91,
+          "end": 16.95,
+          "sentences": [
+            {
+              "english": "In the CargoMatch demo, a groupage shipment travels from Mumbai, through Rotterdam, towards Tilburg, bringing smaller consignments into one consolidation.",
+              "dutch": "In de CargoMatch-demo reizen deelzendingen in één consolidatie van Mumbai via Rotterdam naar Tilburg.",
+              "start": 6.91,
+              "end": 16.95
+            }
+          ]
+        },
+        {
+          "id": 3,
+          "start": 16.95,
+          "end": 26.75,
+          "sentences": [
+            {
+              "english": "For David, the forwarder, the master dossier provides the shared context, while the individual house shipments keep each receiver's business distinct.",
+              "dutch": "Forwarder David ziet de masterconsolidatie. Afzonderlijke housedossiers houden de zendingen gescheiden.",
+              "start": 16.95,
+              "end": 26.75
+            }
+          ]
+        },
+        {
+          "id": 4,
+          "start": 26.75,
+          "end": 35.61,
+          "sentences": [
+            {
+              "english": "That distinction matters long before the container is opened, because a shared voyage does not mean that every partner should see every document.",
+              "dutch": "Die scheiding telt al vóór het lossen: samen reizen betekent niet dat iedereen elk document mag zien.",
+              "start": 26.75,
+              "end": 35.61
+            }
+          ]
+        },
+        {
+          "id": 5,
+          "start": 35.61,
+          "end": 44.26,
+          "sentences": [
+            {
+              "english": "The receiver follows only their own house shipment, with the information their role permits, rather than another company's commercial details.",
+              "dutch": "De ontvanger ziet alleen de eigen house-zending en toegestane informatie, niet de zaken van een ander.",
+              "start": 35.61,
+              "end": 44.26
+            }
+          ]
+        },
+        {
+          "id": 6,
+          "start": 44.26,
+          "end": 52.8,
+          "sentences": [
+            {
+              "english": "Within that dossier, the team can review the available documents and check what needs attention before the shipment moves further along the chain.",
+              "dutch": "In het dossier controleert het team documenten en aandachtspunten voor de volgende stap.",
+              "start": 44.26,
+              "end": 52.8
+            }
+          ]
+        },
+        {
+          "id": 7,
+          "start": 52.8,
+          "end": 60.59,
+          "sentences": [
+            {
+              "english": "The documents support human review; they do not replace the judgement of the people responsible for the shipment and its requirements.",
+              "dutch": "Documenten ondersteunen menselijke controle. Ze vervangen het oordeel van verantwoordelijke medewerkers niet.",
+              "start": 52.8,
+              "end": 60.59
+            }
+          ]
+        },
+        {
+          "id": 8,
+          "start": 60.59,
+          "end": 70.43,
+          "sentences": [
+            {
+              "english": "The same care applies to the costs, where the receiver sees relevant charges for their own shipment rather than the business of the whole consolidation.",
+              "dutch": "Ook bij kosten ziet de ontvanger relevante posten voor de eigen zending, niet de hele consolidatie.",
+              "start": 60.59,
+              "end": 70.43
+            }
+          ]
+        },
+        {
+          "id": 9,
+          "start": 70.43,
+          "end": 80.26,
+          "sentences": [
+            {
+              "english": "Customs and release conditions need their own attention too, and the demonstration keeps those steps clearly separate from a real declaration or payment.",
+              "dutch": "Douane en vrijgave vragen eigen controles. De demo blijft gescheiden van echte aangiften en betalingen.",
+              "start": 70.43,
+              "end": 80.26
+            }
+          ]
+        },
+        {
+          "id": 10,
+          "start": 80.26,
+          "end": 90.29,
+          "sentences": [
+            {
+              "english": "Here, those processes are simulated, so the team can understand the outstanding conditions without moving real money or claiming a real customs release.",
+              "dutch": "Deze processen zijn gesimuleerd: inzicht in open voorwaarden, zonder echt geld of echte douanevrijgave.",
+              "start": 80.26,
+              "end": 90.29
+            }
+          ]
+        },
+        {
+          "id": 11,
+          "start": 90.29,
+          "end": 100.09,
+          "sentences": [
+            {
+              "english": "At the warehouse, the shared load becomes separate consignments again, with physical handling and checks preparing each shipment for its own onward journey.",
+              "dutch": "In het magazijn worden deelzendingen gescheiden en gecontroleerd voor hun eigen vervolgtraject.",
+              "start": 90.29,
+              "end": 100.09
+            }
+          ]
+        },
+        {
+          "id": 12,
+          "start": 100.09,
+          "end": 107.47,
+          "sentences": [
+            {
+              "english": "The receiver can register a delivery preference in the dossier, giving the forwarder a clear indication of what is needed next.",
+              "dutch": "De ontvanger legt een aflevervoorkeur vast. Zo weet de forwarder wat hierna nodig is.",
+              "start": 100.09,
+              "end": 107.47
+            }
+          ]
+        },
+        {
+          "id": 13,
+          "start": 107.47,
+          "end": 116.93,
+          "sentences": [
+            {
+              "english": "That choice is not a transport booking; availability, arrangements and the final handover still need to be agreed separately by the people involved.",
+              "dutch": "Die keuze is geen transportboeking. Beschikbaarheid, afspraken en overdracht worden afzonderlijk afgestemd.",
+              "start": 107.47,
+              "end": 116.93
+            }
+          ]
+        },
+        {
+          "id": 14,
+          "start": 116.93,
+          "end": 126.67,
+          "sentences": [
+            {
+              "english": "From a shared container to an individual delivery, CargoMatch keeps the shipment story connected while respecting the boundaries around each receiver.",
+              "dutch": "Van gedeelde container tot eigen aflevering: CargoMatch verbindt de reis en bewaakt de grenzen per ontvanger.",
+              "start": 116.93,
+              "end": 126.67
+            }
+          ]
+        },
+        {
+          "id": 15,
+          "start": 126.67,
+          "end": 130.809,
+          "sentences": [
+            {
+              "english": "Discover CargoMatch, the transport capacity intelligence network.",
+              "dutch": "Ontdek CargoMatch, het netwerk voor transportcapaciteitsinformatie.",
+              "start": 126.67,
+              "end": 130.809
+            }
+          ]
+        }
+      ],
+      "confidence": {
+        "matchedScriptWords": 320,
+        "scriptWords": 320,
+        "lexicalMatchRatio": 1.0,
+        "meanRecognizerWordProbability": 0.9549
+      },
+      "recognizedText": "A shared container can carry several different journeys, each with its own receiver, its own documents, and its own next step. In the cargo match demo, a group of shipment travels from Mumbai through Rotterdam towards Tilburg, bringing smaller consignments into one consolidation. For David the forwarder, the master dossier provides the shared context, while the individual house shipments keep each receiver's business distinct. That distinction matters long before the container is opened, because a shared voyage does not mean that every partner should see every document. The receiver follows only their own house shipment, with the information their role permits, rather than another company's commercial details. Within that dossier, the team can review the available documents and check what needs attention before the shipment moves further along the chain. The documents support human review. They do not replace the judgment of the people responsible for the shipment and its requirements. The same care applies to the costs, where the receiver sees relevant charges for their own shipment, rather than the business of the whole consolidation. Customs and release conditions need their own attention too, and the demonstration keeps those steps clearly separate from a real declaration or payment. Here, those processes are simulated, so the team can understand the outstanding conditions without moving real money, or claiming a real customs release. At the warehouse, the shared load becomes separate consignments again, with physical handling and checks preparing each shipment for its own onward journey. The receiver can register a delivery preference in the dossier, giving the forwarder a clear indication of what is needed next. That choice is not a transport booking. Availability, arrangements, and the final handover, still need to be agreed separately by the people involved. From a shared container to an individual delivery, cargo match keeps the shipment story connected, while respecting the boundaries around each receiver. Discover cargo match, the transport capacity intelligence network.",
+      "evidenceWords": [
+        {
+          "scriptIndex": 0,
+          "script": "a",
+          "heard": "A",
+          "start": 0.0,
+          "end": 0.001,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 1,
+          "script": "shared",
+          "heard": "shared",
+          "start": 0.0,
+          "end": 0.28,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 2,
+          "script": "container",
+          "heard": "container",
+          "start": 0.28,
+          "end": 0.62,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 3,
+          "script": "can",
+          "heard": "can",
+          "start": 0.62,
+          "end": 0.98,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 4,
+          "script": "carry",
+          "heard": "carry",
+          "start": 0.98,
+          "end": 1.28,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 5,
+          "script": "several",
+          "heard": "several",
+          "start": 1.28,
+          "end": 1.54,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 6,
+          "script": "different",
+          "heard": "different",
+          "start": 1.54,
+          "end": 1.86,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 7,
+          "script": "journeys",
+          "heard": "journeys,",
+          "start": 1.86,
+          "end": 2.14,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 8,
+          "script": "each",
+          "heard": "each",
+          "start": 2.9,
+          "end": 3.18,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 9,
+          "script": "with",
+          "heard": "with",
+          "start": 3.18,
+          "end": 3.3,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 10,
+          "script": "its",
+          "heard": "its",
+          "start": 3.3,
+          "end": 3.48,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 11,
+          "script": "own",
+          "heard": "own",
+          "start": 3.48,
+          "end": 3.64,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 12,
+          "script": "receiver",
+          "heard": "receiver,",
+          "start": 3.64,
+          "end": 3.94,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 13,
+          "script": "its",
+          "heard": "its",
+          "start": 4.42,
+          "end": 4.5,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 14,
+          "script": "own",
+          "heard": "own",
+          "start": 4.5,
+          "end": 4.66,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 15,
+          "script": "documents",
+          "heard": "documents,",
+          "start": 4.66,
+          "end": 5.02,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 16,
+          "script": "and",
+          "heard": "and",
+          "start": 5.48,
+          "end": 5.54,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 17,
+          "script": "its",
+          "heard": "its",
+          "start": 5.54,
+          "end": 5.7,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 18,
+          "script": "own",
+          "heard": "own",
+          "start": 5.7,
+          "end": 5.86,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 19,
+          "script": "next",
+          "heard": "next",
+          "start": 5.86,
+          "end": 6.08,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 20,
+          "script": "step",
+          "heard": "step.",
+          "start": 6.08,
+          "end": 6.4,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 21,
+          "script": "in",
+          "heard": "In",
+          "start": 7.42,
+          "end": 7.6,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 22,
+          "script": "the",
+          "heard": "the",
+          "start": 7.6,
+          "end": 7.7,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 23,
+          "script": "cargo",
+          "heard": "cargo",
+          "start": 7.7,
+          "end": 7.94,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 24,
+          "script": "match",
+          "heard": "match",
+          "start": 7.94,
+          "end": 8.26,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 25,
+          "script": "demo",
+          "heard": "demo,",
+          "start": 8.26,
+          "end": 8.58,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 26,
+          "script": "a",
+          "heard": "a",
+          "start": 8.94,
+          "end": 9.1,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 27,
+          "script": "groupage",
+          "heard": "group",
+          "start": 9.1,
+          "end": 9.28,
+          "match": "fuzzy",
+          "similarity": 0.769
+        },
+        {
+          "scriptIndex": 28,
+          "script": "shipment",
+          "heard": "shipment",
+          "start": 9.44,
+          "end": 9.66,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 29,
+          "script": "travels",
+          "heard": "travels",
+          "start": 9.66,
+          "end": 10.2,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 30,
+          "script": "from",
+          "heard": "from",
+          "start": 10.2,
+          "end": 10.58,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 31,
+          "script": "mumbai",
+          "heard": "Mumbai",
+          "start": 10.58,
+          "end": 10.78,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 32,
+          "script": "through",
+          "heard": "through",
+          "start": 10.78,
+          "end": 11.64,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 33,
+          "script": "rotterdam",
+          "heard": "Rotterdam",
+          "start": 11.64,
+          "end": 12.3,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 34,
+          "script": "towards",
+          "heard": "towards",
+          "start": 12.3,
+          "end": 12.8,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 35,
+          "script": "tilburg",
+          "heard": "Tilburg,",
+          "start": 12.8,
+          "end": 13.4,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 36,
+          "script": "bringing",
+          "heard": "bringing",
+          "start": 14.06,
+          "end": 14.32,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 37,
+          "script": "smaller",
+          "heard": "smaller",
+          "start": 14.32,
+          "end": 14.72,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 38,
+          "script": "consignments",
+          "heard": "consignments",
+          "start": 14.72,
+          "end": 15.48,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 39,
+          "script": "into",
+          "heard": "into",
+          "start": 15.48,
+          "end": 15.78,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 40,
+          "script": "one",
+          "heard": "one",
+          "start": 15.78,
+          "end": 15.96,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 41,
+          "script": "consolidation",
+          "heard": "consolidation.",
+          "start": 15.96,
+          "end": 16.38,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 42,
+          "script": "for",
+          "heard": "For",
+          "start": 17.52,
+          "end": 17.82,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 43,
+          "script": "david",
+          "heard": "David",
+          "start": 17.82,
+          "end": 18.04,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 44,
+          "script": "the",
+          "heard": "the",
+          "start": 18.04,
+          "end": 18.32,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 45,
+          "script": "forwarder",
+          "heard": "forwarder,",
+          "start": 18.32,
+          "end": 18.84,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 46,
+          "script": "the",
+          "heard": "the",
+          "start": 19.1,
+          "end": 19.24,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 47,
+          "script": "master",
+          "heard": "master",
+          "start": 19.24,
+          "end": 19.5,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 48,
+          "script": "dossier",
+          "heard": "dossier",
+          "start": 19.5,
+          "end": 19.84,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 49,
+          "script": "provides",
+          "heard": "provides",
+          "start": 20.38,
+          "end": 20.68,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 50,
+          "script": "the",
+          "heard": "the",
+          "start": 20.68,
+          "end": 21.04,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 51,
+          "script": "shared",
+          "heard": "shared",
+          "start": 21.04,
+          "end": 21.32,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 52,
+          "script": "context",
+          "heard": "context,",
+          "start": 21.32,
+          "end": 21.62,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 53,
+          "script": "while",
+          "heard": "while",
+          "start": 22.56,
+          "end": 22.76,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 54,
+          "script": "the",
+          "heard": "the",
+          "start": 22.76,
+          "end": 22.92,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 55,
+          "script": "individual",
+          "heard": "individual",
+          "start": 22.92,
+          "end": 23.34,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 56,
+          "script": "house",
+          "heard": "house",
+          "start": 23.34,
+          "end": 23.64,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 57,
+          "script": "shipments",
+          "heard": "shipments",
+          "start": 23.64,
+          "end": 24.04,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 58,
+          "script": "keep",
+          "heard": "keep",
+          "start": 24.54,
+          "end": 24.84,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 59,
+          "script": "each",
+          "heard": "each",
+          "start": 24.84,
+          "end": 25.14,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 60,
+          "script": "receiver",
+          "heard": "receiver's",
+          "start": 25.14,
+          "end": 25.45,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 61,
+          "script": "s",
+          "heard": "receiver's",
+          "start": 25.45,
+          "end": 25.76,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 62,
+          "script": "business",
+          "heard": "business",
+          "start": 25.76,
+          "end": 26.02,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 63,
+          "script": "distinct",
+          "heard": "distinct.",
+          "start": 26.02,
+          "end": 26.4,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 64,
+          "script": "that",
+          "heard": "That",
+          "start": 27.1,
+          "end": 27.74,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 65,
+          "script": "distinction",
+          "heard": "distinction",
+          "start": 27.74,
+          "end": 28.18,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 66,
+          "script": "matters",
+          "heard": "matters",
+          "start": 28.18,
+          "end": 28.62,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 67,
+          "script": "long",
+          "heard": "long",
+          "start": 28.62,
+          "end": 29.06,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 68,
+          "script": "before",
+          "heard": "before",
+          "start": 29.06,
+          "end": 29.5,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 69,
+          "script": "the",
+          "heard": "the",
+          "start": 29.5,
+          "end": 29.66,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 70,
+          "script": "container",
+          "heard": "container",
+          "start": 29.66,
+          "end": 29.98,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 71,
+          "script": "is",
+          "heard": "is",
+          "start": 29.98,
+          "end": 30.3,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 72,
+          "script": "opened",
+          "heard": "opened,",
+          "start": 30.3,
+          "end": 30.54,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 73,
+          "script": "because",
+          "heard": "because",
+          "start": 31.14,
+          "end": 31.4,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 74,
+          "script": "a",
+          "heard": "a",
+          "start": 31.4,
+          "end": 31.52,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 75,
+          "script": "shared",
+          "heard": "shared",
+          "start": 31.52,
+          "end": 31.82,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 76,
+          "script": "voyage",
+          "heard": "voyage",
+          "start": 31.82,
+          "end": 32.1,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 77,
+          "script": "does",
+          "heard": "does",
+          "start": 32.1,
+          "end": 32.46,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 78,
+          "script": "not",
+          "heard": "not",
+          "start": 32.46,
+          "end": 32.62,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 79,
+          "script": "mean",
+          "heard": "mean",
+          "start": 32.62,
+          "end": 32.9,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 80,
+          "script": "that",
+          "heard": "that",
+          "start": 32.9,
+          "end": 33.16,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 81,
+          "script": "every",
+          "heard": "every",
+          "start": 33.16,
+          "end": 33.36,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 82,
+          "script": "partner",
+          "heard": "partner",
+          "start": 33.36,
+          "end": 33.8,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 83,
+          "script": "should",
+          "heard": "should",
+          "start": 33.8,
+          "end": 34.2,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 84,
+          "script": "see",
+          "heard": "see",
+          "start": 34.2,
+          "end": 34.42,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 85,
+          "script": "every",
+          "heard": "every",
+          "start": 34.42,
+          "end": 34.74,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 86,
+          "script": "document",
+          "heard": "document.",
+          "start": 34.74,
+          "end": 35.08,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 87,
+          "script": "the",
+          "heard": "The",
+          "start": 36.14,
+          "end": 36.36,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 88,
+          "script": "receiver",
+          "heard": "receiver",
+          "start": 36.36,
+          "end": 36.66,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 89,
+          "script": "follows",
+          "heard": "follows",
+          "start": 36.66,
+          "end": 37.22,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 90,
+          "script": "only",
+          "heard": "only",
+          "start": 37.22,
+          "end": 37.58,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 91,
+          "script": "their",
+          "heard": "their",
+          "start": 37.58,
+          "end": 37.78,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 92,
+          "script": "own",
+          "heard": "own",
+          "start": 37.78,
+          "end": 37.98,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 93,
+          "script": "house",
+          "heard": "house",
+          "start": 37.98,
+          "end": 38.2,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 94,
+          "script": "shipment",
+          "heard": "shipment,",
+          "start": 38.2,
+          "end": 38.5,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 95,
+          "script": "with",
+          "heard": "with",
+          "start": 39.14,
+          "end": 39.34,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 96,
+          "script": "the",
+          "heard": "the",
+          "start": 39.34,
+          "end": 39.48,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 97,
+          "script": "information",
+          "heard": "information",
+          "start": 39.48,
+          "end": 39.8,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 98,
+          "script": "their",
+          "heard": "their",
+          "start": 39.8,
+          "end": 40.28,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 99,
+          "script": "role",
+          "heard": "role",
+          "start": 40.28,
+          "end": 40.5,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 100,
+          "script": "permits",
+          "heard": "permits,",
+          "start": 40.5,
+          "end": 40.84,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 101,
+          "script": "rather",
+          "heard": "rather",
+          "start": 41.5,
+          "end": 41.84,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 102,
+          "script": "than",
+          "heard": "than",
+          "start": 41.84,
+          "end": 42.28,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 103,
+          "script": "another",
+          "heard": "another",
+          "start": 42.28,
+          "end": 42.46,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 104,
+          "script": "company",
+          "heard": "company's",
+          "start": 42.46,
+          "end": 42.78,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 105,
+          "script": "s",
+          "heard": "company's",
+          "start": 42.78,
+          "end": 43.1,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 106,
+          "script": "commercial",
+          "heard": "commercial",
+          "start": 43.1,
+          "end": 43.4,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 107,
+          "script": "details",
+          "heard": "details.",
+          "start": 43.4,
+          "end": 43.76,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 108,
+          "script": "within",
+          "heard": "Within",
+          "start": 44.76,
+          "end": 45.12,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 109,
+          "script": "that",
+          "heard": "that",
+          "start": 45.12,
+          "end": 45.38,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 110,
+          "script": "dossier",
+          "heard": "dossier,",
+          "start": 45.38,
+          "end": 45.78,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 111,
+          "script": "the",
+          "heard": "the",
+          "start": 46.06,
+          "end": 46.14,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 112,
+          "script": "team",
+          "heard": "team",
+          "start": 46.14,
+          "end": 46.4,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 113,
+          "script": "can",
+          "heard": "can",
+          "start": 46.4,
+          "end": 46.56,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 114,
+          "script": "review",
+          "heard": "review",
+          "start": 46.56,
+          "end": 46.86,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 115,
+          "script": "the",
+          "heard": "the",
+          "start": 46.86,
+          "end": 47.12,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 116,
+          "script": "available",
+          "heard": "available",
+          "start": 47.12,
+          "end": 47.42,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 117,
+          "script": "documents",
+          "heard": "documents",
+          "start": 47.42,
+          "end": 47.84,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 118,
+          "script": "and",
+          "heard": "and",
+          "start": 47.84,
+          "end": 48.72,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 119,
+          "script": "check",
+          "heard": "check",
+          "start": 48.72,
+          "end": 48.9,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 120,
+          "script": "what",
+          "heard": "what",
+          "start": 48.9,
+          "end": 49.16,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 121,
+          "script": "needs",
+          "heard": "needs",
+          "start": 49.16,
+          "end": 49.32,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 122,
+          "script": "attention",
+          "heard": "attention",
+          "start": 49.32,
+          "end": 49.68,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 123,
+          "script": "before",
+          "heard": "before",
+          "start": 49.68,
+          "end": 50.28,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 124,
+          "script": "the",
+          "heard": "the",
+          "start": 50.28,
+          "end": 50.54,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 125,
+          "script": "shipment",
+          "heard": "shipment",
+          "start": 50.54,
+          "end": 50.8,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 126,
+          "script": "moves",
+          "heard": "moves",
+          "start": 50.8,
+          "end": 51.14,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 127,
+          "script": "further",
+          "heard": "further",
+          "start": 51.14,
+          "end": 51.52,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 128,
+          "script": "along",
+          "heard": "along",
+          "start": 51.52,
+          "end": 52.02,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 129,
+          "script": "the",
+          "heard": "the",
+          "start": 52.02,
+          "end": 52.24,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 130,
+          "script": "chain",
+          "heard": "chain.",
+          "start": 52.24,
+          "end": 52.46,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 131,
+          "script": "the",
+          "heard": "The",
+          "start": 53.14,
+          "end": 53.44,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 132,
+          "script": "documents",
+          "heard": "documents",
+          "start": 53.44,
+          "end": 53.76,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 133,
+          "script": "support",
+          "heard": "support",
+          "start": 53.76,
+          "end": 54.22,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 134,
+          "script": "human",
+          "heard": "human",
+          "start": 54.22,
+          "end": 54.56,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 135,
+          "script": "review",
+          "heard": "review.",
+          "start": 54.56,
+          "end": 54.9,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 136,
+          "script": "they",
+          "heard": "They",
+          "start": 55.46,
+          "end": 55.76,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 137,
+          "script": "do",
+          "heard": "do",
+          "start": 55.76,
+          "end": 55.92,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 138,
+          "script": "not",
+          "heard": "not",
+          "start": 55.92,
+          "end": 56.08,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 139,
+          "script": "replace",
+          "heard": "replace",
+          "start": 56.08,
+          "end": 56.38,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 140,
+          "script": "the",
+          "heard": "the",
+          "start": 56.38,
+          "end": 56.62,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 141,
+          "script": "judgement",
+          "heard": "judgment",
+          "start": 56.62,
+          "end": 56.88,
+          "match": "fuzzy",
+          "similarity": 0.941
+        },
+        {
+          "scriptIndex": 142,
+          "script": "of",
+          "heard": "of",
+          "start": 56.88,
+          "end": 57.22,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 143,
+          "script": "the",
+          "heard": "the",
+          "start": 57.22,
+          "end": 57.32,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 144,
+          "script": "people",
+          "heard": "people",
+          "start": 57.32,
+          "end": 57.56,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 145,
+          "script": "responsible",
+          "heard": "responsible",
+          "start": 57.56,
+          "end": 57.98,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 146,
+          "script": "for",
+          "heard": "for",
+          "start": 57.98,
+          "end": 58.48,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 147,
+          "script": "the",
+          "heard": "the",
+          "start": 58.48,
+          "end": 58.58,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 148,
+          "script": "shipment",
+          "heard": "shipment",
+          "start": 58.58,
+          "end": 58.82,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 149,
+          "script": "and",
+          "heard": "and",
+          "start": 58.82,
+          "end": 59.56,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 150,
+          "script": "its",
+          "heard": "its",
+          "start": 59.56,
+          "end": 59.72,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 151,
+          "script": "requirements",
+          "heard": "requirements.",
+          "start": 59.72,
+          "end": 60.02,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 152,
+          "script": "the",
+          "heard": "The",
+          "start": 61.16,
+          "end": 61.3,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 153,
+          "script": "same",
+          "heard": "same",
+          "start": 61.3,
+          "end": 61.52,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 154,
+          "script": "care",
+          "heard": "care",
+          "start": 61.52,
+          "end": 61.8,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 155,
+          "script": "applies",
+          "heard": "applies",
+          "start": 61.8,
+          "end": 62.16,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 156,
+          "script": "to",
+          "heard": "to",
+          "start": 62.16,
+          "end": 62.46,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 157,
+          "script": "the",
+          "heard": "the",
+          "start": 62.46,
+          "end": 62.54,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 158,
+          "script": "costs",
+          "heard": "costs,",
+          "start": 62.54,
+          "end": 62.8,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 159,
+          "script": "where",
+          "heard": "where",
+          "start": 63.5,
+          "end": 63.8,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 160,
+          "script": "the",
+          "heard": "the",
+          "start": 63.8,
+          "end": 63.92,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 161,
+          "script": "receiver",
+          "heard": "receiver",
+          "start": 63.92,
+          "end": 64.24,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 162,
+          "script": "sees",
+          "heard": "sees",
+          "start": 64.24,
+          "end": 64.68,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 163,
+          "script": "relevant",
+          "heard": "relevant",
+          "start": 64.68,
+          "end": 65.08,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 164,
+          "script": "charges",
+          "heard": "charges",
+          "start": 65.08,
+          "end": 65.54,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 165,
+          "script": "for",
+          "heard": "for",
+          "start": 66.02,
+          "end": 66.32,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 166,
+          "script": "their",
+          "heard": "their",
+          "start": 66.32,
+          "end": 66.46,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 167,
+          "script": "own",
+          "heard": "own",
+          "start": 66.46,
+          "end": 66.66,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 168,
+          "script": "shipment",
+          "heard": "shipment,",
+          "start": 66.66,
+          "end": 66.94,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 169,
+          "script": "rather",
+          "heard": "rather",
+          "start": 67.48,
+          "end": 67.84,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 170,
+          "script": "than",
+          "heard": "than",
+          "start": 67.84,
+          "end": 68.4,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 171,
+          "script": "the",
+          "heard": "the",
+          "start": 68.4,
+          "end": 68.5,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 172,
+          "script": "business",
+          "heard": "business",
+          "start": 68.5,
+          "end": 68.78,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 173,
+          "script": "of",
+          "heard": "of",
+          "start": 68.78,
+          "end": 69.08,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 174,
+          "script": "the",
+          "heard": "the",
+          "start": 69.08,
+          "end": 69.2,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 175,
+          "script": "whole",
+          "heard": "whole",
+          "start": 69.2,
+          "end": 69.38,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 176,
+          "script": "consolidation",
+          "heard": "consolidation.",
+          "start": 69.38,
+          "end": 69.88,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 177,
+          "script": "customs",
+          "heard": "Customs",
+          "start": 70.98,
+          "end": 71.46,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 178,
+          "script": "and",
+          "heard": "and",
+          "start": 71.46,
+          "end": 71.82,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 179,
+          "script": "release",
+          "heard": "release",
+          "start": 71.82,
+          "end": 72.04,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 180,
+          "script": "conditions",
+          "heard": "conditions",
+          "start": 72.04,
+          "end": 72.4,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 181,
+          "script": "need",
+          "heard": "need",
+          "start": 72.4,
+          "end": 72.9,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 182,
+          "script": "their",
+          "heard": "their",
+          "start": 72.9,
+          "end": 73.1,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 183,
+          "script": "own",
+          "heard": "own",
+          "start": 73.1,
+          "end": 73.26,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 184,
+          "script": "attention",
+          "heard": "attention",
+          "start": 73.26,
+          "end": 73.52,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 185,
+          "script": "too",
+          "heard": "too,",
+          "start": 73.52,
+          "end": 74.0,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 186,
+          "script": "and",
+          "heard": "and",
+          "start": 74.66,
+          "end": 75.0,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 187,
+          "script": "the",
+          "heard": "the",
+          "start": 75.0,
+          "end": 75.1,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 188,
+          "script": "demonstration",
+          "heard": "demonstration",
+          "start": 75.1,
+          "end": 75.5,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 189,
+          "script": "keeps",
+          "heard": "keeps",
+          "start": 75.5,
+          "end": 76.06,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 190,
+          "script": "those",
+          "heard": "those",
+          "start": 76.06,
+          "end": 76.3,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 191,
+          "script": "steps",
+          "heard": "steps",
+          "start": 76.3,
+          "end": 76.6,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 192,
+          "script": "clearly",
+          "heard": "clearly",
+          "start": 76.6,
+          "end": 76.98,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 193,
+          "script": "separate",
+          "heard": "separate",
+          "start": 76.98,
+          "end": 77.44,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 194,
+          "script": "from",
+          "heard": "from",
+          "start": 77.44,
+          "end": 77.74,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 195,
+          "script": "a",
+          "heard": "a",
+          "start": 77.74,
+          "end": 77.86,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 196,
+          "script": "real",
+          "heard": "real",
+          "start": 77.86,
+          "end": 78.02,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 197,
+          "script": "declaration",
+          "heard": "declaration",
+          "start": 78.02,
+          "end": 78.48,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 198,
+          "script": "or",
+          "heard": "or",
+          "start": 78.48,
+          "end": 79.56,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 199,
+          "script": "payment",
+          "heard": "payment.",
+          "start": 79.56,
+          "end": 79.8,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 200,
+          "script": "here",
+          "heard": "Here,",
+          "start": 80.72,
+          "end": 81.32,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 201,
+          "script": "those",
+          "heard": "those",
+          "start": 81.52,
+          "end": 81.76,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 202,
+          "script": "processes",
+          "heard": "processes",
+          "start": 81.76,
+          "end": 82.22,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 203,
+          "script": "are",
+          "heard": "are",
+          "start": 82.22,
+          "end": 82.68,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 204,
+          "script": "simulated",
+          "heard": "simulated,",
+          "start": 82.68,
+          "end": 83.06,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 205,
+          "script": "so",
+          "heard": "so",
+          "start": 83.82,
+          "end": 84.14,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 206,
+          "script": "the",
+          "heard": "the",
+          "start": 84.14,
+          "end": 84.3,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 207,
+          "script": "team",
+          "heard": "team",
+          "start": 84.3,
+          "end": 84.56,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 208,
+          "script": "can",
+          "heard": "can",
+          "start": 84.56,
+          "end": 84.74,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 209,
+          "script": "understand",
+          "heard": "understand",
+          "start": 84.74,
+          "end": 85.14,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 210,
+          "script": "the",
+          "heard": "the",
+          "start": 85.14,
+          "end": 85.46,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 211,
+          "script": "outstanding",
+          "heard": "outstanding",
+          "start": 85.46,
+          "end": 85.84,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 212,
+          "script": "conditions",
+          "heard": "conditions",
+          "start": 85.84,
+          "end": 86.36,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 213,
+          "script": "without",
+          "heard": "without",
+          "start": 86.36,
+          "end": 86.66,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 214,
+          "script": "moving",
+          "heard": "moving",
+          "start": 86.66,
+          "end": 87.14,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 215,
+          "script": "real",
+          "heard": "real",
+          "start": 87.14,
+          "end": 87.36,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 216,
+          "script": "money",
+          "heard": "money,",
+          "start": 87.36,
+          "end": 87.64,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 217,
+          "script": "or",
+          "heard": "or",
+          "start": 88.28,
+          "end": 88.38,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 218,
+          "script": "claiming",
+          "heard": "claiming",
+          "start": 88.38,
+          "end": 88.66,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 219,
+          "script": "a",
+          "heard": "a",
+          "start": 88.66,
+          "end": 88.86,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 220,
+          "script": "real",
+          "heard": "real",
+          "start": 88.86,
+          "end": 89.0,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 221,
+          "script": "customs",
+          "heard": "customs",
+          "start": 89.0,
+          "end": 89.38,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 222,
+          "script": "release",
+          "heard": "release.",
+          "start": 89.38,
+          "end": 89.76,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 223,
+          "script": "at",
+          "heard": "At",
+          "start": 90.82,
+          "end": 91.12,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 224,
+          "script": "the",
+          "heard": "the",
+          "start": 91.12,
+          "end": 91.22,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 225,
+          "script": "warehouse",
+          "heard": "warehouse,",
+          "start": 91.22,
+          "end": 91.44,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 226,
+          "script": "the",
+          "heard": "the",
+          "start": 91.82,
+          "end": 91.88,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 227,
+          "script": "shared",
+          "heard": "shared",
+          "start": 91.88,
+          "end": 92.08,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 228,
+          "script": "load",
+          "heard": "load",
+          "start": 92.08,
+          "end": 92.4,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 229,
+          "script": "becomes",
+          "heard": "becomes",
+          "start": 92.4,
+          "end": 92.72,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 230,
+          "script": "separate",
+          "heard": "separate",
+          "start": 92.72,
+          "end": 93.26,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 231,
+          "script": "consignments",
+          "heard": "consignments",
+          "start": 93.26,
+          "end": 93.92,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 232,
+          "script": "again",
+          "heard": "again,",
+          "start": 93.92,
+          "end": 94.18,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 233,
+          "script": "with",
+          "heard": "with",
+          "start": 94.94,
+          "end": 95.12,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 234,
+          "script": "physical",
+          "heard": "physical",
+          "start": 95.12,
+          "end": 95.44,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 235,
+          "script": "handling",
+          "heard": "handling",
+          "start": 95.44,
+          "end": 95.84,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 236,
+          "script": "and",
+          "heard": "and",
+          "start": 95.84,
+          "end": 96.26,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 237,
+          "script": "checks",
+          "heard": "checks",
+          "start": 96.26,
+          "end": 96.48,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 238,
+          "script": "preparing",
+          "heard": "preparing",
+          "start": 96.48,
+          "end": 96.9,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 239,
+          "script": "each",
+          "heard": "each",
+          "start": 96.9,
+          "end": 97.38,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 240,
+          "script": "shipment",
+          "heard": "shipment",
+          "start": 97.38,
+          "end": 97.72,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 241,
+          "script": "for",
+          "heard": "for",
+          "start": 97.72,
+          "end": 98.42,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 242,
+          "script": "its",
+          "heard": "its",
+          "start": 98.42,
+          "end": 98.58,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 243,
+          "script": "own",
+          "heard": "own",
+          "start": 98.58,
+          "end": 98.76,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 244,
+          "script": "onward",
+          "heard": "onward",
+          "start": 98.76,
+          "end": 99.2,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 245,
+          "script": "journey",
+          "heard": "journey.",
+          "start": 99.2,
+          "end": 99.6,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 246,
+          "script": "the",
+          "heard": "The",
+          "start": 100.58,
+          "end": 100.7,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 247,
+          "script": "receiver",
+          "heard": "receiver",
+          "start": 100.7,
+          "end": 100.98,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 248,
+          "script": "can",
+          "heard": "can",
+          "start": 100.98,
+          "end": 101.32,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 249,
+          "script": "register",
+          "heard": "register",
+          "start": 101.32,
+          "end": 101.66,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 250,
+          "script": "a",
+          "heard": "a",
+          "start": 101.66,
+          "end": 101.9,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 251,
+          "script": "delivery",
+          "heard": "delivery",
+          "start": 101.9,
+          "end": 102.12,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 252,
+          "script": "preference",
+          "heard": "preference",
+          "start": 102.12,
+          "end": 102.66,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 253,
+          "script": "in",
+          "heard": "in",
+          "start": 102.66,
+          "end": 102.92,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 254,
+          "script": "the",
+          "heard": "the",
+          "start": 102.92,
+          "end": 103.02,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 255,
+          "script": "dossier",
+          "heard": "dossier,",
+          "start": 103.02,
+          "end": 103.34,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 256,
+          "script": "giving",
+          "heard": "giving",
+          "start": 104.14,
+          "end": 104.4,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 257,
+          "script": "the",
+          "heard": "the",
+          "start": 104.4,
+          "end": 104.56,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 258,
+          "script": "forwarder",
+          "heard": "forwarder",
+          "start": 104.56,
+          "end": 105.08,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 259,
+          "script": "a",
+          "heard": "a",
+          "start": 105.08,
+          "end": 105.28,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 260,
+          "script": "clear",
+          "heard": "clear",
+          "start": 105.28,
+          "end": 105.46,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 261,
+          "script": "indication",
+          "heard": "indication",
+          "start": 105.46,
+          "end": 105.76,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 262,
+          "script": "of",
+          "heard": "of",
+          "start": 105.76,
+          "end": 106.24,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 263,
+          "script": "what",
+          "heard": "what",
+          "start": 106.24,
+          "end": 106.38,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 264,
+          "script": "is",
+          "heard": "is",
+          "start": 106.38,
+          "end": 106.48,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 265,
+          "script": "needed",
+          "heard": "needed",
+          "start": 106.48,
+          "end": 106.7,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 266,
+          "script": "next",
+          "heard": "next.",
+          "start": 106.7,
+          "end": 107.08,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 267,
+          "script": "that",
+          "heard": "That",
+          "start": 107.86,
+          "end": 108.36,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 268,
+          "script": "choice",
+          "heard": "choice",
+          "start": 108.36,
+          "end": 108.6,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 269,
+          "script": "is",
+          "heard": "is",
+          "start": 108.6,
+          "end": 108.92,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 270,
+          "script": "not",
+          "heard": "not",
+          "start": 108.92,
+          "end": 109.08,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 271,
+          "script": "a",
+          "heard": "a",
+          "start": 109.08,
+          "end": 109.2,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 272,
+          "script": "transport",
+          "heard": "transport",
+          "start": 109.2,
+          "end": 109.46,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 273,
+          "script": "booking",
+          "heard": "booking.",
+          "start": 109.46,
+          "end": 109.92,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 274,
+          "script": "availability",
+          "heard": "Availability,",
+          "start": 110.82,
+          "end": 111.12,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 275,
+          "script": "arrangements",
+          "heard": "arrangements,",
+          "start": 111.82,
+          "end": 111.92,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 276,
+          "script": "and",
+          "heard": "and",
+          "start": 112.26,
+          "end": 112.6,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 277,
+          "script": "the",
+          "heard": "the",
+          "start": 112.6,
+          "end": 112.72,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 278,
+          "script": "final",
+          "heard": "final",
+          "start": 112.72,
+          "end": 113.0,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 279,
+          "script": "handover",
+          "heard": "handover,",
+          "start": 113.0,
+          "end": 113.6,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 280,
+          "script": "still",
+          "heard": "still",
+          "start": 113.96,
+          "end": 114.32,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 281,
+          "script": "need",
+          "heard": "need",
+          "start": 114.32,
+          "end": 114.56,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 282,
+          "script": "to",
+          "heard": "to",
+          "start": 114.56,
+          "end": 114.7,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 283,
+          "script": "be",
+          "heard": "be",
+          "start": 114.7,
+          "end": 114.8,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 284,
+          "script": "agreed",
+          "heard": "agreed",
+          "start": 114.8,
+          "end": 115.04,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 285,
+          "script": "separately",
+          "heard": "separately",
+          "start": 115.04,
+          "end": 115.32,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 286,
+          "script": "by",
+          "heard": "by",
+          "start": 115.32,
+          "end": 115.76,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 287,
+          "script": "the",
+          "heard": "the",
+          "start": 115.76,
+          "end": 115.88,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 288,
+          "script": "people",
+          "heard": "people",
+          "start": 115.88,
+          "end": 116.1,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 289,
+          "script": "involved",
+          "heard": "involved.",
+          "start": 116.1,
+          "end": 116.42,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 290,
+          "script": "from",
+          "heard": "From",
+          "start": 117.44,
+          "end": 117.8,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 291,
+          "script": "a",
+          "heard": "a",
+          "start": 117.8,
+          "end": 117.92,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 292,
+          "script": "shared",
+          "heard": "shared",
+          "start": 117.92,
+          "end": 118.16,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 293,
+          "script": "container",
+          "heard": "container",
+          "start": 118.16,
+          "end": 118.54,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 294,
+          "script": "to",
+          "heard": "to",
+          "start": 118.54,
+          "end": 119.1,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 295,
+          "script": "an",
+          "heard": "an",
+          "start": 119.1,
+          "end": 119.22,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 296,
+          "script": "individual",
+          "heard": "individual",
+          "start": 119.22,
+          "end": 119.52,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 297,
+          "script": "delivery",
+          "heard": "delivery,",
+          "start": 119.52,
+          "end": 120.2,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 298,
+          "script": "cargo",
+          "heard": "cargo",
+          "start": 120.78,
+          "end": 121.02,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 299,
+          "script": "match",
+          "heard": "match",
+          "start": 121.02,
+          "end": 121.4,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 300,
+          "script": "keeps",
+          "heard": "keeps",
+          "start": 121.4,
+          "end": 121.7,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 301,
+          "script": "the",
+          "heard": "the",
+          "start": 121.7,
+          "end": 121.94,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 302,
+          "script": "shipment",
+          "heard": "shipment",
+          "start": 121.94,
+          "end": 122.2,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 303,
+          "script": "story",
+          "heard": "story",
+          "start": 122.2,
+          "end": 122.58,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 304,
+          "script": "connected",
+          "heard": "connected,",
+          "start": 122.58,
+          "end": 123.2,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 305,
+          "script": "while",
+          "heard": "while",
+          "start": 123.66,
+          "end": 124.0,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 306,
+          "script": "respecting",
+          "heard": "respecting",
+          "start": 124.0,
+          "end": 124.4,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 307,
+          "script": "the",
+          "heard": "the",
+          "start": 124.4,
+          "end": 124.76,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 308,
+          "script": "boundaries",
+          "heard": "boundaries",
+          "start": 124.76,
+          "end": 125.14,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 309,
+          "script": "around",
+          "heard": "around",
+          "start": 125.14,
+          "end": 125.46,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 310,
+          "script": "each",
+          "heard": "each",
+          "start": 125.46,
+          "end": 125.78,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 311,
+          "script": "receiver",
+          "heard": "receiver.",
+          "start": 125.78,
+          "end": 126.16,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 312,
+          "script": "discover",
+          "heard": "Discover",
+          "start": 127.18,
+          "end": 127.6,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 313,
+          "script": "cargo",
+          "heard": "cargo",
+          "start": 127.6,
+          "end": 128.0,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 314,
+          "script": "match",
+          "heard": "match,",
+          "start": 128.0,
+          "end": 128.44,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 315,
+          "script": "the",
+          "heard": "the",
+          "start": 128.72,
+          "end": 128.88,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 316,
+          "script": "transport",
+          "heard": "transport",
+          "start": 128.88,
+          "end": 129.18,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 317,
+          "script": "capacity",
+          "heard": "capacity",
+          "start": 129.18,
+          "end": 129.74,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 318,
+          "script": "intelligence",
+          "heard": "intelligence",
+          "start": 129.74,
+          "end": 130.02,
+          "match": "exact"
+        },
+        {
+          "scriptIndex": 319,
+          "script": "network",
+          "heard": "network.",
+          "start": 130.02,
+          "end": 130.64,
+          "match": "exact"
+        }
+      ],
+      "warnings": [],
+      "normalizedSha256": "d865a45366ffdaa8538c45fa158ff3dc3c323222ab1060dfffd3b5a59612bfe9"
+    }
+  ]
+}

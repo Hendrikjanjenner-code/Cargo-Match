@@ -884,3 +884,61 @@ mtime_ms = 1790097318006
 storage_uri = "gcs://replit-rams-assets-worf/rams/assets/repl:929794db-e72d-4439-9aa2-c5d927c149ce/f6b5db8d-f99e-4279-a506-f9a78f8ed34a/8efcd6d2-9373-498d-ac15-88ac836b71ac"
 storage_version_token = "1790097887542930"
 content_type = "application/octet-stream"
+
+[[outputs]]
+id = "JK6UeaaDc0o5eG4NCmiYp"
+uri = "file://attached_assets/cargomatch-films/brokerage/audio/story.mp3"
+type = "audio"
+title = "speech"
+description = "Text-to-speech audio: Before a vessel takes on its next cargo, a commercial journey has already begun, with people bringing the right requirements and the right capacity together. In the CargoMatch d…"
+logical_id = "3e48e3b4-27e0-4119-ac39-47b193a8531b"
+
+[[outputs]]
+id = "GzAfmQbxlsnPyTEw_6AH4"
+uri = "file://attached_assets/cargomatch-films/groupage/audio/story.mp3"
+type = "audio"
+title = "speech"
+description = "Text-to-speech audio: A shared container can carry several different journeys, each with its own receiver, its own documents and its own next step. In the CargoMatch demo, a groupage shipment travels…"
+logical_id = "3b066ecb-cc8b-44b1-ae0a-2f7f30a5318d"
+
+[[outputs]]
+id = "FrhULuNN_-yTySN1coniT"
+uri = "file://attached_assets/cargomatch-films/brokerage/cargomatch-brokerage-en-nl-1080p.mp4"
+type = "video"
+title = "CargoMatch — Ship Brokerage"
+description = "1:56 • Full HD MP4 • Engelse Ierse voice-over en Nederlandse ondertitels • 59 MB"
+logical_id = "7cc37825-680f-4b91-9155-5d87ae87ee57"
+content_hash = "sha256:e386b3d8f9b8d05e3e1b63d1d81f34d5873770db0f5eea461d4949bb6977f0ed"
+size = 62119796
+mtime_ms = 1790892504259
+storage_uri = "gcs://replit-rams-assets-worf/rams/assets/repl:929794db-e72d-4439-9aa2-c5d927c149ce/7cc37825-680f-4b91-9155-5d87ae87ee57/596ae2df-53e2-42fe-a27b-ef5be194a0a8"
+storage_version_token = "1790893210837726"
+content_type = "video/mp4"
+
+[[outputs]]
+id = "VSTuBE3x27bgPtOID1dyW"
+uri = "file://attached_assets/cargomatch-films/groupage/cargomatch-groupage-en-nl-1080p.mp4"
+type = "video"
+title = "CargoMatch — Groupage Handling"
+description = "2:13 • Full HD MP4 • Engelse Ierse voice-over en Nederlandse ondertitels • 69 MB"
+logical_id = "5e3b5050-6e15-4ff8-b574-52da7c3384f6"
+content_hash = "sha256:6be449ac8248492a8c4fc8e2216013a7833cffdf2942dd7e44fd1a6635d801b7"
+size = 72029633
+mtime_ms = 1790892696727
+storage_uri = "gcs://replit-rams-assets-worf/rams/assets/repl:929794db-e72d-4439-9aa2-c5d927c149ce/5e3b5050-6e15-4ff8-b574-52da7c3384f6/b4517498-198f-430d-9170-d0b20c7b154e"
+storage_version_token = "1790893214537807"
+content_type = "video/mp4"
+
+[[outputs]]
+id = "iKjzyiCRRX7gRxELKSo-j"
+uri = "file://attached_assets/cargomatch-films/cargomatch-ondertitels-en-productiegegevens.zip"
+type = "unspecified"
+title = "Losse ondertitels en productiegegevens"
+description = "SRT- en ASS-ondertitels voor beide films, met technische controleverslagen."
+logical_id = "33b5e1b3-1cb0-4538-b594-fc01f22a3dbe"
+content_hash = "sha256:45fc48746c250a074ce1c236cac989a72ac37f4954dee8b2fa7431c69f7778bc"
+size = 15380
+mtime_ms = 1790893188275
+storage_uri = "gcs://replit-rams-assets-worf/rams/assets/repl:929794db-e72d-4439-9aa2-c5d927c149ce/33b5e1b3-1cb0-4538-b594-fc01f22a3dbe/6815d07a-3c50-4405-9953-df2f49757f4c"
+storage_version_token = "1790893215061247"
+content_type = "application/octet-stream"

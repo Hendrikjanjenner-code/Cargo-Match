@@ -1,0 +1,29 @@
+[Script Info]
+Title: CargoMatch Dutch subtitles
+ScriptType: v4.00+
+PlayResX: 1920
+PlayResY: 1080
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Dutch,DejaVu Sans,36,&H00FFFFFF,&H00FFFFFF,&HCC000000,&H00000000,0,0,0,0,100,100,0,0,1,3,0,2,70,70,22,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.65,0:00:08.98,Dutch,,0,0,0,,Nog vóór het laden begint de commerciële reis: mensen\Nbrengen ladingbehoefte en scheepscapaciteit samen.
+Dialogue: 0,0:00:08.98,0:00:18.33,Dutch,,0,0,0,,In de CargoMatch-demo bereidt Andy lading van Indonesië\Nnaar China voor. Sophie beheert beschikbare tonnage.
+Dialogue: 0,0:00:18.33,0:00:25.15,Dutch,,0,0,0,,Hun gedeelde vraag: passen deze lading en dit schip\Nwerkelijk bij elkaar?
+Dialogue: 0,0:00:25.15,0:00:33.08,Dutch,,0,0,0,,Andy maakt de hoeveelheid, de route en het gewenste\Nlaadvenster inzichtelijk.
+Dialogue: 0,0:00:33.08,0:00:41.60,Dutch,,0,0,0,,Sophie beoordeelt capaciteit en verwachte beschikbaarheid,\Nmet de scheepspositie als context.
+Dialogue: 0,0:00:41.60,0:00:48.80,Dutch,,0,0,0,,Dit zijn demoschattingen, geen live scheepstracking.\NPraktische details vragen nog controle.
+Dialogue: 0,0:00:48.80,0:00:58.50,Dutch,,0,0,0,,CargoMatch toont de kans in één overzicht: laadvenster,\Ncapaciteit en relevante beperkingen.
+Dialogue: 0,0:00:58.50,0:01:06.76,Dutch,,0,0,0,,De identiteit van de andere partij blijft afgeschermd. Een\Nmogelijke match geeft niet alles prijs.
+Dialogue: 0,0:01:06.76,0:01:14.56,Dutch,,0,0,0,,Andy toont interesse. Daarna beslist Sophie of zij de\Nverbinding wil accepteren.
+Dialogue: 0,0:01:14.56,0:01:22.70,Dutch,,0,0,0,,Pas bij wederzijdse toestemming krijgen de deelnemers de\Ntoegestane contactgegevens.
+Dialogue: 0,0:01:22.70,0:01:31.10,Dutch,,0,0,0,,In één gedeeld gesprek stemmen zij het laadvenster, vragen\Nen vervolgstappen af.
+Dialogue: 0,0:01:31.10,0:01:39.69,Dutch,,0,0,0,,De verbinding is geen boeking of afgesloten charter.\NMensen maken de commerciële en operationele afspraken.
+Dialogue: 0,0:01:39.69,0:01:50.62,Dutch,,0,0,0,,CargoMatch verbindt ladingbehoefte, capaciteit en\Ntoestemming: van kans naar een goed voorbereid gesprek.
+Dialogue: 0,0:01:50.62,0:01:54.91,Dutch,,0,0,0,,Ontdek CargoMatch, het netwerk voor\Ntransportcapaciteitsinformatie.

@@ -1,0 +1,31 @@
+{
+  "title": "CargoMatch — Ship Brokerage",
+  "disclosures": ["Photorealistic AI-generated illustrative footage; not filmed customers.", "Authentic synthetic CargoMatch demo. Estimated positions and availability, not live AIS. Connection is an introduction, not a booking or concluded charter."],
+  "narration": [
+    {"id":1,"en":"Before a vessel takes on its next cargo, a commercial journey has already begun, with people bringing the right requirements and the right capacity together.","nl":"Nog vóór het laden begint de commerciële reis: mensen brengen ladingbehoefte en scheepscapaciteit samen."},
+    {"id":2,"en":"In the CargoMatch demo, Andy is preparing a cargo movement from Indonesia to China, while Sophie manages available tonnage for the next opportunity.","nl":"In de CargoMatch-demo bereidt Andy lading van Indonesië naar China voor. Sophie beheert beschikbare tonnage."},
+    {"id":3,"en":"They begin from different sides of the same question: can this cargo and this vessel realistically work together?","nl":"Hun gedeelde vraag: passen deze lading en dit schip werkelijk bij elkaar?"},
+    {"id":4,"en":"For Andy, that means making the cargo requirement visible, including the quantity, the route and the intended loading window.","nl":"Andy maakt de hoeveelheid, de route en het gewenste laadvenster inzichtelijk."},
+    {"id":5,"en":"For Sophie, it means reviewing the vessel's capacity and expected availability, with its position providing context for the next commercial decision.","nl":"Sophie beoordeelt capaciteit en verwachte beschikbaarheid, met de scheepspositie als context."},
+    {"id":6,"en":"These are estimates in a demonstration, not live vessel tracking, and the team still needs to check the practical details.","nl":"Dit zijn demoschattingen, geen live scheepstracking. Praktische details vragen nog controle."},
+    {"id":7,"en":"CargoMatch brings the opportunity into one view, so the people involved can consider the loading window, capacity and relevant restrictions before moving ahead.","nl":"CargoMatch toont de kans in één overzicht: laadvenster, capaciteit en relevante beperkingen."},
+    {"id":8,"en":"At this stage, the other company's identity stays protected; seeing a possible fit does not mean sharing every commercial detail.","nl":"De identiteit van de andere partij blijft afgeschermd. Een mogelijke match geeft niet alles prijs."},
+    {"id":9,"en":"When Andy chooses to express interest, the next decision belongs to Sophie, who can review the approach before agreeing to connect.","nl":"Andy toont interesse. Daarna beslist Sophie of zij de verbinding wil accepteren."},
+    {"id":10,"en":"Only when both sides consent does the introduction open up, with the authorized contact information available to the connected participants.","nl":"Pas bij wederzijdse toestemming krijgen de deelnemers de toegestane contactgegevens."},
+    {"id":11,"en":"From there, one shared conversation gives them a place to discuss the loading window, ask questions and clarify the next steps.","nl":"In één gedeeld gesprek stemmen zij het laadvenster, vragen en vervolgstappen af."},
+    {"id":12,"en":"That connection is not a booking, and it does not conclude a charter; commercial terms and operational arrangements remain with the people responsible.","nl":"De verbinding is geen boeking of afgesloten charter. Mensen maken de commerciële en operationele afspraken."},
+    {"id":13,"en":"By bringing requirements, capacity and consent into the same journey, CargoMatch helps ship brokerage move from an opportunity towards an informed conversation.","nl":"CargoMatch verbindt ladingbehoefte, capaciteit en toestemming: van kans naar een goed voorbereid gesprek."},
+    {"id":14,"en":"Discover CargoMatch, the transport capacity intelligence network.","nl":"Ontdek CargoMatch, het netwerk voor transportcapaciteitsinformatie."}
+  ],
+  "shots": [
+    {"ids":[1],"source":"vessel","heading":"SHIP BROKERAGE"},
+    {"ids":[2,3],"source":"collaboration","heading":"CARGO / AVAILABLE TONNAGE"},
+    {"ids":[4],"source":"plate-planner-clear","screens":[[4,"brokerage-cargo.png"]],"heading":"THE CARGO REQUIREMENT"},
+    {"ids":[5,6],"source":"plate-import","screens":[[5,"brokerage-capacity.png"],[6,"brokerage-assets.png"]],"heading":"EXPECTED AVAILABILITY / NOT LIVE AIS"},
+    {"ids":[7,8],"source":"plate-planner-clear","screens":[[7,"brokerage-opportunity.png"]],"heading":"COMPATIBILITY / PROTECTED IDENTITY"},
+    {"ids":[9,10],"source":"plate-import","screens":[[9,"brokerage-interest.png"],[10,"brokerage-connected.png"]],"heading":"MUTUAL CONSENT"},
+    {"ids":[11,12],"source":"plate-planner-clear","screens":[[11,"brokerage-conversation.png"]],"heading":"INTRODUCTION / NOT A BOOKING"},
+    {"ids":[13],"source":"vessel","heading":"PEOPLE IN CONTROL"},
+    {"ids":[14],"source":"port","heading":""}
+  ]
+}

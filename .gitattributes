@@ -6,3 +6,8 @@ attached_assets/cargomatch/delivery/cargomatch-en-nl-1080p.mp4 filter=lfs diff=l
 attached_assets/cargomatch/revised/cargomatch-en-nl-1080p.mp4 filter=lfs diff=lfs merge=lfs -text
 attached_assets/cargomatch-import/delivery/cargomatch-en-nl-1080p.mp4 filter=lfs diff=lfs merge=lfs -text
 attached_assets/cargomatch-import/flow/cargomatch-en-nl-1080p.mp4 filter=lfs diff=lfs merge=lfs -text
+attached_assets/cargomatch-films/brokerage/cargomatch-brokerage-en-nl-1080p.mp4 filter=lfs diff=lfs merge=lfs -text
+attached_assets/cargomatch-films/groupage/cargomatch-groupage-en-nl-1080p.mp4 filter=lfs diff=lfs merge=lfs -text
+media/cargomatch-films/brokerage/build/picture-master.mp4 filter=lfs diff=lfs merge=lfs -text
+media/cargomatch-films/groupage/build/batch-1.mp4 filter=lfs diff=lfs merge=lfs -text
+media/cargomatch-films/groupage/build/picture-master.mp4 filter=lfs diff=lfs merge=lfs -text

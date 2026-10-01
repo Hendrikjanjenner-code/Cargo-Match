@@ -1,0 +1,60 @@
+{
+  "output": "attached_assets/cargomatch-films/brokerage/cargomatch-brokerage-en-nl-1080p.mp4",
+  "outputSha256": "e386b3d8f9b8d05e3e1b63d1d81f34d5873770db0f5eea461d4949bb6977f0ed",
+  "durationSeconds": 116.16666666666667,
+  "bytes": 62119796,
+  "voice": {
+    "voiceId": "GFyWqnwcF2mv6dWlo3u1",
+    "name": "John - Irish Man",
+    "modelId": "eleven_multilingual_v2",
+    "outputFormat": "mp3_44100_192",
+    "voiceSettings": {
+      "stability": 0.62,
+      "similarity_boost": 0.75,
+      "style": 0.1,
+      "use_speaker_boost": true,
+      "speed": 1
+    }
+  },
+  "narrationTakes": 1,
+  "voiceTimeStretch": 1,
+  "disclosures": [
+    "Photorealistic AI-generated illustrative footage; not filmed customers.",
+    "Authentic synthetic CargoMatch demo. Estimated positions and availability, not live AIS. Connection is an introduction, not a booking or concluded charter."
+  ],
+  "mixInputMeasurement": {
+    "input_i": "-18.22",
+    "input_tp": "-2.36",
+    "input_lra": "3.50",
+    "input_thresh": "-28.79",
+    "output_i": "-16.56",
+    "output_tp": "-1.50",
+    "output_lra": "3.00",
+    "output_thresh": "-27.10",
+    "normalization_type": "dynamic",
+    "target_offset": "0.56"
+  },
+  "audio": {
+    "finalMeasurement": {
+      "input_i": "-16.17",
+      "input_tp": "-1.36",
+      "input_lra": "3.00",
+      "input_thresh": "-26.73",
+      "output_i": "-16.24",
+      "output_tp": "-1.50",
+      "output_lra": "2.90",
+      "output_thresh": "-26.76",
+      "normalization_type": "dynamic",
+      "target_offset": "0.24"
+    }
+  },
+  "originalsPreserved": {
+    "attached_assets/cargomatch-import/flow/cargomatch-en-nl-1080p.mp4": "754128c9c2c0dea3e7912d4e14909e7abd047aad06999a5c0831bdd82b739ae0",
+    "attached_assets/cargomatch-import/delivery/cargomatch-en-nl-1080p.mp4": "7a2699c799894167c753e9f90def98a30b913d84b463a93189b18ea49bd848a8",
+    "attached_assets/cargomatch/revised/cargomatch-en-nl-1080p.mp4": "78ac4b7b9542c66ecda3ffe1df821066fa733de57cfd83866378f7897d0f6d5b",
+    "attached_assets/cargomatch/delivery/cargomatch-en-nl-1080p.mp4": "d8b90e58666522aeebdbaba753beb299f9c487e908e4a9ef73a0771741cc48cc"
+  },
+  "rendererSha256": "8062ea9cac2c6a103c1dbfdf33488729d7b88a64db7242f3bd0548036c8b9bd8",
+  "scriptSha256": "5829c304d4fdf3e97e461dbfbd3e0ba2f8c6129738982e9ea2d5b5204aee527f",
+  "reviewLimits": "Technical checks and sampled images; no independent human listening assessment."
+}

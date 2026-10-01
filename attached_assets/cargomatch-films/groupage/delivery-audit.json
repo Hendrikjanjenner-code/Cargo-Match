@@ -1,0 +1,64 @@
+{
+  "verified": true,
+  "fileHashes": {
+    "attached_assets/cargomatch-films/groupage/cargomatch-groupage-en-nl-1080p.mp4": "6be449ac8248492a8c4fc8e2216013a7833cffdf2942dd7e44fd1a6635d801b7",
+    "attached_assets/cargomatch-films/groupage/cargomatch-nl.srt": "78d5b327cfd914ac6b985ba625cb91c7bc01a8434e153c19cea9ebbe48e30cab",
+    "attached_assets/cargomatch-films/groupage/cargomatch-nl.ass": "ead54b07f61d6815f9253f882a7acce3edab8419a7bdae02f7d902b6ffcc43cc",
+    "attached_assets/cargomatch-films/groupage/audio/story.mp3": "0cbf71fc47b4cbfd41601abd164a6c7e1ebb87f8286f2d6cf35036ee369891eb",
+    "attached_assets/cargomatch-films/groupage/alignment.json": "a1effead79c149f590509805eec431b13e89f47c349dceaaf650b86b41b31d7c",
+    "attached_assets/cargomatch-films/groupage/edit-timeline.json": "134ec8262a18a1011ddbb0e7d5652b2064f199a70a6c236e1a720f770e3c326d",
+    "attached_assets/cargomatch-films/capture-manifest.json": "37572a4319834abac780f8115953773b32c83bae1b3a10ec35b54405748ab679",
+    "media/cargomatch-films/style-and-provenance.json": "5c3e2202da503f119ccfb3c0845b60269250f54a09d2d2cf05ff2c1a847170aa",
+    "attached_assets/cargomatch-films/groupage/source/truck.mp4": "09de1745483703e1e7c17bf7463bcaef05d3ef86990cc29c192c1ba9ba6c9b45",
+    "attached_assets/cargomatch-films/groupage/source/plate-receiver-clear.mp4": "a7bb4496ebbd7b5d5af8f0c4017febad0a1e7e2df0ad2314de35a0fc0b471e89",
+    "attached_assets/cargomatch-films/groupage/source/groupage-handling.mp4": "590f8e018229427d8c61d0fa99aa50260cf62107737f160d9f3258ea391209d5",
+    "attached_assets/cargomatch-films/groupage/source/plate-import.mp4": "f318ed9efcaac831cb433728e653b26273e880eb408eab0dd646b416201facac",
+    "attached_assets/cargomatch-films/groupage/source/plate-customs.mp4": "12e55c303a59636585aa774c1809dd740e170498169222b2b224233fac4db9ac",
+    "attached_assets/cargomatch-films/groupage/source/port.mp4": "fee684db0d72f271dfda2917d15bb39a67d54262b9e9e60abc1bcbc5138daa6b"
+  },
+  "mp4Atoms": [
+    {
+      "type": "ftyp",
+      "offset": 0,
+      "bytes": 32
+    },
+    {
+      "type": "moov",
+      "offset": 32,
+      "bytes": 90346
+    },
+    {
+      "type": "free",
+      "offset": 90378,
+      "bytes": 8
+    },
+    {
+      "type": "mdat",
+      "offset": 90386,
+      "bytes": 71939247
+    }
+  ],
+  "faststart": true,
+  "audioVideoDurationDifferenceSeconds": 0.0,
+  "allPhysicalAndScreenTransitionsBrowserChecked": 10,
+  "fullDecodeAndFrameScan": true,
+  "browserFullRealtimePlayback": true,
+  "voiceLexicalAlignment": 1,
+  "previousExportsUnchanged": true,
+  "captureNamespace": "test-brokerage-groupage-films",
+  "proofBrowserReport": "media/cargomatch-films/groupage/build/proof-browser-verification.json",
+  "contactSheet": "media/cargomatch-films/groupage/build/review/contact-sheet.jpg",
+  "loudness": {
+    "input_i": "-16.10",
+    "input_tp": "-1.38",
+    "input_lra": "3.20",
+    "input_thresh": "-26.67",
+    "output_i": "-15.87",
+    "output_tp": "-1.50",
+    "output_lra": "2.90",
+    "output_thresh": "-26.44",
+    "normalization_type": "dynamic",
+    "target_offset": "-0.13"
+  },
+  "limits": "Technical decoded playback, ASR and sampled visual review only. No independent human perceptual listening/full-motion assessment. AI-generated illustrative footage, not filmed customers. No LinkedIn upload performed."
+}

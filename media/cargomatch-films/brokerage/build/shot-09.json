@@ -1,0 +1,21 @@
+{
+  "scene": {
+    "id": 9,
+    "ids": [
+      14
+    ],
+    "source": "port",
+    "heading": "",
+    "start": 110.70833333333333,
+    "end": 116.16666666666667,
+    "renderStartFrame": 2649,
+    "renderEndFrame": 2788,
+    "screens": []
+  },
+  "frames": [],
+  "outputFrames": 139,
+  "sourceSha256": "fee684db0d72f271dfda2917d15bb39a67d54262b9e9e60abc1bcbc5138daa6b",
+  "screens": {},
+  "motionInterpolation": "FFmpeg motion-compensated minterpolate at 960x540, restored to 1080p before full-resolution screen replacement",
+  "cameraResetsAtScreenChanges": 0
+}

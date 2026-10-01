@@ -1,0 +1,177 @@
+{
+  "language": "nl",
+  "generatedFrom": "media/cargomatch-films/brokerage/production.json",
+  "timingBasis": "Fresh word alignment against one uninterrupted normalized story read.",
+  "cueCount": 14,
+  "cues": [
+    {
+      "slotId": 1,
+      "sentence": 1,
+      "start": 0.65,
+      "end": 8.98,
+      "english": "Before a vessel takes on its next cargo, a commercial journey has already begun, with people bringing the right requirements and the right capacity together.",
+      "dutch": "Nog vóór het laden begint de commerciële reis: mensen brengen ladingbehoefte en scheepscapaciteit samen.",
+      "lines": [
+        "Nog vóór het laden begint de commerciële reis: mensen",
+        "brengen ladingbehoefte en scheepscapaciteit samen."
+      ]
+    },
+    {
+      "slotId": 2,
+      "sentence": 1,
+      "start": 8.98,
+      "end": 18.33,
+      "english": "In the CargoMatch demo, Andy is preparing a cargo movement from Indonesia to China, while Sophie manages available tonnage for the next opportunity.",
+      "dutch": "In de CargoMatch-demo bereidt Andy lading van Indonesië naar China voor. Sophie beheert beschikbare tonnage.",
+      "lines": [
+        "In de CargoMatch-demo bereidt Andy lading van Indonesië",
+        "naar China voor. Sophie beheert beschikbare tonnage."
+      ]
+    },
+    {
+      "slotId": 3,
+      "sentence": 1,
+      "start": 18.33,
+      "end": 25.15,
+      "english": "They begin from different sides of the same question: can this cargo and this vessel realistically work together?",
+      "dutch": "Hun gedeelde vraag: passen deze lading en dit schip werkelijk bij elkaar?",
+      "lines": [
+        "Hun gedeelde vraag: passen deze lading en dit schip",
+        "werkelijk bij elkaar?"
+      ]
+    },
+    {
+      "slotId": 4,
+      "sentence": 1,
+      "start": 25.15,
+      "end": 33.08,
+      "english": "For Andy, that means making the cargo requirement visible, including the quantity, the route and the intended loading window.",
+      "dutch": "Andy maakt de hoeveelheid, de route en het gewenste laadvenster inzichtelijk.",
+      "lines": [
+        "Andy maakt de hoeveelheid, de route en het gewenste",
+        "laadvenster inzichtelijk."
+      ]
+    },
+    {
+      "slotId": 5,
+      "sentence": 1,
+      "start": 33.08,
+      "end": 41.6,
+      "english": "For Sophie, it means reviewing the vessel's capacity and expected availability, with its position providing context for the next commercial decision.",
+      "dutch": "Sophie beoordeelt capaciteit en verwachte beschikbaarheid, met de scheepspositie als context.",
+      "lines": [
+        "Sophie beoordeelt capaciteit en verwachte beschikbaarheid,",
+        "met de scheepspositie als context."
+      ]
+    },
+    {
+      "slotId": 6,
+      "sentence": 1,
+      "start": 41.6,
+      "end": 48.8,
+      "english": "These are estimates in a demonstration, not live vessel tracking, and the team still needs to check the practical details.",
+      "dutch": "Dit zijn demoschattingen, geen live scheepstracking. Praktische details vragen nog controle.",
+      "lines": [
+        "Dit zijn demoschattingen, geen live scheepstracking.",
+        "Praktische details vragen nog controle."
+      ]
+    },
+    {
+      "slotId": 7,
+      "sentence": 1,
+      "start": 48.8,
+      "end": 58.5,
+      "english": "CargoMatch brings the opportunity into one view, so the people involved can consider the loading window, capacity and relevant restrictions before moving ahead.",
+      "dutch": "CargoMatch toont de kans in één overzicht: laadvenster, capaciteit en relevante beperkingen.",
+      "lines": [
+        "CargoMatch toont de kans in één overzicht: laadvenster,",
+        "capaciteit en relevante beperkingen."
+      ]
+    },
+    {
+      "slotId": 8,
+      "sentence": 1,
+      "start": 58.5,
+      "end": 66.76,
+      "english": "At this stage, the other company's identity stays protected; seeing a possible fit does not mean sharing every commercial detail.",
+      "dutch": "De identiteit van de andere partij blijft afgeschermd. Een mogelijke match geeft niet alles prijs.",
+      "lines": [
+        "De identiteit van de andere partij blijft afgeschermd. Een",
+        "mogelijke match geeft niet alles prijs."
+      ]
+    },
+    {
+      "slotId": 9,
+      "sentence": 1,
+      "start": 66.76,
+      "end": 74.56,
+      "english": "When Andy chooses to express interest, the next decision belongs to Sophie, who can review the approach before agreeing to connect.",
+      "dutch": "Andy toont interesse. Daarna beslist Sophie of zij de verbinding wil accepteren.",
+      "lines": [
+        "Andy toont interesse. Daarna beslist Sophie of zij de",
+        "verbinding wil accepteren."
+      ]
+    },
+    {
+      "slotId": 10,
+      "sentence": 1,
+      "start": 74.56,
+      "end": 82.7,
+      "english": "Only when both sides consent does the introduction open up, with the authorized contact information available to the connected participants.",
+      "dutch": "Pas bij wederzijdse toestemming krijgen de deelnemers de toegestane contactgegevens.",
+      "lines": [
+        "Pas bij wederzijdse toestemming krijgen de deelnemers de",
+        "toegestane contactgegevens."
+      ]
+    },
+    {
+      "slotId": 11,
+      "sentence": 1,
+      "start": 82.7,
+      "end": 91.10000000000001,
+      "english": "From there, one shared conversation gives them a place to discuss the loading window, ask questions and clarify the next steps.",
+      "dutch": "In één gedeeld gesprek stemmen zij het laadvenster, vragen en vervolgstappen af.",
+      "lines": [
+        "In één gedeeld gesprek stemmen zij het laadvenster, vragen",
+        "en vervolgstappen af."
+      ]
+    },
+    {
+      "slotId": 12,
+      "sentence": 1,
+      "start": 91.10000000000001,
+      "end": 99.69000000000001,
+      "english": "That connection is not a booking, and it does not conclude a charter; commercial terms and operational arrangements remain with the people responsible.",
+      "dutch": "De verbinding is geen boeking of afgesloten charter. Mensen maken de commerciële en operationele afspraken.",
+      "lines": [
+        "De verbinding is geen boeking of afgesloten charter.",
+        "Mensen maken de commerciële en operationele afspraken."
+      ]
+    },
+    {
+      "slotId": 13,
+      "sentence": 1,
+      "start": 99.69000000000001,
+      "end": 110.62,
+      "english": "By bringing requirements, capacity and consent into the same journey, CargoMatch helps ship brokerage move from an opportunity towards an informed conversation.",
+      "dutch": "CargoMatch verbindt ladingbehoefte, capaciteit en toestemming: van kans naar een goed voorbereid gesprek.",
+      "lines": [
+        "CargoMatch verbindt ladingbehoefte, capaciteit en",
+        "toestemming: van kans naar een goed voorbereid gesprek."
+      ]
+    },
+    {
+      "slotId": 14,
+      "sentence": 1,
+      "start": 110.62,
+      "end": 114.908,
+      "english": "Discover CargoMatch, the transport capacity intelligence network.",
+      "dutch": "Ontdek CargoMatch, het netwerk voor transportcapaciteitsinformatie.",
+      "lines": [
+        "Ontdek CargoMatch, het netwerk voor",
+        "transportcapaciteitsinformatie."
+      ]
+    }
+  ],
+  "alignmentEvidence": "attached_assets/cargomatch-films/brokerage/alignment.json"
+}

@@ -1,0 +1,38 @@
+{
+  "reviewedAt": "2026-10-01",
+  "references": [
+    {"path":"attached_assets/cargomatch-import/flow/cargomatch-en-nl-1080p.mp4","durationSeconds":156.208333,"bytes":81613348,"role":"Primary continuity, typography, transition and speech cadence reference"},
+    {"path":"attached_assets/cargomatch/revised/cargomatch-en-nl-1080p.mp4","durationSeconds":125.5,"bytes":64799019,"role":"Approved maritime imagery and brand reference"}
+  ],
+  "visualObservations": {
+    "sampleFrames": ["review/reference-flow.jpg","review/reference-maritime.jpg"],
+    "palette": "Navy header and subtitle safety band, teal accent, muted photographic backgrounds with warm natural highlights.",
+    "typography": "Reuse DejaVu Sans and bold from approved renderer; 23px header at 1080p and existing ASS subtitle style.",
+    "devices": "Actual current UI projected into tracked physical laptop plates, with a continuous camera clock.",
+    "transitions": "16-frame physical dissolves, six-frame screen-only blends at 24 fps.",
+    "motion": "Same reference optical-flow source retiming before full-resolution UI replacement; never still-pan or vector animation.",
+    "audio": "Approved music and port/road ambience reused, same uninterrupted John voice and settings. Target final -16 LUFS."
+  },
+  "newMedia": {
+    "narration": "Two original complete English takes; John - Irish Man GFyWqnwcF2mv6dWlo3u1, eleven_multilingual_v2, stability .62, similarity .75, style .1, speaker boost true, speed 1.",
+    "groupageHandling": {
+      "path":"attached_assets/cargomatch-films/source/groupage-handling.mp4",
+      "method":"AI-generated photorealistic moving live-action-style illustration, 1080p 16:9 24fps, eight seconds.",
+      "prompt":"Photorealistic live action cinema film, one continuous slow lateral dolly shot inside a Rotterdam container freight station. An adult warehouse professional in reflective vest moves a shrink wrapped pallet of plain cartons slowly with a manual pallet jack, separating it from other consignments. Natural physical movement, safe realistic handling, calm documentary camera at eye level. Overcast daylight, navy and teal industrial palette, warm highlights, premium understated logistics film. No text, no logos, no animation, no transitions.",
+      "generationNotes":"First generation returned no video URL. One retry succeeded. Only successful output used.",
+      "sampleReview":"review/groupage-handling.jpg; physical pallet handling sample inspected. Not a claim of human full-motion review."
+    }
+  },
+  "linkedin": {
+    "officialVerifiedUrl":"https://learn.microsoft.com/en-us/linkedin/marketing/community-management/shares/videos-api?view=li-lms-2026-08",
+    "officialApiRequirements":"MP4, 75 KB to 500 MB, 3 seconds to 30 minutes. Documentation states uploads may be referenced by UGC posts.",
+    "nativeHelpUrl":"https://www.linkedin.com/help/linkedin/answer/a7486279",
+    "nativeHelpFetch":"Failed with web-fetch 500. Do not claim direct verification of current native help page.",
+    "secondaryNativeSummary":"Social Media Today quotes LinkedIn's native help: 5 GB maximum, 15 minutes maximum, 256x144 to 4096x2304, 10–60fps, aspect ratio 1:2.4–2.4:1.",
+    "secondaryUrl":"https://www.socialmediatoday.com/news/linkedin-video-posting-tips-specs-2025/746552/",
+    "delivery":"16:9 1920x1080 24fps H264/yuv420p AAC stereo48kHz faststart under100MiB; approximately two minutes, not arbitrarily cut to60seconds.",
+    "uploaded":false
+  },
+  "captureStatus":"After parent corrected localhost proxy origin and forwarded-protocol headers, 14 authentic screenshots were captured from test-brokerage-groupage-films. Real Andy interest, Sophie acceptance, shared message and Priya DELIVER preference recorded. Delivery action initially required evidence; supplied through normal input and successful stored preference recaptured. No global reset or production-app changes.",
+  "reviewLimits":"ASR lexical alignment and sampled still inspection are not perceptual listening or full human motion review."
+}

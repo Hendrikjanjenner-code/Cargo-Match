@@ -1,0 +1,60 @@
+{
+  "output": "attached_assets/cargomatch-films/groupage/cargomatch-groupage-en-nl-1080p.mp4",
+  "outputSha256": "6be449ac8248492a8c4fc8e2216013a7833cffdf2942dd7e44fd1a6635d801b7",
+  "durationSeconds": 132.75,
+  "bytes": 72029633,
+  "voice": {
+    "voiceId": "GFyWqnwcF2mv6dWlo3u1",
+    "name": "John - Irish Man",
+    "modelId": "eleven_multilingual_v2",
+    "outputFormat": "mp3_44100_192",
+    "voiceSettings": {
+      "stability": 0.62,
+      "similarity_boost": 0.75,
+      "style": 0.1,
+      "use_speaker_boost": true,
+      "speed": 1
+    }
+  },
+  "narrationTakes": 1,
+  "voiceTimeStretch": 1,
+  "disclosures": [
+    "Photorealistic AI-generated illustrative footage; physical handling is not software functionality or a filmed customer operation.",
+    "Authentic synthetic CargoMatch demo. Customs, payments and release are simulated. Delivery preference is not a transport booking; arrangements remain separate."
+  ],
+  "mixInputMeasurement": {
+    "input_i": "-18.15",
+    "input_tp": "-2.28",
+    "input_lra": "3.40",
+    "input_thresh": "-28.75",
+    "output_i": "-16.07",
+    "output_tp": "-1.50",
+    "output_lra": "3.00",
+    "output_thresh": "-26.63",
+    "normalization_type": "dynamic",
+    "target_offset": "0.07"
+  },
+  "audio": {
+    "finalMeasurement": {
+      "input_i": "-16.10",
+      "input_tp": "-1.38",
+      "input_lra": "3.20",
+      "input_thresh": "-26.67",
+      "output_i": "-15.87",
+      "output_tp": "-1.50",
+      "output_lra": "2.90",
+      "output_thresh": "-26.44",
+      "normalization_type": "dynamic",
+      "target_offset": "-0.13"
+    }
+  },
+  "originalsPreserved": {
+    "attached_assets/cargomatch-import/flow/cargomatch-en-nl-1080p.mp4": "754128c9c2c0dea3e7912d4e14909e7abd047aad06999a5c0831bdd82b739ae0",
+    "attached_assets/cargomatch-import/delivery/cargomatch-en-nl-1080p.mp4": "7a2699c799894167c753e9f90def98a30b913d84b463a93189b18ea49bd848a8",
+    "attached_assets/cargomatch/revised/cargomatch-en-nl-1080p.mp4": "78ac4b7b9542c66ecda3ffe1df821066fa733de57cfd83866378f7897d0f6d5b",
+    "attached_assets/cargomatch/delivery/cargomatch-en-nl-1080p.mp4": "d8b90e58666522aeebdbaba753beb299f9c487e908e4a9ef73a0771741cc48cc"
+  },
+  "rendererSha256": "8062ea9cac2c6a103c1dbfdf33488729d7b88a64db7242f3bd0548036c8b9bd8",
+  "scriptSha256": "8728c7d53d2f62330070a0753d1bc9c0b3848f2841470db18363c330b2c28f5f",
+  "reviewLimits": "Technical checks and sampled images; no independent human listening assessment."
+}

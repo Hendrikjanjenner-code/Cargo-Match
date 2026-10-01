@@ -1,0 +1,189 @@
+{
+  "language": "nl",
+  "generatedFrom": "media/cargomatch-films/groupage/production.json",
+  "timingBasis": "Fresh word alignment against one uninterrupted normalized story read.",
+  "cueCount": 15,
+  "cues": [
+    {
+      "slotId": 1,
+      "sentence": 1,
+      "start": 0.65,
+      "end": 7.5600000000000005,
+      "english": "A shared container can carry several different journeys, each with its own receiver, its own documents and its own next step.",
+      "dutch": "Eén gedeelde container, meerdere reizen: elk met een eigen ontvanger, documenten en vervolgstap.",
+      "lines": [
+        "Eén gedeelde container, meerdere reizen: elk met een eigen",
+        "ontvanger, documenten en vervolgstap."
+      ]
+    },
+    {
+      "slotId": 2,
+      "sentence": 1,
+      "start": 7.5600000000000005,
+      "end": 17.599999999999998,
+      "english": "In the CargoMatch demo, a groupage shipment travels from Mumbai, through Rotterdam, towards Tilburg, bringing smaller consignments into one consolidation.",
+      "dutch": "In de CargoMatch-demo reizen deelzendingen in één consolidatie van Mumbai via Rotterdam naar Tilburg.",
+      "lines": [
+        "In de CargoMatch-demo reizen deelzendingen in één",
+        "consolidatie van Mumbai via Rotterdam naar Tilburg."
+      ]
+    },
+    {
+      "slotId": 3,
+      "sentence": 1,
+      "start": 17.599999999999998,
+      "end": 27.4,
+      "english": "For David, the forwarder, the master dossier provides the shared context, while the individual house shipments keep each receiver's business distinct.",
+      "dutch": "Forwarder David ziet de masterconsolidatie. Afzonderlijke housedossiers houden de zendingen gescheiden.",
+      "lines": [
+        "Forwarder David ziet de masterconsolidatie. Afzonderlijke",
+        "housedossiers houden de zendingen gescheiden."
+      ]
+    },
+    {
+      "slotId": 4,
+      "sentence": 1,
+      "start": 27.4,
+      "end": 36.26,
+      "english": "That distinction matters long before the container is opened, because a shared voyage does not mean that every partner should see every document.",
+      "dutch": "Die scheiding telt al vóór het lossen: samen reizen betekent niet dat iedereen elk document mag zien.",
+      "lines": [
+        "Die scheiding telt al vóór het lossen: samen reizen",
+        "betekent niet dat iedereen elk document mag zien."
+      ]
+    },
+    {
+      "slotId": 5,
+      "sentence": 1,
+      "start": 36.26,
+      "end": 44.91,
+      "english": "The receiver follows only their own house shipment, with the information their role permits, rather than another company's commercial details.",
+      "dutch": "De ontvanger ziet alleen de eigen house-zending en toegestane informatie, niet de zaken van een ander.",
+      "lines": [
+        "De ontvanger ziet alleen de eigen house-zending en",
+        "toegestane informatie, niet de zaken van een ander."
+      ]
+    },
+    {
+      "slotId": 6,
+      "sentence": 1,
+      "start": 44.91,
+      "end": 53.449999999999996,
+      "english": "Within that dossier, the team can review the available documents and check what needs attention before the shipment moves further along the chain.",
+      "dutch": "In het dossier controleert het team documenten en aandachtspunten voor de volgende stap.",
+      "lines": [
+        "In het dossier controleert het team documenten en",
+        "aandachtspunten voor de volgende stap."
+      ]
+    },
+    {
+      "slotId": 7,
+      "sentence": 1,
+      "start": 53.449999999999996,
+      "end": 61.24,
+      "english": "The documents support human review; they do not replace the judgement of the people responsible for the shipment and its requirements.",
+      "dutch": "Documenten ondersteunen menselijke controle. Ze vervangen het oordeel van verantwoordelijke medewerkers niet.",
+      "lines": [
+        "Documenten ondersteunen menselijke controle. Ze vervangen",
+        "het oordeel van verantwoordelijke medewerkers niet."
+      ]
+    },
+    {
+      "slotId": 8,
+      "sentence": 1,
+      "start": 61.24,
+      "end": 71.08000000000001,
+      "english": "The same care applies to the costs, where the receiver sees relevant charges for their own shipment rather than the business of the whole consolidation.",
+      "dutch": "Ook bij kosten ziet de ontvanger relevante posten voor de eigen zending, niet de hele consolidatie.",
+      "lines": [
+        "Ook bij kosten ziet de ontvanger relevante posten voor de",
+        "eigen zending, niet de hele consolidatie."
+      ]
+    },
+    {
+      "slotId": 9,
+      "sentence": 1,
+      "start": 71.08000000000001,
+      "end": 80.91000000000001,
+      "english": "Customs and release conditions need their own attention too, and the demonstration keeps those steps clearly separate from a real declaration or payment.",
+      "dutch": "Douane en vrijgave vragen eigen controles. De demo blijft gescheiden van echte aangiften en betalingen.",
+      "lines": [
+        "Douane en vrijgave vragen eigen controles. De demo blijft",
+        "gescheiden van echte aangiften en betalingen."
+      ]
+    },
+    {
+      "slotId": 10,
+      "sentence": 1,
+      "start": 80.91000000000001,
+      "end": 90.94000000000001,
+      "english": "Here, those processes are simulated, so the team can understand the outstanding conditions without moving real money or claiming a real customs release.",
+      "dutch": "Deze processen zijn gesimuleerd: inzicht in open voorwaarden, zonder echt geld of echte douanevrijgave.",
+      "lines": [
+        "Deze processen zijn gesimuleerd: inzicht in open",
+        "voorwaarden, zonder echt geld of echte douanevrijgave."
+      ]
+    },
+    {
+      "slotId": 11,
+      "sentence": 1,
+      "start": 90.94000000000001,
+      "end": 100.74000000000001,
+      "english": "At the warehouse, the shared load becomes separate consignments again, with physical handling and checks preparing each shipment for its own onward journey.",
+      "dutch": "In het magazijn worden deelzendingen gescheiden en gecontroleerd voor hun eigen vervolgtraject.",
+      "lines": [
+        "In het magazijn worden deelzendingen gescheiden en",
+        "gecontroleerd voor hun eigen vervolgtraject."
+      ]
+    },
+    {
+      "slotId": 12,
+      "sentence": 1,
+      "start": 100.74000000000001,
+      "end": 108.12,
+      "english": "The receiver can register a delivery preference in the dossier, giving the forwarder a clear indication of what is needed next.",
+      "dutch": "De ontvanger legt een aflevervoorkeur vast. Zo weet de forwarder wat hierna nodig is.",
+      "lines": [
+        "De ontvanger legt een aflevervoorkeur vast. Zo weet de",
+        "forwarder wat hierna nodig is."
+      ]
+    },
+    {
+      "slotId": 13,
+      "sentence": 1,
+      "start": 108.12,
+      "end": 117.58000000000001,
+      "english": "That choice is not a transport booking; availability, arrangements and the final handover still need to be agreed separately by the people involved.",
+      "dutch": "Die keuze is geen transportboeking. Beschikbaarheid, afspraken en overdracht worden afzonderlijk afgestemd.",
+      "lines": [
+        "Die keuze is geen transportboeking. Beschikbaarheid,",
+        "afspraken en overdracht worden afzonderlijk afgestemd."
+      ]
+    },
+    {
+      "slotId": 14,
+      "sentence": 1,
+      "start": 117.58000000000001,
+      "end": 127.32000000000001,
+      "english": "From a shared container to an individual delivery, CargoMatch keeps the shipment story connected while respecting the boundaries around each receiver.",
+      "dutch": "Van gedeelde container tot eigen aflevering: CargoMatch verbindt de reis en bewaakt de grenzen per ontvanger.",
+      "lines": [
+        "Van gedeelde container tot eigen aflevering: CargoMatch",
+        "verbindt de reis en bewaakt de grenzen per ontvanger."
+      ]
+    },
+    {
+      "slotId": 15,
+      "sentence": 1,
+      "start": 127.32000000000001,
+      "end": 131.459,
+      "english": "Discover CargoMatch, the transport capacity intelligence network.",
+      "dutch": "Ontdek CargoMatch, het netwerk voor transportcapaciteitsinformatie.",
+      "lines": [
+        "Ontdek CargoMatch, het netwerk voor",
+        "transportcapaciteitsinformatie."
+      ]
+    }
+  ],
+  "alignmentEvidence": "attached_assets/cargomatch-films/groupage/alignment.json"
+}

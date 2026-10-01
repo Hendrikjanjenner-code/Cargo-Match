@@ -1,0 +1,21 @@
+{
+  "scene": {
+    "id": 7,
+    "ids": [
+      11
+    ],
+    "source": "groupage-handling",
+    "heading": "ILLUSTRATIVE PHYSICAL DECONSOLIDATION",
+    "start": 91.04166666666667,
+    "end": 100.83333333333333,
+    "renderStartFrame": 2177,
+    "renderEndFrame": 2428,
+    "screens": []
+  },
+  "frames": [],
+  "outputFrames": 251,
+  "sourceSha256": "590f8e018229427d8c61d0fa99aa50260cf62107737f160d9f3258ea391209d5",
+  "screens": {},
+  "motionInterpolation": "FFmpeg motion-compensated minterpolate at 960x540, restored to 1080p before full-resolution screen replacement",
+  "cameraResetsAtScreenChanges": 0
+}

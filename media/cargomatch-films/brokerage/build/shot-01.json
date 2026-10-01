@@ -1,0 +1,21 @@
+{
+  "scene": {
+    "id": 1,
+    "ids": [
+      1
+    ],
+    "source": "vessel",
+    "heading": "SHIP BROKERAGE",
+    "start": 0.0,
+    "end": 9.083333333333334,
+    "renderStartFrame": 0,
+    "renderEndFrame": 226,
+    "screens": []
+  },
+  "frames": [],
+  "outputFrames": 226,
+  "sourceSha256": "e1c3d235cb827a0a7f05dc1eab47e899fb25c61e7a2350ac03c19ecaad60d5fc",
+  "screens": {},
+  "motionInterpolation": "FFmpeg motion-compensated minterpolate at 960x540, restored to 1080p before full-resolution screen replacement",
+  "cameraResetsAtScreenChanges": 0
+}

@@ -1,0 +1,22 @@
+{
+  "scene": {
+    "id": 1,
+    "ids": [
+      1,
+      2
+    ],
+    "source": "port",
+    "heading": "GROUPAGE HANDLING / MUMBAI → ROTTERDAM → TILBURG",
+    "start": 0.0,
+    "end": 17.708333333333332,
+    "renderStartFrame": 0,
+    "renderEndFrame": 433,
+    "screens": []
+  },
+  "frames": [],
+  "outputFrames": 433,
+  "sourceSha256": "fee684db0d72f271dfda2917d15bb39a67d54262b9e9e60abc1bcbc5138daa6b",
+  "screens": {},
+  "motionInterpolation": "FFmpeg motion-compensated minterpolate at 960x540, restored to 1080p before full-resolution screen replacement",
+  "cameraResetsAtScreenChanges": 0
+}

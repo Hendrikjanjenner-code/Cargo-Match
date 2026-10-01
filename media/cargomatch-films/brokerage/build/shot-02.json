@@ -1,0 +1,22 @@
+{
+  "scene": {
+    "id": 2,
+    "ids": [
+      2,
+      3
+    ],
+    "source": "collaboration",
+    "heading": "CARGO / AVAILABLE TONNAGE",
+    "start": 9.083333333333334,
+    "end": 25.25,
+    "renderStartFrame": 210,
+    "renderEndFrame": 614,
+    "screens": []
+  },
+  "frames": [],
+  "outputFrames": 404,
+  "sourceSha256": "bc81fc57da692d0c3411ea71e554cc775c679dbef248425d89383e6e5a0c7837",
+  "screens": {},
+  "motionInterpolation": "FFmpeg motion-compensated minterpolate at 960x540, restored to 1080p before full-resolution screen replacement",
+  "cameraResetsAtScreenChanges": 0
+}

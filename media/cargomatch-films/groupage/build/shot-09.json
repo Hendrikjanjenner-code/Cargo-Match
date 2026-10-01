@@ -1,0 +1,22 @@
+{
+  "scene": {
+    "id": 9,
+    "ids": [
+      13,
+      14
+    ],
+    "source": "truck",
+    "heading": "SEPARATE ARRANGEMENTS / HUMAN HANDOVER",
+    "start": 108.20833333333333,
+    "end": 127.41666666666667,
+    "renderStartFrame": 2589,
+    "renderEndFrame": 3066,
+    "screens": []
+  },
+  "frames": [],
+  "outputFrames": 477,
+  "sourceSha256": "09de1745483703e1e7c17bf7463bcaef05d3ef86990cc29c192c1ba9ba6c9b45",
+  "screens": {},
+  "motionInterpolation": "FFmpeg motion-compensated minterpolate at 960x540, restored to 1080p before full-resolution screen replacement",
+  "cameraResetsAtScreenChanges": 0
+}

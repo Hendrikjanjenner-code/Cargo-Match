@@ -1,0 +1,21 @@
+{
+  "scene": {
+    "id": 8,
+    "ids": [
+      13
+    ],
+    "source": "vessel",
+    "heading": "PEOPLE IN CONTROL",
+    "start": 99.79166666666667,
+    "end": 110.70833333333333,
+    "renderStartFrame": 2387,
+    "renderEndFrame": 2665,
+    "screens": []
+  },
+  "frames": [],
+  "outputFrames": 278,
+  "sourceSha256": "e1c3d235cb827a0a7f05dc1eab47e899fb25c61e7a2350ac03c19ecaad60d5fc",
+  "screens": {},
+  "motionInterpolation": "FFmpeg motion-compensated minterpolate at 960x540, restored to 1080p before full-resolution screen replacement",
+  "cameraResetsAtScreenChanges": 0
+}

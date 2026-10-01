@@ -1,0 +1,126 @@
+{
+  "passed": true,
+  "sha256": "e386b3d8f9b8d05e3e1b63d1d81f34d5873770db0f5eea461d4949bb6977f0ed",
+  "seconds": 116.16666666666667,
+  "frames": 2788,
+  "bytes": 62119796,
+  "fullDecode": true,
+  "narrationTakes": 1,
+  "insertedPauses": 0,
+  "naturalDetectedPausesSeconds": [
+    0.399104,
+    0.6555,
+    0.883062,
+    0.823688,
+    0.884312,
+    0.556187,
+    0.275208,
+    0.940646,
+    0.447458,
+    0.80975,
+    0.557958,
+    0.57625,
+    0.297333,
+    0.415667,
+    0.543479,
+    0.855771,
+    0.4755,
+    0.380917,
+    0.548354,
+    0.383771,
+    0.20575,
+    0.658667,
+    0.362833,
+    0.216146,
+    0.226229,
+    0.217729,
+    0.671438,
+    0.166437,
+    0.442167,
+    0.155458,
+    0.517813,
+    0.438792,
+    0.344312,
+    0.307104,
+    0.599271,
+    0.467854,
+    0.357479,
+    0.358167,
+    0.802458,
+    0.413021,
+    0.611333,
+    0.571104,
+    0.206958,
+    0.370646,
+    0.26925,
+    0.932458,
+    0.202167
+  ],
+  "subtitleCues": 14,
+  "loudness": {
+    "input_i": "-16.17",
+    "input_tp": "-1.36",
+    "input_lra": "3.00",
+    "input_thresh": "-26.73",
+    "output_i": "-16.24",
+    "output_tp": "-1.50",
+    "output_lra": "2.90",
+    "output_thresh": "-26.76",
+    "normalization_type": "dynamic",
+    "target_offset": "0.24"
+  },
+  "cameraGeometry": [
+    {
+      "shot": 3,
+      "sourceClockLinear": true,
+      "cameraResets": 0,
+      "maxCornerStep": 2.4728111533808144,
+      "screenChanges": []
+    },
+    {
+      "shot": 4,
+      "sourceClockLinear": true,
+      "cameraResets": 0,
+      "maxCornerStep": 1.0093075988102975,
+      "screenChanges": [
+        {
+          "frame": 213,
+          "maxCornerStep": 0.6595254988934486
+        }
+      ]
+    },
+    {
+      "shot": 5,
+      "sourceClockLinear": true,
+      "cameraResets": 0,
+      "maxCornerStep": 1.2124879707352356,
+      "screenChanges": []
+    },
+    {
+      "shot": 6,
+      "sourceClockLinear": true,
+      "cameraResets": 0,
+      "maxCornerStep": 0.9975674853346408,
+      "screenChanges": [
+        {
+          "frame": 195,
+          "maxCornerStep": 0.31523967405226505
+        }
+      ]
+    },
+    {
+      "shot": 7,
+      "sourceClockLinear": true,
+      "cameraResets": 0,
+      "maxCornerStep": 1.2792769627295548,
+      "screenChanges": []
+    }
+  ],
+  "allPhotographicFramesChecked": true,
+  "internalBlackFrames": [],
+  "firstFrameMean": 0.0,
+  "lastFrameMean": 0.0,
+  "longestIdenticalFrameRun": 0,
+  "frameDifferenceMean": 2.570904684987508,
+  "reviewLimits": "Frame metrics and browser moving playback are technical evidence, not independent human perception or listening. Optical-flow background interpolation may retain local artifacts; UI is composited afterward at full resolution."
+}

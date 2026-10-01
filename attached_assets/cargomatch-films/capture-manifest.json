@@ -1,0 +1,175 @@
+{
+  "namespace": "test-brokerage-groupage-films",
+  "verifiedProcessConfiguration": true,
+  "source": "Current authentic UI served through explicitly isolated localhost capture proxy. Real consent/actions, no UI patching or reset.",
+  "screenshots": [
+    {
+      "filename": "brokerage/screens/brokerage-cargo.png",
+      "viewport": {
+        "width": 1600,
+        "height": 1000
+      },
+      "capturedAt": "2026-10-01T21:22:08.963Z",
+      "facts": "Andy cargo requirement; own authorized projection.",
+      "route": "?entry=demo&demoView=cargos&demoMode=DEEPSEA",
+      "persona": "andy",
+      "visibleText": "DEMO MODE · eigen oefenomgeving · fictieve gegevens\nWissel demoprofiel\nAndy Kers — CHARTERER\nSophie van Dijk — OWNER_REPRESENTATIVE\nMark de Jong — SKIPPER\nEva Jansen — PLANNER\nLaura Peters — SHIPPER\nThomas Becker — PLANNER\nJan Müller — DRIVER\nAnna Schmidt — RAIL_OPERATOR\nSarah Williams — AIR_CARGO_OPERATOR\nDavid Chen — FORWARDER\nMichael van der Meer — IMPORT_MANAGER\nNoor Bakker (DEMO) — CUSTOMS_SPECIALIST\nNatalie Smit — CUSTOMS_SPECIALIST\nLucas de Wit (DEMO) — CONSIGNEE\nSanne Visser (DEMO) — FINANCE\nPriya de Vries (DEMO) — CONSIGNEE\nEmma de Vries — COMPANY_MANAGER\nStandaard inloggen\nAfsluiten\nCargoMatch\nNorthSea Chartering Demo\nDEMO ENVIRONMENT\nMaritime · Deepsea bulk\nOverzicht\nDashboard\nRegiokaart\nOperatie & markt\nCargo orders\nMatches & kansen\nCommunicatie\nGesprekken\nNotificaties\n1\nDemo-netwerk\nContext\nMijn profiel\nBedrijf\nInstellingen\nActies\nNieuwe lading\nAndy Kers\nCHARTERER\nAfsluiten\nToggle Sidebar\nMaritime · Deepsea bulk · Gedeelde demo\n1\nCargo orders\nNieuwe lading\n75.000 mt coal Indonesia–China\nACTIVE\n\nIndonesia → China · 75.000 ton\n\n4-10-2026, 12:00:00 UTC – 7-10-2026, 12:00:00 UTC\n\nOPEN_NETWORK\n\nBewerken\nIntrekken\nDEEPSEA te zware oefenlading\nACTIVE\n\nIndonesia → China · 164.000 ton\n\n2-10-2026, 15:00:00 UTC – 5-10-2026, 12:00:00 UTC\n\nOPEN_NETWORK\n\nBewerken\nIntrekken\nBegeleide demo: Andy ↔ Sophie"
+    },
+    {
+      "filename": "brokerage/screens/brokerage-capacity.png",
+      "viewport": {
+        "width": 1600,
+        "height": 1000
+      },
+      "capturedAt": "2026-10-01T21:22:11.001Z",
+      "facts": "Sophie expected-open capacity, not guaranteed availability.",
+      "route": "?entry=demo&demoView=capacity&demoMode=DEEPSEA",
+      "persona": "sophie",
+      "visibleText": "DEMO MODE · eigen oefenomgeving · fictieve gegevens\nWissel demoprofiel\nAndy Kers — CHARTERER\nSophie van Dijk — OWNER_REPRESENTATIVE\nMark de Jong — SKIPPER\nEva Jansen — PLANNER\nLaura Peters — SHIPPER\nThomas Becker — PLANNER\nJan Müller — DRIVER\nAnna Schmidt — RAIL_OPERATOR\nSarah Williams — AIR_CARGO_OPERATOR\nDavid Chen — FORWARDER\nMichael van der Meer — IMPORT_MANAGER\nNoor Bakker (DEMO) — CUSTOMS_SPECIALIST\nNatalie Smit — CUSTOMS_SPECIALIST\nLucas de Wit (DEMO) — CONSIGNEE\nSanne Visser (DEMO) — FINANCE\nPriya de Vries (DEMO) — CONSIGNEE\nEmma de Vries — COMPANY_MANAGER\nStandaard inloggen\nAfsluiten\nCargoMatch\nOceanBridge Bulk Demo\nDEMO ENVIRONMENT\nMaritime · Deepsea bulk\nOverzicht\nDashboard\nRegiokaart\nOperatie & markt\nFleet\nOpen positions\nMatches & kansen\nCommunicatie\nGesprekken\nNotificaties\n1\nDemo-netwerk\nContext\nMijn profiel\nBedrijf\nInstellingen\nActies\nNieuwe capaciteit\nNieuwe asset\nSophie van Dijk\nOWNER_REPRESENTATIVE\nAfsluiten\nToggle Sidebar\nMaritime · Deepsea bulk · Gedeelde demo\n1\nOpen positions\nNieuwe capaciteit\nMV OceanBridge Atlas aanbod\nACTIVE\n\nMalaysia → China · 82.000 ton\n\n2-10-2026, 06:00:00 UTC – 8-10-2026, 12:00:00 UTC\n\nOPEN_NETWORK\n\nBewerken\nIntrekken\nPrivé oefenaanbod\nACTIVE\n\nIndonesia → China · 82.000 ton\n\n2-10-2026, 06:00:00 UTC – 5-10-2026, 12:00:00 UTC\n\nPRIVATE\n\nBewerken\nIntrekken\nMV OceanBridge Atlas aanbod · ruimer alternatief\nACTIVE\n\nMalaysia → China · 82.000 ton\n\n2-10-2026, 06:00:00 UTC – 8-10-2026, 12:00:00 UTC\n\nOPEN_NETWORK\n\nBewerken\nIntrekken\nBegeleide demo: Andy ↔ Sophie"
+    },
+    {
+      "filename": "brokerage/screens/brokerage-assets.png",
+      "viewport": {
+        "width": 1600,
+        "height": 1000
+      },
+      "capturedAt": "2026-10-01T21:22:12.395Z",
+      "facts": "Sophie vessel information and estimated position.",
+      "route": "?entry=demo&demoView=assets&demoMode=DEEPSEA",
+      "persona": "sophie",
+      "visibleText": "DEMO MODE · eigen oefenomgeving · fictieve gegevens\nWissel demoprofiel\nAndy Kers — CHARTERER\nSophie van Dijk — OWNER_REPRESENTATIVE\nMark de Jong — SKIPPER\nEva Jansen — PLANNER\nLaura Peters — SHIPPER\nThomas Becker — PLANNER\nJan Müller — DRIVER\nAnna Schmidt — RAIL_OPERATOR\nSarah Williams — AIR_CARGO_OPERATOR\nDavid Chen — FORWARDER\nMichael van der Meer — IMPORT_MANAGER\nNoor Bakker (DEMO) — CUSTOMS_SPECIALIST\nNatalie Smit — CUSTOMS_SPECIALIST\nLucas de Wit (DEMO) — CONSIGNEE\nSanne Visser (DEMO) — FINANCE\nPriya de Vries (DEMO) — CONSIGNEE\nEmma de Vries — COMPANY_MANAGER\nStandaard inloggen\nAfsluiten\nCargoMatch\nOceanBridge Bulk Demo\nDEMO ENVIRONMENT\nMaritime · Deepsea bulk\nOverzicht\nDashboard\nRegiokaart\nOperatie & markt\nFleet\nOpen positions\nMatches & kansen\nCommunicatie\nGesprekken\nNotificaties\n1\nDemo-netwerk\nContext\nMijn profiel\nBedrijf\nInstellingen\nActies\nNieuwe capaciteit\nNieuwe asset\nSophie van Dijk\nOWNER_REPRESENTATIVE\nAfsluiten\nToggle Sidebar\nMaritime · Deepsea bulk · Gedeelde demo\n1\nFleet\nNieuwe asset\nMV OceanBridge Atlas\nKAMSARMAX\n\nMalaysia · 82.000 ton\n\nVerwacht beschikbaar: 2-10-2026, 06:00:00 UTC\n\nstandard\n\nBewerken\nBeschikbaarheid bevestigen\nMV OceanBridge Pacific\nPANAMAX\n\nSingapore · 74.000 ton\n\nVerwacht beschikbaar: 2-10-2026, 06:00:00 UTC\n\nstandard\n\nBewerken\nBeschikbaarheid bevestigen\nMV OceanBridge Pearl\nSUPRAMAX\n\nMalaysia · 56.000 ton\n\nVerwacht beschikbaar: 2-10-2026, 06:00:00 UTC\n\nstandard\n\nBewerken\nBeschikbaarheid bevestigen\nMV OceanBridge Cape\nCAPESIZE\n\nSouth Africa · 180.000 ton\n\nVerwacht beschikbaar: 2-10-2026, 06:00:00 UTC\n\nstandard\n\nBewerken\nBeschikbaarheid bevestigen\nMV OceanBridge Mini\nHANDYSIZE\n\nRotterdam · 35.000 ton\n\nVerwacht beschikbaar: 2-10-2026, 06:00:00 UTC\n\nstandard\n\nBewerken\nBeschikbaarheid bevestigen\nBegeleide demo: Andy ↔ Sophie"
+    },
+    {
+      "filename": "brokerage/screens/brokerage-opportunity.png",
+      "viewport": {
+        "width": 1600,
+        "height": 1000
+      },
+      "capturedAt": "2026-10-01T21:22:14.354Z",
+      "facts": "Before consent: compatibility and protected counterparty.",
+      "route": "?entry=demo&demoView=match_detail&demoMode=DEEPSEA&entityId=match-deepsea",
+      "persona": "andy",
+      "visibleText": "DEMO MODE · eigen oefenomgeving · fictieve gegevens\nWissel demoprofiel\nAndy Kers — CHARTERER\nSophie van Dijk — OWNER_REPRESENTATIVE\nMark de Jong — SKIPPER\nEva Jansen — PLANNER\nLaura Peters — SHIPPER\nThomas Becker — PLANNER\nJan Müller — DRIVER\nAnna Schmidt — RAIL_OPERATOR\nSarah Williams — AIR_CARGO_OPERATOR\nDavid Chen — FORWARDER\nMichael van der Meer — IMPORT_MANAGER\nNoor Bakker (DEMO) — CUSTOMS_SPECIALIST\nNatalie Smit — CUSTOMS_SPECIALIST\nLucas de Wit (DEMO) — CONSIGNEE\nSanne Visser (DEMO) — FINANCE\nPriya de Vries (DEMO) — CONSIGNEE\nEmma de Vries — COMPANY_MANAGER\nStandaard inloggen\nAfsluiten\nCargoMatch\nNorthSea Chartering Demo\nDEMO ENVIRONMENT\nMaritime · Deepsea bulk\nOverzicht\nDashboard\nRegiokaart\nOperatie & markt\nCargo orders\nMatches & kansen\nCommunicatie\nGesprekken\nNotificaties\n1\nDemo-netwerk\nContext\nMijn profiel\nBedrijf\nInstellingen\nActies\nNieuwe lading\nAndy Kers\nCHARTERER\nAfsluiten\nToggle Sidebar\nMaritime · Deepsea bulk · Gedeelde demo\n1\nTerug naar overzicht\n\nFictieve, handmatig geschatte kans. Geen live positie of geverifieerde route. CONNECTED is geen boeking of reservering.\n\nMatch Details\nNEW\nRoute\nSoutheast Asia → East Asia\nModus\nDEEPSEA\nVolume / Gewicht\n75.000 ton\nMatch Score\n92%\nJouw Reactie\nToon interesse\nTegenpartij\nIdentiteit verborgen\nToon eerst wederzijdse interesse om contactgegevens vrij te geven.\nBegeleide demo: Andy ↔ Sophie"
+    },
+    {
+      "filename": "brokerage/screens/brokerage-interest.png",
+      "viewport": {
+        "width": 1600,
+        "height": 1000
+      },
+      "capturedAt": "2026-10-01T21:22:17.018Z",
+      "facts": "Andy expressed interest; Sophie has not accepted.",
+      "route": "?entry=demo&demoView=match_detail&demoMode=DEEPSEA&entityId=match-deepsea",
+      "persona": "sophie",
+      "visibleText": "DEMO MODE · eigen oefenomgeving · fictieve gegevens\nWissel demoprofiel\nAndy Kers — CHARTERER\nSophie van Dijk — OWNER_REPRESENTATIVE\nMark de Jong — SKIPPER\nEva Jansen — PLANNER\nLaura Peters — SHIPPER\nThomas Becker — PLANNER\nJan Müller — DRIVER\nAnna Schmidt — RAIL_OPERATOR\nSarah Williams — AIR_CARGO_OPERATOR\nDavid Chen — FORWARDER\nMichael van der Meer — IMPORT_MANAGER\nNoor Bakker (DEMO) — CUSTOMS_SPECIALIST\nNatalie Smit — CUSTOMS_SPECIALIST\nLucas de Wit (DEMO) — CONSIGNEE\nSanne Visser (DEMO) — FINANCE\nPriya de Vries (DEMO) — CONSIGNEE\nEmma de Vries — COMPANY_MANAGER\nStandaard inloggen\nAfsluiten\nCargoMatch\nOceanBridge Bulk Demo\nDEMO ENVIRONMENT\nMaritime · Deepsea bulk\nOverzicht\nDashboard\nRegiokaart\nOperatie & markt\nFleet\nOpen positions\nMatches & kansen\nCommunicatie\nGesprekken\nNotificaties\n2\nDemo-netwerk\nContext\nMijn profiel\nBedrijf\nInstellingen\nActies\nNieuwe capaciteit\nNieuwe asset\nSophie van Dijk\nOWNER_REPRESENTATIVE\nAfsluiten\nToggle Sidebar\nMaritime · Deepsea bulk · Gedeelde demo\n2\nTerug naar overzicht\n\nFictieve, handmatig geschatte kans. Geen live positie of geverifieerde route. CONNECTED is geen boeking of reservering.\n\n1-10-2026, 21:22:14 · Andere deelnemer · INTEREST\n\nMatch Details\nINTEREST_SENT\nRoute\nSoutheast Asia → East Asia\nModus\nDEEPSEA\nVolume / Gewicht\n75.000 ton\nMatch Score\n92%\nJouw Reactie\nAccepteer verbinding\nWijs af\nTegenpartij\nIdentiteit verborgen\nToon eerst wederzijdse interesse om contactgegevens vrij te geven.\nBegeleide demo: Andy ↔ Sophie"
+    },
+    {
+      "filename": "brokerage/screens/brokerage-connected.png",
+      "viewport": {
+        "width": 1600,
+        "height": 1000
+      },
+      "capturedAt": "2026-10-01T21:22:18.572Z",
+      "facts": "Real mutual demo consent. Introduction, not booking.",
+      "route": "?entry=demo&demoView=match_detail&demoMode=DEEPSEA&entityId=match-deepsea",
+      "persona": "sophie",
+      "visibleText": "DEMO MODE · eigen oefenomgeving · fictieve gegevens\nWissel demoprofiel\nAndy Kers — CHARTERER\nSophie van Dijk — OWNER_REPRESENTATIVE\nMark de Jong — SKIPPER\nEva Jansen — PLANNER\nLaura Peters — SHIPPER\nThomas Becker — PLANNER\nJan Müller — DRIVER\nAnna Schmidt — RAIL_OPERATOR\nSarah Williams — AIR_CARGO_OPERATOR\nDavid Chen — FORWARDER\nMichael van der Meer — IMPORT_MANAGER\nNoor Bakker (DEMO) — CUSTOMS_SPECIALIST\nNatalie Smit — CUSTOMS_SPECIALIST\nLucas de Wit (DEMO) — CONSIGNEE\nSanne Visser (DEMO) — FINANCE\nPriya de Vries (DEMO) — CONSIGNEE\nEmma de Vries — COMPANY_MANAGER\nStandaard inloggen\nAfsluiten\nCargoMatch\nOceanBridge Bulk Demo\nDEMO ENVIRONMENT\nMaritime · Deepsea bulk\nOverzicht\nDashboard\nRegiokaart\nOperatie & markt\nFleet\nOpen positions\nMatches & kansen\nCommunicatie\nGesprekken\nNotificaties\n3\nDemo-netwerk\nContext\nMijn profiel\nBedrijf\nInstellingen\nActies\nNieuwe capaciteit\nNieuwe asset\nSophie van Dijk\nOWNER_REPRESENTATIVE\nAfsluiten\nToggle Sidebar\nMaritime · Deepsea bulk · Gedeelde demo\n3\nTerug naar overzicht\n\nFictieve, handmatig geschatte kans. Geen live positie of geverifieerde route. CONNECTED is geen boeking of reservering.\n\n1-10-2026, 21:22:14 · andy · INTEREST\n\n1-10-2026, 21:22:17 · Jij · ACCEPT\n\nMatch Details\nCONNECTED\nRoute\nIndonesia → China\nModus\nDEEPSEA\nVolume / Gewicht\n75.000 ton\nMatch Score\n92%\nGesprek\n\nGedeeld gesprek: conversation-match-deepsea\n\nMarkeer gesprek als gelezen\n\nNog geen berichten gestuurd.\n\nTegenpartij\nBedrijf\nNorthSea Chartering Demo\nContact\nnorthsea@example.com\nAsset\nMV OceanBridge Atlas\nBegeleide demo: Andy ↔ Sophie"
+    },
+    {
+      "filename": "brokerage/screens/brokerage-conversation.png",
+      "viewport": {
+        "width": 1600,
+        "height": 1000
+      },
+      "capturedAt": "2026-10-01T21:22:20.925Z",
+      "facts": "Authorized shared conversation after mutual consent.",
+      "route": "?entry=demo&demoView=match_detail&demoMode=DEEPSEA&entityId=match-deepsea",
+      "persona": "andy",
+      "visibleText": "DEMO MODE · eigen oefenomgeving · fictieve gegevens\nWissel demoprofiel\nAndy Kers — CHARTERER\nSophie van Dijk — OWNER_REPRESENTATIVE\nMark de Jong — SKIPPER\nEva Jansen — PLANNER\nLaura Peters — SHIPPER\nThomas Becker — PLANNER\nJan Müller — DRIVER\nAnna Schmidt — RAIL_OPERATOR\nSarah Williams — AIR_CARGO_OPERATOR\nDavid Chen — FORWARDER\nMichael van der Meer — IMPORT_MANAGER\nNoor Bakker (DEMO) — CUSTOMS_SPECIALIST\nNatalie Smit — CUSTOMS_SPECIALIST\nLucas de Wit (DEMO) — CONSIGNEE\nSanne Visser (DEMO) — FINANCE\nPriya de Vries (DEMO) — CONSIGNEE\nEmma de Vries — COMPANY_MANAGER\nStandaard inloggen\nAfsluiten\nCargoMatch\nNorthSea Chartering Demo\nDEMO ENVIRONMENT\nMaritime · Deepsea bulk\nOverzicht\nDashboard\nRegiokaart\nOperatie & markt\nCargo orders\nMatches & kansen\nCommunicatie\nGesprekken\nNotificaties\n3\nDemo-netwerk\nContext\nMijn profiel\nBedrijf\nInstellingen\nActies\nNieuwe lading\nAndy Kers\nCHARTERER\nAfsluiten\nToggle Sidebar\nMaritime · Deepsea bulk · Gedeelde demo\n3\nTerug naar overzicht\n\nFictieve, handmatig geschatte kans. Geen live positie of geverifieerde route. CONNECTED is geen boeking of reservering.\n\n1-10-2026, 21:22:14 · Jij · INTEREST\n\n1-10-2026, 21:22:17 · sophie · ACCEPT\n\n1-10-2026, 21:22:20 · Jij · MESSAGE\n\nMatch Details\nCONNECTED\nRoute\nIndonesia → China\nModus\nDEEPSEA\nVolume / Gewicht\n75.000 ton\nMatch Score\n92%\nGesprek\n\nGedeeld gesprek: conversation-match-deepsea\n\nMarkeer gesprek als gelezen\nAndy Kers\nKunnen we het laadvenster en de operationele voorwaarden samen afstemmen?\n\n1-10-2026, 21:22:20 · Verzonden\n\nTegenpartij\nBedrijf\nOceanBridge Bulk Demo\nContact\noceanbridge@example.com\nAsset\nMV OceanBridge Atlas\nBegeleide demo: Andy ↔ Sophie"
+    },
+    {
+      "filename": "groupage/screens/groupage-master.png",
+      "viewport": {
+        "width": 1600,
+        "height": 1000
+      },
+      "capturedAt": "2026-10-01T21:22:22.885Z",
+      "facts": "David views master Mumbai consolidation.",
+      "route": "?entry=demo&demoView=import_shipments&demoMode=IMPORT&entityId=india-master",
+      "persona": "david",
+      "visibleText": "DEMO MODE · eigen oefenomgeving · fictieve gegevens\nWissel demoprofiel\nAndy Kers — CHARTERER\nSophie van Dijk — OWNER_REPRESENTATIVE\nMark de Jong — SKIPPER\nEva Jansen — PLANNER\nLaura Peters — SHIPPER\nThomas Becker — PLANNER\nJan Müller — DRIVER\nAnna Schmidt — RAIL_OPERATOR\nSarah Williams — AIR_CARGO_OPERATOR\nDavid Chen — FORWARDER\nMichael van der Meer — IMPORT_MANAGER\nNoor Bakker (DEMO) — CUSTOMS_SPECIALIST\nNatalie Smit — CUSTOMS_SPECIALIST\nLucas de Wit (DEMO) — CONSIGNEE\nSanne Visser (DEMO) — FINANCE\nPriya de Vries (DEMO) — CONSIGNEE\nEmma de Vries — COMPANY_MANAGER\nStandaard inloggen\nAfsluiten\nCargoMatch\nGlobalLine Logistics Demo\nDEMO ENVIRONMENT\nMaritime · Liner / breakbulk\nLuchtvracht · PILOT\nCargoMatch Import · PILOT\nOverzicht\nImport Dashboard\nImport Modules\nControl Tower\nZendingen\nDocumenten\nKosten\nVrijgave\nAchterland\nPartners\nUitzonderingen\nModule-instellingen\nCommunicatie\nGesprekken\nNotificaties\n1\nContext\nMijn profiel\nBedrijf\nInstellingen\nDavid Chen\nFORWARDER\nAfsluiten\nToggle Sidebar\nCargoMatch Import · Gedeelde demo\n1\nOnderbouwing (Evidence):\nDEMO Mumbai textielconsolidatie · CM-2026-008422\n\nMumbai → Tilburg\n\nBewerken\nSluiten\nStatus\nARRIVING\nReadiness\nBLOCKED\nModaliteit / soort\nLCL_CONSOLIDATION\nETA\n2-10-2026, 21:22:06 UTC\nHaven / hub\nRotterdam\nIncoterm\nFOB\nContainer\nDEMO-LCL-0001\nMaster / house\nDEMO-MBL-IN-8422 / —\nVerantwoordelijke\nOnbekend — niet geprojecteerd\nSchip\nDEMO Mumbai Star (SYNTHETIC-1002)\nVrijgavevoortgang\n0/5 · 0%\nReadiness-redenen\nINVOICE: document ontbreekt of review vereist\nPACKING_LIST: document ontbreekt of review vereist\nBILL_OF_LADING: document ontbreekt of review vereist\nORIGIN: document ontbreekt of review vereist\n\nReadiness en gewichtsverschillen in kg worden door de server berekend.\n\nGeprojecteerde veldwaarden\neori\nDEMO-NL-EORI-NOT-VALID\ngoods\nTextiel\ncurrency\nEUR\npackages\n72\nvolumeM3\n42\nweightKg\n9600\ncommodityCode\n6204 (DEMO review required)\noriginCountry\nIN\nimportInstructions\nDEMO vrij verkeer; classificatie, oorsprong en waardering afzonderlijk menselijk bevestigen.\nDocumenten\nKosten\nVrijgave\nAflevering\nUitzonderingen\nGekoppeld schip\nFleet Overview\nAll\nUnderway\nIn Port\nDEMO Mumbai Star\nSYNTHETIC-1002\nDest: Rotterdam · ETA: 10/4/2026\nObserved: 10/1/2026, 9:22:06 PM\nSrc: SYNTHETIC_DEMO\n15.4 kn · 320°\nRotterdam\nYantian\nMumbai\nSingapore\nLaatste fictieve positie\n+0%\n\nGeografisch overzicht: Natural Earth (publiek domein). Alle posities zijn SYNTHETIC DEMO, niet live. Routes zijn illustratief en niet nautisch geverifieerd.\n\nVeld handmatig bevestigen\nVeld\nGewicht (kg)\nColli\nVolume (m³)\nGoederenwaarde\nValuta (ISO)\nContainer\nVerzender / leverancier\nOntvanger\nVeldreferentie\nEORI\nGoederencode\nLand van oorsprong\nDouanewaarde\nImportinstructies\nWaarde\nBevestigen\n\nVul vóór bevestigen menselijke onderbouwing in het gedeelde evidenceveld in. De server weigert ontbrekende onderbouwing.\n\nTijdlijn\n\nGeen tijdlijngebeurtenissen geprojecteerd."
+    },
+    {
+      "filename": "groupage/screens/groupage-house.png",
+      "viewport": {
+        "width": 1600,
+        "height": 1000
+      },
+      "capturedAt": "2026-10-01T21:22:24.290Z",
+      "facts": "David views own selected house H2 within master context.",
+      "route": "?entry=demo&demoView=import_shipments&demoMode=IMPORT&entityId=india-house-2",
+      "persona": "david",
+      "visibleText": "DEMO MODE · eigen oefenomgeving · fictieve gegevens\nWissel demoprofiel\nAndy Kers — CHARTERER\nSophie van Dijk — OWNER_REPRESENTATIVE\nMark de Jong — SKIPPER\nEva Jansen — PLANNER\nLaura Peters — SHIPPER\nThomas Becker — PLANNER\nJan Müller — DRIVER\nAnna Schmidt — RAIL_OPERATOR\nSarah Williams — AIR_CARGO_OPERATOR\nDavid Chen — FORWARDER\nMichael van der Meer — IMPORT_MANAGER\nNoor Bakker (DEMO) — CUSTOMS_SPECIALIST\nNatalie Smit — CUSTOMS_SPECIALIST\nLucas de Wit (DEMO) — CONSIGNEE\nSanne Visser (DEMO) — FINANCE\nPriya de Vries (DEMO) — CONSIGNEE\nEmma de Vries — COMPANY_MANAGER\nStandaard inloggen\nAfsluiten\nCargoMatch\nGlobalLine Logistics Demo\nDEMO ENVIRONMENT\nMaritime · Liner / breakbulk\nLuchtvracht · PILOT\nCargoMatch Import · PILOT\nOverzicht\nImport Dashboard\nImport Modules\nControl Tower\nZendingen\nDocumenten\nKosten\nVrijgave\nAchterland\nPartners\nUitzonderingen\nModule-instellingen\nCommunicatie\nGesprekken\nNotificaties\n1\nContext\nMijn profiel\nBedrijf\nInstellingen\nDavid Chen\nFORWARDER\nAfsluiten\nToggle Sidebar\nCargoMatch Import · Gedeelde demo\n1\nOnderbouwing (Evidence):\nDEMO textiel · CM-2026-008422-H2\n\nMumbai → Tilburg\n\nBewerken\nSluiten\nStatus\nARRIVING\nReadiness\nBLOCKED\nModaliteit / soort\nLCL\nETA\n2-10-2026, 21:22:06 UTC\nHaven / hub\nRotterdam\nIncoterm\nFOB\nContainer\nDEMO-LCL-0001\nMaster / house\nDEMO-MBL-IN-8422 / india-house-2\nVerantwoordelijke\nOnbekend — niet geprojecteerd\nSchip\nDEMO Mumbai Star (SYNTHETIC-1002)\nVrijgavevoortgang\n0/5 · 0%\nReadiness-redenen\nINVOICE: document ontbreekt of review vereist\nPACKING_LIST: document ontbreekt of review vereist\nBILL_OF_LADING: document ontbreekt of review vereist\nORIGIN: document ontbreekt of review vereist\n\nReadiness en gewichtsverschillen in kg worden door de server berekend.\n\nGeprojecteerde veldwaarden\neori\nDEMO-NL-EORI-NOT-VALID\ngoods\nTextiel\ncurrency\nEUR\npackages\n24\nvolumeM3\n14\nweightKg\n3200\ncommodityCode\n6204 (DEMO review required)\noriginCountry\nIN\nimportInstructions\nDEMO vrij verkeer; classificatie, oorsprong en waardering afzonderlijk menselijk bevestigen.\nDocumenten\nKosten\nVrijgave\nAflevering\nUitzonderingen\nGekoppeld schip\nFleet Overview\nAll\nUnderway\nIn Port\nDEMO Mumbai Star\nSYNTHETIC-1002\nDest: Rotterdam · ETA: 10/4/2026\nObserved: 10/1/2026, 9:22:06 PM\nSrc: SYNTHETIC_DEMO\n15.4 kn · 320°\nRotterdam\nYantian\nMumbai\nSingapore\nLaatste fictieve positie\n+0%\n\nGeografisch overzicht: Natural Earth (publiek domein). Alle posities zijn SYNTHETIC DEMO, niet live. Routes zijn illustratief en niet nautisch geverifieerd.\n\nVeld handmatig bevestigen\nVeld\nGewicht (kg)\nColli\nVolume (m³)\nGoederenwaarde\nValuta (ISO)\nContainer\nVerzender / leverancier\nOntvanger\nVeldreferentie\nEORI\nGoederencode\nLand van oorsprong\nDouanewaarde\nImportinstructies\nWaarde\nBevestigen\n\nVul vóór bevestigen menselijke onderbouwing in het gedeelde evidenceveld in. De server weigert ontbrekende onderbouwing.\n\nTijdlijn\nSYNTHETIC_SEED\n1-10-2026, 21:22:06 UTC\n\nActor: system · bron: SYNTHETIC_DEMO · event: 2026-10-01T21:22:06.039Z · ontvangen: 2026-10-01T21:22:06.039Z"
+    },
+    {
+      "filename": "groupage/screens/groupage-private.png",
+      "viewport": {
+        "width": 1600,
+        "height": 1000
+      },
+      "capturedAt": "2026-10-01T21:22:26.224Z",
+      "facts": "Receiver own H2 shipment only.",
+      "route": "?entry=demo&demoView=import&demoMode=IMPORT&entityId=india-house-2",
+      "persona": "consignee",
+      "visibleText": "DEMO MODE · eigen oefenomgeving · fictieve gegevens\nWissel demoprofiel\nAndy Kers — CHARTERER\nSophie van Dijk — OWNER_REPRESENTATIVE\nMark de Jong — SKIPPER\nEva Jansen — PLANNER\nLaura Peters — SHIPPER\nThomas Becker — PLANNER\nJan Müller — DRIVER\nAnna Schmidt — RAIL_OPERATOR\nSarah Williams — AIR_CARGO_OPERATOR\nDavid Chen — FORWARDER\nMichael van der Meer — IMPORT_MANAGER\nNoor Bakker (DEMO) — CUSTOMS_SPECIALIST\nNatalie Smit — CUSTOMS_SPECIALIST\nLucas de Wit (DEMO) — CONSIGNEE\nSanne Visser (DEMO) — FINANCE\nPriya de Vries (DEMO) — CONSIGNEE\nEmma de Vries — COMPANY_MANAGER\nStandaard inloggen\nAfsluiten\nCargoMatch\nTextile Consignee DEMO BV\nDEMO ENVIRONMENT\nCargoMatch Import · PILOT\nOverzicht\nImport Dashboard\nImport Modules\nControl Tower\nZendingen\nDocumenten\nKosten\nVrijgave\nAchterland\nModule-instellingen\nCommunicatie\nNotificaties\n1\nContext\nMijn profiel\nBedrijf\nInstellingen\nPriya de Vries (DEMO)\nCONSIGNEE\nAfsluiten\nToggle Sidebar\nCargoMatch Import · Gedeelde demo\n1\nOnderbouwing (Evidence):\nCargoMatch Import Control\n\nDEMO / SYNTHETIC — geen live AIS, echte aangifte, betaling of boeking. Routes zijn illustratief.\n\nZendingen\n1\nMijn LCL Zendingen (Ontvangersportaal)\nCM-2026-008422-H2 (DEMO textiel)\nARRIVING\nMijn Bedrijfsgegevens\nGegevens bevestigd\nBevestig nu\nDouanevertegenwoordiging\nGeef akkoord\nDocumenten Uploaden / Inzien\nFacturen & Betalingen\nAchterland & Aflevervoorkeur"
+    },
+    {
+      "filename": "groupage/screens/groupage-documents.png",
+      "viewport": {
+        "width": 1600,
+        "height": 1000
+      },
+      "capturedAt": "2026-10-01T21:22:27.576Z",
+      "facts": "Receiver permitted own-house documents; no other receivers.",
+      "route": "?entry=demo&demoView=import_documents&demoMode=IMPORT&entityId=india-house-2",
+      "persona": "consignee",
+      "visibleText": "DEMO MODE · eigen oefenomgeving · fictieve gegevens\nWissel demoprofiel\nAndy Kers — CHARTERER\nSophie van Dijk — OWNER_REPRESENTATIVE\nMark de Jong — SKIPPER\nEva Jansen — PLANNER\nLaura Peters — SHIPPER\nThomas Becker — PLANNER\nJan Müller — DRIVER\nAnna Schmidt — RAIL_OPERATOR\nSarah Williams — AIR_CARGO_OPERATOR\nDavid Chen — FORWARDER\nMichael van der Meer — IMPORT_MANAGER\nNoor Bakker (DEMO) — CUSTOMS_SPECIALIST\nNatalie Smit — CUSTOMS_SPECIALIST\nLucas de Wit (DEMO) — CONSIGNEE\nSanne Visser (DEMO) — FINANCE\nPriya de Vries (DEMO) — CONSIGNEE\nEmma de Vries — COMPANY_MANAGER\nStandaard inloggen\nAfsluiten\nCargoMatch\nTextile Consignee DEMO BV\nDEMO ENVIRONMENT\nCargoMatch Import · PILOT\nOverzicht\nImport Dashboard\nImport Modules\nControl Tower\nZendingen\nDocumenten\nKosten\nVrijgave\nAchterland\nModule-instellingen\nCommunicatie\nNotificaties\n1\nContext\nMijn profiel\nBedrijf\nInstellingen\nPriya de Vries (DEMO)\nCONSIGNEE\nAfsluiten\nToggle Sidebar\nCargoMatch Import · Gedeelde demo\n1\nOnderbouwing (Evidence):\nDocumenten\nAlle zendingen\nCM-2026-008422-H2 - DEMO textiel\nType document\nPaklijst\nBill of Lading\nOorsprongscertificaat\nVertegenwoordigingsreview\nOverig document\nBestand\nUploaden\nDEMO Packing list\nPENDING\n\nType: PACKING_LIST | Versie: 1\n\nDownload\nshipper\nDEMO Exporter\ncurrency\nEUR\npackages\n24\nweightKg\n3200\nconsignee\ntextile-demo\ncontainer\nDEMO-LCL-0001\nreference\nCM-2026-008422-H2\nDEMO Bill of lading\nPENDING\n\nType: BILL_OF_LADING | Versie: 1\n\nDownload\nshipper\nDEMO Exporter\ncurrency\nEUR\npackages\n24\nweightKg\n3200\nconsignee\ntextile-demo\ncontainer\nDEMO-LCL-0001\nreference\nCM-2026-008422-H2\nDEMO Certificate of origin\nPENDING\n\nType: ORIGIN | Versie: 1\n\nDownload\norigin\nIN\nshipper\nDEMO Exporter\ncurrency\nEUR\nconsignee\ntextile-demo\ncontainer\nDEMO-LCL-0001\nreference\nCM-2026-008422-H2"
+    },
+    {
+      "filename": "groupage/screens/groupage-charges.png",
+      "viewport": {
+        "width": 1600,
+        "height": 1000
+      },
+      "capturedAt": "2026-10-01T21:22:28.953Z",
+      "facts": "Receiver relevant own-house costs only.",
+      "route": "?entry=demo&demoView=import_charges&demoMode=IMPORT&entityId=india-house-2",
+      "persona": "consignee",
+      "visibleText": "DEMO MODE · eigen oefenomgeving · fictieve gegevens\nWissel demoprofiel\nAndy Kers — CHARTERER\nSophie van Dijk — OWNER_REPRESENTATIVE\nMark de Jong — SKIPPER\nEva Jansen — PLANNER\nLaura Peters — SHIPPER\nThomas Becker — PLANNER\nJan Müller — DRIVER\nAnna Schmidt — RAIL_OPERATOR\nSarah Williams — AIR_CARGO_OPERATOR\nDavid Chen — FORWARDER\nMichael van der Meer — IMPORT_MANAGER\nNoor Bakker (DEMO) — CUSTOMS_SPECIALIST\nNatalie Smit — CUSTOMS_SPECIALIST\nLucas de Wit (DEMO) — CONSIGNEE\nSanne Visser (DEMO) — FINANCE\nPriya de Vries (DEMO) — CONSIGNEE\nEmma de Vries — COMPANY_MANAGER\nStandaard inloggen\nAfsluiten\nCargoMatch\nTextile Consignee DEMO BV\nDEMO ENVIRONMENT\nCargoMatch Import · PILOT\nOverzicht\nImport Dashboard\nImport Modules\nControl Tower\nZendingen\nDocumenten\nKosten\nVrijgave\nAchterland\nModule-instellingen\nCommunicatie\nNotificaties\n1\nContext\nMijn profiel\nBedrijf\nInstellingen\nPriya de Vries (DEMO)\nCONSIGNEE\nAfsluiten\nToggle Sidebar\nCargoMatch Import · Gedeelde demo\n1\nOnderbouwing (Evidence):\nKosten (Landed Cost)\nAlle zendingen\nCM-2026-008422-H2 - DEMO textiel\nCM-2026-008422-H2\n\nDEMO textiel\n\nLabel\tLeverancier\tBedrag\tStatus\tActies\n\nDestination handling\nGeschat\n\t\nDEMO supplier\nDEMO-INV-india-house-2-0\n\t125.00 EUR\tOpen\tBetaal (Sim)\n\nTerminal\nGeschat\n\t\nDEMO supplier\nDEMO-INV-india-house-2-1\n\t85.00 EUR\tOpen\tBetaal (Sim)\nTotaal EUR:\t210.00\tExcl. BTW: 0.00 / Payable: 210.00"
+    },
+    {
+      "filename": "groupage/screens/groupage-release.png",
+      "viewport": {
+        "width": 1600,
+        "height": 1000
+      },
+      "capturedAt": "2026-10-01T21:22:30.312Z",
+      "facts": "Own-house release conditions remain outstanding. No invented release success.",
+      "route": "?entry=demo&demoView=import_release&demoMode=IMPORT&entityId=india-house-2",
+      "persona": "consignee",
+      "visibleText": "DEMO MODE · eigen oefenomgeving · fictieve gegevens\nWissel demoprofiel\nAndy Kers — CHARTERER\nSophie van Dijk — OWNER_REPRESENTATIVE\nMark de Jong — SKIPPER\nEva Jansen — PLANNER\nLaura Peters — SHIPPER\nThomas Becker — PLANNER\nJan Müller — DRIVER\nAnna Schmidt — RAIL_OPERATOR\nSarah Williams — AIR_CARGO_OPERATOR\nDavid Chen — FORWARDER\nMichael van der Meer — IMPORT_MANAGER\nNoor Bakker (DEMO) — CUSTOMS_SPECIALIST\nNatalie Smit — CUSTOMS_SPECIALIST\nLucas de Wit (DEMO) — CONSIGNEE\nSanne Visser (DEMO) — FINANCE\nPriya de Vries (DEMO) — CONSIGNEE\nEmma de Vries — COMPANY_MANAGER\nStandaard inloggen\nAfsluiten\nCargoMatch\nTextile Consignee DEMO BV\nDEMO ENVIRONMENT\nCargoMatch Import · PILOT\nOverzicht\nImport Dashboard\nImport Modules\nControl Tower\nZendingen\nDocumenten\nKosten\nVrijgave\nAchterland\nModule-instellingen\nCommunicatie\nNotificaties\n1\nContext\nMijn profiel\nBedrijf\nInstellingen\nPriya de Vries (DEMO)\nCONSIGNEE\nAfsluiten\nToggle Sidebar\nCargoMatch Import · Gedeelde demo\n1\nOnderbouwing (Evidence):\nVrijgave (Gates)\nAlle zendingen\nCM-2026-008422-H2 - DEMO textiel\nCM-2026-008422-H2\n\nDEMO textiel\n\nARRIVING\n\nDocument-readiness: BLOCKED. Afhalen kan pas wanneer alle verplichte vrijgavevoorwaarden voldaan zijn.\n\nBlokkades:\nINVOICE: document ontbreekt of review vereist\nPACKING_LIST: document ontbreekt of review vereist\nBILL_OF_LADING: document ontbreekt of review vereist\nORIGIN: document ontbreekt of review vereist\nVrijgavevoorwaarden (Gates)\n[Req]\ncustoms\nOpen\n[Req]\ncarrier\nOpen\n[Req]\nterminal\nOpen\n[Req]\npayment\nOpen\n[Req]\ndelivery_order\nOpen"
+    },
+    {
+      "filename": "groupage/screens/groupage-delivery.png",
+      "viewport": {
+        "width": 1600,
+        "height": 1000
+      },
+      "capturedAt": "2026-10-01T21:23:06.577Z",
+      "facts": "DELIVER preference stored through real authorized UI action with evidence, not transport booking.",
+      "route": "?entry=demo&demoView=import_delivery&demoMode=IMPORT&entityId=india-house-2",
+      "persona": "consignee",
+      "visibleText": "DEMO MODE · eigen oefenomgeving · fictieve gegevens\nWissel demoprofiel\nAndy Kers — CHARTERER\nSophie van Dijk — OWNER_REPRESENTATIVE\nMark de Jong — SKIPPER\nEva Jansen — PLANNER\nLaura Peters — SHIPPER\nThomas Becker — PLANNER\nJan Müller — DRIVER\nAnna Schmidt — RAIL_OPERATOR\nSarah Williams — AIR_CARGO_OPERATOR\nDavid Chen — FORWARDER\nMichael van der Meer — IMPORT_MANAGER\nNoor Bakker (DEMO) — CUSTOMS_SPECIALIST\nNatalie Smit — CUSTOMS_SPECIALIST\nLucas de Wit (DEMO) — CONSIGNEE\nSanne Visser (DEMO) — FINANCE\nPriya de Vries (DEMO) — CONSIGNEE\nEmma de Vries — COMPANY_MANAGER\nStandaard inloggen\nAfsluiten\nCargoMatch\nTextile Consignee DEMO BV\nDEMO ENVIRONMENT\nCargoMatch Import · PILOT\nOverzicht\nImport Dashboard\nImport Modules\nControl Tower\nZendingen\nDocumenten\nKosten\nVrijgave\nAchterland\nModule-instellingen\nCommunicatie\nNotificaties\n1\nContext\nMijn profiel\nBedrijf\nInstellingen\nPriya de Vries (DEMO)\nCONSIGNEE\nAfsluiten\nToggle Sidebar\nCargoMatch Import · Gedeelde demo\n1\nActie uitgevoerd.\nOnderbouwing (Evidence):\nAchterland Vervoer\nAlle zendingen\nCM-2026-008422-H2 - DEMO textiel\nCM-2026-008422-H2\n\nMumbai → Tilburg\n\nNOT_PLANNED\nJouw Levervoorkeur\nZelf ophalen (Pickup)\nLaten bezorgen (Deliver)\n\nHuidige keuze geregistreerd: DELIVER"
+    }
+  ]
+}

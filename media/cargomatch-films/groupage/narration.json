@@ -1,0 +1,40 @@
+{
+  "voice": {
+    "voiceId": "GFyWqnwcF2mv6dWlo3u1",
+    "name": "John - Irish Man",
+    "modelId": "eleven_multilingual_v2",
+    "outputFormat": "mp3_44100_192",
+    "voiceSettings": {
+      "stability": 0.62,
+      "similarity_boost": 0.75,
+      "style": 0.1,
+      "use_speaker_boost": true,
+      "speed": 1
+    }
+  },
+  "deliveryDirection": "One uninterrupted documentary take. Same voice and speed as approved reference.",
+  "groups": [
+    {
+      "id": "story",
+      "ids": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15
+      ],
+      "text": "A shared container can carry several different journeys, each with its own receiver, its own documents and its own next step. In the CargoMatch demo, a groupage shipment travels from Mumbai, through Rotterdam, towards Tilburg, bringing smaller consignments into one consolidation. For David, the forwarder, the master dossier provides the shared context, while the individual house shipments keep each receiver's business distinct. That distinction matters long before the container is opened, because a shared voyage does not mean that every partner should see every document. The receiver follows only their own house shipment, with the information their role permits, rather than another company's commercial details. Within that dossier, the team can review the available documents and check what needs attention before the shipment moves further along the chain. The documents support human review; they do not replace the judgement of the people responsible for the shipment and its requirements. The same care applies to the costs, where the receiver sees relevant charges for their own shipment rather than the business of the whole consolidation. Customs and release conditions need their own attention too, and the demonstration keeps those steps clearly separate from a real declaration or payment. Here, those processes are simulated, so the team can understand the outstanding conditions without moving real money or claiming a real customs release. At the warehouse, the shared load becomes separate consignments again, with physical handling and checks preparing each shipment for its own onward journey. The receiver can register a delivery preference in the dossier, giving the forwarder a clear indication of what is needed next. That choice is not a transport booking; availability, arrangements and the final handover still need to be agreed separately by the people involved. From a shared container to an individual delivery, CargoMatch keeps the shipment story connected while respecting the boundaries around each receiver. Discover CargoMatch, the transport capacity intelligence network.",
+      "path": "attached_assets/cargomatch-films/groupage/audio/story.mp3"
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "title": "CargoMatch — Groupage Handling",
+  "disclosures": ["Photorealistic AI-generated illustrative footage; physical handling is not software functionality or a filmed customer operation.", "Authentic synthetic CargoMatch demo. Customs, payments and release are simulated. Delivery preference is not a transport booking; arrangements remain separate."],
+  "narration": [
+    {"id":1,"en":"A shared container can carry several different journeys, each with its own receiver, its own documents and its own next step.","nl":"Eén gedeelde container, meerdere reizen: elk met een eigen ontvanger, documenten en vervolgstap."},
+    {"id":2,"en":"In the CargoMatch demo, a groupage shipment travels from Mumbai, through Rotterdam, towards Tilburg, bringing smaller consignments into one consolidation.","nl":"In de CargoMatch-demo reizen deelzendingen in één consolidatie van Mumbai via Rotterdam naar Tilburg."},
+    {"id":3,"en":"For David, the forwarder, the master dossier provides the shared context, while the individual house shipments keep each receiver's business distinct.","nl":"Forwarder David ziet de masterconsolidatie. Afzonderlijke housedossiers houden de zendingen gescheiden."},
+    {"id":4,"en":"That distinction matters long before the container is opened, because a shared voyage does not mean that every partner should see every document.","nl":"Die scheiding telt al vóór het lossen: samen reizen betekent niet dat iedereen elk document mag zien."},
+    {"id":5,"en":"The receiver follows only their own house shipment, with the information their role permits, rather than another company's commercial details.","nl":"De ontvanger ziet alleen de eigen house-zending en toegestane informatie, niet de zaken van een ander."},
+    {"id":6,"en":"Within that dossier, the team can review the available documents and check what needs attention before the shipment moves further along the chain.","nl":"In het dossier controleert het team documenten en aandachtspunten voor de volgende stap."},
+    {"id":7,"en":"The documents support human review; they do not replace the judgement of the people responsible for the shipment and its requirements.","nl":"Documenten ondersteunen menselijke controle. Ze vervangen het oordeel van verantwoordelijke medewerkers niet."},
+    {"id":8,"en":"The same care applies to the costs, where the receiver sees relevant charges for their own shipment rather than the business of the whole consolidation.","nl":"Ook bij kosten ziet de ontvanger relevante posten voor de eigen zending, niet de hele consolidatie."},
+    {"id":9,"en":"Customs and release conditions need their own attention too, and the demonstration keeps those steps clearly separate from a real declaration or payment.","nl":"Douane en vrijgave vragen eigen controles. De demo blijft gescheiden van echte aangiften en betalingen."},
+    {"id":10,"en":"Here, those processes are simulated, so the team can understand the outstanding conditions without moving real money or claiming a real customs release.","nl":"Deze processen zijn gesimuleerd: inzicht in open voorwaarden, zonder echt geld of echte douanevrijgave."},
+    {"id":11,"en":"At the warehouse, the shared load becomes separate consignments again, with physical handling and checks preparing each shipment for its own onward journey.","nl":"In het magazijn worden deelzendingen gescheiden en gecontroleerd voor hun eigen vervolgtraject."},
+    {"id":12,"en":"The receiver can register a delivery preference in the dossier, giving the forwarder a clear indication of what is needed next.","nl":"De ontvanger legt een aflevervoorkeur vast. Zo weet de forwarder wat hierna nodig is."},
+    {"id":13,"en":"That choice is not a transport booking; availability, arrangements and the final handover still need to be agreed separately by the people involved.","nl":"Die keuze is geen transportboeking. Beschikbaarheid, afspraken en overdracht worden afzonderlijk afgestemd."},
+    {"id":14,"en":"From a shared container to an individual delivery, CargoMatch keeps the shipment story connected while respecting the boundaries around each receiver.","nl":"Van gedeelde container tot eigen aflevering: CargoMatch verbindt de reis en bewaakt de grenzen per ontvanger."},
+    {"id":15,"en":"Discover CargoMatch, the transport capacity intelligence network.","nl":"Ontdek CargoMatch, het netwerk voor transportcapaciteitsinformatie."}
+  ],
+  "shots": [
+    {"ids":[1,2],"source":"port","heading":"GROUPAGE HANDLING / MUMBAI → ROTTERDAM → TILBURG"},
+    {"ids":[3,4],"source":"plate-import","screens":[[3,"groupage-master.png"],[4,"groupage-house.png"]],"heading":"ONE MASTER / SEPARATE HOUSE DOSSIERS"},
+    {"ids":[5],"source":"plate-receiver-clear","screens":[[5,"groupage-private.png"]],"heading":"ONLY YOUR OWN SHIPMENT"},
+    {"ids":[6,7],"source":"plate-customs","screens":[[6,"groupage-documents.png"]],"heading":"DOCUMENTS / HUMAN REVIEW"},
+    {"ids":[8],"source":"plate-receiver-clear","screens":[[8,"groupage-charges.png"]],"heading":"OWN-SHIPMENT COSTS"},
+    {"ids":[9,10],"source":"plate-import","screens":[[9,"groupage-release.png"]],"heading":"CUSTOMS / PAYMENT / RELEASE — SIMULATED"},
+    {"ids":[11],"source":"groupage-handling","heading":"ILLUSTRATIVE PHYSICAL DECONSOLIDATION"},
+    {"ids":[12],"source":"plate-receiver-clear","screens":[[12,"groupage-delivery.png"]],"heading":"DELIVERY PREFERENCE / NOT A BOOKING"},
+    {"ids":[13,14],"source":"truck","heading":"SEPARATE ARRANGEMENTS / HUMAN HANDOVER"},
+    {"ids":[15],"source":"port","heading":""}
+  ]
+}

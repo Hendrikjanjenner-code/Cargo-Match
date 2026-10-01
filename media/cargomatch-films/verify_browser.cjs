@@ -1,0 +1,42 @@
+'use strict';
+const fs = require('fs');
+const path = require('path');
+const Module = require('module');
+const film = process.argv[2];
+if (!['brokerage','groupage'].includes(film)) throw Error('Film required.');
+const root = path.resolve(__dirname,'../..');
+const proof = process.argv.includes('--proof');
+const assets = path.join(root,'attached_assets/cargomatch-films',film);
+const build = path.join(__dirname,film,'build');
+const delivery = proof ? build : assets;
+const edit = JSON.parse(fs.readFileSync(path.join(assets,'edit-timeline.json'),'utf8'));
+const scenes = proof ? edit.scenes.slice(2,5) : edit.scenes;
+const offset = proof ? scenes[0].renderStartFrame/24 : 0;
+const duration = proof ? (scenes.at(-1).renderEndFrame-scenes[0].renderStartFrame)/24 : edit.durationSeconds;
+const times = scenes.slice(1).map(s => Math.max(0,s.renderStartFrame/24-offset-.5));
+for (const s of scenes) for (const c of s.screens.slice(1)) times.push(Math.max(0,(s.renderStartFrame+c.frame)/24-offset-.5));
+const original = path.join(root,'media/cargomatch/verify-browser.cjs');
+let source = fs.readFileSync(original,'utf8');
+source = source.replace("const VIDEO = 'cargomatch-en-nl-1080p.mp4';",`const VIDEO = ${JSON.stringify(proof ? 'representative-proof.mp4' : `cargomatch-${film}-en-nl-1080p.mp4`)};`);
+source = source.replace('const expectedDuration = timeline ? Number(timeline.durationSeconds) : 168;',`const expectedDuration = ${duration};`);
+source = source.replace(/const seekTimes =[\s\S]*?: \[50, 90, 122, 155, 165\];/,`const seekTimes = ${JSON.stringify(times.sort((a,b)=>a-b))};`);
+source = source.replace("const BUILD = path.resolve(__dirname, timeline ? 'build/revised-browser' : 'build/browser');",`const BUILD = ${JSON.stringify(path.join(build,proof?'proof-browser':'browser'))};`);
+source = source.replace('if (video.currentTime < 3)','if (video.currentTime < video.duration - 0.1)');
+source = source.replace('performance.now() + 15000','performance.now() + (video.duration + 25) * 1000');
+source = source.replace('while (video.currentTime < startedAt + 3)','while (video.currentTime < video.duration - 0.1)');
+source = source.replace('}), 20000, `CDP ${method}`);','}), 240000, `CDP ${method}`);');
+source = source.replace('const filename = `seek-',`const moving = await evaluate(\`new Promise(async (resolve,reject) => {
+  const v=document.querySelector('#player'); const before=v.currentTime;
+  try {await v.play();await new Promise(r=>setTimeout(r,1600));v.pause();
+    resolve({before,after:v.currentTime,error:v.error&&v.error.message});}
+  catch(e){reject(e);}
+})\`,true);
+      if(moving.error||moving.after-moving.before<1) throw Error('Transition failed to advance');
+      if(!report.transitionPlayback) report.transitionPlayback=[];
+      report.transitionPlayback.push(moving);
+      const filename = \`seek-`);
+process.argv=[process.argv[0],original,'--delivery-dir',delivery];
+const checker=new Module(original,module);
+checker.filename=original;
+checker.paths=module.paths;
+checker._compile(source,original);

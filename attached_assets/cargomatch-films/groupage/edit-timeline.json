@@ -1,0 +1,232 @@
+{
+  "durationSeconds": 132.75,
+  "frames": 3186,
+  "fps": 24,
+  "scenes": [
+    {
+      "id": 1,
+      "ids": [
+        1,
+        2
+      ],
+      "source": "port",
+      "heading": "GROUPAGE HANDLING / MUMBAI → ROTTERDAM → TILBURG",
+      "start": 0.0,
+      "end": 17.708333333333332,
+      "renderStartFrame": 0,
+      "renderEndFrame": 433,
+      "screens": []
+    },
+    {
+      "id": 2,
+      "ids": [
+        3,
+        4
+      ],
+      "source": "plate-import",
+      "heading": "ONE MASTER / SEPARATE HOUSE DOSSIERS",
+      "start": 17.708333333333332,
+      "end": 36.375,
+      "renderStartFrame": 417,
+      "renderEndFrame": 881,
+      "screens": [
+        {
+          "frame": 0,
+          "screen": "groupage-master.png"
+        },
+        {
+          "frame": 243,
+          "screen": "groupage-house.png"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "ids": [
+        5
+      ],
+      "source": "plate-receiver-clear",
+      "heading": "ONLY YOUR OWN SHIPMENT",
+      "start": 36.375,
+      "end": 45.0,
+      "renderStartFrame": 865,
+      "renderEndFrame": 1088,
+      "screens": [
+        {
+          "frame": 0,
+          "screen": "groupage-private.png"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "ids": [
+        6,
+        7
+      ],
+      "source": "plate-customs",
+      "heading": "DOCUMENTS / HUMAN REVIEW",
+      "start": 45.0,
+      "end": 61.333333333333336,
+      "renderStartFrame": 1072,
+      "renderEndFrame": 1480,
+      "screens": [
+        {
+          "frame": 0,
+          "screen": "groupage-documents.png"
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "ids": [
+        8
+      ],
+      "source": "plate-receiver-clear",
+      "heading": "OWN-SHIPMENT COSTS",
+      "start": 61.333333333333336,
+      "end": 71.16666666666667,
+      "renderStartFrame": 1464,
+      "renderEndFrame": 1716,
+      "screens": [
+        {
+          "frame": 0,
+          "screen": "groupage-charges.png"
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "ids": [
+        9,
+        10
+      ],
+      "source": "plate-import",
+      "heading": "CUSTOMS / PAYMENT / RELEASE — SIMULATED",
+      "start": 71.16666666666667,
+      "end": 91.04166666666667,
+      "renderStartFrame": 1700,
+      "renderEndFrame": 2193,
+      "screens": [
+        {
+          "frame": 0,
+          "screen": "groupage-release.png"
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "ids": [
+        11
+      ],
+      "source": "groupage-handling",
+      "heading": "ILLUSTRATIVE PHYSICAL DECONSOLIDATION",
+      "start": 91.04166666666667,
+      "end": 100.83333333333333,
+      "renderStartFrame": 2177,
+      "renderEndFrame": 2428,
+      "screens": []
+    },
+    {
+      "id": 8,
+      "ids": [
+        12
+      ],
+      "source": "plate-receiver-clear",
+      "heading": "DELIVERY PREFERENCE / NOT A BOOKING",
+      "start": 100.83333333333333,
+      "end": 108.20833333333333,
+      "renderStartFrame": 2412,
+      "renderEndFrame": 2605,
+      "screens": [
+        {
+          "frame": 0,
+          "screen": "groupage-delivery.png"
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "ids": [
+        13,
+        14
+      ],
+      "source": "truck",
+      "heading": "SEPARATE ARRANGEMENTS / HUMAN HANDOVER",
+      "start": 108.20833333333333,
+      "end": 127.41666666666667,
+      "renderStartFrame": 2589,
+      "renderEndFrame": 3066,
+      "screens": []
+    },
+    {
+      "id": 10,
+      "ids": [
+        15
+      ],
+      "source": "port",
+      "heading": "",
+      "start": 127.41666666666667,
+      "end": 132.75,
+      "renderStartFrame": 3050,
+      "renderEndFrame": 3186,
+      "screens": []
+    }
+  ],
+  "chapterGapSeconds": 0,
+  "voiceTimeStretch": 1,
+  "narration": {
+    "path": "attached_assets/cargomatch-films/groupage/audio/story-normalized.wav",
+    "start": 0.65,
+    "takes": 1
+  },
+  "transitions": [
+    {
+      "start": 17.375,
+      "duration": 0.6666666666666666,
+      "kind": "context dissolve"
+    },
+    {
+      "start": 36.041666666666664,
+      "duration": 0.6666666666666666,
+      "kind": "context dissolve"
+    },
+    {
+      "start": 44.666666666666664,
+      "duration": 0.6666666666666666,
+      "kind": "context dissolve"
+    },
+    {
+      "start": 61.0,
+      "duration": 0.6666666666666666,
+      "kind": "context dissolve"
+    },
+    {
+      "start": 70.83333333333333,
+      "duration": 0.6666666666666666,
+      "kind": "context dissolve"
+    },
+    {
+      "start": 90.70833333333333,
+      "duration": 0.6666666666666666,
+      "kind": "context dissolve"
+    },
+    {
+      "start": 100.5,
+      "duration": 0.6666666666666666,
+      "kind": "context dissolve"
+    },
+    {
+      "start": 107.875,
+      "duration": 0.6666666666666666,
+      "kind": "context dissolve"
+    },
+    {
+      "start": 127.08333333333333,
+      "duration": 0.6666666666666666,
+      "kind": "context dissolve"
+    }
+  ],
+  "screenTransitionFrames": 6,
+  "cameraClock": "One continuous linear source clock per whole physical shot; never reset for screen changes."
+}
